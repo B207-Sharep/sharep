@@ -29,12 +29,10 @@ public class AccountValidator implements Validator {
 
         if(accountRepository.existsByEmail(signUpForm.getEmail())){
 //            errors.rejectValue("email", "email.duplicate", "이미 사용 중인 이메일입니다.");
-            System.out.println("eamil");
             throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
         }
 
         if(accountRepository.existsByNickname(signUpForm.getEmail())) {
-            System.out.println("ni8ck");
             throw new IllegalArgumentException("이미 사용중인 닉네임입니다.");
 //            errors.rejectValue("nickname", "nickname.duplicate", "이미 사용 중인 닉네임입니다.");        }
         }

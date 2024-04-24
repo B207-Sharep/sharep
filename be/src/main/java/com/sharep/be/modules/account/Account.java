@@ -1,5 +1,6 @@
 package com.sharep.be.modules.account;
 
+import com.sharep.be.modules.auth.RoleType;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -7,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
+import static com.sharep.be.modules.auth.RoleType.*;
 
 @Entity
 @NoArgsConstructor
@@ -25,6 +28,9 @@ public class Account {
     @Column(nullable = false, unique = true)
     String email;
 
+    @Enumerated(EnumType.STRING)
+    RoleType role;
+
     LocalDateTime createdAt;
 
     @Builder
@@ -33,5 +39,6 @@ public class Account {
         this.password = password;
         this.email = email;
         this.createdAt = LocalDateTime.now();
+        this.role = ROLE_USER;
     }
 }

@@ -30,4 +30,5 @@ public class AccountController {
         return ResponseEntity.ok(accountService.signUp(accountRequestDto));
     }
 
+
 }
