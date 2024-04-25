@@ -30,7 +30,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(
                         authorize ->
-                                authorize.requestMatchers("/", "/account/**", "/h2-console/**").permitAll()
+                                authorize.requestMatchers("/", "/account/**", "/h2-console/**", "/auth/**").permitAll()
                                         .anyRequest().authenticated()
                 );
 
