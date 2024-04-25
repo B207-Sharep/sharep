@@ -41,6 +41,14 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.2'
+
+    // code check
+    implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
+
+
 }
 
 tasks.named('test') {

@@ -1,14 +1,13 @@
 package com.sharep.be.modules.auth;
 
 import com.sharep.be.modules.auth.dto.AuthDto;
+import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import static com.sharep.be.modules.auth.dto.AuthDto.*;
 
@@ -20,8 +19,17 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody AuthRequestDto authRequestDto){
-        System.out.println("login");
         return ResponseEntity.ok(authService.login(authRequestDto));
     }
 
+    /*
+    Example JwtAuthentication
+
+    @GetMapping("/check")
+    public ResponseEntity<Void> login(@AuthenticationPrincipal JwtAuthentication authentication){
+        System.out.println(authentication.id);
+        System.out.println(authentication.email);
+        return ResponseEntity.ok().build();
+    }
+    */
 }
