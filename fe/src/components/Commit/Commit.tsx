@@ -1,36 +1,55 @@
-import React from 'react';
-import { CommitContent, CommitMessage, CommitUserInfo, CommitWrapper, Img, JobBadgeList, Text } from './CommitStyle';
-import { ChevronDown } from 'lucide-react';
+import React, { useState } from 'react';
+import * as S from './CommitStyle';
 import { PALETTE } from '@/styles';
-import { CommitProps } from '@/types';
+import * as T from '@/types';
+import { ChevronDown } from 'lucide-react';
 
-export default function Commit({}: CommitProps) {
+export default function Commit({ imageUrl }: T.CommitProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <CommitWrapper>
-      <ChevronDown />
-      <CommitContent>
-        <CommitMessage>
-          <Text color={PALETTE.SUB_BLACK} fontWeight={500}>
-            도커란 무엇인가
-          </Text>
-        </CommitMessage>
-
-        <CommitUserInfo>
-          <Img width={16} height={16} radius={8} src="https://via.placeholder.com/16x16" />
-
-          <Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
-            임서정
-          </Text>
-          <JobBadgeList>{/* Job Badge */}</JobBadgeList>
-          <Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
-            committed
-          </Text>
-          <Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
-            2 hours ago
-          </Text>
-        </CommitUserInfo>
-      </CommitContent>
-      <Img width={60} height={60} radius={10} src="https://via.placeholder.com/60x60" />
-    </CommitWrapper>
+    <S.CommitWrapper>
+      <S.CommitInfo>
+        {imageUrl ? (
+          // 버튼 요소로 변경
+          <S.AccordionIconButton onClick={() => setIsOpen(!isOpen)}>
+            <S.AccordionIcon isOpen={isOpen}>
+              <ChevronDown />
+            </S.AccordionIcon>
+          </S.AccordionIconButton>
+        ) : (
+          <div style={{ width: '24px', height: '24px' }}></div>
+        )}
+        <S.CommitContent>
+          <S.CommitMessage>
+            <S.Text color={PALETTE.SUB_BLACK} fontWeight={500}>
+              도커란 무엇인가
+            </S.Text>
+          </S.CommitMessage>
+          <S.CommitUserInfo>
+            <S.Img width={16} height={16} radius={8} src="https://via.placeholder.com/16x16" />
+            <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
+              임서정
+            </S.Text>
+            <S.JobBadgeList>
+              {/* TODO */}
+              {/* Job Badge */}
+            </S.JobBadgeList>
+            <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
+              committed
+            </S.Text>
+            <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
+              2 hours ago
+            </S.Text>
+          </S.CommitUserInfo>
+        </S.CommitContent>
+        {imageUrl && <S.Img width={60} height={60} radius={10} src={imageUrl} />}
+      </S.CommitInfo>
+      {imageUrl && isOpen && (
+        <S.CommitImageDetail>
+          <S.Img width={800} height={600} radius={0} src={imageUrl} />
+        </S.CommitImageDetail>
+      )}
+    </S.CommitWrapper>
   );
 }
