@@ -4,6 +4,7 @@ import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.account.validator.AccountValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
@@ -26,10 +27,11 @@ public class AccountController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<AccountResponseDto> signUp(
+    public ResponseEntity<Void> signUp(
             @RequestBody @Valid AccountRequestDto accountRequestDto) {
-
-        return ResponseEntity.ok(accountService.signUp(accountRequestDto));
+        accountService.signUp(accountRequestDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED).build();
     }
 
 

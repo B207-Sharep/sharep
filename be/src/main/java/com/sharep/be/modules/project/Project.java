@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,4 +43,11 @@ public class Project {
 
     private String secretKey;
 
+    @Builder
+    public Project(Account leader, String title, String bio) {
+        this.leader = leader;
+        this.title = title;
+        this.bio = bio;
+        this.createdAt = LocalDateTime.now(); // TODO auditing 달기
+    }
 }
