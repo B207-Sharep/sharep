@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
+
     private final Object principal;
     private String credentials;
 
@@ -18,7 +19,8 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
         this.credentials = credentials;
     }
 
-    public JwtAuthenticationToken(Object principal, String credentials, Collection<? extends GrantedAuthority> authorities) {
+    public JwtAuthenticationToken(Object principal, String credentials,
+            Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         super.setAuthenticated(true);
         this.principal = principal;
@@ -27,7 +29,8 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         if (isAuthenticated) {
-            throw new IllegalArgumentException("Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
+            throw new IllegalArgumentException(
+                    "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
         }
         super.setAuthenticated(false);
     }

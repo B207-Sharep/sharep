@@ -20,14 +20,15 @@ import java.util.List;
 @Slf4j
 @Getter
 public class JwtUtil {
+
     private final Key key;
     private final Long accessTokenExpTime;
     private final String header;
 
 
     public JwtUtil(@Value("${jwt.secret}") String key,
-                   @Value("${jwt.expiration_time}") Long accessTokenExpTime,
-                   @Value("${jwt.header}") String header) {
+            @Value("${jwt.expiration_time}") Long accessTokenExpTime,
+            @Value("${jwt.header}") String header) {
         byte[] keyBytes = Decoders.BASE64.decode(key);
         this.key = Keys.hmacShaKeyFor(keyBytes);
         this.accessTokenExpTime = accessTokenExpTime;

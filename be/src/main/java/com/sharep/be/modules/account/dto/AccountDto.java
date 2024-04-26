@@ -9,8 +9,10 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 public class AccountDto {
+
     @Data
-    public static class AccountRequestDto{
+    public static class AccountRequestDto {
+
         @NotBlank
         @Length(min = 1, max = 8)
         @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9_-]{1,8}$")
@@ -27,11 +29,12 @@ public class AccountDto {
 
     @Data
     @AllArgsConstructor
-    public static class AccountResponseDto{
+    public static class AccountResponseDto {
+
         private Long id;
     }
 
-    public static Account toEntity(AccountRequestDto accountRequestDto){
+    public static Account toEntity(AccountRequestDto accountRequestDto) {
         return Account.builder()
                 .nickname(accountRequestDto.getNickname())
                 .password(accountRequestDto.getPassword())
@@ -39,7 +42,7 @@ public class AccountDto {
                 .build();
     }
 
-    public static AccountResponseDto toDto(Account account){
+    public static AccountResponseDto toDto(Account account) {
         return new AccountResponseDto(account.getId());
     }
 }

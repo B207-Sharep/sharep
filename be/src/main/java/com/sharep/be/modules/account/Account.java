@@ -16,7 +16,9 @@ import static com.sharep.be.modules.auth.RoleType.*;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Account {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(length = 8, nullable = false, unique = true)

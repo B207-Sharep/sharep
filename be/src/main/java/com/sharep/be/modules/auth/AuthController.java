@@ -15,10 +15,11 @@ import static com.sharep.be.modules.auth.dto.AuthDto.*;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
+
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody AuthRequestDto authRequestDto){
+    public ResponseEntity<String> login(@Valid @RequestBody AuthRequestDto authRequestDto) {
         return ResponseEntity.ok(authService.login(authRequestDto));
     }
 

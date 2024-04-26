@@ -16,20 +16,20 @@ import static com.sharep.be.modules.auth.dto.AuthDto.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AuthService{
+public class AuthService {
 
     private final JwtUtil jwtUtil;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
-    public String login(AuthRequestDto authRequestDto){
+    public String login(AuthRequestDto authRequestDto) {
         String email = authRequestDto.getEmail();
         String password = authRequestDto.getPassword();
         Account account = accountRepository.findByEmail(email).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 이메일 입니다"));
 
-        if(!passwordEncoder.matches(password, account.getPassword())){
+        if (!passwordEncoder.matches(password, account.getPassword())) {
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
 
