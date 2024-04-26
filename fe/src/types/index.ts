@@ -4,6 +4,7 @@ import { CommitProps } from './components/Commit';
 import { MethodBadgeProps } from './components/MethodBadge';
 import { JobBadgeProps } from './components/JobBadge';
 import { PriorityBadgeProps } from './components/PriorityBadge';
+import { QuillEditorProps } from './components/QuillEditor';
 
 export type {
   BaseInputProps,
@@ -14,4 +15,5 @@ export type {
   MethodBadgeProps,
   JobBadgeProps,
   PriorityBadgeProps,
+  QuillEditorProps,
 };
