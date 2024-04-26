@@ -4,6 +4,7 @@ import com.sharep.be.modules.account.Account;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -14,7 +15,7 @@ public class AccountDto {
     public static class AccountRequestDto {
 
         @NotBlank
-        @Length(min = 1, max = 8)
+        @Size(min = 1, max = 8)
         @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9_-]{1,8}$")
         private String nickname;
 
@@ -23,7 +24,7 @@ public class AccountDto {
         private String email;
 
         @NotBlank
-        @Length(min = 8, max = 20)
+        @Size(min = 8, max = 20)
         private String password;
     }
 

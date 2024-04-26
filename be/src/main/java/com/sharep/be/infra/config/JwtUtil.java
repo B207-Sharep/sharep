@@ -44,7 +44,7 @@ public class JwtUtil {
         Claims claims = Jwts.claims();
         claims.put("id", account.getId());
         claims.put("email", account.getEmail());
-        claims.put("role", account.getRole());
+        claims.put("roles", account.getRoles());
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(expireTime);
@@ -64,6 +64,7 @@ public class JwtUtil {
     public String getEmail(String token) {
         return parseClaims(token).get("email", String.class);
     }
+
 
     private Claims parseClaims(String token) {
         try {
@@ -90,7 +91,8 @@ public class JwtUtil {
         return false;
     }
 
-    public String getRoles(String token) {
-        return parseClaims(token).get("role", String.class);
+    public List<String> getRoles(String token) {
+
+        return parseClaims(token).get("roles", List.class);
     }
 }

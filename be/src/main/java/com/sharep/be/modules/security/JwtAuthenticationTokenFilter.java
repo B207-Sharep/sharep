@@ -8,6 +8,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,13 +60,11 @@ public class JwtAuthenticationTokenFilter extends GenericFilterBean {
         filterChain.doFilter(req, res);
     }
 
-    private List<GrantedAuthority> obtainAuthorities(String roles) {
-        if (roles == null) {
+    private List<GrantedAuthority> obtainAuthorities(List<String> roles) {
+        if (roles == null || roles.size() == 0 ){
             return Collections.emptyList();
         }
-        ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(RoleType.ROLE_USER.toString()));
-        return grantedAuthorities;
+        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     private String obtainAuthorizationToken(HttpServletRequest req) {

@@ -1,10 +1,11 @@
 package com.sharep.be.modules.security;
 
+import lombok.ToString;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-
+@ToString
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Object principal;

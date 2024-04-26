@@ -33,7 +33,7 @@ public class AuthService {
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
 
-        CustomAccountInfo info = modelMapper.map(account, CustomAccountInfo.class);
-        return jwtUtil.createAccessToken(info);
+        CustomAccountInfo customAccountInfo = new CustomAccountInfo(account);
+        return jwtUtil.createAccessToken(customAccountInfo);
     }
 }

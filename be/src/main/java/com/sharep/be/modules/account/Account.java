@@ -30,9 +30,6 @@ public class Account {
     @Column(nullable = false, unique = true)
     String email;
 
-    @Enumerated(EnumType.STRING)
-    RoleType role;
-
     LocalDateTime createdAt;
 
     @Builder
@@ -41,6 +38,5 @@ public class Account {
         this.password = password;
         this.email = email;
         this.createdAt = LocalDateTime.now();
-        this.role = ROLE_USER;
     }
 }

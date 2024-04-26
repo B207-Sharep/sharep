@@ -19,18 +19,18 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody AuthRequestDto authRequestDto) {
-        return ResponseEntity.ok(authService.login(authRequestDto));
+    public ResponseEntity<ApiToken> login(@Valid @RequestBody AuthRequestDto authRequestDto) {
+        return ResponseEntity.ok(new ApiToken(authService.login(authRequestDto)));
     }
 
     /*
     Example JwtAuthentication
-
+    */
     @GetMapping("/check")
-    public ResponseEntity<Void> login(@AuthenticationPrincipal JwtAuthentication authentication){
+    public ResponseEntity<String> login(@AuthenticationPrincipal JwtAuthentication authentication){
         System.out.println(authentication.id);
         System.out.println(authentication.email);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(authentication.email);
     }
-    */
+
 }
