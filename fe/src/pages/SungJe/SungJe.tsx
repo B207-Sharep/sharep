@@ -16,6 +16,9 @@ export default function SungJe() {
         placeholder="입력해봐"
         ref={inputRef}
       />
+      <Comp.StatusBadge status="1"></Comp.StatusBadge>
+      <Comp.StatusBadge status="2"></Comp.StatusBadge>
+      <Comp.StatusBadge status="3"></Comp.StatusBadge>
     </div>
   );
 }
