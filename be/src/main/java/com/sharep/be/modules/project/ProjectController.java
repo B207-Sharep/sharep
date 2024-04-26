@@ -32,4 +32,10 @@ public class ProjectController {
                 .status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/{projectId}/token")
+    public ResponseEntity createToken(@AuthenticationPrincipal JwtAuthentication jwtAuthentication,
+            @PathVariable Long projectId){
+        String token = projectService.createToken(projectId);
+        return ResponseEntity.ok().build();
+    }
 }

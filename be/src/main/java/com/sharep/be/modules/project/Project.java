@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 
 @Entity
 @EqualsAndHashCode(of = "id")
@@ -49,5 +50,11 @@ public class Project {
         this.title = title;
         this.bio = bio;
         this.createdAt = LocalDateTime.now(); // TODO auditing 달기
+    }
+
+    public String createToken(){
+        String random = RandomStringUtils.random(15, true, true);
+        this.secretKey = random;
+        return random;
     }
 }

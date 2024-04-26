@@ -26,5 +26,11 @@ public class ProjectService {
         projectRepository.save(convertSave(projectRequestDto, account));
     }
 
+    public String createToken(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로젝트입니다."));
+
+        return project.createToken();
+    }
 
 }
