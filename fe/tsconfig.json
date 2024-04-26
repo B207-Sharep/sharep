@@ -24,14 +24,14 @@
     "paths": {
       "@/*": ["*"],
       "@/assets": ["assets/"],
-      "@/apis": ["apis/"],
-      "@/stores": ["stores/"],
-      "@/types": ["types/"],
-      "@/pages": ["pages/"],
-      "@/customhooks": ["customhooks/"],
-      "@/styles": ["styles/"],
-      "@/constrants": ["constrants/"],
-      "@/components": ["components/"]
+      "@apis": ["apis/"],
+      "@stores": ["stores/"],
+      "@types": ["types/"],
+      "@pages": ["pages/"],
+      "@customhooks": ["customhooks/"],
+      "@styles": ["styles/"],
+      "@constrants": ["constrants/"],
+      "@components": ["components/"]
     }
   },
   "include": ["src", "src/svg.d.ts"],

@@ -22,12 +22,35 @@ export const PALETTE = {
 };
 
 export const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: Pretendard;
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Light.woff') format('woff');
+    font-weight: 300;
+  }
+  @font-face {
+    font-family: Pretendard;
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: Pretendard;
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: Pretendard;
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraBold.woff') format('woff');
+    font-weight: 800;
+  }
+
   * {
     box-sizing: border-box;
     color: #1f2328;
   }
 
   body {
+    font-family: Pretendard;
+    font-weight: 400;
   }
 
   #root {
@@ -43,7 +66,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   input:focus {
-    outline: 'none',
+    outline: none;
   }
 
   button {
@@ -53,9 +76,9 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   button:focus {
-  background-color: inherit;
-  outline: none;
-  border: none;
+    background-color: inherit;
+    outline: none;
+    border: none;
   }
 
   a {
