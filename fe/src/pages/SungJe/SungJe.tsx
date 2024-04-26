@@ -19,6 +19,12 @@ export default function SungJe() {
       <Comp.StatusBadge status="1"></Comp.StatusBadge>
       <Comp.StatusBadge status="2"></Comp.StatusBadge>
       <Comp.StatusBadge status="3"></Comp.StatusBadge>
+
+      <Comp.MethodBadge name="DELETE" />
+      <Comp.MethodBadge name="GET" />
+      <Comp.MethodBadge name="PATCH" />
+      <Comp.MethodBadge name="POST" />
+      <Comp.MethodBadge name="PUT" />
     </div>
   );
 }
