@@ -43,7 +43,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   input:focus {
-    outline: 'none',
+    outline: none;
   }
 
   button {
@@ -53,9 +53,9 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   button:focus {
-  background-color: inherit;
-  outline: none;
-  border: none;
+    background-color: inherit;
+    outline: none;
+    border: none;
   }
 
   a {
