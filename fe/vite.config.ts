@@ -7,14 +7,14 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@', replacement: '/src' },
-      { find: '@/apis', replacement: '/src/apis/' },
-      { find: '@/stores', replacement: '/src/stores/' },
-      { find: '@/types', replacement: '/src/types/' },
-      { find: '@/pages', replacement: '/src/pages/' },
-      { find: '@/customhooks', replacement: '/src/customhooks/' },
-      { find: '@/styles', replacement: '/src/styles/' },
-      { find: '@/constrants', replacement: '/src/constrants/' },
-      { find: '@/components', replacement: '/src/components/' },
+      { find: '@apis', replacement: '/src/apis/' },
+      { find: '@stores', replacement: '/src/stores/' },
+      { find: '@types', replacement: '/src/types/' },
+      { find: '@pages', replacement: '/src/pages/' },
+      { find: '@customhooks', replacement: '/src/customhooks/' },
+      { find: '@styles', replacement: '/src/styles/' },
+      { find: '@constrants', replacement: '/src/constrants/' },
+      { find: '@components', replacement: '/src/components/' },
     ],
   },
 });
