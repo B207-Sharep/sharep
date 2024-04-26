@@ -23,6 +23,7 @@
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"],
+      "@/assets": ["assets/"],
       "@/apis": ["apis/"],
       "@/stores": ["stores/"],
       "@/types": ["types/"],
@@ -33,6 +34,6 @@
       "@/components": ["components/"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "src/svg.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
