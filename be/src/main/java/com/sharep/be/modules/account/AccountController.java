@@ -15,6 +15,7 @@ import static com.sharep.be.modules.account.dto.AccountDto.*;
 @RequestMapping("/account")
 @RequiredArgsConstructor
 public class AccountController {
+
     private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final AccountValidator accountValidator;
@@ -25,7 +26,8 @@ public class AccountController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<AccountResponseDto> signUp(@RequestBody @Valid AccountRequestDto accountRequestDto){
+    public ResponseEntity<AccountResponseDto> signUp(
+            @RequestBody @Valid AccountRequestDto accountRequestDto) {
 
         return ResponseEntity.ok(accountService.signUp(accountRequestDto));
     }

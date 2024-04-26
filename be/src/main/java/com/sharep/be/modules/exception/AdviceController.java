@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class AdviceController {
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> error(Exception e){
-        return  ResponseEntity
+    public ResponseEntity<String> error(Exception e) {
+        return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(e.getMessage());
     }

@@ -20,14 +20,15 @@ import java.util.List;
 @Slf4j
 @Getter
 public class JwtUtil {
+
     private final Key key;
     private final Long accessTokenExpTime;
     private final String header;
 
 
     public JwtUtil(@Value("${jwt.secret}") String key,
-                   @Value("${jwt.expiration_time}") Long accessTokenExpTime,
-                   @Value("${jwt.header}") String header) {
+            @Value("${jwt.expiration_time}") Long accessTokenExpTime,
+            @Value("${jwt.header}") String header) {
         byte[] keyBytes = Decoders.BASE64.decode(key);
         this.key = Keys.hmacShaKeyFor(keyBytes);
         this.accessTokenExpTime = accessTokenExpTime;
@@ -43,7 +44,7 @@ public class JwtUtil {
         Claims claims = Jwts.claims();
         claims.put("id", account.getId());
         claims.put("email", account.getEmail());
-        claims.put("role", account.getRole());
+        claims.put("roles", account.getRoles());
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(expireTime);
@@ -63,6 +64,7 @@ public class JwtUtil {
     public String getEmail(String token) {
         return parseClaims(token).get("email", String.class);
     }
+
 
     private Claims parseClaims(String token) {
         try {
@@ -89,7 +91,8 @@ public class JwtUtil {
         return false;
     }
 
-    public String getRoles(String token) {
-        return parseClaims(token).get("role", String.class);
+    public List<String> getRoles(String token) {
+
+        return parseClaims(token).get("roles", List.class);
     }
 }

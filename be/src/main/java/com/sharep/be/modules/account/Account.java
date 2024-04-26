@@ -16,7 +16,9 @@ import static com.sharep.be.modules.auth.RoleType.*;
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Account {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(length = 8, nullable = false, unique = true)
@@ -28,9 +30,6 @@ public class Account {
     @Column(nullable = false, unique = true)
     String email;
 
-    @Enumerated(EnumType.STRING)
-    RoleType role;
-
     LocalDateTime createdAt;
 
     @Builder
@@ -39,6 +38,5 @@ public class Account {
         this.password = password;
         this.email = email;
         this.createdAt = LocalDateTime.now();
-        this.role = ROLE_USER;
     }
 }
