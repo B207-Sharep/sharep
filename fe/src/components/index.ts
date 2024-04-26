@@ -5,5 +5,7 @@ import Commit from './Commit/Commit';
 import MethodBadge from './MethodBadge/MethodBadge';
 import JobBadge from './JobBadge/JobBadge';
 import PriorityBadge from './PriorityBadge/PriorityBadge';
+import UserImg from './UserImg/UserImg';
+import TableBtn from './TableBtn/TableBtn';
 
-export { InputWithLabel, StatusBadge, Commit, MethodBadge, JobBadge, PriorityBadge, SideBar };
+export { InputWithLabel, StatusBadge, Commit, MethodBadge, JobBadge, PriorityBadge, SideBar, UserImg, TableBtn };
