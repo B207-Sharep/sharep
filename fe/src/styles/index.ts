@@ -51,6 +51,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     font-family: Pretendard;
     font-weight: 400;
+    margin: 0px;
   }
 
   #root {

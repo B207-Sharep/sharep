@@ -1,7 +1,10 @@
 import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
-export const CommitWrapper = styled.div``;
+export const CommitWrapper = styled.div`
+  border-radius: 6px;
+  border: 1px solid rgba(208, 215, 222, 0.7);
+`;
 
 export const CommitInfo = styled.div`
   width: 100%;
@@ -11,8 +14,8 @@ export const CommitInfo = styled.div`
   padding: 24px 16px;
   gap: 24px;
   align-items: center;
-  border-radius: 6px;
-  border: 1px solid rgba(208, 215, 222, 0.7);
+  /* border-radius: 6px;
+  border: 1px solid rgba(208, 215, 222, 0.7); */
   background: ${PALETTE.MAIN_WHITE};
 `;
 

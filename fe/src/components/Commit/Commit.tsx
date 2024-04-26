@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import * as S from './CommitStyle';
-import { PALETTE } from '@/styles';
 import * as T from '@/types';
+import { PALETTE } from '@/styles';
 import { ChevronDown } from 'lucide-react';
 
-export default function Commit({ imageUrl }: T.CommitProps) {
+export default function Commit({ description, nickname, createdAt, userImageUrl, imageUrl }: T.CommitProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <S.CommitWrapper>
       <S.CommitInfo>
         {imageUrl ? (
-          // 버튼 요소로 변경
           <S.AccordionIconButton onClick={() => setIsOpen(!isOpen)}>
             <S.AccordionIcon isOpen={isOpen}>
               <ChevronDown />
@@ -23,23 +22,23 @@ export default function Commit({ imageUrl }: T.CommitProps) {
         <S.CommitContent>
           <S.CommitMessage>
             <S.Text color={PALETTE.SUB_BLACK} fontWeight={500}>
-              도커란 무엇인가
+              {description}
             </S.Text>
           </S.CommitMessage>
           <S.CommitUserInfo>
-            <S.Img width={16} height={16} radius={8} src="https://via.placeholder.com/16x16" />
+            <S.Img width={16} height={16} radius={8} src={userImageUrl || 'https://via.placeholder.com/16x16'} />
             <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
-              임서정
+              {nickname}
             </S.Text>
             <S.JobBadgeList>
               {/* TODO */}
               {/* Job Badge */}
             </S.JobBadgeList>
             <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
-              committed
+              작업 완료
             </S.Text>
             <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
-              2 hours ago
+              {createdAt}
             </S.Text>
           </S.CommitUserInfo>
         </S.CommitContent>
