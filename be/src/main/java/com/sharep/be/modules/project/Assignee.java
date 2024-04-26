@@ -23,7 +23,7 @@ public class Assignee {
 
 //    private Long issueId;
 
-    private char state;
+    private State state;
 
     private LocalDateTime startedAt;
 
@@ -33,4 +33,7 @@ public class Assignee {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public enum State{
+        YET, NOW, DONE
+    }
 }
