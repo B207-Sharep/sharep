@@ -24,7 +24,7 @@ export const PALETTE = {
 export const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
-    color: #636c76;
+    color: #1f2328;
   }
 
   body {
@@ -43,7 +43,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   input:focus {
-    outline: 'none',
+    outline: none;
   }
 
   button {
@@ -53,19 +53,20 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   button:focus {
-  background-color: inherit;
-  outline: none;
-  border: none;
-}
+    background-color: inherit;
+    outline: none;
+    border: none;
+  }
 
   a {
     text-decoration: none;
     color: inherit;
   }
+
   html, body, div, span, h1, h2, h3, h4, h5, h6, p, 
       a, dl, dt, dd, ol, ul, li, form, label, table {
-  margin: 0;
-  vertical-align: baseline;
+    margin: 0;
+    vertical-align: baseline;
   }
 
   ul {
