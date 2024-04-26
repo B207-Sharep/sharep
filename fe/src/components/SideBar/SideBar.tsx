@@ -1,4 +1,6 @@
-// import React from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import * as S from './SideBarStyle';
 import { History, Plus } from 'lucide-react';
 import * as G from '@/styles';
@@ -13,6 +15,26 @@ import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 
 export default function SideBar() {
+  const navigate = useNavigate();
+
+  const handleTeamDashClick = () => {
+    navigate('/teamid/teamdash');
+  };
+  const handleMyDashClick = () => {
+    navigate('/teamid/mydash');
+  };
+  const handleIssueClick = () => {
+    navigate('/teamid/issue');
+  };
+  const handleAPIClick = () => {
+    navigate('/teamid/api');
+  };
+  const handleScreenClick = () => {
+    navigate('/teamid/screen');
+  };
+  const handleInfraClick = () => {
+    navigate('/teamid/infra');
+  };
   return (
     <>
       <S.SideBarWrapper>
@@ -44,13 +66,13 @@ export default function SideBar() {
                   </S.SideBarBtn>
                 </S.SideBarBtnGroup>
               </S.SideBarTitle>
-              <S.SideBarContents className="hover-bg-dark">
+              <S.SideBarContents className="hover-bg-dark" onClick={handleTeamDashClick}>
                 <TEAM />
                 <S.SideBarFont size="14px" weight={200}>
                   팀 대시보드
                 </S.SideBarFont>
               </S.SideBarContents>
-              <S.SideBarContents className="hover-bg-dark">
+              <S.SideBarContents className="hover-bg-dark" onClick={handleMyDashClick}>
                 <MY></MY>
                 <S.SideBarFont size="14px" weight={200}>
                   나의 대시보드
@@ -66,25 +88,25 @@ export default function SideBar() {
                   주요 명세서
                 </S.SideBarFont>
               </S.SideBarTitle>
-              <S.SideBarContents className="hover-bg-dark">
+              <S.SideBarContents className="hover-bg-dark" onClick={handleIssueClick}>
                 <PLAN></PLAN>
                 <S.SideBarFont size="14px" weight={200}>
                   기능 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
-              <S.SideBarContents className="hover-bg-dark">
+              <S.SideBarContents className="hover-bg-dark" onClick={handleAPIClick}>
                 <API></API>
                 <S.SideBarFont size="14px" weight={200}>
                   API 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
-              <S.SideBarContents className="hover-bg-dark">
+              <S.SideBarContents className="hover-bg-dark" onClick={handleScreenClick}>
                 <SCREEN></SCREEN>
                 <S.SideBarFont size="14px" weight={200}>
                   화면 정의서
                 </S.SideBarFont>
               </S.SideBarContents>
-              <S.SideBarContents className="hover-bg-dark">
+              <S.SideBarContents className="hover-bg-dark" onClick={handleInfraClick}>
                 <INFRA></INFRA>
                 <S.SideBarFont size="14px" weight={200}>
                   인프라 명세서
