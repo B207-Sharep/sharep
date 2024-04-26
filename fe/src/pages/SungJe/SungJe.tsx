@@ -16,9 +16,9 @@ export default function SungJe() {
         placeholder="입력해봐"
         ref={inputRef}
       />
-      <Comp.StatusBadge status="시작 전"></Comp.StatusBadge>
-      <Comp.StatusBadge status="진행 중"></Comp.StatusBadge>
-      <Comp.StatusBadge status="완료"></Comp.StatusBadge>
+      <Comp.StatusBadge status="DONE"></Comp.StatusBadge>
+      <Comp.StatusBadge status="NOW"></Comp.StatusBadge>
+      <Comp.StatusBadge status="YET"></Comp.StatusBadge>
 
       <Comp.MethodBadge name="DELETE" />
       <Comp.MethodBadge name="GET" />
@@ -26,10 +26,14 @@ export default function SungJe() {
       <Comp.MethodBadge name="POST" />
       <Comp.MethodBadge name="PUT" />
 
-      <Comp.JobBadge job="BE" />
-      <Comp.JobBadge job="Design" />
-      <Comp.JobBadge job="FE" />
-      <Comp.JobBadge job="Infra" />
+      <Comp.JobBadge job="BACK_END" />
+      <Comp.JobBadge job="DESIGNER" />
+      <Comp.JobBadge job="FRONT_END" />
+      <Comp.JobBadge job="INFRA" />
+
+      <Comp.PriorityBadge priority="HIGH" />
+      <Comp.PriorityBadge priority="MEDIUM" />
+      <Comp.PriorityBadge priority="LOW" />
     </div>
   );
 }

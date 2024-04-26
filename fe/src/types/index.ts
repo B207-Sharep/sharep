@@ -3,6 +3,7 @@ import { StatusBadgeProps } from './components/StatusBadge';
 import { CommitProps } from './components/Commit';
 import { MethodBadgeProps } from './components/MethodBadge';
 import { JobBadgeProps } from './components/JobBadge';
+import { PriorityBadgeProps } from './components/PriorityBadge';
 
 export type {
   BaseInputProps,
@@ -12,4 +13,5 @@ export type {
   CommitProps,
   MethodBadgeProps,
   JobBadgeProps,
+  PriorityBadgeProps,
 };
