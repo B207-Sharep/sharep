@@ -1,6 +1,5 @@
-import GalleryGridWrapper from '@/components/GalleryGridWrapper/GalleryGridWrapper';
-import { PALETTE } from '@/styles';
 import React from 'react';
+import GalleryGridWrapper from '@/components/GalleryGridWrapper/GalleryGridWrapper';
 import CommitHistory from '../CommitHistory/CommitHistory';
 import { SideBar } from '@/components';
 
@@ -24,10 +23,9 @@ export default function SeoJeong() {
           padding: '25px',
         }}
       >
-        <GalleryGridWrapper />
-        {/* <CommitHistory /> */}
+        {/* <GalleryGridWrapper /> */}
+        <CommitHistory />
       </div>
     </div>
-    // 작업 기록 리스트 페이지
   );
 }

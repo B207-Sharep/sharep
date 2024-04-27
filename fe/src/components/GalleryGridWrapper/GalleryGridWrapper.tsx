@@ -13,10 +13,7 @@ const issueList = [
     createdAt: '2024.04.27',
     issueType: 'PRIVATE',
   })),
-].map(issue => ({
-  ...issue,
-  issueType: issue.issueType as 'SCREEN' | 'PRIVATE',
-}));
+];
 
 export default function GalleryGridWrapper() {
   return (
@@ -27,7 +24,7 @@ export default function GalleryGridWrapper() {
             key={index}
             issueName={issue.issueName}
             createdAt={issue.createdAt}
-            issueType={issue.issueType}
+            issueType={issue.issueType as 'SCREEN' | 'PRIVATE'}
             imageUrl={issue.issueType === 'SCREEN' ? `https://picsum.photos/id/${index}/300/200` : undefined}
           />
         ))}
