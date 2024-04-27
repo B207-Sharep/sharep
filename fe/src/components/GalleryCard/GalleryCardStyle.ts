@@ -29,13 +29,20 @@ export const CardText = styled.div`
 export const CardDate = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 `;
 
-export const Text = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
+export const Text = styled.span<{
+  color?: string;
+  fontSize?: number;
+  fontWeight?: number;
+}>`
   color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
   font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Img = styled.img`
@@ -44,4 +51,13 @@ export const Img = styled.img`
   overflow: hidden;
   object-fit: cover;
   border-radius: 3px 3px 0px 0px;
+`;
+
+export const PreviewContent = styled.div`
+  width: 100%;
+  height: 100%;
+  border: 2px solid green;
+  border-radius: 3px 3px 0px 0px;
+  padding: 10px;
+  white-space: nowrap;
 `;

@@ -24,10 +24,10 @@ export default function SeoJeong() {
           padding: '25px',
         }}
       >
-        화면 정의서
         <GalleryGridWrapper />
+        {/* <CommitHistory /> */}
       </div>
     </div>
-    // <CommitHistory />
+    // 작업 기록 리스트 페이지
   );
 }

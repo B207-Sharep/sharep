@@ -7,6 +7,8 @@ import { MethodBadgeProps } from './components/MethodBadge';
 import { JobBadgeProps } from './components/JobBadge';
 import { PriorityBadgeProps } from './components/PriorityBadge';
 
+import { GalleryCardProps } from './components/GalleryCard';
+
 export type {
   BaseInputProps,
   BaseLabelProps,
@@ -17,4 +19,5 @@ export type {
   JobBadgeProps,
   PriorityBadgeProps,
   UserImgProps,
+  GalleryCardProps,
 };
