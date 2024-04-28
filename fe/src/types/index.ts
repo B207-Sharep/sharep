@@ -7,6 +7,7 @@ import { JobBadgeProps } from './components/JobBadge';
 import { PriorityBadgeProps } from './components/PriorityBadge';
 import { QuillEditorProps } from './components/QuillEditor';
 import { GalleryCardProps } from './components/GalleryCard';
+import { ModalProps } from './components/Modal';
 
 export type {
   BaseInputProps,
@@ -20,4 +21,5 @@ export type {
   QuillEditorProps,
   UserImgProps,
   GalleryCardProps,
+  ModalProps,
 };

@@ -3,7 +3,7 @@ import * as S from './CommitStyle';
 import * as T from '@/types';
 import { PALETTE } from '@/styles';
 import { ChevronDown } from 'lucide-react';
-import { JobBadge } from '..';
+import JobBadge from '../JobBadge/JobBadge';
 
 export default function Commit({ description, nickname, createdAt, userImageUrl, jobList, imageUrl }: T.CommitProps) {
   const [isOpen, setIsOpen] = useState(false);
