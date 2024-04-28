@@ -3,19 +3,18 @@ package com.sharep.be.modules.project.dto;
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.project.Project;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class ProjectDto {
 
-    public static record ProjectRequestDto(
+    public record ProjectRequestDto(
             @NotBlank @Size(min = 1, max = 100) String title,
             @NotBlank @Size(min = 1, max = 100) String bio
     ) {
 
     }
 
-    public static record ProjectResponseDto(
+    public record ProjectResponseDto(
             Long id,
             String title,
             String bio,

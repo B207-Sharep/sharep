@@ -1,6 +1,7 @@
 package com.sharep.be.modules.project;
 
 import com.sharep.be.modules.account.Account;
+import com.sharep.be.modules.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,6 +47,9 @@ public class Project {
 
     private String secretKey;
 
+    @OneToMany(mappedBy = "project")
+    private List<Member> members;
+
     @Builder
     public Project(Account leader, String title, String bio) {
         this.leader = leader;
@@ -56,5 +62,9 @@ public class Project {
         String random = RandomStringUtils.random(15, true, true);
         this.secretKey = random;
         return random;
+    }
+
+    public boolean ifLeader(Account account){
+        return leader.equals(account);
     }
 }
