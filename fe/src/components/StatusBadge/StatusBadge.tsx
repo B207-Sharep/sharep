@@ -12,8 +12,8 @@ const STATUS_COLOR_PALETTE: {
 
 export default function StatusBadge({ status }: T.StatusBadgeProps) {
   return (
-    <S.Wrapper bgColor={STATUS_COLOR_PALETTE[status].BG_COLOR} fontColor={STATUS_COLOR_PALETTE[status].FONT_COLOR}>
-      <S.Dot bgColor={STATUS_COLOR_PALETTE[status].DOT_COLOR} />
+    <S.Wrapper $bgColor={STATUS_COLOR_PALETTE[status].BG_COLOR} $fontColor={STATUS_COLOR_PALETTE[status].FONT_COLOR}>
+      <S.Dot $bgColor={STATUS_COLOR_PALETTE[status].DOT_COLOR} />
       {STATUS_COLOR_PALETTE[status].TEXT}
     </S.Wrapper>
   );
