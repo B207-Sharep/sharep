@@ -13,6 +13,10 @@ import PLAN from '@/assets/svgs/plan-docs-icon.svg?react';
 import SCREEN from '@/assets/svgs/screen -definition-icon.svg?react';
 import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
+import UserImg from '../UserImg/UserImg';
+
+//DUMMY
+import UIMG from '@/assets/imgs/youjack.png';
 
 export default function SideBar() {
   const navigate = useNavigate();
@@ -39,13 +43,13 @@ export default function SideBar() {
     <>
       <S.SideBarWrapper>
         <S.SideBarProfile>
-          <S.SideBarProfilePhoto></S.SideBarProfilePhoto>
+          <UserImg size="md" path={UIMG} />
           <S.SideBarProfileName>
             <S.SideBarFont size="24px" weight={700}>
-              김성제
+              유잭건
             </S.SideBarFont>
             <S.SideBarFont size="16px" weight={400}>
-              @ssafy
+              @jackU
             </S.SideBarFont>
           </S.SideBarProfileName>
         </S.SideBarProfile>
