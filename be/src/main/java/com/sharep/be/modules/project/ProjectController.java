@@ -3,6 +3,7 @@ package com.sharep.be.modules.project;
 import com.sharep.be.modules.account.AccountRepository;
 import com.sharep.be.modules.project.dto.GitlabHook;
 import com.sharep.be.modules.project.dto.MemberDto.MemberRequestDto;
+import com.sharep.be.modules.project.dto.MemberDto.MemberResponseDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectRequestDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectResponseDto;
 import com.sharep.be.modules.project.dto.TokenDto;
@@ -57,13 +58,12 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/members")
-    public ResponseEntity<Void> readMember(
+    public ResponseEntity<List<MemberResponseDto>> readMember(
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication,
             @PathVariable Long projectId){
-        log.info("member 추가 controller jwt id : {}, projectId : {}, member  : {}", jwtAuthentication.id, projectId, memberRequestDto);
-
+        log.info("member 조회 controller jwt id : {}, projectId : {}", jwtAuthentication.id, projectId);
         return ResponseEntity
-                .status(HttpStatus.CREATED).build();
+                .ok(projectService.readMember(projectId, jwtAuthentication.id));
     }
     @PostMapping("/{projectId}/token")
     public ResponseEntity<TokenDto> createToken(@AuthenticationPrincipal JwtAuthentication jwtAuthentication,

@@ -9,6 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -24,6 +27,14 @@ import org.apache.commons.lang3.RandomStringUtils;
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @Getter
+@NamedEntityGraph(
+        name = "Project.withMembersAndRoles",
+        attributeNodes ={
+                @NamedAttributeNode(value = "members", subgraph = "roles"),
+                @NamedAttributeNode(value = "leader")
+        },
+        subgraphs = @NamedSubgraph(name = "roles", attributeNodes = @NamedAttributeNode("roles"))
+)
 public class Project {
 
     @Id
