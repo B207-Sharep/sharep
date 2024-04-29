@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.sharep.be.modules.account.dto.AccountDto.*;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/accounts")
 @RequiredArgsConstructor
 public class AccountController {
 
@@ -34,5 +34,16 @@ public class AccountController {
                 .status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping("/email")
+    public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
+        return ResponseEntity
+                .ok(accountRepository.existsByEmail(email));
+    }
+
+    @GetMapping("/nickname")
+    public ResponseEntity<Boolean> checkNickname(@RequestParam String nickname) {
+        return ResponseEntity
+                .ok(accountRepository.existsByNickname(nickname));
+    }
 
 }

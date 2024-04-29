@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project")
+@RequestMapping("/projects")
 @Slf4j
 public class ProjectController {
 
@@ -52,6 +52,16 @@ public class ProjectController {
                                           @PathVariable Long projectId){
         log.info("member 추가 controller jwt id : {}, projectId : {}, member  : {}", jwtAuthentication.id, projectId, memberRequestDto);
         projectService.addMember(projectId, jwtAuthentication.id, memberRequestDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/{projectId}/members")
+    public ResponseEntity<Void> readMember(
+            @AuthenticationPrincipal JwtAuthentication jwtAuthentication,
+            @PathVariable Long projectId){
+        log.info("member 추가 controller jwt id : {}, projectId : {}, member  : {}", jwtAuthentication.id, projectId, memberRequestDto);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED).build();
     }
