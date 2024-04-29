@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize.requestMatchers("/", "/account/**", "/h2-console/**",
-                                                "/auth/login").permitAll()
+                                                "/auth/login", "/jobs/**").permitAll()
                                         .anyRequest().authenticated()
                 );
 
