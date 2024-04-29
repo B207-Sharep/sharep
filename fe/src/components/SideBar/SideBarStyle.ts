@@ -11,7 +11,7 @@ export const SideBarWrapper = styled.div`
   height: 100vh;
   padding: 16px 16px;
   row-gap: 24px;
-  /* background-color: green; */
+  background-color: white;
   display: flex;
   flex-direction: column;
 `;

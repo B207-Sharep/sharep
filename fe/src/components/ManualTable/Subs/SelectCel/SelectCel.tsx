@@ -13,7 +13,11 @@ export default function SelectCel({ initialState, fixedWidth, usingFor }: T.Sele
   }, [isEditingMode]);
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (toggledValue) celRef.current?.focus();
+    if (toggledValue) {
+      celRef.current?.focus();
+    } else {
+      celRef.current?.blur();
+    }
 
     setIsEditingMode(() => toggledValue);
   };
