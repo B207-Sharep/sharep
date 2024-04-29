@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import * as G from '@/styles';
-import { GlobalStyle } from './styles';
 
 interface FontOption {
   $size: string;
