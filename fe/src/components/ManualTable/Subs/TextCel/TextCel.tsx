@@ -14,7 +14,11 @@ export default function TextCel({ initialState, fixedWidth }: T.CelProps) {
   }, [isEditingMode]);
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (toggledValue) quillRef.current?.focus();
+    if (toggledValue) {
+      quillRef.current?.focus();
+    } else {
+      quillRef.current?.blur();
+    }
 
     setIsEditingMode(() => toggledValue);
   };

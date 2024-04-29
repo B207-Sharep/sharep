@@ -6,12 +6,16 @@ import * as L from '@layouts';
 export default function FeatureManual() {
   return (
     <L.SideBarLayout>
-      <Comp.ManualTable
-        columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
-        dataList={FEATURE_MANUAL_DUMMY}
-        usingFor="FEATURE"
-      />
-      <Comp.ManualTable columnTitles={API_MANUAL_COLUMN_TITLES} dataList={API_MANUAL_DUMMY} usingFor="API" />
+      <S.ManualWrapper>
+        <Comp.ManualTable
+          columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
+          dataList={FEATURE_MANUAL_DUMMY}
+          usingFor="FEATURE"
+        />
+      </S.ManualWrapper>
+      <S.ManualWrapper>
+        <Comp.ManualTable columnTitles={API_MANUAL_COLUMN_TITLES} dataList={API_MANUAL_DUMMY} usingFor="FEATURE" />
+      </S.ManualWrapper>
     </L.SideBarLayout>
   );
 }
@@ -25,7 +29,7 @@ const FEATURE_MANUAL_COLUMN_TITLES: {
   { name: '요구사항명', celType: 'TEXT', iconName: 'main-title-icon', fixedWidth: '200px' },
   { name: '기능명', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '200px' },
   { name: '우선순위', celType: 'SELECT', iconName: 'main-title-icon', fixedWidth: '120px' },
-  { name: '사용할 화면', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '200px' },
+  { name: '사용할 화면', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '200px' },
   { name: '상세 기능', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '312px' },
   { name: '진행 상태', celType: 'SELECT', iconName: 'current-state-title', fixedWidth: '120px' },
   { name: '담당자', celType: 'SELECT', iconName: 'text-content-title', fixedWidth: '160px' },
@@ -96,7 +100,6 @@ const API_MANUAL_COLUMN_TITLES: {
   { name: 'FE 구현 상태', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '120px' },
   { name: '담당자', celType: 'SELECT', iconName: 'text-content-title', fixedWidth: '160px' },
 ];
-
 const API_MANUAL_DUMMY = [
   {
     category: '요구사항명 - 0',

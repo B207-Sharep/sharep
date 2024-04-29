@@ -3,6 +3,7 @@ import { PALETTE } from '@/styles';
 
 export const TableWrapper = styled.ul`
   width: 100%;
+  min-width: fit-content;
   height: 100%;
   min-height: fit-content;
   padding: 20px;
@@ -15,6 +16,7 @@ export const TitleRowWrapper = styled.li`
   width: 100%;
   min-width: fit-content;
   height: fit-content;
+  min-height: fit-content;
 `;
 
 export const Title = styled.div<{ $fixedWidth: string }>`

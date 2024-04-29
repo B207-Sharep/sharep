@@ -10,8 +10,9 @@ export const OptionUlWrapper = styled.ul<{ $isEditingMode: boolean }>`
   z-index: 1;
   background-color: white;
   position: absolute;
-  top: 40.45px;
-  left: 0px;
+  bottom: -0%;
+  left: -0%;
+  transform: translate(-0%, 99%);
   visibility: hidden;
   border-radius: 0px 0px 6px 6px;
   box-shadow: ${({ $isEditingMode }) => $isEditingMode && '2px 16px 16px rgba(0, 0, 0, 0.36)'};
