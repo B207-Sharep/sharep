@@ -16,7 +16,7 @@ export default function TextCel({ initialState, fixedWidth }: T.CelProps) {
   const handleCelClick = (toggledValue: boolean) => {
     if (toggledValue) quillRef.current?.focus();
 
-    setIsEditingMode(prev => toggledValue);
+    setIsEditingMode(() => toggledValue);
   };
 
   const handleKeyboardEventOnEditor = (e: any, toggledValue: boolean) => {
@@ -25,7 +25,7 @@ export default function TextCel({ initialState, fixedWidth }: T.CelProps) {
     }
 
     if (e.keyCode === 16) {
-      setIsPressingShiftKey(prev => toggledValue);
+      setIsPressingShiftKey(() => toggledValue);
     }
   };
 

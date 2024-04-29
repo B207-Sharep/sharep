@@ -27,8 +27,8 @@ export default function SideBar() {
   const handleMyDashClick = () => {
     navigate('/teamid/mydash');
   };
-  const handleIssueClick = () => {
-    navigate('/teamid/issue');
+  const handleFeatureManualClick = () => {
+    navigate('/1/feature-manual');
   };
   const handleAPIClick = () => {
     navigate('/teamid/api');
@@ -85,14 +85,13 @@ export default function SideBar() {
             </S.SideBarMyProject>
             {/* 내프로젝트끝 */}
             {/* 명세서영역시작 */}
-
             <S.SideBarMyProject>
               <S.SideBarTitle>
                 <S.SideBarFont $size="18px" $weight={700}>
                   주요 명세서
                 </S.SideBarFont>
               </S.SideBarTitle>
-              <S.SideBarContents className="hover-bg-dark" onClick={handleIssueClick}>
+              <S.SideBarContents className="hover-bg-dark" onClick={handleFeatureManualClick}>
                 <PLAN></PLAN>
                 <S.SideBarFont $size="14px" $weight={200}>
                   기능 명세서
