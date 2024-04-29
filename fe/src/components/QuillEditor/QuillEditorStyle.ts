@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { PALETTE } from '@/styles';
 
-export const EditorWrapper = styled.div<{ width: string; height: string }>`
+export const EditorWrapper = styled.div<{ width: string; height: string; $isNoneStyle: boolean }>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
 
@@ -19,8 +19,8 @@ export const EditorWrapper = styled.div<{ width: string; height: string }>`
   }
 
   .ql-container {
-    border-radius: 0px 0px 8px 8px;
-    border: 2px solid ${PALETTE.MAIN_BACKGROUND};
+    border-radius: ${({ $isNoneStyle }) => ($isNoneStyle ? '0px' : '0px 0px 8px 8px')};
+    border: ${({ $isNoneStyle }) => ($isNoneStyle ? 'none' : `2px solid ${PALETTE.MAIN_BACKGROUND}`)};
   }
 
   .ql-toolbar {
