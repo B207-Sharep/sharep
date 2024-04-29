@@ -18,8 +18,22 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"],
+      "@assets": ["assets/"],
+      "@apis": ["apis/"],
+      "@stores": ["stores/"],
+      "@types": ["types/"],
+      "@pages": ["pages/"],
+      "@customhooks": ["customhooks/"],
+      "@styles": ["styles/"],
+      "@constrants": ["constrants/"],
+      "@components": ["components/"]
+    }
   },
-  "include": ["src"],
+  "include": ["src", "src/svg.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
