@@ -1,7 +1,7 @@
 package com.sharep.be.modules.job;
 
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.job.request.JobCreateRequest;
+import com.sharep.be.modules.job.dto.JobCreateRequest;
 import com.sharep.be.modules.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,14 +14,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "job")
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Job {
@@ -41,17 +39,17 @@ public class Job {
     private String imageUrl;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "issue_id")
     private Issue issue;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "member_id")
     private Member member;
 
     public static Job from(JobCreateRequest jobCreateRequest, Member member, Issue issue, String imageUrl) {
         Job jobEntity = new Job();
-        jobEntity.name = jobCreateRequest.name();
-        jobEntity.description = jobCreateRequest.description();
+        jobEntity.name = jobCreateRequest.getName();
+        jobEntity.description = jobCreateRequest.getDescription();
         jobEntity.imageUrl = imageUrl;
         jobEntity.member = member;
         jobEntity.issue = issue;
