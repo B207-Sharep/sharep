@@ -6,5 +6,6 @@ import MethodBadge from './MethodBadge/MethodBadge';
 import JobBadge from './JobBadge/JobBadge';
 import PriorityBadge from './PriorityBadge/PriorityBadge';
 import QuillEditor from './QuillEditor/QuillEditor';
+import ManualTable from './ManualTable/ManualTable';
 
-export { InputWithLabel, StatusBadge, Commit, MethodBadge, JobBadge, PriorityBadge, SideBar, QuillEditor };
+export { InputWithLabel, StatusBadge, Commit, MethodBadge, JobBadge, PriorityBadge, SideBar, QuillEditor, ManualTable };
