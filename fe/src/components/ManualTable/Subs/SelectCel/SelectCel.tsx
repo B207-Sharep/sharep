@@ -15,7 +15,7 @@ export default function SelectCel({ initialState, fixedWidth, usingFor }: T.Sele
   const handleCelClick = (toggledValue: boolean) => {
     if (toggledValue) celRef.current?.focus();
 
-    setIsEditingMode(prev => toggledValue);
+    setIsEditingMode(() => toggledValue);
   };
 
   const handleListOptionClick = (e: React.MouseEvent) => {

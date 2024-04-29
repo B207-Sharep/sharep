@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import * as G from '@/styles';
 
-interface Option {
+interface Options {
   $flag: boolean;
   $disabled: boolean;
 }
 
-export const Wrapper = styled.button<Option>`
+export const Wrapper = styled.button<Options>`
   width: 100%;
   padding: 4px 10px;
   background-color: ${({ $flag }) => ($flag ? `${G.PALETTE.MAIN_COLOR}` : `white`)};
