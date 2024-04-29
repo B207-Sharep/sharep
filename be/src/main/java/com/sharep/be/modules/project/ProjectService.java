@@ -36,7 +36,13 @@ public class ProjectService {
         Account account = accountRepository.findById(accountId).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-        projectRepository.save(convertSave(projectRequestDto, account));
+        Project project = projectRepository.save(convertSave(projectRequestDto, account));
+
+
+        Member member = createMember(project, account);
+        // roles 추가
+        createRoles(member, projectRequestDto.roles());
+
     }
 
     public String createToken(Long projectId, Long accountId) {
