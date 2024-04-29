@@ -16,6 +16,9 @@ export const PALETTE = {
   MAIN_BLACK: '#1f2328',
   SUB_BLACK: '#24292f',
   LIGHT_BLACK: '#636c76',
+  TABLE_TITLE: '#534D59',
+  TABLE_CONTENT: '#1B2128',
+  TABLE_BORDER: '#37352f73',
   MAIN_COLOR: '#2eb872',
   SUB_COLOR: '#83cc61',
   LIGHT_COLOR: '#a3de83',
@@ -52,6 +55,8 @@ export const GlobalStyle = createGlobalStyle`
     font-family: Pretendard;
     font-weight: 400;
     margin: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   #root {
