@@ -63,7 +63,6 @@ export const GlobalStyle = createGlobalStyle`
     width: 100vw;
     min-width: 1440px;
     height: 100vh;
-    display: flex;
     margin: 0;
   }
 

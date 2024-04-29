@@ -1,25 +1,15 @@
 import React, { useRef, useState } from 'react';
 import * as Comp from '@components';
 import * as Icon from '@/assets';
+import * as L from '@layouts';
 
 export default function SungJe() {
   return (
-    <div
-      style={{
-        width: '100vw',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '12px',
-      }}
-    >
-      <Comp.ManualTable
-        usingFor="FEATURE"
-        columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
-        dataList={FEATURE_MANUAL_DUMMY}
-      />
-    </div>
+    <L.NoneSideBarLayout>
+      <div style={{ width: '400px', height: '200px', backgroundColor: 'white' }}></div>
+      <div style={{ width: '400px', height: '200px', backgroundColor: 'white' }}></div>
+      <div style={{ width: '400px', height: '200px', backgroundColor: 'white' }}></div>
+    </L.NoneSideBarLayout>
   );
 }
 
