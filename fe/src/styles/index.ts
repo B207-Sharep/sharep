@@ -55,7 +55,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: Pretendard;
     font-weight: 400;
     margin: 0px;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
   }
 
@@ -63,7 +63,6 @@ export const GlobalStyle = createGlobalStyle`
     width: 100vw;
     min-width: 1440px;
     height: 100vh;
-    display: flex;
     margin: 0;
   }
 
