@@ -24,6 +24,7 @@
     "paths": {
       "@/*": ["*"],
       "@assets": ["assets/"],
+      "@layouts": ["layouts/"],
       "@apis": ["apis/"],
       "@stores": ["stores/"],
       "@types": ["types/"],
