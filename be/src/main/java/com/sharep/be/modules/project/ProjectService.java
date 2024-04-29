@@ -9,7 +9,9 @@ import com.sharep.be.modules.member.MemberRepository;
 import com.sharep.be.modules.member.Role;
 import com.sharep.be.modules.member.Role.RoleType;
 import com.sharep.be.modules.member.RoleRepository;
+import com.sharep.be.modules.project.dto.MemberDto;
 import com.sharep.be.modules.project.dto.MemberDto.MemberRequestDto;
+import com.sharep.be.modules.project.dto.MemberDto.MemberResponseDto;
 import com.sharep.be.modules.project.dto.ProjectDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectRequestDto;
 import jakarta.validation.Valid;
@@ -34,7 +36,13 @@ public class ProjectService {
         Account account = accountRepository.findById(accountId).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-        projectRepository.save(convertSave(projectRequestDto, account));
+        Project project = projectRepository.save(convertSave(projectRequestDto, account));
+
+
+        Member member = createMember(project, account);
+        // roles 추가
+        createRoles(member, projectRequestDto.roles());
+
     }
 
     public String createToken(Long projectId, Long accountId) {
@@ -96,8 +104,15 @@ public class ProjectService {
         isLeader(project, leader);
     }
 
+    @Transactional(readOnly = true)
     public List<ProjectResponseDto> readProject(Long accountId){
         return projectRepository.findAllByAccountId(accountId)
                 .stream().map(ProjectDto::toDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberResponseDto> readMember(Long projectId, Long accountId) {
+        return memberRepository.findAllByProjectIdAndAccountId(projectId, accountId).stream()
+                .map(MemberDto::toDto).collect(Collectors.toList());
     }
 }

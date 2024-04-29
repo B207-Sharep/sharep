@@ -44,7 +44,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(
                         authorize ->
-                                authorize.requestMatchers("/", "/account/**", "/h2-console/**",
+                                authorize.requestMatchers("/", "/accounts/**", "/h2-console/**",
                                                 "/auth/login", "/jobs/**", "/swagger-ui/*").permitAll()
                                         .anyRequest().authenticated()
                 );

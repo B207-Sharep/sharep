@@ -1,6 +1,9 @@
 package com.sharep.be.modules.project;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.member.QMember;
+import com.sharep.be.modules.member.QRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +24,6 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom{
                 .where(member.account.id.eq(accountId))
                 .fetch();
     }
+
+
 }

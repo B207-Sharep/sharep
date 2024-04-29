@@ -3,6 +3,7 @@ package com.sharep.be.modules.project;
 import com.sharep.be.modules.account.AccountRepository;
 import com.sharep.be.modules.project.dto.GitlabHook;
 import com.sharep.be.modules.project.dto.MemberDto.MemberRequestDto;
+import com.sharep.be.modules.project.dto.MemberDto.MemberResponseDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectRequestDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectResponseDto;
 import com.sharep.be.modules.project.dto.TokenDto;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project")
+@RequestMapping("/projects")
 @Slf4j
 public class ProjectController {
 
@@ -54,6 +55,15 @@ public class ProjectController {
         projectService.addMember(projectId, jwtAuthentication.id, memberRequestDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/{projectId}/members")
+    public ResponseEntity<List<MemberResponseDto>> readMember(
+            @AuthenticationPrincipal JwtAuthentication jwtAuthentication,
+            @PathVariable Long projectId){
+        log.info("member 조회 controller jwt id : {}, projectId : {}", jwtAuthentication.id, projectId);
+        return ResponseEntity
+                .ok(projectService.readMember(projectId, jwtAuthentication.id));
     }
     @PostMapping("/{projectId}/token")
     public ResponseEntity<TokenDto> createToken(@AuthenticationPrincipal JwtAuthentication jwtAuthentication,

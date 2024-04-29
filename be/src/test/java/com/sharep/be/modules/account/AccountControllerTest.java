@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockMvcTest
@@ -40,7 +41,7 @@ class AccountControllerTest {
         accountRequestDto.setEmail(email);
         accountRequestDto.setPassword("1q2w3e4r");
 
-        mockMvc.perform(post("/account/sign-up").
+        mockMvc.perform(post("/accounts/sign-up").
                 contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(accountRequestDto)))
                 .andExpect(status().isCreated());
@@ -57,7 +58,7 @@ class AccountControllerTest {
         accountRequestDto.setEmail(email);
         accountRequestDto.setPassword("1q2w3e4r");
 
-        mockMvc.perform(post("/account/sign-up").
+        mockMvc.perform(post("/accounts/sign-up").
                         contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(accountRequestDto)))
                 .andExpect(status().is5xxServerError());
