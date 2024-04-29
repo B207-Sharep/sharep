@@ -1,11 +1,12 @@
 import React from 'react';
+import * as L from '@/layouts';
 import GalleryGridWrapper from '@/components/GalleryGridWrapper/GalleryGridWrapper';
 import CommitHistory from '../CommitHistory/CommitHistory';
-import { SideBar } from '@/components';
+import { Modal } from '@/components';
+
 import { useModal } from '@/customhooks';
-import Modal from '@/components/Modal/Modal';
-import ProjectCreationForm from '@/components/Modal/Subs/ProjectCreationForm/ProjectCreationForm';
-import TaskCreationForm from '@/components/Modal/Subs/TaskCreationForm/TaskCreationForm';
+import ProjectCreationForm from '../../components/Modal/Subs/ProjectCreationForm/ProjectCreationForm';
+import TaskCreationForm from '../../components/Modal/Subs/TaskCreationForm/TaskCreationForm';
 
 export default function SeoJeong() {
   const { openModal } = useModal();
@@ -15,16 +16,7 @@ export default function SeoJeong() {
   };
 
   return (
-    <div
-      style={{
-        margin: 'auto',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        gap: 10,
-      }}
-    >
-      <SideBar />
+    <L.SideBarLayout>
       <div
         style={{
           width: '100%',
@@ -34,8 +26,7 @@ export default function SeoJeong() {
         }}
       >
         {/* <GalleryGridWrapper /> */}
-        {/* <CommitHistory /> */}
-
+        <CommitHistory />
         {/* 새 프로젝트 생성 모달 */}
         <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('modal1')}>
           새 프로젝트 생성 모달
@@ -57,6 +48,6 @@ export default function SeoJeong() {
           <TaskCreationForm />
         </Modal>
       </div>
-    </div>
+    </L.SideBarLayout>
   );
 }

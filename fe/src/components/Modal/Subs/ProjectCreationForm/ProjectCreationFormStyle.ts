@@ -1,4 +1,3 @@
-import { JobBadge } from '@/components';
 import BaseLabelWithInput from '@/components/InputWithLabel/InputWithLabel';
 import { PALETTE } from '@/styles';
 import styled from 'styled-components';
@@ -89,12 +88,13 @@ export const SearchResultsDropdown = styled.div`
   display: flex;
   gap: 10px;
   z-index: 1;
+  overflow-y: auto;
+  max-height: 20vh;
 `;
 
 export const SearchResultItem = styled.div`
   align-self: stretch;
   padding: 8px;
-  justify-content: flex-start;
   align-items: center;
   display: flex;
   cursor: pointer;
@@ -102,49 +102,51 @@ export const SearchResultItem = styled.div`
     background-color: #f0f0f0;
   }
 `;
+
 export const JobBadgeList = styled.div`
   display: flex;
   width: 100%;
-  border: 1px solid black;
   justify-content: flex-end;
   gap: 12px;
 `;
-
-export const JobBadgeButton = styled(JobBadge)<{ $bgColor?: string; $fontColor?: string }>`
-  padding: 10px;
-  margin: 5px;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  display: inline-block;
-  cursor: pointer;
-  background-color: ${({ $bgColor }) => $bgColor};
-  color: ${({ $fontColor }) => $fontColor};
-`;
-
-// export const CheckBoxList = styled.div`
-//   display: flex;
-
-//   border: 1px solid black;
-//   justify-content: space-between;
-//   gap: 35px;
-// `;
-
-// export const CheckBox = styled.div`
-//   width: 16px;
-//   height: 16px;
-//   background: ${PALETTE.MAIN_COLOR}; // checked
-//   border: 2px solid var(--Grey_2, #e4e4e4); // unchecked
-//   border-radius: 4px;
-//   overflow: hidden;
-//   justify-content: center;
-//   align-items: center;
-//   display: flex;
-// `;
 
 export const Row = styled.div`
   align-self: stretch;
   justify-content: space-between;
   align-items: center;
-  gap: 11px;
+  gap: 10px;
   display: inline-flex;
+`;
+
+export const UserProfile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+`;
+
+export const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export const MemberList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: flex-start;
+  gap: 12px;
+`;
+
+export const Content = styled.div`
+  width: 100%;
+  min-height: 30vh;
+  padding: 10px;
+  border: 1px solid rgba(139, 139, 139, 0.1);
+  border-radius: 6px;
+`;
+
+export const DeleteBtn = styled.button`
+  cursor: pointer;
 `;

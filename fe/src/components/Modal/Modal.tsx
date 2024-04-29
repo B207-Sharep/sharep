@@ -19,7 +19,7 @@ export default function Modal({ modalId, title, subTitle, modalStyle, children }
   return isOpen ? (
     <S.ModalBackdrop onClick={handleModalClose}>
       <S.ModalWrapper $modalStyle={modalStyle} onClick={e => e.stopPropagation()}>
-        <S.MdoalContent>
+        <S.ModalContent>
           {/* header */}
           <S.ModalHeader>
             <S.ModalHeaderContent>
@@ -70,12 +70,13 @@ export default function Modal({ modalId, title, subTitle, modalStyle, children }
                 boxShadow: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
                 fontWeight: 700,
                 cursor: 'pointer',
+                color: PALETTE.MAIN_WHITE,
               }}
             >
               생성
             </button>
           </S.ModalFooter>
-        </S.MdoalContent>
+        </S.ModalContent>
       </S.ModalWrapper>
     </S.ModalBackdrop>
   ) : null;

@@ -34,7 +34,7 @@ const modalStyles = {
   `,
 };
 
-export const Text = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
+export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
   color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
   font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
@@ -45,6 +45,8 @@ export const Text = styled.span<{ color?: string; fontSize?: number; fontWeight?
 
 export const ModalWrapper = styled.div<{ $modalStyle: 'basic' | 'fadeInSlideUp' }>`
   width: 50%;
+  height: fit-content;
+  max-height: 90%;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -67,10 +69,12 @@ export const ModalBackdrop = styled.div`
   animation: ${fadeIn} 0.5s ease-out forwards;
 `;
 
-export const MdoalContent = styled.div`
+export const ModalContent = styled.div`
+  overflow-y: auto;
   display: flex;
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 90vh;
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
@@ -84,7 +88,7 @@ export const ModalHeader = styled.div`
   flex-direction: column;
   align-items: center;
   align-self: stretch;
-  /* border: 1px solid #000000; */
+  position: relative;
 `;
 
 export const ModalHeaderContent = styled.div`
@@ -96,13 +100,13 @@ export const ModalHeaderContent = styled.div`
   align-self: stretch;
 `;
 
-export const ModalTitle = styled(Text)`
+export const ModalTitle = styled(StyledText)`
   color: ${PALETTE.MAIN_BLACK};
   font-size: 18px;
   font-weight: 700;
 `;
 
-export const ModalSubTitle = styled(Text)`
+export const ModalSubTitle = styled(StyledText)`
   color: ${PALETTE.LIGHT_BLACK};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
   font-weight: 400;
