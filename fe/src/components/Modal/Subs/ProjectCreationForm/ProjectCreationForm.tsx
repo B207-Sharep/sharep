@@ -33,42 +33,48 @@ export default function ProjectCreationForm() {
 
   return (
     <S.ProjectCreationFormWrapper>
-      {/* 프로젝트 이름 */}
-      <S.StyledLabel labelFor="title">프로젝트 이름</S.StyledLabel>
-      <S.StyledInput
-        id="title"
-        type="text"
-        value={formData.title}
-        onChange={event => setFormData({ ...formData, title: event.target.value })}
-      />
+      <S.FormItem>
+        {/* 프로젝트 이름 */}
+        <BaseLabelWithInput.Label labelFor="title">프로젝트 이름</BaseLabelWithInput.Label>
+        <S.StyledInput
+          id="title"
+          type="text"
+          value={formData.title}
+          onChange={event => setFormData({ ...formData, title: event.target.value })}
+        />
+      </S.FormItem>
       {/* 프로젝트 소개 */}
-      <S.StyledLabel labelFor="bio">프로젝트 소개</S.StyledLabel>
-      <S.StyledInput
-        id="bio"
-        type="text"
-        value={formData.bio}
-        onChange={event => setFormData({ ...formData, bio: event.target.value })}
-      />
+      <S.FormItem>
+        <BaseLabelWithInput.Label labelFor="bio">프로젝트 소개</BaseLabelWithInput.Label>
+        <S.StyledInput
+          id="bio"
+          type="text"
+          value={formData.bio}
+          onChange={event => setFormData({ ...formData, bio: event.target.value })}
+        />
+      </S.FormItem>
       {/* 프로젝트 token */}
-      <S.StyledLabel labelFor="secretKey">
-        <S.Label>
-          Token
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $strokeColor={PALETTE.MAIN_WHITE}>
-              <Info size={12} />
-            </S.Icon>
-            <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
-              repository의 read 권한이 있는 token을 등록해주세요.
-            </S.Text>
-          </div>
-        </S.Label>
-      </S.StyledLabel>
-      <S.StyledInput
-        id="secretKey"
-        type="text"
-        value={formData.secretKey}
-        onChange={event => setFormData({ ...formData, secretKey: event.target.value })}
-      />
+      <S.FormItem>
+        <BaseLabelWithInput.Label labelFor="secretKey">
+          <S.Label>
+            Token
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $strokeColor={PALETTE.MAIN_WHITE}>
+                <Info size={12} />
+              </S.Icon>
+              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+                repository의 read 권한이 있는 token을 등록해주세요.
+              </S.StyledText>
+            </div>
+          </S.Label>
+        </BaseLabelWithInput.Label>
+        <S.StyledInput
+          id="secretKey"
+          type="text"
+          value={formData.secretKey}
+          onChange={event => setFormData({ ...formData, secretKey: event.target.value })}
+        />
+      </S.FormItem>
     </S.ProjectCreationFormWrapper>
   );
 }

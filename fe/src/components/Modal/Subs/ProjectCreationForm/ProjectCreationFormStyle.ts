@@ -8,21 +8,17 @@ export const ProjectCreationFormWrapper = styled.div`
   align-items: flex-start;
   gap: 16px;
   align-self: stretch;
-  /* border: 1px solid blue; */
 `;
 
-export const StyledBaseInput = styled(BaseLabelWithInput)`
+export const FormItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  font-size: 14px;
-  font-weight: 500;
-`;
-export const StyledLabel = styled(BaseLabelWithInput.Label)`
   width: 100%;
-  position: relative;
+  border: 1px solid pink;
 `;
+
 export const StyledInput = styled(BaseLabelWithInput.Input)<{ $icon?: boolean }>`
   display: flex;
   padding: 10px 14px;
@@ -36,9 +32,9 @@ export const StyledInput = styled(BaseLabelWithInput.Input)<{ $icon?: boolean }>
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
   font-size: 12px;
   font-family: 'Pretendard';
-  /* input:focus {
+  &:focus {
     box-shadow: rgba(46, 184, 114, 0.05) 0px 6px 24px 0px, rgba(46, 184, 114, 0.08) 0px 0px 0px 3px;
-  } */
+  }
 `;
 
 export const Icon = styled.div<{ $fillColor?: string; $strokeColor?: string }>`
@@ -63,7 +59,7 @@ export const InputIconContainer = styled.div`
   }
 `;
 
-export const Text = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
+export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
   color: ${props => props.color || 'inherit'};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
   font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
@@ -72,7 +68,7 @@ export const Text = styled.span<{ color?: string; fontSize?: number; fontWeight?
   text-overflow: ellipsis;
 `;
 
-export const Label = styled(Text)`
+export const Label = styled(StyledText)`
   display: flex;
   gap: 12px;
   font-weight: 500;

@@ -24,26 +24,26 @@ export default function Commit({ description, nickname, createdAt, userImageUrl,
         <S.CommitContent>
           <S.CommitMessage>
             {/* 작업 메시지 */}
-            <S.Text color={PALETTE.SUB_BLACK} fontWeight={500}>
+            <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={500}>
               {description}
-            </S.Text>
+            </S.StyledText>
             {/* 유저 정보 + 작업 완료 시간 */}
             <S.CommitUserInfo>
               <S.Img width={16} height={16} radius={8} src={userImageUrl || 'https://via.placeholder.com/16x16'} />
-              <S.Text color={PALETTE.LIGHT_BLACK} fontSize={12}>
+              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                 {nickname}
-              </S.Text>
+              </S.StyledText>
               <S.JobBadgeList>
                 {jobList.map((job, index) => (
                   <JobBadge key={index} job={job as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'} />
                 ))}
               </S.JobBadgeList>
-              <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
+              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
                 작업 완료
-              </S.Text>
-              <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
+              </S.StyledText>
+              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
                 {createdAt}
-              </S.Text>
+              </S.StyledText>
             </S.CommitUserInfo>
           </S.CommitMessage>
         </S.CommitContent>
