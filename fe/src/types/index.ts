@@ -2,7 +2,7 @@ import { BaseInputProps, BaseLabelProps, BaseLabelWithInputProps } from './compo
 import { StatusBadgeProps } from './components/StatusBadge';
 import { CommitProps } from './components/Commit';
 import { UserImgProps } from './components/UserImg';
-
+import { MainColorBtnProps } from './components/MainColorBtn';
 import { MethodBadgeProps } from './components/MethodBadge';
 import { JobBadgeProps } from './components/JobBadge';
 import { PriorityBadgeProps } from './components/PriorityBadge';
@@ -17,4 +17,5 @@ export type {
   JobBadgeProps,
   PriorityBadgeProps,
   UserImgProps,
+  MainColorBtnProps,
 };
