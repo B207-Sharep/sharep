@@ -6,7 +6,7 @@ interface Option {
 }
 
 export const Wrapper = styled.div<Option>`
-  width: fit-content;
+  width: 100%;
   padding: 4px 10px;
   background-color: ${({ $flag }) => ($flag ? `${G.PALETTE.MAIN_COLOR}` : `white`)};
   border: solid 1px #d0d7de;
