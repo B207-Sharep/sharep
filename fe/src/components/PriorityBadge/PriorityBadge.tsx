@@ -12,6 +12,6 @@ const PRIORITY_COLOR_PALETTE: {
 
 export default function PriorityBadge({ priority }: T.PriorityBadgeProps) {
   return (
-    <S.Wrapper bgColor={PRIORITY_COLOR_PALETTE[priority].BG_COLOR}>{PRIORITY_COLOR_PALETTE[priority].TEXT}</S.Wrapper>
+    <S.Wrapper $bgColor={PRIORITY_COLOR_PALETTE[priority].BG_COLOR}>{PRIORITY_COLOR_PALETTE[priority].TEXT}</S.Wrapper>
   );
 }

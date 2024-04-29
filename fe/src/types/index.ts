@@ -6,6 +6,8 @@ import { MainColorBtnProps } from './components/MainColorBtn';
 import { MethodBadgeProps } from './components/MethodBadge';
 import { JobBadgeProps } from './components/JobBadge';
 import { PriorityBadgeProps } from './components/PriorityBadge';
+import { QuillEditorProps } from './components/QuillEditor';
+import { GalleryCardProps } from './components/GalleryCard';
 
 export type {
   BaseInputProps,
@@ -16,6 +18,8 @@ export type {
   MethodBadgeProps,
   JobBadgeProps,
   PriorityBadgeProps,
+  QuillEditorProps,
   UserImgProps,
   MainColorBtnProps,
+  GalleryCardProps,
 };

@@ -13,7 +13,7 @@ const JOB_COLOR_PALETTE: {
 
 export default function JobBadge({ job }: T.JobBadgeProps) {
   return (
-    <S.Wrapper bgColor={JOB_COLOR_PALETTE[job].BG_COLOR} fontColor={JOB_COLOR_PALETTE[job].FONT_COLOR}>
+    <S.Wrapper $bgColor={JOB_COLOR_PALETTE[job].BG_COLOR} $fontColor={JOB_COLOR_PALETTE[job].FONT_COLOR}>
       {JOB_COLOR_PALETTE[job].TEXT}
     </S.Wrapper>
   );
