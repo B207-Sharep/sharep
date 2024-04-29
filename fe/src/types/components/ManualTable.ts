@@ -8,18 +8,32 @@ export interface ManualTableProps {
     iconName: 'current-state-title' | 'main-title-icon' | 'text-content-title';
     fixedWidth: string;
   }[];
-  dataList: {
-    requestName: string;
-    functionName: string;
-    priority: string;
-    willUsingScreen: string;
-    detail: string;
-    state: string;
-    assignees: string;
-    startedDate: string;
-    endedDate: string;
-    [key: string]: string;
-  }[];
+  dataList:
+    | {
+        requestName: string;
+        functionName: string;
+        priority: string;
+        willUsingScreen: string;
+        detail: string;
+        state: string;
+        assignees: string;
+        startedDate: string;
+        endedDate: string;
+        [key: string]: string;
+      }[]
+    | {
+        category: string;
+        state: string;
+        method: string;
+        apiPath: string;
+        detail: string;
+        requestBody: string;
+        responseBody: string;
+        beState: string;
+        feState: string;
+        assignees: string;
+        [key: string]: string;
+      }[];
 }
 
 export interface CelProps {
