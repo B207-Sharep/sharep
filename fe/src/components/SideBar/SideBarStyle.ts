@@ -3,8 +3,8 @@ import * as G from '@/styles';
 import { GlobalStyle } from './styles';
 
 interface FontOption {
-  size: string;
-  weight: number | string;
+  $size: string;
+  $weight: number | string;
 }
 
 export const SideBarWrapper = styled.div`
@@ -95,6 +95,6 @@ export const SideBarTitle = styled.div`
 `;
 
 export const SideBarFont = styled.div<FontOption>`
-  font-size: ${props => props.size};
-  font-weight: ${props => props.weight};
+  font-size: ${({ $size }) => $size};
+  font-weight: ${({ $weight }) => $weight};
 `;

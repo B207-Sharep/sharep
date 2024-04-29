@@ -45,10 +45,10 @@ export default function SideBar() {
         <S.SideBarProfile>
           <UserImg size="md" path={UIMG} />
           <S.SideBarProfileName>
-            <S.SideBarFont size="24px" weight={700}>
+            <S.SideBarFont $size="24px" $weight={700}>
               유잭건
             </S.SideBarFont>
-            <S.SideBarFont size="16px" weight={400}>
+            <S.SideBarFont $size="16px" $weight={400}>
               @jackU
             </S.SideBarFont>
           </S.SideBarProfileName>
@@ -58,7 +58,7 @@ export default function SideBar() {
             {/* 내프로젝트영역 */}
             <S.SideBarMyProject>
               <S.SideBarTitle>
-                <S.SideBarFont size="18px" weight={700}>
+                <S.SideBarFont $size="18px" $weight={700}>
                   Share.P
                 </S.SideBarFont>
                 <S.SideBarBtnGroup>
@@ -72,13 +72,13 @@ export default function SideBar() {
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleTeamDashClick}>
                 <TEAM />
-                <S.SideBarFont size="14px" weight={200}>
+                <S.SideBarFont $size="14px" $weight={200}>
                   팀 대시보드
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleMyDashClick}>
                 <MY></MY>
-                <S.SideBarFont size="14px" weight={200}>
+                <S.SideBarFont $size="14px" $weight={200}>
                   나의 대시보드
                 </S.SideBarFont>
               </S.SideBarContents>
@@ -88,31 +88,31 @@ export default function SideBar() {
 
             <S.SideBarMyProject>
               <S.SideBarTitle>
-                <S.SideBarFont size="18px" weight={700}>
+                <S.SideBarFont $size="18px" $weight={700}>
                   주요 명세서
                 </S.SideBarFont>
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleIssueClick}>
                 <PLAN></PLAN>
-                <S.SideBarFont size="14px" weight={200}>
+                <S.SideBarFont $size="14px" $weight={200}>
                   기능 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleAPIClick}>
                 <API></API>
-                <S.SideBarFont size="14px" weight={200}>
+                <S.SideBarFont $size="14px" $weight={200}>
                   API 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleScreenClick}>
                 <SCREEN></SCREEN>
-                <S.SideBarFont size="14px" weight={200}>
+                <S.SideBarFont $size="14px" $weight={200}>
                   화면 정의서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleInfraClick}>
                 <INFRA></INFRA>
-                <S.SideBarFont size="14px" weight={200}>
+                <S.SideBarFont $size="14px" $weight={200}>
                   인프라 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
@@ -120,7 +120,7 @@ export default function SideBar() {
           </S.SideBarNavMain>
           <S.SideBarContents className="hover-bg-dark">
             <NOTI></NOTI>
-            <S.SideBarFont size="12px" weight={200}>
+            <S.SideBarFont $size="12px" $weight={200}>
               알림
             </S.SideBarFont>
           </S.SideBarContents>
