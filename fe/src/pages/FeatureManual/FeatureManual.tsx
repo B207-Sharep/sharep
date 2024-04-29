@@ -1,20 +1,18 @@
 import React from 'react';
 import * as S from './FeatureManualStyle';
 import * as Comp from '@components';
+import * as L from '@layouts';
 
 export default function FeatureManual() {
   return (
-    <>
-      <Comp.SideBar />
-      <S.Wrapper>
-        <Comp.ManualTable
-          columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
-          dataList={FEATURE_MANUAL_DUMMY}
-          usingFor="FEATURE"
-        />
-        <Comp.ManualTable columnTitles={API_MANUAL_COLUMN_TITLES} dataList={API_MANUAL_DUMMY} usingFor="API" />
-      </S.Wrapper>
-    </>
+    <L.SideBarLayout>
+      <Comp.ManualTable
+        columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
+        dataList={FEATURE_MANUAL_DUMMY}
+        usingFor="FEATURE"
+      />
+      <Comp.ManualTable columnTitles={API_MANUAL_COLUMN_TITLES} dataList={API_MANUAL_DUMMY} usingFor="API" />
+    </L.SideBarLayout>
   );
 }
 

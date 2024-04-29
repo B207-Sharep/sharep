@@ -3,7 +3,8 @@ import { PALETTE } from '@/styles';
 
 export const TableWrapper = styled.ul`
   width: 100%;
-  height: fit-content;
+  height: 100%;
+  min-height: fit-content;
   padding: 20px;
   overflow-x: scroll;
   background-color: white;
