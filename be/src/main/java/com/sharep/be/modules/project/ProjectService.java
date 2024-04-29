@@ -10,8 +10,10 @@ import com.sharep.be.modules.member.Role;
 import com.sharep.be.modules.member.Role.RoleType;
 import com.sharep.be.modules.member.RoleRepository;
 import com.sharep.be.modules.project.dto.MemberDto.MemberRequestDto;
+import com.sharep.be.modules.project.dto.ProjectDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectRequestDto;
 import jakarta.validation.Valid;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,5 +93,10 @@ public class ProjectService {
         Account leader = accountRepository.findById(accountId).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 사용자입니다."));
         ifLeader(project, leader);
+    }
+
+    public List<ProjectResponseDto> readProject(Long accountId){
+        return projectRepository.findAllByAccountId(accountId)
+                .stream().map(ProjectDto::toDto).collect(Collectors.toList());
     }
 }
