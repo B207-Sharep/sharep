@@ -1,22 +1,25 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import * as S from './QuillEditorStyle';
 import * as T from '@types';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-export default function QuillEditor({ hiddenTooltip, initialValue, width, height, placeholder }: T.QuillEditorProps) {
-  const quillRef = useRef<ReactQuill>(null);
-  const [value, setValue] = useState(initialValue || '');
-
+export default function QuillEditor({
+  hiddenTooltip,
+  value,
+  width,
+  height,
+  stateSetter,
+  placeholder,
+}: T.QuillEditorProps) {
   return (
-    <S.EditorWrapper width={width} height={height}>
+    <S.EditorWrapper width={width} height={height} $isNoneStyle={hiddenTooltip}>
       <ReactQuill
-        ref={quillRef}
         theme="snow"
         value={value}
         modules={hiddenTooltip ? HIDDEN_TOOLBAR_MODULE : DEFAULT_MODULE}
         formats={hiddenTooltip ? HIDDEN_TOOLBAR_FORMAT : DEFAULT_TOOLBAR_FORMAT}
-        onChange={setValue}
+        onChange={stateSetter}
         placeholder={placeholder}
       />
     </S.EditorWrapper>
@@ -26,8 +29,8 @@ export default function QuillEditor({ hiddenTooltip, initialValue, width, height
 const HIDDEN_TOOLBAR_MODULE = { toolbar: false };
 const DEFAULT_MODULE = {
   toolbar: [
-    [{ size: ['small', false, 'large'] }], // custom dropdown
-    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ size: ['small', false, 'large'] }],
+    [{ color: [] }, { background: [] }],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
     ['link', 'image'],
