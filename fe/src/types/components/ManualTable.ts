@@ -1,27 +1,34 @@
 import React from 'react';
 
 export interface ManualTableProps {
+  usingFor: 'API' | 'FEATURE';
   columnTitles: {
     name: string;
     celType: 'TEXT' | 'SELECT';
     iconName: 'current-state-title' | 'main-title-icon' | 'text-content-title';
+    fixedWidth: string;
   }[];
   dataList: {
-    requestName: string | number;
-    functionName: string | number;
-    priority: string | number;
-    willUsingScreen: string | number;
-    detail: string | number;
-    currentState: string | number;
-    person: string | number;
-    startedDate: string | number;
-    endedDate: string | number;
-    [key: string]: string | number;
+    requestName: string;
+    functionName: string;
+    priority: string;
+    willUsingScreen: string;
+    detail: string;
+    state: string;
+    assignees: string;
+    startedDate: string;
+    endedDate: string;
+    [key: string]: string;
   }[];
 }
 
 export interface CelProps {
-  initialState: string | number;
+  initialState: string;
+  fixedWidth: string;
 }
 
-export interface SelectCelProps {}
+export interface SelectCelProps {
+  initialState: string;
+  fixedWidth: string;
+  usingFor: 'PRIORITY' | 'STATE' | 'ASSIGNEES' | 'METHOD';
+}

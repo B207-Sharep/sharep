@@ -3,7 +3,7 @@ import * as S from './TextCelStyle';
 import * as T from '@types';
 import ReactQuill from 'react-quill';
 
-export default function TextCel({ initialState }: T.CelProps) {
+export default function TextCel({ initialState, fixedWidth }: T.CelProps) {
   const quillRef = useRef<ReactQuill>(null);
   const [value, setValue] = useState(initialState || '');
   const [isEditingMode, setIsEditingMode] = useState(false);
@@ -30,7 +30,12 @@ export default function TextCel({ initialState }: T.CelProps) {
   };
 
   return (
-    <S.Wrapper onClick={() => handleCelClick(true)} $isEditingMode={isEditingMode}>
+    <S.Wrapper
+      className="hover-bg-dark"
+      onClick={() => handleCelClick(true)}
+      $fixedWidth={fixedWidth}
+      $isEditingMode={isEditingMode}
+    >
       <ReactQuill
         theme="snow"
         ref={quillRef}
