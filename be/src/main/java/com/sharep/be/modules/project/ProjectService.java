@@ -37,14 +37,15 @@ public class ProjectService {
         projectRepository.save(convertSave(projectRequestDto, account));
     }
 
-    public String createToken(Long projectId) {
+    public String createToken(Long projectId, Long accountId) {
+        checkLeader(projectId, accountId);
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로젝트입니다."));
 
         return project.createToken();
     }
 
-    public void ifLeader(Project project, Account account){
+    public void isLeader(Project project, Account account){
         // 접근자 프로젝트 리더인지 확인
         if(!project.ifLeader(account))throw new RuntimeException("권한이 없습니다."); // TODO exception
     }
@@ -55,7 +56,7 @@ public class ProjectService {
 
         Account leader = accountRepository.findById(leaderId).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 사용자입니다."));
-        ifLeader(project, leader);
+        isLeader(project, leader);
         // TODO 프로젝트 member에 account, role 중복 확인
 
         Account account = accountRepository.findById(memberRequestDto.getId()).orElseThrow(() ->
@@ -92,7 +93,7 @@ public class ProjectService {
 
         Account leader = accountRepository.findById(accountId).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 사용자입니다."));
-        ifLeader(project, leader);
+        isLeader(project, leader);
     }
 
     public List<ProjectResponseDto> readProject(Long accountId){

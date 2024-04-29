@@ -62,8 +62,7 @@ public class ProjectController {
     public ResponseEntity<TokenDto> createToken(@AuthenticationPrincipal JwtAuthentication jwtAuthentication,
                                                 @PathVariable Long projectId){
 
-        projectService.checkLeader(projectId, jwtAuthentication.id);
-        String token = projectService.createToken(projectId);
+        String token = projectService.createToken(projectId, jwtAuthentication.id);
         return ResponseEntity.ok(new TokenDto(projectId, token));
     }
 
