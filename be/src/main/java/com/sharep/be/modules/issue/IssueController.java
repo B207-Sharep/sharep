@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +23,9 @@ public class IssueController {
 
     private final IssueService issueService;
 
-    @GetMapping
-    public ResponseEntity<List<IssueResponseDto>> getIssues(Long projectId) {
+    // TODO: Project의 모든 이슈 조회
+    @GetMapping("/issues/{projectId}")
+    public ResponseEntity<List<IssueResponseDto>> getIssues(@PathVariable Long projectId) {
         return ResponseEntity.ok(issueService.getIssues(projectId));
     }
 
@@ -33,7 +35,7 @@ public class IssueController {
     }
 
     @PostMapping
-    private ResponseEntity<?> createIssue(
+    private ResponseEntity<Void> createIssue(
             @RequestBody @Valid IssueRequestDto issueRequestDto) {
         issueService.createIssue(issueRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
