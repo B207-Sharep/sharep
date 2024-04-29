@@ -29,9 +29,6 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    private final ProjectRepository projectRepository;
-    private final AccountRepository accountRepository;
-
     @PostMapping
     public ResponseEntity<Void> createProject(
             @RequestBody @Valid ProjectRequestDto projectRequestDto,
