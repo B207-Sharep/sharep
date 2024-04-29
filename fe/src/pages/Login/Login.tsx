@@ -48,7 +48,7 @@ export default function Login() {
           <S.Register onClick={registerClick}>회원가입</S.Register>
         </S.InputContentWrapper>
         <S.BtnWrapper>
-          <MainColorBtn bgc={true} disabled={false}>
+          <MainColorBtn disabled={false} bgc={true}>
             로그인
           </MainColorBtn>
         </S.BtnWrapper>
