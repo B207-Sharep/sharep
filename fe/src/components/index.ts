@@ -8,6 +8,7 @@ import PriorityBadge from './PriorityBadge/PriorityBadge';
 import UserImg from './UserImg/UserImg';
 import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
+import ManualTable from './ManualTable/ManualTable';
 
 export {
   InputWithLabel,
@@ -19,5 +20,6 @@ export {
   SideBar,
   UserImg,
   TableBtn,
+  ManualTable,
   QuillEditor,
 };
