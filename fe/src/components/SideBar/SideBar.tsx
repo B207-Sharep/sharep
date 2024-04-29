@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from './SideBarStyle';
-import { History, Plus } from 'lucide-react';
+import { History as CommitHistory, Plus } from 'lucide-react';
 import * as G from '@/styles';
 
 import API from '@/assets/svgs/api-docs-icon.svg?react';
@@ -63,7 +63,7 @@ export default function SideBar() {
                 </S.SideBarFont>
                 <S.SideBarBtnGroup>
                   <S.SideBarBtn>
-                    <History color={G.PALETTE.MAIN_COLOR} size={14}></History>
+                    <CommitHistory color={G.PALETTE.MAIN_COLOR} size={14}></CommitHistory>
                   </S.SideBarBtn>
                   <S.SideBarBtn>
                     <Plus color={G.PALETTE.MAIN_COLOR} size={14}></Plus>
