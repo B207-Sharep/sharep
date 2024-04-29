@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.Set;
+
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,4 +37,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private Set<Role> roles;
 
+    @Builder
+    public Member(Project project, Account account) {
+        this.project = project;
+        this.account = account;
+    }
 }
