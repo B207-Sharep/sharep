@@ -14,12 +14,16 @@ export default function SungJe() {
         gap: '12px',
       }}
     >
-      <Comp.ManualTable usingFor="FEATURE" columnTitles={COLUMN_TITLES} dataList={DUMMY} />
+      <Comp.ManualTable
+        usingFor="FEATURE"
+        columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
+        dataList={FEATURE_MANUAL_DUMMY}
+      />
     </div>
   );
 }
 
-const COLUMN_TITLES: {
+const FEATURE_MANUAL_COLUMN_TITLES: {
   name: string;
   celType: 'TEXT' | 'SELECT';
   iconName: 'current-state-title' | 'main-title-icon' | 'text-content-title';
@@ -36,7 +40,7 @@ const COLUMN_TITLES: {
   { name: '종료 날짜', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '160px' },
 ];
 
-const DUMMY = [
+const FEATURE_MANUAL_DUMMY = [
   {
     requestName: '요구사항명 - 0',
     functionName: '기능명 - 0',
