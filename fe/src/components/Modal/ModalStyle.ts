@@ -45,7 +45,6 @@ export const Text = styled.span<{ color?: string; fontSize?: number; fontWeight?
 
 export const ModalWrapper = styled.div<{ $modalStyle: 'basic' | 'fadeInSlideUp' }>`
   width: 50%;
-  height: 50%;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -78,11 +77,6 @@ export const MdoalContent = styled.div`
   border-radius: 12px;
   background: ${PALETTE.MAIN_WHITE};
   box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.1), 0px 8px 8px -4px rgba(16, 24, 40, 0.04);
-  /* width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #4fb1f3; */
 `;
 
 export const ModalHeader = styled.div`
@@ -126,14 +120,12 @@ export const CloseButton = styled.button`
 `;
 
 export const ModalBody = styled.div`
-  height: 100%;
   display: flex;
   padding: 20px 24px;
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
   align-self: stretch;
-  border: 1px solid #000000;
 `;
 export const ModalFooter = styled.div`
   display: flex;
@@ -141,5 +133,4 @@ export const ModalFooter = styled.div`
   align-items: flex-start;
   gap: 12px;
   align-self: stretch;
-  /* border: 1px solid #000000; */
 `;
