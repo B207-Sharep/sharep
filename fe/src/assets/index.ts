@@ -6,5 +6,20 @@ import Alarm from './svgs/noti.svg';
 import PlanDocs from './svgs/plan-docs-icon.svg';
 import ScreenDefinition from './svgs/screen -definition-icon.svg';
 import TeamDashboard from './svgs/team-dashboard-icon.svg';
+import CurrentStateTitle from './svgs/current-state-title.svg';
+import MainTitle from './svgs/main-title-icon.svg';
+import TextContentTitle from './svgs/text-content-title.svg';
 
-export { ApiDocs, EtcDocs, InfraDocs, MyDashboard, Alarm, PlanDocs, ScreenDefinition, TeamDashboard };
+export {
+  ApiDocs,
+  EtcDocs,
+  InfraDocs,
+  MyDashboard,
+  Alarm,
+  PlanDocs,
+  ScreenDefinition,
+  TeamDashboard,
+  CurrentStateTitle,
+  MainTitle,
+  TextContentTitle,
+};
