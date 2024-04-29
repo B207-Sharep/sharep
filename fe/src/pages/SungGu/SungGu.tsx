@@ -14,7 +14,7 @@ export default function SungGu() {
       <div style={{ backgroundColor: `${G.PALETTE.MAIN_BACKGROUND}`, width: '100%' }}>
         <Add></Add>
         <HistroyBtn></HistroyBtn>
-        <MainColorBtn bgc={false}>WHAT</MainColorBtn>
+        {/* <MainColorBtn bgc={false}>WHAT</MainColorBtn> */}
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import { InputWithLabel } from '@/components';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as S from '../Login/LoginStyle';
 import * as G from '@/styles';
 import MainColorBtn from '@/components/Button/MainColorBtn/MainColorBtn';
