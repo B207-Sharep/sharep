@@ -4,9 +4,17 @@ import * as S from './LoginStyle';
 import * as G from '@/styles';
 import MainColorBtn from '@/components/Button/MainColorBtn/MainColorBtn';
 import { UserRound, Lock } from 'lucide-react';
+import { useNavigate } from 'react-router';
 export default function Login() {
   const [uid, setUid] = useState('');
   const [pw, setPw] = useState('');
+
+  const navigate = useNavigate();
+
+  const registerClick = () => {
+    navigate('/register');
+  };
+
   return (
     <S.Wrapper>
       <S.CardWrapper>
@@ -37,7 +45,7 @@ export default function Login() {
               type="text"
             />
           </S.InputWrapper>
-          <S.Register>회원가입</S.Register>
+          <S.Register onClick={registerClick}>회원가입</S.Register>
         </S.InputContentWrapper>
         <S.BtnWrapper>
           <MainColorBtn bgc={true}>로그인</MainColorBtn>

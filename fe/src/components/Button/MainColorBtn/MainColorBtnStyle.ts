@@ -3,9 +3,10 @@ import * as G from '@/styles';
 
 interface Option {
   $flag: boolean;
+  $disabled: boolean;
 }
 
-export const Wrapper = styled.div<Option>`
+export const Wrapper = styled.button<Option>`
   width: 100%;
   padding: 4px 10px;
   background-color: ${({ $flag }) => ($flag ? `${G.PALETTE.MAIN_COLOR}` : `white`)};
@@ -18,5 +19,5 @@ export const Wrapper = styled.div<Option>`
   color: ${({ $flag }) => (!$flag ? `${G.PALETTE.MAIN_COLOR}` : `white`)};
   /* color: white; */
   font-weight: 500;
-  cursor: pointer;
+  cursor: ${({ $disabled }) => ($disabled ? `not-allowed` : `pointer`)};
 `;

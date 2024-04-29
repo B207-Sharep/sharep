@@ -88,5 +88,5 @@ export const Register = styled.div`
   color: ${G.PALETTE.LIGHT_BLACK};
   justify-content: flex-end;
   row-gap: 12px;
-  cursor: pointer;
+  /* cursor: pointer; */
 `;
