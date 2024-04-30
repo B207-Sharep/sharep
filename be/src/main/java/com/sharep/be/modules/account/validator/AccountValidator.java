@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import static com.sharep.be.modules.account.dto.AccountDto.AccountRequestDto;
+import static com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
 
 @Component
 @RequiredArgsConstructor
@@ -19,12 +19,12 @@ public class AccountValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
         System.out.println("support");
-        return AccountRequestDto.class.isAssignableFrom(clazz);
+        return AccountCreateDto.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        AccountRequestDto signUpForm = (AccountRequestDto) target;
+        AccountCreateDto signUpForm = (AccountCreateDto) target;
         System.out.println("checkehck");
 
         if (accountRepository.existsByEmail(signUpForm.getEmail())) {

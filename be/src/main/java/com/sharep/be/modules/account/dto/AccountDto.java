@@ -7,12 +7,11 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
 public class AccountDto {
 
     @Data
-    public static class AccountRequestDto {
+    public static class AccountCreateDto {
 
         @NotBlank
         @Size(min = 1, max = 8)
@@ -35,11 +34,11 @@ public class AccountDto {
         private Long id;
     }
 
-    public static Account toEntity(AccountRequestDto accountRequestDto) {
+    public static Account toEntity(AccountCreateDto accountCreateDto) {
         return Account.builder()
-                .nickname(accountRequestDto.getNickname())
-                .password(accountRequestDto.getPassword())
-                .email(accountRequestDto.getEmail())
+                .nickname(accountCreateDto.getNickname())
+                .password(accountCreateDto.getPassword())
+                .email(accountCreateDto.getEmail())
                 .build();
     }
 

@@ -20,7 +20,7 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AccountResponseDto signUp(AccountRequestDto accountDto) {
+    public AccountResponseDto signUp(AccountCreateDto accountDto) {
         accountDto.setPassword(passwordEncoder.encode(accountDto.getPassword())); // Password Encode
         Account account = AccountDto.toEntity(accountDto);
         return toDto(accountRepository.save(account));
