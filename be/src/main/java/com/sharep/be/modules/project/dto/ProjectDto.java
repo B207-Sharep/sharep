@@ -1,12 +1,15 @@
 package com.sharep.be.modules.project.dto;
 
 import com.sharep.be.modules.account.Account;
+import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
+import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.Role;
 import com.sharep.be.modules.project.Project;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sharep.be.modules.member.Role.*;
 
@@ -25,6 +28,7 @@ public class ProjectDto {
             Long id,
             String title,
             String bio,
+            List<String> accountImageUrls,
             String createdAt
 
     ) {
@@ -42,6 +46,10 @@ public class ProjectDto {
 
     public static ProjectResponseDto toDto(Project project) {
         return new ProjectResponseDto(project.getId(), project.getTitle(),
-                project.getBio(), project.getCreatedAt().toString());
+                project.getBio(), project.getMembers().stream()
+                .map(Member::getAccount)
+                .filter(account -> account != null)
+                .map(Account::getImageUrl)
+                .collect(Collectors.toList()), project.getCreatedAt().toString());
     }
 }
