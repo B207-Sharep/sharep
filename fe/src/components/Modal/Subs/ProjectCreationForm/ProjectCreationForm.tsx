@@ -7,13 +7,11 @@ import Git from '@/assets/svgs/git-icon.svg?react';
 import { JobBadge } from '@/components';
 import UserImg from '../../../UserImg/UserImg';
 
-type UserInfoProps = {
+const dummyResults: {
   accountId: number;
   email: string;
   nickname: string;
-};
-
-const dummyResults: UserInfoProps[] = [
+}[] = [
   {
     accountId: 1,
     email: 'ssafy1234@ssafy.com',
@@ -30,7 +28,13 @@ const dummyResults: UserInfoProps[] = [
 
 export default function ProjectCreationForm() {
   const [searchValue, setSearchValue] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<UserInfoProps[]>([]);
+  const [searchResults, setSearchResults] = useState<
+    {
+      accountId: number;
+      email: string;
+      nickname: string;
+    }[]
+  >([]);
   const [formData, setFormData] = useState<{ title: string; bio: string; secretKey: string; members: UserInfoProps[] }>(
     { title: '', bio: '', secretKey: '', members: [] },
   );

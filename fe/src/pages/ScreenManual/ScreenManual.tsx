@@ -10,14 +10,6 @@ const screenIssueList = [
   })),
 ];
 
-const infraIssueList = [
-  ...Array.from({ length: 7 }, (_, index) => ({
-    issueName: `인프라 이슈 ${index + 1}`,
-    createdAt: '2024.04.27',
-    issueType: 'PRIVATE' as 'PRIVATE',
-  })),
-];
-
 export default function ScreenManual() {
   return (
     <L.SideBarLayout>
