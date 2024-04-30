@@ -25,8 +25,6 @@ export default function SeoJeong() {
           padding: '25px',
         }}
       >
-        {/* <GalleryGridWrapper /> */}
-        <CommitHistory />
         {/* 새 프로젝트 생성 모달 */}
         <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('modal1')}>
           새 프로젝트 생성 모달

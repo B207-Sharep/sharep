@@ -21,6 +21,10 @@ import UIMG from '@/assets/imgs/youjack.png';
 export default function SideBar() {
   const navigate = useNavigate();
 
+  const handleHistoryClick = () => {
+    navigate('/1/history');
+  };
+
   const handleTeamDashClick = () => {
     navigate('/teamid/teamdash');
   };
@@ -62,7 +66,7 @@ export default function SideBar() {
                   Share.P
                 </S.SideBarFont>
                 <S.SideBarBtnGroup>
-                  <S.SideBarBtn>
+                  <S.SideBarBtn onClick={handleHistoryClick}>
                     <CommitHistory color={G.PALETTE.MAIN_COLOR} size={14}></CommitHistory>
                   </S.SideBarBtn>
                   <S.SideBarBtn>

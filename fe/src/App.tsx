@@ -19,6 +19,7 @@ function App() {
         <Route path="/mypage" element={<Page.Mypage />} />
         <Route path="/:project-id/screen-manual" element={<Page.ScreenManual />} />
         <Route path="/:project-id/infra-manual" element={<Page.InfraManual />} />
+        <Route path="/:project-id/history" element={<Page.CommitHistory />} />
       </Routes>
     </>
   );
