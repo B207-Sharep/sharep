@@ -34,10 +34,10 @@ export default function SideBar() {
     navigate('/teamid/api');
   };
   const handleScreenClick = () => {
-    navigate('/teamid/screen');
+    navigate('/1/screen-manual');
   };
   const handleInfraClick = () => {
-    navigate('/teamid/infra');
+    navigate('/1/infra-manual');
   };
   return (
     <>
