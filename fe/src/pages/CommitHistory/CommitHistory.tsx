@@ -27,7 +27,7 @@ export default function CommitHistory() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [openFilter, setOpenFilter] = useState<'member' | 'job' | 'issue' | null>(null);
-  const [selectedValues, setSelectedValues] = useState<{ [key: string]: string | null }>({
+  const [selectedFilter, setSelectedFilter] = useState<{ [key: string]: string | null }>({
     member: null,
     job: null,
     issue: null,
@@ -49,7 +49,7 @@ export default function CommitHistory() {
     const job = searchParams.get('job');
     const issue = searchParams.get('issue');
 
-    setSelectedValues({
+    setSelectedFilter({
       member,
       job,
       issue,
@@ -70,7 +70,7 @@ export default function CommitHistory() {
                   <UsersRound color={PALETTE.LIGHT_BLACK} size={14} />
                   <S.StyledText color={PALETTE.SUB_BLACK} fontSize={14}>
                     {filter.label}
-                    {selectedValues[filter.type] ? `: ${selectedValues[filter.type]}` : ''}
+                    {selectedFilter[filter.type] ? `: ${selectedFilter[filter.type]}` : ''}
                   </S.StyledText>
                   <S.AccordionIconButton>
                     <S.AccordionIcon $isOpen={openFilter === filter.type}>
@@ -95,11 +95,11 @@ export default function CommitHistory() {
                                 <S.UserProfile>
                                   <Comp.UserImg size="xs" path="https://via.placeholder.com/32x32" />
                                   <S.UserInfo>
-                                    <S.StyledText color={PALETTE.LIGHT_BLACK}>{value}</S.StyledText>
+                                    <S.StyledText>{value}</S.StyledText>
                                   </S.UserInfo>
                                 </S.UserProfile>
                               )}
-                              {filter.type === 'issue' && <span> issue {value}</span>}
+                              {filter.type === 'issue' && <S.StyledText>{value}</S.StyledText>}
                             </S.DropdowntItem>
                           ))}
                         </>
