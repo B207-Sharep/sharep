@@ -32,7 +32,7 @@ export const CardDate = styled.div`
   gap: 6px;
 `;
 
-export const Text = styled.span<{
+export const StyledText = styled.span<{
   color?: string;
   fontSize?: number;
   fontWeight?: number;

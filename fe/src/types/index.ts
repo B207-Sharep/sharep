@@ -8,6 +8,7 @@ import { JobBadgeProps } from './components/JobBadge';
 import { PriorityBadgeProps } from './components/PriorityBadge';
 import { QuillEditorProps } from './components/QuillEditor';
 import { GalleryCardProps } from './components/GalleryCard';
+import { ModalProps } from './components/Modal';
 import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualTable';
 
 export type {
@@ -23,6 +24,7 @@ export type {
   UserImgProps,
   MainColorBtnProps,
   GalleryCardProps,
+  ModalProps,
   ManualTableProps,
   CelProps,
   SelectCelProps,
