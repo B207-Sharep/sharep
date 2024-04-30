@@ -4,7 +4,7 @@ import * as S from '../Login/LoginStyle';
 import * as G from '@/styles';
 import MainColorBtn from '@/components/Button/MainColorBtn/MainColorBtn';
 import { UserRound, Lock } from 'lucide-react';
-import { idDuplicateCheck } from '@/apis/accounts';
+import { idDuplicateCheck, signup } from '@/apis/accounts';
 export default function Register() {
   const [uid, setUid] = useState('');
   const [email, setEmail] = useState('');
@@ -130,6 +130,38 @@ export default function Register() {
     }
   };
 
+  //파라미터 삭제할것
+  const signupHandler = async () => {
+    // e.preventDefault();
+
+    // const idCheckresult = await idCheckHandler(uid);
+    // if (idCheckresult) setIdError('');
+    // else return;
+    // if (!isIdCheck || !isIdAvailable) {
+    //   alert('아이디 중복 검사를 해주세요.');
+    //   return;
+    // }
+
+    const passwordCheckResult = passwordCheckHandler(password, confirm);
+    if (passwordCheckResult) {
+      setPasswordError('');
+      setConfirmError('');
+    } else return;
+
+    try {
+      const responseData = await signup(uid, password, confirm);
+      if (responseData) {
+        // localStorage.setItem('loginId', uid);
+        console.log('SUCCESS');
+      } else {
+        alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
+      }
+    } catch (error) {
+      alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
+      console.error(error);
+    }
+  };
+
   return (
     <S.Wrapper>
       <S.CardWrapper>
@@ -181,7 +213,7 @@ export default function Register() {
           {/* <S.Register>회원가입</S.Register> */}
         </S.InputContentWrapper>
         {/* <button disabled={false}>fdfd</button> */}
-        <S.BtnWrapper>
+        <S.BtnWrapper onClick={signupHandler}>
           <MainColorBtn disabled={false} bgc={true}>
             회원가입
           </MainColorBtn>
