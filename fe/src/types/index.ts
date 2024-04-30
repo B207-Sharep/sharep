@@ -10,6 +10,7 @@ import { QuillEditorProps } from './components/QuillEditor';
 import { GalleryCardProps } from './components/GalleryCard';
 import { ModalProps } from './components/Modal';
 import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualTable';
+import { IssueProps } from './components/Issue';
 
 export type {
   BaseInputProps,
@@ -28,4 +29,5 @@ export type {
   ManualTableProps,
   CelProps,
   SelectCelProps,
+  IssueProps,
 };

@@ -13,6 +13,8 @@ function App() {
         <Route path="/sung-gu" element={<Page.SungGu />} />
         <Route path="/sung-je" element={<Page.SungJe />} />
         <Route path="/:project-id/feature-manual" element={<Page.FeatureManual />} />
+        <Route path="/:project-id/team" element={<div>팀 대쉬보드 페이지</div>} />
+        <Route path="/:project-id/team/member/:member-id" element={<Page.TeamMember />} />
         <Route path="/login" element={<Page.Login />} />
         <Route path="/register" element={<Page.Register />} />
         <Route path="/:project-id/screen-manual" element={<Page.ScreenManual />} />

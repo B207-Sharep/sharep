@@ -15,9 +15,6 @@ import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 import UserImg from '../UserImg/UserImg';
 
-//DUMMY
-import UIMG from '@/assets/imgs/youjack.png';
-
 export default function SideBar() {
   const navigate = useNavigate();
 
@@ -43,7 +40,7 @@ export default function SideBar() {
     <>
       <S.SideBarWrapper>
         <S.SideBarProfile>
-          <UserImg size="md" path={UIMG} />
+          <UserImg size="md" path={'/youjack.png'} />
           <S.SideBarProfileName>
             <S.SideBarFont $size="24px" $weight={700}>
               유잭건
