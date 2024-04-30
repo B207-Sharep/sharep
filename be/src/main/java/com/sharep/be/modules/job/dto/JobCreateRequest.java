@@ -5,8 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
+@Setter
+@ToString
 public class JobCreateRequest {
 
         @NotBlank
@@ -16,7 +20,4 @@ public class JobCreateRequest {
         @NotNull
         @Size(max = 255)
         private String description;
-
-        @Min(1)
-        private Long issueId;
     }
