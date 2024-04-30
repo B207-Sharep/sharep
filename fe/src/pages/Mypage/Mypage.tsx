@@ -1,10 +1,22 @@
 import { NoneSideBarLayout } from '@/layouts';
 import * as S from './MypageStyle';
 import * as G from '@/styles';
-import { UserImg } from '@/components';
+import { GalleryGridWrapper, UserImg } from '@/components';
+import ProjectGridWrapper from '@/components/ProjectGridWrapper/ProjectGridWrapper';
 
 //DUMMY
 import UIMG from '@/assets/imgs/youjack.png';
+import JD from '@/assets/imgs/jdragon.png';
+
+const issueList = [
+  ...Array.from({ length: 7 }, (_, index) => ({
+    id: `${index + 1} 페이지`,
+    title: 'SCREEN',
+    bio: 'Lorem ipsum',
+    imgs: [UIMG, JD],
+    createdAt: '2024.04.27',
+  })),
+];
 
 export default function Mypage() {
   return (
@@ -26,6 +38,13 @@ export default function Mypage() {
             </S.ProfileWrapper>
             <S.GrassWrapper>잔디밭</S.GrassWrapper>
           </S.HeaderWrapper>
+          <ProjectGridWrapper issueList={issueList}></ProjectGridWrapper>
+          {/* <GallPreryGridWrapper issueList={issueList}></GallPreryGridWrapper> */}
+          {/* <ProjectGridWrapper>
+            <div>dd</div>
+            <div>dd</div>
+            <div>dd</div>
+          </ProjectGridWrapper> */}
         </S.Wrapper>
       </NoneSideBarLayout>
     </>

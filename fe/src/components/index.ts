@@ -11,6 +11,8 @@ import QuillEditor from './QuillEditor/QuillEditor';
 import ManualTable from './ManualTable/ManualTable';
 import Modal from './Modal/Modal';
 import GalleryGridWrapper from './GalleryGridWrapper/GalleryGridWrapper';
+import ProjectCard from './ProjectCard/ProjectCard';
+import ProjectGridWrapper from './ProjectGridWrapper/ProjectGridWrapper';
 
 export {
   InputWithLabel,
@@ -26,4 +28,6 @@ export {
   QuillEditor,
   Modal,
   GalleryGridWrapper,
+  ProjectCard,
+  ProjectGridWrapper,
 };
