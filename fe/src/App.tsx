@@ -15,6 +15,8 @@ function App() {
         <Route path="/:project-id/feature-manual" element={<Page.FeatureManual />} />
         <Route path="/login" element={<Page.Login />} />
         <Route path="/register" element={<Page.Register />} />
+        {/* 나중에 사용자 이름으로 바꿔 */}
+        <Route path="/mypage" element={<Page.Mypage />} />
         <Route path="/:project-id/screen-manual" element={<Page.ScreenManual />} />
         <Route path="/:project-id/infra-manual" element={<Page.InfraManual />} />
       </Routes>
