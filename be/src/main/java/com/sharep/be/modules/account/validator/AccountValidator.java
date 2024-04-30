@@ -31,10 +31,10 @@ public class AccountValidator implements Validator {
 //            errors.rejectValue("email", "email.duplicate", "이미 사용 중인 이메일입니다.");
             throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
         }
-
-        if (accountRepository.existsByNickname(signUpForm.getEmail())) {
-            throw new IllegalArgumentException("이미 사용중인 닉네임입니다.");
-//            errors.rejectValue("nickname", "nickname.duplicate", "이미 사용 중인 닉네임입니다.");        }
-        }
+//
+//        if (accountRepository.existsByNickname(signUpForm.getEmail())) {
+//            throw new IllegalArgumentException("이미 사용중인 닉네임입니다.");
+////            errors.rejectValue("nickname", "nickname.duplicate", "이미 사용 중인 닉네임입니다.");        }
+//        }
     }
 }

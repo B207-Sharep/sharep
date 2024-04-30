@@ -56,6 +56,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -71,7 +72,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize.requestMatchers("/", "/accounts/**", "/h2-console/**",
-                                                "/auth/login", "/jobs/**", "/swagger-ui/*").permitAll()
+                                                "/auth/login", "/jobs/**", "/swagger-ui/**",
+                                                "/swagger-resources/**", "/v3/api-docs/**").permitAll()
                                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                         .anyRequest().authenticated()
                 );

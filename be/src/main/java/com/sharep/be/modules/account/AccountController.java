@@ -37,10 +37,10 @@ public class AccountController {
                 .ok(accountRepository.existsByEmail(email));
     }
 
-    @GetMapping("/nickname")
-    public ResponseEntity<Boolean> checkNickname(@RequestParam String nickname) {
-        return ResponseEntity
-                .ok(accountRepository.existsByNickname(nickname));
-    }
+//    @GetMapping("/nickname")
+//    public ResponseEntity<Boolean> checkNickname(@RequestParam String nickname) {
+//        return ResponseEntity
+//                .ok(accountRepository.existsByNickname(nickname));
+//    }
 
 }
