@@ -10,6 +10,7 @@ import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
 import ManualTable from './ManualTable/ManualTable';
 import Modal from './Modal/Modal';
+import GalleryGridWrapper from './GalleryGridWrapper/GalleryGridWrapper';
 
 export {
   InputWithLabel,
@@ -24,4 +25,5 @@ export {
   ManualTable,
   QuillEditor,
   Modal,
+  GalleryGridWrapper,
 };

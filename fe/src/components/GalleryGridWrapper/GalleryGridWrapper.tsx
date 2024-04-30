@@ -1,21 +1,9 @@
 import React from 'react';
 import * as S from './GalleryGridWrapperStyle';
 import GalleryCard from '../GalleryCard/GalleryCard';
+import { GalleryGridWrapperProps } from '@/types/components/GalleryGridWrapper';
 
-const issueList = [
-  ...Array.from({ length: 7 }, (_, index) => ({
-    issueName: `${index + 1} 페이지`,
-    createdAt: '2024.04.27',
-    issueType: 'SCREEN',
-  })),
-  ...Array.from({ length: 7 }, (_, index) => ({
-    issueName: `${index + 1} 페이지`,
-    createdAt: '2024.04.27',
-    issueType: 'PRIVATE',
-  })),
-];
-
-export default function GalleryGridWrapper() {
+export default function GalleryGridWrapper({ issueList }: GalleryGridWrapperProps) {
   return (
     <S.Grid>
       <S.CardList>
