@@ -138,3 +138,8 @@ export const ModalFooter = styled.div`
   gap: 12px;
   align-self: stretch;
 `;
+
+export const BtnWrapper = styled.div`
+  width: 100%;
+  cursor: pointer;
+`;
