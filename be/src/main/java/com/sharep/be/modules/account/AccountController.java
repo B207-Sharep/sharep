@@ -6,11 +6,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import static com.sharep.be.modules.account.dto.AccountDto.*;
 
 @RestController
 @RequestMapping("/accounts")
@@ -28,8 +25,8 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(
-            @RequestBody @Valid AccountRequestDto accountRequestDto) {
-        accountService.signUp(accountRequestDto);
+            @RequestBody @Valid AccountDto.AccountCreateDto accountCreateDto) {
+        accountService.signUp(accountCreateDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED).build();
     }
@@ -40,10 +37,10 @@ public class AccountController {
                 .ok(accountRepository.existsByEmail(email));
     }
 
-    @GetMapping("/nickname")
-    public ResponseEntity<Boolean> checkNickname(@RequestParam String nickname) {
-        return ResponseEntity
-                .ok(accountRepository.existsByNickname(nickname));
-    }
+//    @GetMapping("/nickname")
+//    public ResponseEntity<Boolean> checkNickname(@RequestParam String nickname) {
+//        return ResponseEntity
+//                .ok(accountRepository.existsByNickname(nickname));
+//    }
 
 }

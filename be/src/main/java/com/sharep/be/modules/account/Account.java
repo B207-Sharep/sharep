@@ -21,7 +21,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(length = 8, nullable = false, unique = true)
+    @Column(length = 8, nullable = false)
     String nickname;
 
     @Column(nullable = false)
