@@ -67,7 +67,7 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(header -> header.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-
+                .cors((cors)-> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize.requestMatchers("/", "/accounts/**", "/h2-console/**",
