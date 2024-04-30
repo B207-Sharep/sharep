@@ -1,6 +1,5 @@
 package com.sharep.be.modules.auth;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -10,8 +9,7 @@ import com.sharep.be.infra.MockMvcTest;
 import com.sharep.be.modules.account.AccountRepository;
 import com.sharep.be.modules.account.AccountService;
 import com.sharep.be.modules.account.WithMockAccount;
-import com.sharep.be.modules.account.dto.AccountDto.AccountRequestDto;
-import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
+import com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
 import com.sharep.be.modules.auth.dto.AuthDto.AuthRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +38,7 @@ class AuthControllerTest {
     }
 
     public void makeAccount(){
-        AccountRequestDto account = new AccountRequestDto();
+        AccountCreateDto account = new AccountCreateDto();
         String email = "hello@google.com";
         account.setEmail(email);
         account.setPassword("1q2w3e4r");

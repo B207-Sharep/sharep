@@ -1,6 +1,6 @@
 package com.sharep.be.modules.account;
 
-import com.sharep.be.modules.account.dto.AccountDto.AccountRequestDto;
+import com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
 import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
 import com.sharep.be.modules.security.JwtAuthentication;
 import com.sharep.be.modules.security.JwtAuthenticationToken;
@@ -17,7 +17,7 @@ public class WithMockAccountFactory implements
     @Override
     public SecurityContext createSecurityContext(WithMockAccount withMockAccount) {
         // sign up
-        AccountRequestDto account = new AccountRequestDto();
+        AccountCreateDto account = new AccountCreateDto();
         String email = withMockAccount.email();
         account.setEmail(email);
         account.setPassword("1q2w3e4r");
