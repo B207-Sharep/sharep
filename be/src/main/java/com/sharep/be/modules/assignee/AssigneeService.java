@@ -4,11 +4,13 @@ import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.IssueRepository;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.MemberRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AssigneeService {
 
@@ -16,7 +18,6 @@ public class AssigneeService {
     private final MemberRepository memberRepository;
     private final IssueRepository issueRepository;
 
-    @Transactional
     public void update(Long accountId, Long projectId, Long issueId, State state) {
 
         Long memberId = memberRepository.findMemberIdByAccountIdAndProjectId(accountId, projectId)
@@ -28,7 +29,6 @@ public class AssigneeService {
         assignee.updateState(state);
     }
 
-    @Transactional
     public void create(Long accountId, Long projectId, Long issueId) {
 
         Member member = memberRepository.findMemberByAccountIdAndProjectId(accountId, projectId)
@@ -46,7 +46,6 @@ public class AssigneeService {
         assigneeRepository.save(assignee);
     }
 
-    @Transactional
     public void delete(Long accountId, Long projectId, Long issueId) {
 
         Long memberId = memberRepository.findMemberIdByAccountIdAndProjectId(accountId, projectId)
@@ -57,4 +56,7 @@ public class AssigneeService {
         }
     }
 
+    public List<Issue> readProjectNowIssue(Long projectsId) {
+
+    }
 }

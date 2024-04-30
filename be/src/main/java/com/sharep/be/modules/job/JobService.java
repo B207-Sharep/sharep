@@ -3,19 +3,19 @@ package com.sharep.be.modules.job;
 import com.sharep.be.modules.common.service.port.S3Repository;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.IssueRepository;
-import com.sharep.be.modules.job.dto.JobCreateRequest;
-import com.sharep.be.modules.job.dto.JobReadRequest;
+import com.sharep.be.modules.job.request.JobCreateRequest;
+import com.sharep.be.modules.job.request.JobReadRequest;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.MemberRepository;
 import com.sharep.be.modules.member.Role.RoleType;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class JobService{
 
@@ -40,22 +40,20 @@ public class JobService{
     }
 
     public List<Job> read(Long projectId, JobReadRequest jobReadRequest) {
-        Long accountId = jobReadRequest.getAccountId();
-        RoleType roleType = jobReadRequest.getRoleType();
-        Long issueId = jobReadRequest.getIssueId();
+        Long accountId = jobReadRequest.accountId();
+        RoleType roleType = jobReadRequest.roleType();
+        Long issueId = jobReadRequest.issueId();
 
-
-
-        if(jobReadRequest.getAccountId() != null && jobReadRequest.getAccountId() > 0){
+        if(jobReadRequest.accountId() != null && jobReadRequest.accountId() > 0){
             // 팀원별
 
            return jobRepository.findAllByMemberId(accountId, projectId);
 
-        } else if(jobReadRequest.getRoleType() != null){
+        } else if(jobReadRequest.roleType() != null){
             // 직무별
 
             return  jobRepository.findAllByRoleType(roleType);
-        } else if(jobReadRequest.getIssueId() != null && jobReadRequest.getIssueId() > 0){
+        } else if(jobReadRequest.issueId() != null && jobReadRequest.issueId() > 0){
             // 이슈별
 
             return jobRepository.findAllByIssueId(issueId);

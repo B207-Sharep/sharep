@@ -1,13 +1,9 @@
 package com.sharep.be.modules.job;
 
-import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.job.dto.JobCreateRequest;
-import com.sharep.be.modules.job.dto.JobReadRequest;
-import com.sharep.be.modules.member.Role;
-import com.sharep.be.modules.member.Role.RoleType;
+import com.sharep.be.modules.job.request.JobCreateRequest;
+import com.sharep.be.modules.job.request.JobReadRequest;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,11 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,8 +41,7 @@ public class JobController {
 
     // 작업 조회(전체별, 팀원별, 직무별, 이슈별)
     @GetMapping(value = "/projects/{projectId}/jobs")
-    public ResponseEntity<List<Job>> read( @AuthenticationPrincipal JwtAuthentication authentication,
-
+    public ResponseEntity<List<Job>> read(
             @PathVariable Long projectId,
             JobReadRequest jobReadRequest
 
