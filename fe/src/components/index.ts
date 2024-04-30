@@ -9,6 +9,8 @@ import UserImg from './UserImg/UserImg';
 import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
 import ManualTable from './ManualTable/ManualTable';
+import Modal from './Modal/Modal';
+import GalleryGridWrapper from './GalleryGridWrapper/GalleryGridWrapper';
 
 export {
   InputWithLabel,
@@ -22,4 +24,6 @@ export {
   TableBtn,
   ManualTable,
   QuillEditor,
+  Modal,
+  GalleryGridWrapper,
 };

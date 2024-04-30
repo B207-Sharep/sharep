@@ -76,7 +76,7 @@ export const JobBadgeList = styled.div`
   gap: 4px;
 `;
 
-export const Text = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
+export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
   color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
   font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
