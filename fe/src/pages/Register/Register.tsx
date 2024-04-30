@@ -4,6 +4,7 @@ import * as S from '../Login/LoginStyle';
 import * as G from '@/styles';
 import MainColorBtn from '@/components/Button/MainColorBtn/MainColorBtn';
 import { UserRound, Lock } from 'lucide-react';
+import { idDuplicateCheck } from '@/apis/accounts';
 export default function Register() {
   const [uid, setUid] = useState('');
   const [email, setEmail] = useState('');
@@ -86,21 +87,23 @@ export default function Register() {
       setIsIdAvailable(false);
       return false;
     }
+    console.log(id, 'here');
     try {
-      setIdError('사용 가능한 닉네임입니다.');
-      setIsIdCheck(true);
-      setIsIdAvailable(true);
-      //   const responseData = await idDuplicateCheck(id);
-      //   if (responseData) {
-      //     setIdError('사용 가능한 아이디입니다.');
-      //     setIsIdCheck(true);
-      //     setIsIdAvailable(true);
-      //     return true;
-      //   } else {
-      //     setIdError('이미 사용중인 아이디입니다.');
-      //     setIsIdAvailable(false);
-      //     return false;
-      //   }
+      //   setIdError('사용 가능한 닉네임입니다.');
+      //   setIsIdCheck(true);
+      //   setIsIdAvailable(true);
+      const responseData = await idDuplicateCheck(id);
+      console.log(responseData, 'respnonse');
+      if (responseData) {
+        setIdError('사용 가능한 아이디입니다.');
+        setIsIdCheck(true);
+        setIsIdAvailable(true);
+        return true;
+      } else {
+        setIdError('이미 사용중인 아이디입니다.');
+        setIsIdAvailable(false);
+        return false;
+      }
     } catch (error) {
       alert('서버 오류입니다. 관리자에게 문의하세요.');
       console.error(error);
