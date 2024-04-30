@@ -3,8 +3,8 @@
 import { instance } from '../instance';
 
 // }
-export async function idDuplicateCheck(uid: string) {
-  return await instance.get(`/accounts/nickname?nickname=${uid}`);
+export async function emailDuplicateCheck(email: string) {
+  return await instance.get(`/accounts/email?email=${email}`);
 }
 export async function signup(email: string, uid: string, password: string) {
   return await instance.post(`/accounts/sign-up`, {
@@ -15,7 +15,7 @@ export async function signup(email: string, uid: string, password: string) {
 }
 
 export async function login(email: string, password: string) {
-  return await instance.post(`/accounts/login`, {
+  return await instance.post(`/auth/login`, {
     email: `${email}`,
     password: `${password}`,
   });

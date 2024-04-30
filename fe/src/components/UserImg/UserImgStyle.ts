@@ -16,5 +16,5 @@ export const ImgCircle = styled.div<Options>`
   background: no-repeat center/100% url(${({ $path }) => $path});
   border: solid 1px ${G.PALETTE.LIGHT_BLACK};
 
-  border-radius: 40px;
+  border-radius: 50%;
 `;

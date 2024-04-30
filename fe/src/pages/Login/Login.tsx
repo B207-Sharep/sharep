@@ -5,14 +5,37 @@ import * as G from '@/styles';
 import MainColorBtn from '@/components/Button/MainColorBtn/MainColorBtn';
 import { UserRound, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { login } from '@/apis/accounts';
 export default function Login() {
   const [uid, setUid] = useState('');
   const [pw, setPw] = useState('');
+  const [loginError, setloginError] = useState('');
 
   const navigate = useNavigate();
 
   const registerClick = () => {
     navigate('/register');
+  };
+
+  const loginClick = async () => {
+    if (uid === '' || pw === '') {
+      return false;
+    }
+    try {
+      console.log(uid, pw);
+      const res = await login(uid, pw);
+      if (res) {
+        console.log(res.data.apiToken);
+        setloginError('');
+        localStorage.setItem('token', res.data.apiToken);
+        navigate('/mypage');
+      } else {
+        console.log('ERROR');
+      }
+    } catch (error) {
+      console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEE');
+      setloginError('정보가 일치하지 않습니다.');
+    }
   };
 
   return (
@@ -47,7 +70,8 @@ export default function Login() {
           </S.InputWrapper>
           <S.Register onClick={registerClick}>회원가입</S.Register>
         </S.InputContentWrapper>
-        <S.BtnWrapper>
+        {loginError && <small style={{ color: 'red' }}>{loginError}</small>}
+        <S.BtnWrapper onClick={loginClick}>
           <MainColorBtn disabled={false} bgc={true}>
             로그인
           </MainColorBtn>

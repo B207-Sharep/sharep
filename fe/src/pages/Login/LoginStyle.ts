@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import * as G from '@/styles';
 import { InputWithLabel } from '@/components';
 
-interface Option {
+interface Options {
   $flag: boolean;
 }
 
@@ -88,5 +88,5 @@ export const Register = styled.div`
   color: ${G.PALETTE.LIGHT_BLACK};
   justify-content: flex-end;
   row-gap: 12px;
-  /* cursor: pointer; */
+  cursor: pointer;
 `;

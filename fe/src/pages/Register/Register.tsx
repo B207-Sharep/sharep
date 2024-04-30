@@ -4,8 +4,11 @@ import * as S from '../Login/LoginStyle';
 import * as G from '@/styles';
 import MainColorBtn from '@/components/Button/MainColorBtn/MainColorBtn';
 import { UserRound, Lock } from 'lucide-react';
-import { idDuplicateCheck, signup } from '@/apis/accounts';
+import { emailDuplicateCheck, signup } from '@/apis/accounts';
+import { useNavigate } from 'react-router';
 export default function Register() {
+  const navigate = useNavigate();
+
   const [uid, setUid] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,23 +23,29 @@ export default function Register() {
   const [isEmailCheck, setEmailCheck] = useState(false); // 중복 검사를 했는지 안했는지
   const [isIdAvailable, setIsIdAvailable] = useState(false); // 아이디 사용 가능한지 아닌지
   const [isEmailAvailable, setEmailAvailable] = useState(false); // 아이디 사용 가능한지 아닌지
+  const [isPwAvailable, setPwAvailable] = useState(false); // pw 사용 가능한지 아닌지
+  const [allChecked, setAllChecked] = useState(false);
 
+  useEffect(() => {
+    if (isEmailCheck && isEmailAvailable && isPwAvailable && isIdAvailable) {
+      setAllChecked(true);
+    } else {
+      setAllChecked(false);
+    }
+  }, [isEmailCheck, isEmailAvailable, isPwAvailable, isIdAvailable]);
   const onChangeIdHandler = (e: { target: { value: any } }) => {
-    console.log('why?', uid);
     const idValue = e.target.value;
     setUid(idValue);
     idCheckHandler(idValue);
   };
   const onChangeEmailHandler = (e: { target: { value: any } }) => {
-    console.log('email?', email);
     const emailValue = e.target.value;
     setEmail(emailValue);
-    EmailCheckHandler(emailValue);
+    emailCheckHandler(emailValue);
   };
 
   const onChangePasswordHandler = (e: { target: { id: any; value: any } }) => {
     const { id, value } = e.target;
-    console.log('PW');
     if (id === 'pw') {
       setPassword(value);
       passwordCheckHandler(value, confirm);
@@ -46,7 +55,7 @@ export default function Register() {
     }
   };
 
-  const EmailCheckHandler = async (email: string) => {
+  const emailCheckHandler = async (email: string) => {
     const emailRegex = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
 
     if (email === '') {
@@ -59,20 +68,20 @@ export default function Register() {
       return false;
     }
     try {
-      setEmailError('사용 가능한 이메일 입니다.');
-      setEmailCheck(true);
-      setEmailAvailable(true);
-      //   const responseData = await idDuplicateCheck(id);
-      //   if (responseData) {
-      //     setIdError('사용 가능한 아이디입니다.');
-      //     setIsIdCheck(true);
-      //     setIsIdAvailable(true);
-      //     return true;
-      //   } else {
-      //     setIdError('이미 사용중인 아이디입니다.');
-      //     setIsIdAvailable(false);
-      //     return false;
-      //   }
+      //   setEmailError('사용 가능한 이메일 입니다.');
+      //   setEmailCheck(true);
+      //   setEmailAvailable(true);
+      const responseData = await emailDuplicateCheck(email);
+      if (responseData) {
+        setEmailError('사용 가능한 이메일입니다.');
+        setEmailCheck(true);
+        setEmailAvailable(true);
+        return true;
+      } else {
+        setEmailError('이미 사용중인 이메일입니다.');
+        setEmailAvailable(false);
+        return false;
+      }
     } catch (error) {
       alert('서버 오류입니다. 관리자에게 문의하세요.');
       console.error(error);
@@ -86,46 +95,52 @@ export default function Register() {
       setIdError('닉네임을 입력해주세요.');
       setIsIdAvailable(false);
       return false;
+    } else {
+      setIdError('');
+      setIsIdAvailable(true);
     }
-    console.log(id, 'here');
-    try {
-      //   setIdError('사용 가능한 닉네임입니다.');
-      //   setIsIdCheck(true);
-      //   setIsIdAvailable(true);
-      const responseData = await idDuplicateCheck(id);
-      console.log(responseData, 'respnonse');
-      if (responseData) {
-        setIdError('사용 가능한 아이디입니다.');
-        setIsIdCheck(true);
-        setIsIdAvailable(true);
-        return true;
-      } else {
-        setIdError('이미 사용중인 아이디입니다.');
-        setIsIdAvailable(false);
-        return false;
-      }
-    } catch (error) {
-      alert('서버 오류입니다. 관리자에게 문의하세요.');
-      console.error(error);
-      return false;
-    }
+    // try {
+    //   //   setIdError('사용 가능한 닉네임입니다.');
+    //   //   setIsIdCheck(true);
+    //   //   setIsIdAvailable(true);
+    //   const responseData = await idDuplicateCheck(id);
+    //   console.log(responseData, 'respnonse');
+    //   if (!responseData.data) {
+    //     setIdError('사용 가능한 아이디입니다.');
+    //     setIsIdCheck(true);
+    //     setIsIdAvailable(true);
+    //     return true;
+    //   } else {
+    //     setIdError('이미 사용중인 아이디입니다.');
+    //     setIsIdAvailable(false);
+    //     return false;
+    //   }
+    // } catch (error) {
+    //   alert('서버 오류입니다. 관리자에게 문의하세요.');
+    //   console.error(error);
+    //   return false;
+    // }
   };
 
   const passwordCheckHandler = (password: string, confirm: string) => {
     const passwordRegex = /^[a-z\d!@*&-_]{8,16}$/;
     if (password === '') {
       setPasswordError('비밀번호를 입력해주세요.');
+      setPwAvailable(false);
       return false;
     } else if (!passwordRegex.test(password)) {
       setPasswordError('비밀번호는 8~16자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.');
+      setPwAvailable(false);
       return false;
     } else if (confirm !== password) {
       setPasswordError('');
       setConfirmError('비밀번호가 일치하지 않습니다.');
+      setPwAvailable(false);
       return false;
     } else {
       setPasswordError('');
       setConfirmError('');
+      setPwAvailable(true);
       return true;
     }
   };
@@ -134,13 +149,13 @@ export default function Register() {
   const signupHandler = async () => {
     // e.preventDefault();
 
-    // const idCheckresult = await idCheckHandler(uid);
-    // if (idCheckresult) setIdError('');
-    // else return;
-    // if (!isIdCheck || !isIdAvailable) {
-    //   alert('아이디 중복 검사를 해주세요.');
-    //   return;
-    // }
+    const emailCheckresult = await emailCheckHandler(email);
+    if (emailCheckresult) setEmailError('');
+    else return;
+    if (!isEmailCheck || !isEmailAvailable) {
+      alert('아이디 중복 검사를 해주세요.');
+      return;
+    }
 
     const passwordCheckResult = passwordCheckHandler(password, confirm);
     if (passwordCheckResult) {
@@ -149,16 +164,17 @@ export default function Register() {
     } else return;
 
     try {
-      const responseData = await signup(uid, password, confirm);
+      console.log(uid, password, confirm, '================');
+      const responseData = await signup(email, uid, confirm);
+      console.log(responseData, 'res');
       if (responseData) {
         // localStorage.setItem('loginId', uid);
-        console.log('SUCCESS');
+        navigate('/login');
       } else {
         alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
       }
     } catch (error) {
       alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
-      console.error(error);
     }
   };
 
@@ -176,7 +192,7 @@ export default function Register() {
             <UserRound size={18} color={G.PALETTE.LIGHT_BLACK}></UserRound>
             <InputWithLabel.Input id="name" placeholder="이름" onChange={onChangeIdHandler} value={uid} type="text" />
           </S.InputWrapper>
-          {idError && <small className={isIdAvailable ? 'idAvailable' : ''}>{idError}</small>}
+          {idError && <small>{idError}</small>}
           <S.InputWrapper labelFor="email">
             <UserRound size={18} color={G.PALETTE.LIGHT_BLACK}></UserRound>
             <InputWithLabel.Input
@@ -187,7 +203,7 @@ export default function Register() {
               type="text"
             />
           </S.InputWrapper>
-          {emailError && <small className={isEmailAvailable ? 'emailAvailable' : ''}>{emailError}</small>}
+          {emailError && <small style={{ color: 'red' }}>{emailError}</small>}
           <S.InputWrapper labelFor="pw">
             <Lock size={18} color={G.PALETTE.LIGHT_BLACK}></Lock>
             <InputWithLabel.Input
@@ -198,7 +214,7 @@ export default function Register() {
               type="password"
             />
           </S.InputWrapper>
-          {passwordError && <small>{passwordError}</small>}
+          {passwordError && <small style={{ color: 'red' }}>{passwordError}</small>}
           <S.InputWrapper labelFor="pwcheck">
             <Lock size={18} color={G.PALETTE.LIGHT_BLACK}></Lock>
             <InputWithLabel.Input
@@ -209,12 +225,12 @@ export default function Register() {
               type="password"
             />
           </S.InputWrapper>
-          {confirmError && <small>{confirmError}</small>}
+          {confirmError && <small style={{ color: 'red' }}>{confirmError}</small>}
           {/* <S.Register>회원가입</S.Register> */}
         </S.InputContentWrapper>
         {/* <button disabled={false}>fdfd</button> */}
         <S.BtnWrapper onClick={signupHandler}>
-          <MainColorBtn disabled={false} bgc={true}>
+          <MainColorBtn disabled={false} bgc={allChecked}>
             회원가입
           </MainColorBtn>
         </S.BtnWrapper>
