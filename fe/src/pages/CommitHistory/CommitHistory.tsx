@@ -83,7 +83,7 @@ export default function CommitHistory() {
                         <>
                           {jobs.map(job => (
                             <S.DropdowntItem key={job} onClick={() => selectValue(openFilter, job)}>
-                              <Comp.JobBadge job={job} />
+                              <Comp.JobBadge job={job} selectAble={false} />
                             </S.DropdowntItem>
                           ))}
                         </>
