@@ -24,6 +24,7 @@ export const CardWrapper = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 16px;
+  box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.1), 0px 8px 8px -4px rgba(16, 24, 40, 0.04);
 `;
 export const LogoWrapper = styled.div`
   height: fit-content;

@@ -23,8 +23,8 @@ export default function SeoJeong() {
           padding: '25px',
         }}
       >
-        {/* <GalleryGridWrapper /> */}
-        <CommitHistory />
+        <GalleryGridWrapper />
+        {/* <CommitHistory /> */}
       </div>
     </div>
   );

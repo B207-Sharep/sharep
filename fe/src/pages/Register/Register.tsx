@@ -164,9 +164,7 @@ export default function Register() {
     } else return;
 
     try {
-      console.log(uid, password, confirm, '================');
       const responseData = await signup(email, uid, confirm);
-      console.log(responseData, 'res');
       if (responseData) {
         // localStorage.setItem('loginId', uid);
         navigate('/login');
@@ -176,6 +174,10 @@ export default function Register() {
     } catch (error) {
       alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
     }
+  };
+
+  const loginHandler = () => {
+    navigate('/login');
   };
 
   return (
@@ -200,7 +202,7 @@ export default function Register() {
               placeholder="이메일"
               onChange={onChangeEmailHandler}
               value={email}
-              type="text"
+              type="email"
             />
           </S.InputWrapper>
           {emailError && <small style={{ color: 'red' }}>{emailError}</small>}
@@ -234,6 +236,11 @@ export default function Register() {
             회원가입
           </MainColorBtn>
         </S.BtnWrapper>
+        {/* <S.BtnWrapper onClick={loginHandler}>
+          <MainColorBtn disabled={false} bgc={true}>
+            로그인
+          </MainColorBtn>
+        </S.BtnWrapper> */}
       </S.CardWrapper>
     </S.Wrapper>
   );

@@ -65,7 +65,7 @@ export default function Login() {
               placeholder="비밀번호"
               onChange={e => setPw(e.target.value)}
               value={pw}
-              type="text"
+              type="password"
             />
           </S.InputWrapper>
           <S.Register onClick={registerClick}>회원가입</S.Register>
