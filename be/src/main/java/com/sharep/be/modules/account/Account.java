@@ -30,6 +30,9 @@ public class Account {
     @Column(nullable = false, unique = true)
     String email;
 
+
+    String imageUrl;
+
     LocalDateTime createdAt;
 
     @Builder
@@ -38,5 +41,9 @@ public class Account {
         this.password = password;
         this.email = email;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void updateImage(String imageUrl){
+        this.imageUrl = imageUrl;
     }
 }
