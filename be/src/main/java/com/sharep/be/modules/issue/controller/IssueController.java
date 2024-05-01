@@ -1,9 +1,9 @@
 package com.sharep.be.modules.issue.controller;
 
-import com.sharep.be.modules.issue.IssueCreate;
-import com.sharep.be.modules.issue.IssueCreated;
+import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
+import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
-import com.sharep.be.modules.issue.IssueUpdate;
+import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
 import com.sharep.be.modules.issue.service.IssueService;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
@@ -22,31 +22,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/project/{projectId}")
+@RequestMapping("/project/{projectId}/issues")
 @RequiredArgsConstructor
 public class IssueController {
 
     private final IssueService issueService;
 
-    @GetMapping("/issues")
+    @GetMapping
     public ResponseEntity<List<IssueResponse>> getIssues(@PathVariable Long projectId) {
         return ResponseEntity.ok(issueService.getIssues(projectId));
     }
 
-    @GetMapping("/issues/private")
+    @GetMapping("/private")
     public ResponseEntity<List<IssueResponse>> getPrivateIssues(@PathVariable Long projectId,
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
 
         return ResponseEntity.ok(issueService.getPrivateIssues(projectId, jwtAuthentication.id));
     }
 
-    @GetMapping("/issues/{issueId}")
+    @GetMapping("/{issueId}")
     public ResponseEntity<IssueResponse> getIssue(@PathVariable Long issueId,
             @PathVariable Long projectId) {
         return ResponseEntity.ok(issueService.getIssue(issueId));
     }
 
-    @PostMapping("/issues")
+    @PostMapping
     private ResponseEntity<IssueCreated> createIssue(@PathVariable Long projectId,
             @RequestBody @Valid IssueCreate issueCreate) {
         IssueCreated created = issueService.createIssue(projectId, issueCreate);
@@ -54,14 +54,14 @@ public class IssueController {
     }
 
 
-    @PutMapping("/issues")
+    @PutMapping("/{issueId}")
     private ResponseEntity<Void> updateIssue(@PathVariable Long projectId,
-            @RequestBody IssueUpdate issueUpdate) {
+            @PathVariable String issueId, @RequestBody IssueUpdate issueUpdate) {
         issueService.updateIssue(issueUpdate);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/issues/{issueId}")
+    @DeleteMapping("/{issueId}")
     private ResponseEntity<Void> deleteIssue(@PathVariable Long projectId,
             @PathVariable Long issueId) {
         issueService.deleteIssue(issueId);

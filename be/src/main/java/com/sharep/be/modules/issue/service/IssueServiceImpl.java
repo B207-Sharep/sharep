@@ -1,14 +1,14 @@
 package com.sharep.be.modules.issue.service;
 
 import com.sharep.be.modules.api.Api;
-import com.sharep.be.modules.api.ApiRepository;
+import com.sharep.be.modules.api.repository.ApiRepository;
 import com.sharep.be.modules.exception.IssueNotFoundException;
 import com.sharep.be.modules.exception.ProjectNotFoundException;
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.issue.IssueCreate;
-import com.sharep.be.modules.issue.IssueCreated;
+import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
+import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
-import com.sharep.be.modules.issue.IssueUpdate;
+import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
 import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.project.Project;
 import com.sharep.be.modules.project.ProjectRepository;
@@ -58,7 +58,7 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public IssueResponse updateIssue(IssueUpdate issueCreate) {
-        // TODO: 수정 권한 체크
+        // TODO: 상훈: 수정 권한 체크
         return null;
     }
 
