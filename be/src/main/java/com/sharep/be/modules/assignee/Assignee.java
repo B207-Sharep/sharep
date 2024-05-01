@@ -4,6 +4,9 @@ import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,6 +38,7 @@ public class Assignee {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Enumerated(EnumType.STRING)
     private State state;
 
     @CreatedDate
@@ -44,9 +48,8 @@ public class Assignee {
     private LocalDateTime finishedAt;
 
     @Builder
-    public Assignee(Long id, Issue issue, Member member, State state, LocalDateTime startedAt,
+    public Assignee(Issue issue, Member member, State state, LocalDateTime startedAt,
             LocalDateTime finishedAt) {
-        this.id = id;
         this.issue = issue;
         this.member = member;
         this.state = state;
