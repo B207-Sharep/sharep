@@ -1,11 +1,12 @@
-package com.sharep.be.modules.job.infrastructure;
+package com.sharep.be.modules.job;
 
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.job.domain.Job;
+import com.sharep.be.modules.job.request.JobCreateRequest;
 import com.sharep.be.modules.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,15 +15,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "job")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class JobEntity {
+public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,23 +41,21 @@ public class JobEntity {
 
     private String imageUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "issue_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
     private Issue issue;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
     private Member member;
 
-    public static JobEntity from(Job job) {
-        JobEntity jobEntity = new JobEntity();
-        jobEntity.id = job.id();
-        jobEntity.name = job.name();
-        jobEntity.description = job.description();
-        jobEntity.createdAt = job.createdAt();
-        jobEntity.imageUrl = job.imageUrl();
-        jobEntity.issue = job.issue();
-        jobEntity.member = job.member();
+    public static Job from(JobCreateRequest jobCreateRequest, Member member, Issue issue, String imageUrl) {
+        Job jobEntity = new Job();
+        jobEntity.name = jobCreateRequest.name();
+        jobEntity.description = jobCreateRequest.description();
+        jobEntity.imageUrl = imageUrl;
+        jobEntity.member = member;
+        jobEntity.issue = issue;
         return jobEntity;
     }
 }
