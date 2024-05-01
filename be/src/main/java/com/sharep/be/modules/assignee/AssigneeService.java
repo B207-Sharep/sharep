@@ -2,7 +2,7 @@ package com.sharep.be.modules.assignee;
 
 import com.sharep.be.modules.assignee.repository.AssigneeRepository;
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.issue.IssueRepository;
+import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.MemberRepository;
 import java.util.List;

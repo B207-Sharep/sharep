@@ -2,6 +2,7 @@ package com.sharep.be.modules.assignee;
 
 import com.sharep.be.modules.assignee.response.AssigneeIdResponse;
 import com.sharep.be.modules.issue.Issue;
+import com.sharep.be.modules.issue.IssueResponse;
 import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.Map;
@@ -78,18 +79,16 @@ public class AssigneeController {
 
     // 팀 페이지 - 팀원별 진행 이슈 조회
     @GetMapping("/projects/{projectId}/issues")
-    public ResponseEntity<List<Issue>> readProjectNowIssue(
+    public ResponseEntity<List<IssueResponse>> readProjectNowIssue(
             @PathVariable @Min(1) Long projectId
     ){
 
-        List<Issue> result = assigneeService.readProjectNowIssue(projectId);
-
-        System.out.println(1);
-        System.out.println(result.size());
-        if (!result.isEmpty()){
-            System.out.println(result.get(0).getIssueName());
-        }
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(
+                assigneeService.readProjectNowIssue(projectId)
+                        .stream()
+                        .map(Issue::toResponse)
+                        .toList()
+        );
     }
 
 

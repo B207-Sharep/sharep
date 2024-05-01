@@ -1,6 +1,7 @@
 package com.sharep.be.modules.issue;
 
 import com.sharep.be.modules.api.Api;
+import com.sharep.be.modules.assignee.Assignee;
 import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.issue.type.PriorityType;
 import com.sharep.be.modules.project.Project;

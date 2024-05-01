@@ -17,7 +17,7 @@ public record JobReadResponse(
 
         Long memberId
 ) {
-    public JobReadResponse from(Job job){
+    public static JobReadResponse from(Job job){
         return new JobReadResponse(
                 job.getId(),
                 job.getName(),
