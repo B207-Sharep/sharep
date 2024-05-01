@@ -7,7 +7,7 @@ import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
 
-export default function Modal({ modalId, title, subTitle, modalStyle, children }: T.ModalProps) {
+export default function Modal({ modalId, title, subTitle, children }: T.ModalProps) {
   const { closeModal } = useModal(modalId);
 
   const modalData = useRecoilValue(modalDataState(modalId));
@@ -31,7 +31,7 @@ export default function Modal({ modalId, title, subTitle, modalStyle, children }
 
   return isOpen ? (
     <S.ModalBackdrop onClick={handleModalClose}>
-      <S.ModalWrapper $modalStyle={modalStyle} onClick={e => e.stopPropagation()}>
+      <S.ModalWrapper onClick={e => e.stopPropagation()}>
         <S.ModalContent>
           {/* header */}
           <S.ModalHeader>

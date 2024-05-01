@@ -58,7 +58,7 @@ export const Icon = styled.div<{ $position?: string; $fillColor?: string; $strok
 `;
 
 export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
-  color: ${props => props.color || 'inherit'};
+  color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
   font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
   white-space: nowrap;

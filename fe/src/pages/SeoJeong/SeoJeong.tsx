@@ -7,7 +7,7 @@ import TaskCreationForm from '../../components/Modal/Subs/TaskCreationForm/TaskC
 
 export default function SeoJeong() {
   const projectModal = useModal('project');
-  const taskModal = useModal('modal2');
+  const taskModal = useModal('task');
 
   const handleModalOpen = (modalId: string) => {
     if (modalId === 'project') {
@@ -30,7 +30,10 @@ export default function SeoJeong() {
         ],
       });
     } else if (modalId === 'task') {
-      taskModal.openModal();
+      taskModal.openModal({
+        imageUrl: '',
+        description: '',
+      });
     }
   };
 
@@ -52,7 +55,6 @@ export default function SeoJeong() {
           modalId="project"
           title="새 프로젝트 생성"
           subTitle="함께할 팀원들을 추가하고 새로운 프로젝트를 생성해보세요."
-          modalStyle="basic"
         >
           <ProjectCreationForm modalId="project" />
         </Modal>
@@ -61,8 +63,8 @@ export default function SeoJeong() {
         <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('task')}>
           새 작업 작성 모달
         </button>
-        <Modal modalId="modal2" title="새 작업 작성" modalStyle="fadeInSlideUp">
-          <TaskCreationForm />
+        <Modal modalId="task" title="새 작업 작성">
+          <TaskCreationForm modalId="task" />
         </Modal>
       </div>
     </L.SideBarLayout>

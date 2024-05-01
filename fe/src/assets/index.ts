@@ -9,6 +9,8 @@ import TeamDashboard from './svgs/team-dashboard-icon.svg?react';
 import CurrentStateTitle from './svgs/current-state-title.svg?react';
 import MainTitle from './svgs/main-title-icon.svg?react';
 import TextContentTitle from './svgs/text-content-title.svg?react';
+import GitIcon from './svgs/git-icon.svg?react';
+import DefaultUploadImage from './svgs/default-upload-image.svg?react';
 
 export {
   ApiDocs,
@@ -22,4 +24,6 @@ export {
   CurrentStateTitle,
   MainTitle,
   TextContentTitle,
+  GitIcon,
+  DefaultUploadImage,
 };
