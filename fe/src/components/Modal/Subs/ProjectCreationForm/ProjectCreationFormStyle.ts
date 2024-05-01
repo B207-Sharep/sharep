@@ -168,3 +168,9 @@ export const LeaderBadge = styled.div`
   border-radius: 6px;
   padding: 2px 6px;
 `;
+
+export const JobBadgeBtn = styled.div<{ $state: boolean }>`
+  :hover {
+    opacity: 0.6;
+  }
+`;
