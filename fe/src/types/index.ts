@@ -1,3 +1,4 @@
+/** ================= Components ================= */
 import { BaseInputProps, BaseLabelProps, BaseLabelWithInputProps } from './components/InputWithLabel';
 import { StatusBadgeProps } from './components/StatusBadge';
 import { CommitProps } from './components/Commit';
@@ -10,7 +11,11 @@ import { QuillEditorProps } from './components/QuillEditor';
 import { GalleryCardProps } from './components/GalleryCard';
 import { ModalProps } from './components/Modal';
 import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualTable';
+/** ================= Components ================= */
 
+/** ================= Pages ================= */
+import { TeamDashboardProps, TeamMemberProps } from './pages/TeamDashboard';
+/** ================= Pages ================= */
 export type {
   BaseInputProps,
   BaseLabelProps,
@@ -28,4 +33,6 @@ export type {
   ManualTableProps,
   CelProps,
   SelectCelProps,
+  TeamDashboardProps,
+  TeamMemberProps,
 };
