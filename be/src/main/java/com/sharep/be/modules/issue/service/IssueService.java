@@ -1,9 +1,9 @@
 package com.sharep.be.modules.issue.service;
 
-import com.sharep.be.modules.issue.IssueCreate;
-import com.sharep.be.modules.issue.IssueCreated;
+import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
+import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
-import com.sharep.be.modules.issue.IssueUpdate;
+import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
 import java.util.List;
 
 public interface IssueService {
