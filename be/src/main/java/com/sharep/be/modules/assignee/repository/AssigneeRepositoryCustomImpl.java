@@ -1,13 +1,13 @@
 package com.sharep.be.modules.assignee.repository;
 
+import static com.sharep.be.modules.account.QAccount.account;
 import static com.sharep.be.modules.assignee.QAssignee.assignee;
 import static com.sharep.be.modules.issue.QIssue.issue;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.project.QProject.project;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sharep.be.modules.assignee.State;
-import com.sharep.be.modules.issue.Issue;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,14 +19,29 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Issue> findAllProjectNowIssueByProjectId(Long projectId) {
+    public List<Tuple> findAllProjectNowIssueByProjectId(Long projectId) {
 
-        return queryFactory.select(issue)
+        return queryFactory.select(issue, assignee, account)
                 .from(assignee)
-                .innerJoin(assignee.issue)
+                .leftJoin(assignee.issue, issue)
                 .innerJoin(assignee.member, member)
-                .innerJoin(member.project)
-                .where(assignee.state.eq(State.NOW))
+                .innerJoin(member.account, account)
+                .innerJoin(issue.project, project)
+                .where(project.id.eq(projectId))
+                .fetch();
+    }
+
+    @Override
+    public List<Tuple> findAllProjectNowIssueByProjectIdAndAccountID(Long projectId,
+            Long accountId) {
+        return queryFactory.select(issue, assignee, account)
+                .from(assignee)
+                .leftJoin(assignee.issue, issue)
+                .innerJoin(assignee.member, member)
+                .innerJoin(member.account, account)
+                .innerJoin(issue.project, project)
+                .where(project.id.eq(projectId))
+                .where(account.id.eq(accountId))
                 .fetch();
     }
 }

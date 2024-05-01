@@ -1,14 +1,18 @@
 package com.sharep.be.modules.assignee;
 
+import com.sharep.be.modules.account.Account;
+import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.assignee.response.AssigneeIdResponse;
+import com.sharep.be.modules.assignee.response.AssigneeProjectNowIssueResponse;
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.issue.IssueResponse;
+import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -79,17 +83,50 @@ public class AssigneeController {
 
     // 팀 페이지 - 팀원별 진행 이슈 조회
     @GetMapping("/projects/{projectId}/issues")
-    public ResponseEntity<List<IssueResponse>> readProjectNowIssue(
+    public ResponseEntity<List<AssigneeProjectNowIssueResponse>> readProjectNowIssue(
             @PathVariable @Min(1) Long projectId
     ){
 
         return ResponseEntity.ok(
                 assigneeService.readProjectNowIssue(projectId)
                         .stream()
-                        .map(Issue::toResponse)
+                        .map(tuple -> {
+                            Account account = tuple.get(2, Account.class);
+                            Issue issue = tuple.get(0, Issue.class);
+
+                            if (account != null && issue != null) {
+                                return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
+                            }
+
+                            throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");
+                        })
                         .toList()
         );
     }
 
+
+    // 본인 진행 이슈 조회
+    @GetMapping("/projects/{projectId}/own/issues")
+    public ResponseEntity<List<AssigneeProjectNowIssueResponse>> readProjectNowOwnIssue(
+            @AuthenticationPrincipal JwtAuthentication authentication,
+            @PathVariable @Min(1) Long projectId
+    ){
+
+        return ResponseEntity.ok(
+                assigneeService.readProjectNowOwnIssue(projectId, authentication.id)
+                        .stream()
+                        .map(tuple -> {
+                            Account account = tuple.get(2, Account.class);
+                            Issue issue = tuple.get(0, Issue.class);
+
+                            if (account != null && issue != null) {
+                                return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
+                            }
+
+                            throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");
+                        })
+                        .toList()
+        );
+    }
 
 }

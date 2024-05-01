@@ -1,10 +1,12 @@
 package com.sharep.be.modules.assignee;
 
+import com.querydsl.core.Tuple;
 import com.sharep.be.modules.assignee.repository.AssigneeRepository;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.MemberRepository;
+import java.util.Collection;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -68,9 +70,11 @@ public class AssigneeService {
         return assignee.getId();
     }
 
-    public List<Issue> readProjectNowIssue(Long projectId) {
-
+    public List<Tuple> readProjectNowIssue(Long projectId) {
         return assigneeRepository.findAllProjectNowIssueByProjectId(projectId);
+    }
 
+    public List<Tuple> readProjectNowOwnIssue(Long projectId, Long accountId) {
+        return assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountID(projectId, accountId);
     }
 }
