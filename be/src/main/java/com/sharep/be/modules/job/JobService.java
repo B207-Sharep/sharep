@@ -75,7 +75,7 @@ public class JobService{
     public JobGrassResponse readGrass(Long accountId, Integer year){
         if(accountId == null || year == null)throw new IllegalArgumentException("year null"); // TODO
 
-        List<Job> jobs = jobRepository.findAllByAccountIdAndYear(accountId, year);
+        List<Job> jobs = jobRepository.findAllByAccountId(accountId);
         Integer jobCount = jobs.size();
 
         Map<LocalDate, Integer> jobCountsMap = new HashMap<>();
@@ -83,11 +83,11 @@ public class JobService{
                 jobCountsMap.getOrDefault(job.getCreatedAt().toLocalDate(), 0)+1));
 
         JobGrass[] grasses = new JobGrass[365];
-        LocalDate currentDate = LocalDate.of(year, 1, 1);
+        LocalDate currentDate = LocalDate.now();
 
-        for (int i = 0; i < 365; i++) {
+        for (int i = 364; i >= 0; i--) {
             grasses[i] = new JobGrass(jobCountsMap.getOrDefault(currentDate, 0));
-            currentDate = currentDate.plusDays(1);
+            currentDate = currentDate.minusDays(1);
         }
         return new JobGrassResponse(year, jobCount, grasses);
     }

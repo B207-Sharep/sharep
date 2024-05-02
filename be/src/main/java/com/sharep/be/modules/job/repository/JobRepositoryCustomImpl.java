@@ -69,15 +69,16 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
     }
 
     @Override
-    public List<Job> findAllByAccountIdAndYear(Long accountId, Integer year) {
-        LocalDateTime startOfYear = LocalDateTime.of(year, 1, 1, 0, 0);
-        LocalDateTime endOfYear = LocalDateTime.of(year, 12, 31, 23, 59);
+    public List<Job> findAllByAccountId(Long accountId) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime oneYearAgo = now.minusYears(1);
+
 
         return queryFactory.selectFrom(job)
                 .innerJoin(job.member, member)
                 .innerJoin(member.account, account)
                 // 1년 체크
-                .where(job.createdAt.between(startOfYear, endOfYear)
+                .where(job.createdAt.between(oneYearAgo, now)
                         .and(account.id.eq(accountId))
                 )
                 .orderBy(job.createdAt.desc())
