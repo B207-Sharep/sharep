@@ -18,5 +18,5 @@ public interface IssueService {
 
     IssueResponse deleteIssue(Long id);
 
-    List<IssueResponse> getPrivateIssues(Long projectId, Long accountId);
+    List<PrivateIssueResponse> getPrivateIssues(Long projectId, Long accountId);
 }
