@@ -1,26 +1,17 @@
 package com.sharep.be.modules.project.dto;
 
+import static com.sharep.be.modules.member.Role.RoleType;
+
 import com.sharep.be.modules.account.Account;
-<<<<<<< HEAD
 import com.sharep.be.modules.account.dto.AccountDto;
-=======
->>>>>>> 619be59549b22b744b2c8f8482e00a796f149c34
 import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
 import com.sharep.be.modules.member.Member;
-import com.sharep.be.modules.member.Role;
 import com.sharep.be.modules.project.Project;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 import java.util.List;
-<<<<<<< HEAD
-import java.util.Objects;
-=======
->>>>>>> 619be59549b22b744b2c8f8482e00a796f149c34
 import java.util.stream.Collectors;
-
-import static com.sharep.be.modules.member.Role.*;
 
 public class ProjectDto {
 
@@ -54,17 +45,11 @@ public class ProjectDto {
 
     public static ProjectResponseDto toDto(Project project) {
         return new ProjectResponseDto(project.getId(), project.getTitle(),
-<<<<<<< HEAD
-                project.getBio(), project.getMembers().stream().map(Member::getAccount)
-                .filter(Objects::nonNull)
-                .map(AccountDto::toDto).toList(), project.getCreatedAt());
-
-=======
                 project.getBio(), project.getMembers().stream()
                 .map(Member::getAccount)
                 .filter(account -> account != null)
-                .map(Account::getImageUrl)
-                .collect(Collectors.toList()), project.getCreatedAt().toString());
->>>>>>> 619be59549b22b744b2c8f8482e00a796f149c34
+                .map(AccountDto::toDto)
+                .collect(Collectors.toList()), project.getCreatedAt());
+
     }
 }
