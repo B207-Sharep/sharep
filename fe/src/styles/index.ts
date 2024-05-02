@@ -55,8 +55,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0px;
-    overflow-x: auto;
-    overflow-y: auto;
+    overflow: hidden;
     background-color: #f7f7f7;
   }
 

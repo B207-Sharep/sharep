@@ -19,26 +19,26 @@ export default function SideBar() {
   const navigate = useNavigate();
 
   const handleHistoryClick = () => {
-    navigate('/1/history');
+    navigate('/projects/1/commit-history');
   };
 
   const handleTeamDashClick = () => {
-    navigate('/teamid/teamdash');
+    navigate('/projects/1');
   };
   const handleMyDashClick = () => {
-    navigate('/teamid/mydash');
+    navigate('/projects');
   };
   const handleFeatureManualClick = () => {
-    navigate('/1/feature-manual');
+    navigate('/projects/1/feature-manual');
   };
   const handleAPIClick = () => {
-    navigate('/teamid/api');
+    navigate('/projects/1/api-manual');
   };
   const handleScreenClick = () => {
-    navigate('/1/screen-manual');
+    navigate('/projects/1/screen-manual');
   };
   const handleInfraClick = () => {
-    navigate('/1/infra-manual');
+    navigate('/projects/1/infra-manual');
   };
   return (
     <>
