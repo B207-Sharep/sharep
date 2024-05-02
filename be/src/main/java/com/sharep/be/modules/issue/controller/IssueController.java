@@ -49,16 +49,19 @@ public class IssueController {
 
     @PostMapping
     private ResponseEntity<IssueCreated> createIssue(@PathVariable Long projectId,
-            @RequestBody @Valid IssueCreate issueCreate) {
-        IssueCreated created = issueService.createIssue(projectId, issueCreate);
+            @RequestBody @Valid IssueCreate issueCreate,
+            @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
+        IssueCreated created = issueService.createIssue(projectId, jwtAuthentication.id,
+                issueCreate);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
 
     @PutMapping("/{issueId}")
     private ResponseEntity<Void> updateIssue(@PathVariable Long projectId,
-            @PathVariable String issueId, @RequestBody IssueUpdate issueUpdate) {
-        issueService.updateIssue(issueUpdate);
+            @PathVariable Long issueId, @RequestBody IssueUpdate issueUpdate,
+            @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
+        issueService.updateIssue(issueId, jwtAuthentication.id, projectId, issueUpdate);
         return ResponseEntity.ok().build();
     }
 
