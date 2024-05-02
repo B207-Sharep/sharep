@@ -17,7 +17,7 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
             id={issue.id}
             imgs={issue.imgs}
             createdAt={issue.createdAt}
-            add={false}
+            add={issue.add}
           />
         ))}
       </S.CardList>

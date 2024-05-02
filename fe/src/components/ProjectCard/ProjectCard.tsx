@@ -5,11 +5,11 @@ import { PALETTE } from '@/styles';
 import { UserImg } from '..';
 import { Plus } from 'lucide-react';
 
-export default function ProjectCard({ id, title, bio, imgs, createdAt, add }: T.ProjectCardProps) {
+export default function ProjectCard({ title, bio, imgs, add }: T.ProjectCardProps) {
   return (
     <S.Card className="hover-moving">
       <S.CardTextWrapper>
-        <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={700} fontSize={20} addflag={add}>
+        <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={700} fontSize={20} $add={add}>
           {title}
         </S.StyledText>
         {!add ? (
