@@ -10,13 +10,17 @@ import API from '@/assets/svgs/api-docs-icon.svg?react';
 import INFRA from '@/assets/svgs/infra-docs-icon.svg?react';
 import MY from '@/assets/svgs/my-dashboard-icon.svg?react';
 import PLAN from '@/assets/svgs/plan-docs-icon.svg?react';
-import SCREEN from '@/assets/svgs/screen -definition-icon.svg?react';
+import SCREEN from '@/assets/svgs/screen-definition-icon.svg?react';
 import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 import UserImg from '../UserImg/UserImg';
 
 export default function SideBar() {
   const navigate = useNavigate();
+
+  const handleHistoryClick = () => {
+    navigate('/1/history');
+  };
 
   const handleTeamDashClick = () => {
     navigate('/teamid/teamdash');
@@ -59,7 +63,7 @@ export default function SideBar() {
                   Share.P
                 </S.SideBarFont>
                 <S.SideBarBtnGroup>
-                  <S.SideBarBtn>
+                  <S.SideBarBtn onClick={handleHistoryClick}>
                     <CommitHistory color={G.PALETTE.MAIN_COLOR} size={14}></CommitHistory>
                   </S.SideBarBtn>
                   <S.SideBarBtn>

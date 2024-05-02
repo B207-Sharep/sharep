@@ -21,19 +21,6 @@ from {
   }
 `;
 
-const modalStyles = {
-  basic: css`
-    animation: ${fadeIn} 0.5s ease-out;
-    background-color: white;
-    border-radius: 12px;
-  `,
-  fadeInSlideUp: css`
-    animation: ${fadeInSlideUp} 0.6s ease-out;
-    background-color: pink;
-    border-radius: 10px;
-  `,
-};
-
 export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
   color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
@@ -43,7 +30,7 @@ export const StyledText = styled.span<{ color?: string; fontSize?: number; fontW
   text-overflow: ellipsis;
 `;
 
-export const ModalWrapper = styled.div<{ $modalStyle: 'basic' | 'fadeInSlideUp' }>`
+export const ModalWrapper = styled.div`
   width: 50%;
   height: fit-content;
   max-height: 90%;
@@ -56,7 +43,9 @@ export const ModalWrapper = styled.div<{ $modalStyle: 'basic' | 'fadeInSlideUp' 
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  ${({ $modalStyle }) => modalStyles[$modalStyle]};
+  animation: ${fadeIn} 0.2s ease-out;
+  background-color: white;
+  border-radius: 12px;
 `;
 
 export const ModalBackdrop = styled.div`
@@ -66,7 +55,7 @@ export const ModalBackdrop = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  animation: ${fadeIn} 0.5s ease-out forwards;
+  animation: ${fadeIn} 0.2s ease-out forwards;
 `;
 
 export const ModalContent = styled.div`
@@ -137,4 +126,9 @@ export const ModalFooter = styled.div`
   align-items: flex-start;
   gap: 12px;
   align-self: stretch;
+`;
+
+export const BtnWrapper = styled.div`
+  width: 100%;
+  cursor: pointer;
 `;
