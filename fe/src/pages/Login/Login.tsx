@@ -28,7 +28,7 @@ export default function Login() {
         console.log(res.data.apiToken);
         setloginError('');
         localStorage.setItem('token', res.data.apiToken);
-        navigate('/mypage');
+        navigate('/projects');
       } else {
         console.log('ERROR');
       }
@@ -48,20 +48,20 @@ export default function Login() {
           </S.SloganWrapper>
         </S.LogoWrapper>
         <S.InputContentWrapper>
-          <S.InputWrapper labelFor="test">
+          <S.InputWrapper labelFor="email">
             <UserRound size={18} color={G.PALETTE.LIGHT_BLACK}></UserRound>
             <InputWithLabel.Input
-              id="test"
+              id="email"
               placeholder="이메일"
               onChange={e => setUid(e.target.value)}
               value={uid}
               type="text"
             />
           </S.InputWrapper>
-          <S.InputWrapper labelFor="test">
+          <S.InputWrapper labelFor="pw">
             <Lock size={18} color={G.PALETTE.LIGHT_BLACK}></Lock>
             <InputWithLabel.Input
-              id="test"
+              id="pw"
               placeholder="비밀번호"
               onChange={e => setPw(e.target.value)}
               value={pw}
