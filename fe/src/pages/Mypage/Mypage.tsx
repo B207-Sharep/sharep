@@ -18,7 +18,11 @@ const issueList = [
     createdAt: '2024.04.27',
   })),
 ];
-
+//이건 add 추가
+const modifiedIssueList = issueList.map(issue => ({
+  ...issue,
+  add: false,
+}));
 export default function Mypage() {
   return (
     <>
@@ -41,7 +45,7 @@ export default function Mypage() {
               <Grass />
             </S.GrassWrapper>
           </S.HeaderWrapper>
-          <ProjectGridWrapper issueList={issueList}></ProjectGridWrapper>
+          <ProjectGridWrapper issueList={modifiedIssueList}></ProjectGridWrapper>
           {/* <GallPreryGridWrapper issueList={issueList}></GallPreryGridWrapper> */}
           {/* <ProjectGridWrapper>
             <div>dd</div>

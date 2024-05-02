@@ -89,10 +89,16 @@ export default function Register() {
     }
   };
 
-  const idCheckHandler = async (id: string) => {
+  const idCheckHandler = (id: string) => {
     // const idRegex = /^[a-z\d]{5,10}$/;
+    const idRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{1,8}$/;
+
     if (id === '') {
       setIdError('닉네임을 입력해주세요.');
+      setIsIdAvailable(false);
+      return false;
+    } else if (!idRegex.test(id)) {
+      setIdError('닉네임은 1~8자의 영어,한글,숫자만 입력 가능합니다.');
       setIsIdAvailable(false);
       return false;
     } else {
@@ -194,7 +200,7 @@ export default function Register() {
             <UserRound size={18} color={G.PALETTE.LIGHT_BLACK}></UserRound>
             <InputWithLabel.Input id="name" placeholder="이름" onChange={onChangeIdHandler} value={uid} type="text" />
           </S.InputWrapper>
-          {idError && <small>{idError}</small>}
+          {idError && <small style={{ color: 'red' }}>{idError}</small>}
           <S.InputWrapper labelFor="email">
             <UserRound size={18} color={G.PALETTE.LIGHT_BLACK}></UserRound>
             <InputWithLabel.Input
