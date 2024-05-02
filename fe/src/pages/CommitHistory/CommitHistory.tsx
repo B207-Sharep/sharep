@@ -128,7 +128,7 @@ export default function CommitHistory() {
   const handleModalOpen = () => {
     taskModal.openModal({
       name: '',
-      imageUrl: '',
+      imageFile: null,
       description: '',
     });
   };

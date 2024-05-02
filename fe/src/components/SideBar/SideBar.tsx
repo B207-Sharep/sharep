@@ -48,7 +48,7 @@ export default function SideBar() {
   const handleModalOpen = () => {
     taskModal.openModal({
       name: '',
-      imageUrl: '',
+      imageFile: null,
       description: '',
     });
   };

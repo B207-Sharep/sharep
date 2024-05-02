@@ -1,13 +1,13 @@
 import { modalDataState } from '@/stores/atoms/modal';
 import { useRecoilState } from 'recoil';
 
-export const useModal = <FormData extends { [key: string]: any }>(modalId: string) => {
+export const useModal = <Contents extends { [key: string]: any }>(modalId: string) => {
   const [modalData, setModalData] = useRecoilState(modalDataState(modalId));
 
-  const openModal = (initialFormData: Partial<FormData> = {}) => {
+  const openModal = (initialContents: Partial<Contents> = {}) => {
     setModalData({
       isOpen: true,
-      formData: { ...initialFormData },
+      contents: { ...initialContents },
     });
   };
 
@@ -18,13 +18,12 @@ export const useModal = <FormData extends { [key: string]: any }>(modalId: strin
     }));
   };
 
-  const updateFormData = (newFormData: Partial<FormData>) => {
+  const updateContents = (newContents: Partial<Contents>) => {
     setModalData(oldModalData => ({
       ...oldModalData,
-      formData: { ...oldModalData.formData, ...newFormData },
+      contents: { ...oldModalData.contents, ...newContents },
     }));
-    // console.log('update', newFormData);
   };
 
-  return { openModal, closeModal, updateFormData };
+  return { openModal, closeModal, updateContents };
 };
