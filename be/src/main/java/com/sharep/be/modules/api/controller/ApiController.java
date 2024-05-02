@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/project/{projectId}/apis")
+@RequestMapping("/projects/{projectId}/apis")
 @RequiredArgsConstructor
 @Slf4j
 public class ApiController {
@@ -22,11 +22,8 @@ public class ApiController {
     private final ApiService apiService;
 
     /*
-        TODO:
-         (API 조회는 Issue 조회할 때 같이 제공)
-         (API 생성은 요청을 보내지 않아도 생성)
-         API 수정 구현
-         API 삭제 구현
+        TODO: API를 실수로 삭제했을 때 재생성할 수 있게 PostMapping 추가
+            API가 이미 존재하면 안됨
      */
 
     @PutMapping("/{apiId}")
@@ -42,7 +39,7 @@ public class ApiController {
     @DeleteMapping("/{apiId}")
     public ResponseEntity<Void> deleteApi(@PathVariable Long projectId, @PathVariable Long apiId) {
         log.info("ApiController: Api 삭제 - projectId: {}, apiId: {}", projectId, apiId);
-
+        // TODO: private이면 소유자만 삭제할 수 있어야 함
         apiService.deleteApi(apiId);
         return ResponseEntity.ok().build();
     }

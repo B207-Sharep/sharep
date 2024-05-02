@@ -4,6 +4,7 @@ import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
+import com.sharep.be.modules.issue.IssueResponse.PrivateIssueResponse;
 import com.sharep.be.modules.issue.service.IssueService;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/project/{projectId}/issues")
+@RequestMapping("/projects/{projectId}/issues")
 @RequiredArgsConstructor
 public class IssueController {
 
