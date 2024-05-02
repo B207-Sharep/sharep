@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -72,7 +71,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize.requestMatchers("/", "/accounts/**", "/h2-console/**",
-                                                "/auth/login", "/jobs/**", "/projects/**", "/swagger-ui/**",
+                                                "/auth/login", "/jobs/**", "/projects/**", "/gs-guide-websocket/**",
+                                                "/index.html", "/swagger-ui/**",
                                                 "/swagger-resources/**", "/v3/api-docs/**").permitAll()
                                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                         .anyRequest().authenticated()
