@@ -15,7 +15,7 @@ const issueList = [
     id: `${index + 1} 페이지`,
     title: 'SCREEN',
     bio: 'Lorem ipsum',
-    imgs: [UIMG, JD],
+    imgs: ['/youjack.png', '/lee-jae-yong.png'],
     createdAt: '2024.04.27',
   })),
 ];
@@ -44,6 +44,7 @@ export default function Mypage() {
               </S.ProfileTextWrapper>
             </S.ProfileWrapper>
             <S.GrassWrapper>
+              <div> test </div>
               <Grass />
             </S.GrassWrapper>
           </S.HeaderWrapper>

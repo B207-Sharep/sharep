@@ -37,7 +37,7 @@ export const StyledText = styled.span<{
   color?: string;
   fontSize?: number;
   fontWeight?: number;
-  addflag?: boolean;
+  $add?: boolean;
 }>`
   color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
@@ -45,5 +45,5 @@ export const StyledText = styled.span<{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  visibility: ${props => (props.addflag ? 'hidden' : 'visible')};
+  visibility: ${props => (props.$add ? 'hidden' : 'visible')};
 `;

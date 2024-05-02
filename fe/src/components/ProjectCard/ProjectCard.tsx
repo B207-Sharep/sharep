@@ -9,7 +9,7 @@ export default function ProjectCard({ id, title, bio, imgs, createdAt, add }: T.
   return (
     <S.Card className="hover-moving">
       <S.CardTextWrapper>
-        <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={700} fontSize={20} addflag={add}>
+        <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={700} fontSize={20} $add={add}>
           {title}
         </S.StyledText>
         {!add ? (

@@ -46,9 +46,10 @@ export const GrassWrapper = styled.div`
   height: 222px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: #fff;
+  padding: 24px 24px;
 `;
 
 export const Font = styled.div<FontOption>`
