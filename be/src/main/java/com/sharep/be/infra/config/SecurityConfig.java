@@ -72,7 +72,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize.requestMatchers("/", "/accounts/**", "/h2-console/**",
-                                                "/auth/login", "/jobs/**", "/swagger-ui/**",
+                                                "/auth/login", "/jobs/**", "/projects/**", "/swagger-ui/**",
                                                 "/swagger-resources/**", "/v3/api-docs/**").permitAll()
                                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                         .anyRequest().authenticated()

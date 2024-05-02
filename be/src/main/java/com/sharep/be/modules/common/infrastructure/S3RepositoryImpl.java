@@ -36,6 +36,7 @@ public class S3RepositoryImpl implements S3Repository {
             throw new RuntimeException("S3에 파일을 저장하지 못했습니다.");
 //            throw new FailedFileSaveException("S3에 파일을 저장하지 못했습니다.");
         }
+         
         return amazonS3.getUrl(bucket, awsUrl).toString();
     }
 
