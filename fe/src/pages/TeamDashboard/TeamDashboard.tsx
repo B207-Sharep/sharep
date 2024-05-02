@@ -32,7 +32,7 @@ export default function TeamDashboard() {
             </S.Title>
             <S.CurrentWorksScrollContainer>
               {Array.from({ length: 6 }).map((_, i) => (
-                <S.CurrentWork>
+                <S.CurrentWork key={`current-work-${i}`}>
                   <Sub.TeamMember {...DUMMY_USER} />
                   <div className="issue" />
                 </S.CurrentWork>

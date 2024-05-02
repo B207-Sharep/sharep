@@ -11,7 +11,7 @@ export default function TeamMember({ name, jobs, image }: T.TeamMemberProps) {
         <p>{name}</p>
         <S.JobBadgesWrapper>
           {jobs.map((job, idx) => (
-            <Comp.JobBadge job={job} selectAble={false} />
+            <Comp.JobBadge key={`${name}-${job}-${idx}`} job={job} selectAble={false} />
           ))}
         </S.JobBadgesWrapper>
       </div>
