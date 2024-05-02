@@ -227,7 +227,7 @@ export default function Register() {
             <Lock size={18} color={G.PALETTE.LIGHT_BLACK}></Lock>
             <InputWithLabel.Input
               id="pwcheck"
-              placeholder="비밀번호확인"
+              placeholder="비밀번호 확인"
               onChange={onChangePasswordHandler}
               value={confirm}
               type="password"

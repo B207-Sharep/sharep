@@ -8,6 +8,7 @@ import ProjectGridWrapper from '@/components/ProjectGridWrapper/ProjectGridWrapp
 import UIMG from '@/assets/imgs/youjack.png';
 import JD from '@/assets/imgs/jdragon.png';
 import Grass from '@/components/Grass/Grass';
+import * as Comp from '@/components';
 
 const issueList = [
   ...Array.from({ length: 7 }, (_, index) => ({
@@ -30,7 +31,8 @@ export default function Mypage() {
         <S.Wrapper>
           <S.HeaderWrapper>
             <S.ProfileWrapper>
-              <UserImg size="lg" path={UIMG} />
+              <Comp.UserImg size="lg" path={'/youjack.png'} />
+
               <S.ProfileTextWrapper>
                 <S.Font $size="24px" $weight="600">
                   유재건

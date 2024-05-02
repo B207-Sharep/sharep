@@ -58,7 +58,7 @@ export const Icon = styled.div<{ $position?: string; $fillColor?: string; $strok
 `;
 
 export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
-  color: ${props => props.color || 'inherit'};
+  color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
   font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
   white-space: nowrap;
@@ -115,7 +115,7 @@ export const Row = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  display: inline-flex;
+  display: flex;
 `;
 
 export const UserProfile = styled.div`
@@ -147,6 +147,30 @@ export const Content = styled.div`
   border-radius: 6px;
 `;
 
-export const DeleteBtn = styled.button`
-  cursor: pointer;
+export const RowContent = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+export const DeleteBtn = styled.div<{ $cursor: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 32px;
+  cursor: ${props => (props.$cursor ? 'pointer' : 'default')};
+`;
+
+export const LeaderBadge = styled.div`
+  display: flex;
+  background-color: ${PALETTE.MAIN_COLOR};
+  border-radius: 6px;
+  padding: 2px 6px;
+`;
+
+export const JobBadgeBtn = styled.div<{ $state: boolean }>`
+  :hover {
+    opacity: 0.6;
+  }
 `;

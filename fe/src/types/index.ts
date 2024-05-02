@@ -1,3 +1,4 @@
+/** ================= Components ================= */
 import { BaseInputProps, BaseLabelProps, BaseLabelWithInputProps } from './components/InputWithLabel';
 import { StatusBadgeProps } from './components/StatusBadge';
 import { CommitProps } from './components/Commit';
@@ -8,11 +9,17 @@ import { JobBadgeProps } from './components/JobBadge';
 import { PriorityBadgeProps } from './components/PriorityBadge';
 import { QuillEditorProps } from './components/QuillEditor';
 import { GalleryCardProps } from './components/GalleryCard';
-import { ModalProps } from './components/Modal';
+import { GalleryGridWrapperProps } from './components/GalleryGridWrapper';
+import { ModalProps, ProjectCreationFormProps, TaskCreationFormProps } from './components/Modal';
 import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualTable';
 import { ProjectGridWrapperProps } from './components/ProjectGridWrapper';
 import { ProjectCardProps } from './components/ProjectCard';
+import { IssueProps } from './components/Issue';
+/** ================= Components ================= */
 
+/** ================= Pages ================= */
+import { TeamDashboardProps, TeamMemberProps } from './pages/TeamDashboard';
+/** ================= Pages ================= */
 export type {
   BaseInputProps,
   BaseLabelProps,
@@ -26,10 +33,16 @@ export type {
   UserImgProps,
   MainColorBtnProps,
   GalleryCardProps,
+  GalleryGridWrapperProps,
   ModalProps,
+  ProjectCreationFormProps,
+  TaskCreationFormProps,
   ManualTableProps,
   CelProps,
   SelectCelProps,
   ProjectGridWrapperProps,
   ProjectCardProps,
+  IssueProps,
+  TeamDashboardProps,
+  TeamMemberProps,
 };
