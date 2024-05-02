@@ -1,9 +1,8 @@
-import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
 export const Card = styled.div`
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  aspect-ratio: 16/9;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -13,12 +12,13 @@ export const Card = styled.div`
 `;
 
 export const CardContent = styled.div`
-  height: 160px;
+  width: 100%;
+  height: 200px;
   overflow: hidden;
 `;
 
 export const CardText = styled.div`
-  height: 40px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;

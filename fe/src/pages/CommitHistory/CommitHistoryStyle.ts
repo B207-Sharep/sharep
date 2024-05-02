@@ -130,3 +130,5 @@ export const UserInfo = styled.div`
   flex-direction: column;
   gap: 2px;
 `;
+
+export const CommitAddBtn = styled.div``;

@@ -14,9 +14,13 @@ import SCREEN from '@/assets/svgs/screen-definition-icon.svg?react';
 import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 import UserImg from '../UserImg/UserImg';
+import { useModal } from '@/customhooks';
+import { Modal } from '..';
+import { TaskCreationForm } from '../Modal/Subs';
 
 export default function SideBar() {
   const navigate = useNavigate();
+  const taskModal = useModal('task');
 
   const handleHistoryClick = () => {
     navigate('/projects/1/commit-history');
@@ -39,6 +43,14 @@ export default function SideBar() {
   };
   const handleInfraClick = () => {
     navigate('/projects/1/infra-manual');
+  };
+
+  const handleModalOpen = () => {
+    taskModal.openModal({
+      name: '',
+      imageUrl: '',
+      description: '',
+    });
   };
   return (
     <>
@@ -66,9 +78,12 @@ export default function SideBar() {
                   <S.SideBarBtn onClick={handleHistoryClick}>
                     <CommitHistory color={G.PALETTE.MAIN_COLOR} size={14}></CommitHistory>
                   </S.SideBarBtn>
-                  <S.SideBarBtn>
+                  <S.SideBarBtn onClick={handleModalOpen}>
                     <Plus color={G.PALETTE.MAIN_COLOR} size={14}></Plus>
                   </S.SideBarBtn>
+                  <Modal modalId="task" title="새 작업 작성">
+                    <TaskCreationForm modalId="task" />
+                  </Modal>
                 </S.SideBarBtnGroup>
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleTeamDashClick}>
