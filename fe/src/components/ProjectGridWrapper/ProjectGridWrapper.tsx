@@ -9,7 +9,7 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
   return (
     <S.Grid>
       <S.CardList>
-        {/* <ProjectCard key={0} title={'new'} bio={'새로 만들기'} id={'0'} accounts={null} createdAt={null} add={true} /> */}
+        <ProjectCard key={0} title={'new'} bio={'새로 만들기'} id={'0'} accounts={null} createdAt={null} add={true} />
         {issueList.map((issue, index) => (
           <ProjectCard
             key={index}

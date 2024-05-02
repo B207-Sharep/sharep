@@ -68,6 +68,19 @@ export const GrassYearWrapper = styled.div`
   align-items: center;
 `;
 
+export const GrassHeader = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+export const GrassStep = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 2px;
+`;
+
 export const GrassYear = styled.div`
   font-size: 16px;
   font-weight: 700;

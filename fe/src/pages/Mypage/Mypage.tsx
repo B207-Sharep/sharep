@@ -115,7 +115,24 @@ export default function Mypage() {
                   ))} */}
                 </S.GrassYearWrapper>
               </S.GrassTextWrapper>
-              <Grass grass={grassResponse} />
+              {grassFetched ? (
+                <>
+                  <S.GrassHeader>
+                    <S.Font $size="16px" $weight="400">
+                      {grassResponse.jobCount}개의 작업
+                    </S.Font>
+                    <S.GrassStep>
+                      <S.Font $size="12px" $weight="400">
+                        단계
+                      </S.Font>
+                      <></>
+                    </S.GrassStep>
+                  </S.GrassHeader>
+                  <Grass grass={grassResponse} />
+                </>
+              ) : (
+                <></>
+              )}
             </S.GrassWrapper>
           </S.HeaderWrapper>
           {projectListFetched ? <ProjectGridWrapper issueList={projectListResponse}></ProjectGridWrapper> : <></>}
