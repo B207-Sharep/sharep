@@ -72,8 +72,8 @@ public class JobService{
         }
     }
 
-    public JobGrassResponse readGrass(Long accountId, Integer year){
-        if(accountId == null || year == null)throw new IllegalArgumentException("year null"); // TODO
+    public JobGrassResponse readGrass(Long accountId){
+        if(accountId == null)throw new IllegalArgumentException("year null"); // TODO
 
         List<Job> jobs = jobRepository.findAllByAccountId(accountId);
         Integer jobCount = jobs.size();
@@ -89,6 +89,6 @@ public class JobService{
             grasses[i] = new JobGrass(jobCountsMap.getOrDefault(currentDate, 0));
             currentDate = currentDate.minusDays(1);
         }
-        return new JobGrassResponse(year, jobCount, grasses);
+        return new JobGrassResponse(jobCount, grasses);
     }
 }

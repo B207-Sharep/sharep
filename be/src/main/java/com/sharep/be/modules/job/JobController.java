@@ -62,9 +62,9 @@ public class JobController {
         );
     }
 
-    @GetMapping("/job/{year}")
-    public ResponseEntity<JobGrassResponse> grassRead(@PathVariable("year") Integer year,
+    @GetMapping("/jobs")
+    public ResponseEntity<JobGrassResponse> grassRead(
             @AuthenticationPrincipal JwtAuthentication authentication){
-        return ResponseEntity.ok(jobService.readGrass(authentication.id, year));
+        return ResponseEntity.ok(jobService.readGrass(authentication.id));
     }
 }
