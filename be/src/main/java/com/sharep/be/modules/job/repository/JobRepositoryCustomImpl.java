@@ -8,9 +8,9 @@ import static com.sharep.be.modules.member.QRole.role1;
 import static com.sharep.be.modules.project.QProject.project;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.job.Job;
 import com.sharep.be.modules.member.Role.RoleType;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 public class JobRepositoryCustomImpl implements JobRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-    private final IssueRepository issueRepository;
+
 
     @Override
     public List<Job> findAllByProjectId(Long projectId) {
@@ -66,6 +66,22 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
                 .where(issue.id.eq(issueId))
                 .fetch();
 
+    }
+
+    @Override
+    public List<Job> findAllByAccountIdAndYear(Long accountId, Integer year) {
+        LocalDateTime startOfYear = LocalDateTime.of(year, 1, 1, 0, 0);
+        LocalDateTime endOfYear = LocalDateTime.of(year, 12, 31, 23, 59);
+
+        return queryFactory.selectFrom(job)
+                .innerJoin(job.member, member)
+                .innerJoin(member.account, account)
+                // 1년 체크
+                .where(job.createdAt.between(startOfYear, endOfYear)
+                        .and(account.id.eq(accountId))
+                )
+                .orderBy(job.createdAt.desc())
+                .fetch();
     }
 
 }

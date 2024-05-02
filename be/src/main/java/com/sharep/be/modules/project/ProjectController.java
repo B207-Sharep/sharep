@@ -47,6 +47,8 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.readProject(jwtAuthentication.id));
     }
 
+
+
     @PostMapping("/{projectId}/members")
     public ResponseEntity<Void> addMember(@RequestBody MemberRequestDto memberRequestDto,
                                           @AuthenticationPrincipal JwtAuthentication jwtAuthentication,

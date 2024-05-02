@@ -13,4 +13,6 @@ public interface JobRepositoryCustom {
     List<Job> findAllByProjectIdAndRoleType(Long projectId, RoleType roleType);
 
     List<Job> findAllByProjectIdAndIssueId(Long projectId, Long issueId);
+
+    List<Job> findAllByAccountIdAndYear(Long accountId,Integer year);
 }
