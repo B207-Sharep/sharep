@@ -2,12 +2,16 @@ package com.sharep.be.modules.account;
 
 import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.account.validator.AccountValidator;
+import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/accounts")
@@ -43,4 +47,10 @@ public class AccountController {
 //                .ok(accountRepository.existsByNickname(nickname));
 //    }
 
+    @PatchMapping(value = "/image", consumes = {MediaType.APPLICATION_JSON_VALUE,  MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Void> updateImage(@AuthenticationPrincipal JwtAuthentication authentication,
+            @RequestPart(value = "image", required = false) MultipartFile image ){
+        accountService.updateImage(authentication.id, image);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

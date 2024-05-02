@@ -6,10 +6,15 @@ import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.job.repository.JobRepository;
 import com.sharep.be.modules.job.request.JobCreateRequest;
 import com.sharep.be.modules.job.request.JobReadRequest;
+import com.sharep.be.modules.job.response.JobGrass;
+import com.sharep.be.modules.job.response.JobGrassResponse;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.MemberRepository;
 import com.sharep.be.modules.member.Role.RoleType;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,5 +70,25 @@ public class JobService{
 
             return jobRepository.findAllByProjectId(projectId);
         }
+    }
+
+    public JobGrassResponse readGrass(Long accountId, Integer year){
+        if(accountId == null || year == null)throw new IllegalArgumentException("year null"); // TODO
+
+        List<Job> jobs = jobRepository.findAllByAccountId(accountId);
+        Integer jobCount = jobs.size();
+
+        Map<LocalDate, Integer> jobCountsMap = new HashMap<>();
+        jobs.forEach(job -> jobCountsMap.put(job.getCreatedAt().toLocalDate(),
+                jobCountsMap.getOrDefault(job.getCreatedAt().toLocalDate(), 0)+1));
+
+        JobGrass[] grasses = new JobGrass[365];
+        LocalDate currentDate = LocalDate.now();
+
+        for (int i = 364; i >= 0; i--) {
+            grasses[i] = new JobGrass(jobCountsMap.getOrDefault(currentDate, 0));
+            currentDate = currentDate.minusDays(1);
+        }
+        return new JobGrassResponse(year, jobCount, grasses);
     }
 }
