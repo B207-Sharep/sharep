@@ -1,13 +1,5 @@
-import { PALETTE } from '@/styles';
 import styled from 'styled-components';
-
-export const CanvansWrapper = styled.section`
-  display: flex;
-  gap: 24px;
-  justify-content: space-between;
-  width: 100%;
-  height: 630px;
-`;
+import { PALETTE } from '@/styles';
 
 export const IssuesWrapper = styled.article`
   flex: 1;

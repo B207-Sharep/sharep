@@ -18,7 +18,8 @@ import { IssueProps } from './components/Issue';
 /** ================= Components ================= */
 
 /** ================= Pages ================= */
-import { TeamDashboardProps, TeamMemberProps } from './pages/TeamDashboard';
+import { TeamDashboardProps, TeamMemberProps, GanttChartProps } from './pages/TeamDashboard';
+import { CananProps } from './pages/TeamMember';
 /** ================= Pages ================= */
 export type {
   BaseInputProps,
@@ -45,4 +46,6 @@ export type {
   IssueProps,
   TeamDashboardProps,
   TeamMemberProps,
+  GanttChartProps,
+  CananProps,
 };
