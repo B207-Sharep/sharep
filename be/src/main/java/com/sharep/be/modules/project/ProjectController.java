@@ -47,6 +47,8 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.readProject(jwtAuthentication.id));
     }
 
+
+
     @PostMapping("/{projectId}/members")
     public ResponseEntity<Void> addMember(@RequestBody MemberRequestDto memberRequestDto,
                                           @AuthenticationPrincipal JwtAuthentication jwtAuthentication,
@@ -75,7 +77,7 @@ public class ProjectController {
 
     @PostMapping("/{projectId}/hook")
     public ResponseEntity<Void> readHook(@RequestBody GitlabHook hook){
-
+        // TODO hook work
         return ResponseEntity.ok().build();
     }
 

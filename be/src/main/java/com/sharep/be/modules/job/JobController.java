@@ -2,6 +2,7 @@ package com.sharep.be.modules.job;
 
 import com.sharep.be.modules.job.request.JobCreateRequest;
 import com.sharep.be.modules.job.request.JobReadRequest;
+import com.sharep.be.modules.job.response.JobGrassResponse;
 import com.sharep.be.modules.job.response.JobIdResponse;
 import com.sharep.be.modules.job.response.JobReadResponse;
 import com.sharep.be.modules.security.JwtAuthentication;
@@ -16,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,6 +62,9 @@ public class JobController {
         );
     }
 
-
-
+    @GetMapping("/job/{year}")
+    public ResponseEntity<JobGrassResponse> grassRead(@PathVariable("year") Integer year,
+            @AuthenticationPrincipal JwtAuthentication authentication){
+        return ResponseEntity.ok(jobService.readGrass(authentication.id, year));
+    }
 }

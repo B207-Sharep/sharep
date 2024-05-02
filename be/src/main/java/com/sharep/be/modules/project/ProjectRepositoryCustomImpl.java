@@ -1,6 +1,7 @@
 package com.sharep.be.modules.project;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sharep.be.modules.account.QAccount;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.QMember;
 import com.sharep.be.modules.member.QRole;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.sharep.be.modules.account.QAccount.*;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.project.QProject.project;
 
@@ -21,6 +23,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom{
         return queryFactory.selectFrom(project)
                 .from(project)
                 .join(project.members, member)
+                .join(member.account, account)
                 .where(member.account.id.eq(accountId))
                 .fetch();
     }

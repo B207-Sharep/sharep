@@ -79,4 +79,5 @@ public class Project {
     public boolean ifLeader(Account account){
         return leader.equals(account);
     }
+
 }

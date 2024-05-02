@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class AccountDto {
 
@@ -29,9 +30,12 @@ public class AccountDto {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class AccountResponseDto {
-
         private Long id;
+        private String nickname;
+        private String email;
+        private String imageUrl;
     }
 
     public static Account toEntity(AccountCreateDto accountCreateDto) {
@@ -43,6 +47,7 @@ public class AccountDto {
     }
 
     public static AccountResponseDto toDto(Account account) {
-        return new AccountResponseDto(account.getId());
+        return new AccountResponseDto(account.getId(),
+                account.getNickname(), account.getEmail(), account.getImageUrl());
     }
 }
