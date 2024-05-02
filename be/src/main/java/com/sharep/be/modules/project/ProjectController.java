@@ -77,7 +77,7 @@ public class ProjectController {
 
     @PostMapping("/{projectId}/hook")
     public ResponseEntity<Void> readHook(@RequestBody GitlabHook hook){
-
+        // TODO hook work
         return ResponseEntity.ok().build();
     }
 

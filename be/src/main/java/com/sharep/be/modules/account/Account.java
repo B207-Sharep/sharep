@@ -30,7 +30,7 @@ public class Account {
     @Column(nullable = false, unique = true)
     String email;
 
-
+    @Column(length = 255)
     String imageUrl;
 
     LocalDateTime createdAt;
