@@ -25,8 +25,8 @@ export default function Issue({ name, commit, assignees, priority, dragAble }: T
   return (
     <S.RelativeWrapper>
       <S.DragAbleContainer
-        onMouseUp={() => handleIsHolding(false)}
-        onMouseDown={() => handleIsHolding(true)}
+        // onMouseUp={() => handleIsHolding(false)}
+        // onMouseDown={() => handleIsHolding(true)}
         onMouseOver={handleCursorPosition}
         $isHolding={isHolding}
         $position={{ x: cursorPosition.x, y: cursorPosition.y }}
