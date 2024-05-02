@@ -5,7 +5,7 @@ import { PALETTE } from '@/styles';
 import { UserImg } from '..';
 import { Plus } from 'lucide-react';
 
-export default function ProjectCard({ title, bio, imgs, add }: T.ProjectCardProps) {
+export default function ProjectCard({ title, bio, accounts, add }: T.ProjectCardProps) {
   return (
     <S.Card className="hover-moving">
       <S.CardTextWrapper>
@@ -27,8 +27,8 @@ export default function ProjectCard({ title, bio, imgs, add }: T.ProjectCardProp
       </S.CardTextWrapper>
       {!add ? (
         <S.ImgWrapper>
-          {imgs?.map((img, idx) => (
-            <UserImg size="sm" path={img} key={idx} />
+          {accounts?.map((img: any, idx) => (
+            <UserImg size="sm" path={img.imageUrl} key={idx} />
           ))}
         </S.ImgWrapper>
       ) : (

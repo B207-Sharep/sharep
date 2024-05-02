@@ -1,11 +1,9 @@
 import { instanceOfFormData, instanceOfJson } from '../instance';
 import * as T from '@types';
 
-// export async function getGrass(email: string) {
-//   return await instance.get(`/projects/`);
-// }
-
-/** 프로젝트 리스트 조회 */
+export async function getGrass() {
+  return await instanceOfJson.get(`/job/2022`);
+}
 export async function getProjectList() {
   return await instanceOfJson.get(`/projects`);
 }
