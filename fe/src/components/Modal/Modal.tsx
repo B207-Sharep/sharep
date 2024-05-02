@@ -2,24 +2,36 @@ import React from 'react';
 import * as S from './ModalStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
-import { modalState } from '@/stores/atoms/modal';
-import { useRecoilValue } from 'recoil';
+import { modalDataState } from '@/stores/atoms/modal';
+import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
-import { PALETTE } from '@/styles';
 
-export default function Modal({ modalId, title, subTitle, modalStyle, children }: T.ModalProps) {
-  const { closeModal } = useModal();
-  const modalStates = useRecoilValue(modalState);
-  const isOpen = modalStates[modalId] || false;
+export default function Modal({ modalId, title, subTitle, children }: T.ModalProps) {
+  const { closeModal } = useModal(modalId);
+
+  const modalData = useRecoilValue(modalDataState(modalId));
+  const { isOpen } = modalData;
 
   const handleModalClose = () => {
-    closeModal(modalId);
+    closeModal();
   };
+
+  const handleCreateButtonClick = useRecoilCallback(({ snapshot, set }) => async () => {
+    const modalData = await snapshot.getPromise(modalDataState(modalId));
+    console.log(modalData.formData);
+    try {
+      // api call
+
+      closeModal();
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
   return isOpen ? (
     <S.ModalBackdrop onClick={handleModalClose}>
-      <S.ModalWrapper $modalStyle={modalStyle} onClick={e => e.stopPropagation()}>
+      <S.ModalWrapper onClick={e => e.stopPropagation()}>
         <S.ModalContent>
           {/* header */}
           <S.ModalHeader>
@@ -42,7 +54,7 @@ export default function Modal({ modalId, title, subTitle, modalStyle, children }
                 취소
               </Comp.MainColorBtn>
             </S.BtnWrapper>
-            <S.BtnWrapper>
+            <S.BtnWrapper onClick={handleCreateButtonClick}>
               <Comp.MainColorBtn bgc={true} disabled={false}>
                 생성
               </Comp.MainColorBtn>

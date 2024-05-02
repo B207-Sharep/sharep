@@ -13,6 +13,8 @@ import CurrentWork from './svgs/current-work-icon.svg?react';
 import Gallery from './svgs/gallery-icon.svg?react';
 import GantChart from './svgs/gant-chart-icon.svg?react';
 import YesterdayWork from './svgs/yesterday-work-icon.svg?react';
+import GitIcon from './svgs/git-icon.svg?react';
+import DefaultUploadImage from './svgs/default-upload-image.svg?react';
 
 export {
   ApiDocs,
@@ -30,4 +32,6 @@ export {
   Gallery,
   GantChart,
   YesterdayWork,
+  GitIcon,
+  DefaultUploadImage,
 };
