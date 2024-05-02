@@ -131,7 +131,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
     };
 
   return (
-    <S.ProjectCreationFormWrapper>
+    <S.Wrapper>
       {/* 프로젝트 이름 */}
       <S.FormItem>
         <Comp.InputWithLabel.Label labelFor="title">프로젝트 이름</Comp.InputWithLabel.Label>
@@ -300,6 +300,6 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
             ))}
         </S.MemberList>
       </S.Content>
-    </S.ProjectCreationFormWrapper>
+    </S.Wrapper>
   );
 }

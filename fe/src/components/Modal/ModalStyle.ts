@@ -54,12 +54,13 @@ export const ModalBackdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 999;
   background-color: rgba(0, 0, 0, 0.5);
   animation: ${fadeIn} 0.2s ease-out forwards;
 `;
 
 export const ModalContent = styled.div`
-  overflow-y: auto;
+  /* overflow-y: auto; */
   display: flex;
   width: 100%;
   height: auto;
@@ -119,6 +120,7 @@ export const ModalBody = styled.div`
   align-items: flex-start;
   gap: 20px;
   align-self: stretch;
+  overflow-y: auto;
 `;
 export const ModalFooter = styled.div`
   display: flex;

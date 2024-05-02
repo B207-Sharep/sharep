@@ -5,6 +5,8 @@ import * as Comp from '@components';
 import { PALETTE } from '@/styles';
 import { BriefcaseBusiness, ChevronDown, CircleDotDashed, UsersRound } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useModal } from '@/customhooks';
+import { TaskCreationForm } from '@/components/Modal/Subs';
 
 const dropdownDummy = {
   member: ['팀원1', '팀원2', '팀원3'],
@@ -26,6 +28,8 @@ const filters: {
 export default function CommitHistory() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const taskModal = useModal('task');
+
   const [openFilter, setOpenFilter] = useState<'member' | 'job' | 'issue' | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<{ [key: string]: string | null }>({
     member: null,
@@ -42,6 +46,14 @@ export default function CommitHistory() {
     newSearchParams.set(filter, value);
 
     navigate(`?${newSearchParams.toString()}`, { replace: true });
+  };
+
+  const handleModalOpen = () => {
+    taskModal.openModal({
+      name: '',
+      imageUrl: '',
+      description: '',
+    });
   };
 
   useEffect(() => {
@@ -108,7 +120,12 @@ export default function CommitHistory() {
                   )}
                 </S.Filter>
               ))}
-              <Comp.Add />
+              <S.CommitAddBtn onClick={handleModalOpen}>
+                <Comp.Add />
+              </S.CommitAddBtn>
+              <Comp.Modal modalId="task" title="새 작업 작성">
+                <TaskCreationForm modalId="task" />
+              </Comp.Modal>
             </S.FilterWrapper>
           </div>
         </S.Header>

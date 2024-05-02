@@ -11,7 +11,7 @@ export default function GalleryCard({ issueName, createdAt, issueType, imageUrl 
           <S.Img src={imageUrl}></S.Img>
         ) : (
           <S.PreviewContent>
-            <div>임시 컴포넌트ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
+            <div>임시 컴포넌트ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ??</div>
             <div>임시 컴포넌트</div>
           </S.PreviewContent>
         )}
@@ -21,10 +21,10 @@ export default function GalleryCard({ issueName, createdAt, issueType, imageUrl 
           {issueName}
         </S.StyledText>
         <S.CardDate>
-          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
             수정된 날짜
           </S.StyledText>
-          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
             {createdAt}
           </S.StyledText>
         </S.CardDate>
