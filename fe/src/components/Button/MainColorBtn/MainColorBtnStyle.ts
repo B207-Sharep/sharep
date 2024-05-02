@@ -6,7 +6,7 @@ interface Options {
   $disabled: boolean;
 }
 
-export const Wrapper = styled.button<Options>`
+export const Wrapper = styled.div<Options>`
   width: 100%;
   padding: 4px 10px;
   background-color: ${({ $flag }) => ($flag ? `${G.PALETTE.MAIN_COLOR}` : `white`)};

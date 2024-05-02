@@ -10,16 +10,17 @@ import API from '@/assets/svgs/api-docs-icon.svg?react';
 import INFRA from '@/assets/svgs/infra-docs-icon.svg?react';
 import MY from '@/assets/svgs/my-dashboard-icon.svg?react';
 import PLAN from '@/assets/svgs/plan-docs-icon.svg?react';
-import SCREEN from '@/assets/svgs/screen -definition-icon.svg?react';
+import SCREEN from '@/assets/svgs/screen-definition-icon.svg?react';
 import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 import UserImg from '../UserImg/UserImg';
 
-//DUMMY
-import UIMG from '@/assets/imgs/youjack.png';
-
 export default function SideBar() {
   const navigate = useNavigate();
+
+  const handleHistoryClick = () => {
+    navigate('/1/history');
+  };
 
   const handleTeamDashClick = () => {
     navigate('/teamid/teamdash');
@@ -34,16 +35,16 @@ export default function SideBar() {
     navigate('/teamid/api');
   };
   const handleScreenClick = () => {
-    navigate('/teamid/screen');
+    navigate('/1/screen-manual');
   };
   const handleInfraClick = () => {
-    navigate('/teamid/infra');
+    navigate('/1/infra-manual');
   };
   return (
     <>
       <S.SideBarWrapper>
         <S.SideBarProfile>
-          <UserImg size="md" path={UIMG} />
+          <UserImg size="md" path={'/youjack.png'} />
           <S.SideBarProfileName>
             <S.SideBarFont $size="24px" $weight={700}>
               유잭건
@@ -62,7 +63,7 @@ export default function SideBar() {
                   Share.P
                 </S.SideBarFont>
                 <S.SideBarBtnGroup>
-                  <S.SideBarBtn>
+                  <S.SideBarBtn onClick={handleHistoryClick}>
                     <CommitHistory color={G.PALETTE.MAIN_COLOR} size={14}></CommitHistory>
                   </S.SideBarBtn>
                   <S.SideBarBtn>

@@ -17,16 +17,16 @@ export default function GalleryCard({ issueName, createdAt, issueType, imageUrl 
         )}
       </S.CardContent>
       <S.CardText>
-        <S.Text color={PALETTE.SUB_BLACK} fontWeight={700}>
+        <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={700}>
           {issueName}
-        </S.Text>
+        </S.StyledText>
         <S.CardDate>
-          <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
+          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
             수정된 날짜
-          </S.Text>
-          <S.Text color={PALETTE.LIGHT_BLACK} fontSize={10}>
+          </S.StyledText>
+          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
             {createdAt}
-          </S.Text>
+          </S.StyledText>
         </S.CardDate>
       </S.CardText>
     </S.Card>

@@ -11,9 +11,13 @@ const JOB_COLOR_PALETTE: {
   DESIGNER: { BG_COLOR: '#F5EEFC', FONT_COLOR: '#9B51E0', TEXT: 'Design' },
 };
 
-export default function JobBadge({ job }: T.JobBadgeProps) {
+export default function JobBadge({ job, selectAble }: T.JobBadgeProps) {
   return (
-    <S.Wrapper $bgColor={JOB_COLOR_PALETTE[job].BG_COLOR} $fontColor={JOB_COLOR_PALETTE[job].FONT_COLOR}>
+    <S.Wrapper
+      $bgColor={JOB_COLOR_PALETTE[job].BG_COLOR}
+      $fontColor={JOB_COLOR_PALETTE[job].FONT_COLOR}
+      $selected={selectAble && selectAble}
+    >
       {JOB_COLOR_PALETTE[job].TEXT}
     </S.Wrapper>
   );

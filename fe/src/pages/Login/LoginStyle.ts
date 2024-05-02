@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import * as G from '@/styles';
 import { InputWithLabel } from '@/components';
 
-interface Option {
+interface Options {
   $flag: boolean;
 }
 
@@ -24,6 +24,7 @@ export const CardWrapper = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 16px;
+  box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.1), 0px 8px 8px -4px rgba(16, 24, 40, 0.04);
 `;
 export const LogoWrapper = styled.div`
   height: fit-content;
@@ -88,5 +89,5 @@ export const Register = styled.div`
   color: ${G.PALETTE.LIGHT_BLACK};
   justify-content: flex-end;
   row-gap: 12px;
-  /* cursor: pointer; */
+  cursor: pointer;
 `;
