@@ -2,7 +2,7 @@ import BaseLabelWithInput from '@/components/InputWithLabel/InputWithLabel';
 import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
-export const ProjectCreationFormWrapper = styled.div`
+export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

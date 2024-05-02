@@ -1,8 +1,8 @@
-import BaseLabelWithInput from '@/components/InputWithLabel/InputWithLabel';
+import { InputWithLabel } from '@/components';
 import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
-export const TaskCreationFormWrapper = styled.div`
+export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -16,7 +16,6 @@ export const IssueTitle = styled.div`
   gap: 8px;
   justify-content: space-between;
   align-items: center;
-  /* border: 1px solid black; */
 `;
 
 export const UserInfo = styled.div`
@@ -98,7 +97,7 @@ export const FormItem = styled.div`
   width: 100%;
 `;
 
-export const StyledInput = styled(BaseLabelWithInput.Input)<{ $icon?: boolean }>`
+export const StyledInput = styled(InputWithLabel.Input)<{ $icon?: boolean }>`
   display: flex;
   padding: 10px 14px;
   padding-left: ${({ $icon }) => ($icon ? '30px' : '10px')};

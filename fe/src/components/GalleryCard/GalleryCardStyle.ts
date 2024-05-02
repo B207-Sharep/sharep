@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Card = styled.div`
   width: 100%;
+  aspect-ratio: 16/9;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -11,6 +12,7 @@ export const Card = styled.div`
 `;
 
 export const CardContent = styled.div`
+  width: 100%;
   height: 200px;
   overflow: hidden;
 `;

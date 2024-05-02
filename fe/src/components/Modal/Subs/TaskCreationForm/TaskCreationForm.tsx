@@ -48,11 +48,12 @@ export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    updateFormData({ ...formData, description: event.target.value });
+    const { id, value } = event.target;
+    updateFormData({ ...formData, [id]: value });
   };
 
   return (
-    <S.TaskCreationFormWrapper>
+    <S.Wrapper>
       <S.IssueTitle>
         <div
           style={{
@@ -72,7 +73,6 @@ export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps
             진행 중인 이슈 이름
           </S.StyledText>
         </div>
-        {/* <Comp.StatusBadge status="NOW" /> */}
       </S.IssueTitle>
       <S.Container onClick={handleButtonClick} onDragOver={handleDragOver} onDrop={handleDrop}>
         <S.HiddenFileInput type="file" ref={fileInputRef} onChange={handleChange} accept="image/*" />
@@ -96,6 +96,10 @@ export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps
       </S.Container>
 
       <S.FormItem>
+        <Comp.InputWithLabel.Label labelFor="name">작업명</Comp.InputWithLabel.Label>
+        <S.StyledInput id="name" type="text" value={formData.name} onChange={handleInputChange} />
+      </S.FormItem>
+      <S.FormItem>
         <Comp.InputWithLabel.Label labelFor="description">작업 메시지</Comp.InputWithLabel.Label>
 
         <S.StyledInput
@@ -106,6 +110,6 @@ export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps
           onChange={handleInputChange}
         />
       </S.FormItem>
-    </S.TaskCreationFormWrapper>
+    </S.Wrapper>
   );
 }

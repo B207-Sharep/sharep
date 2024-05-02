@@ -60,7 +60,7 @@ export const ModalBackdrop = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  overflow-y: auto;
+  /* overflow-y: auto; */
   display: flex;
   width: 100%;
   height: auto;
@@ -120,6 +120,7 @@ export const ModalBody = styled.div`
   align-items: flex-start;
   gap: 20px;
   align-self: stretch;
+  overflow-y: auto;
 `;
 export const ModalFooter = styled.div`
   display: flex;

@@ -11,7 +11,7 @@ export default function GalleryCard({ issueName, createdAt, issueType, imageUrl 
           <S.Img src={imageUrl}></S.Img>
         ) : (
           <S.PreviewContent>
-            <div>임시 컴포넌트ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
+            <div>임시 컴포넌트ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ??</div>
             <div>임시 컴포넌트</div>
           </S.PreviewContent>
         )}

@@ -3,10 +3,11 @@ import * as L from '@/layouts';
 import { Modal } from '@/components';
 import { useModal } from '@/customhooks';
 import ProjectCreationForm from '../../components/Modal/Subs/ProjectCreationForm/ProjectCreationForm';
+import { InfraTaskCreationForm } from '@/components/Modal/Subs';
 
 export default function SeoJeong() {
   const projectModal = useModal('project');
-  const taskModal = useModal('task');
+  const infraTaskModal = useModal('infra-task');
 
   const handleModalOpen = (modalId: string) => {
     if (modalId === 'project') {
@@ -28,9 +29,9 @@ export default function SeoJeong() {
           },
         ],
       });
-    } else if (modalId === 'task') {
-      taskModal.openModal({
-        imageUrl: '',
+    } else if (modalId === 'infra-task') {
+      infraTaskModal.openModal({
+        name: '',
         description: '',
       });
     }
@@ -56,6 +57,13 @@ export default function SeoJeong() {
           subTitle="함께할 팀원들을 추가하고 새로운 프로젝트를 생성해보세요."
         >
           <ProjectCreationForm modalId="project" />
+        </Modal>
+        {/* 새 인프라 작업 생성 모달 */}
+        <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('infra-task')}>
+          새 인프라 작업 생성 모달
+        </button>
+        <Modal modalId="infra-task" title="인프라 명세서 > 이슈 제목">
+          <InfraTaskCreationForm modalId="infra-task" />
         </Modal>
       </div>
     </L.SideBarLayout>
