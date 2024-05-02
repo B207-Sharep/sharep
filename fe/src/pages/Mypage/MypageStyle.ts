@@ -12,14 +12,12 @@ export const Wrapper = styled.div`
   flex-direction: column;
   padding: 0px 260px;
   row-gap: 36px;
-  background-color: blue;
 `;
 
 export const HeaderWrapper = styled.div`
   /* width: 100; */
   display: flex;
   row-gap: 36px;
-  background-color: red;
   column-gap: 4px;
   justify-content: space-between;
 `;
@@ -29,7 +27,6 @@ export const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 10px;
-  background-color: yellowgreen;
   padding: 0px 10px;
   justify-content: center;
   align-items: center;
@@ -49,9 +46,36 @@ export const GrassWrapper = styled.div`
   height: 222px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: #fff;
+  padding: 24px 24px;
+`;
+
+export const GrassTextWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const GrassYearWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  column-gap: 16px;
+  align-items: center;
+`;
+
+export const GrassYear = styled.div`
+  font-size: 16px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  align-items: center;
+  color: ${G.PALETTE.MAIN_WHITE};
+  background-color: ${G.PALETTE.MAIN_COLOR};
 `;
 
 export const Font = styled.div<FontOption>`
