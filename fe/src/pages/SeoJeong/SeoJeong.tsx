@@ -3,7 +3,6 @@ import * as L from '@/layouts';
 import { Modal } from '@/components';
 import { useModal } from '@/customhooks';
 import ProjectCreationForm from '../../components/Modal/Subs/ProjectCreationForm/ProjectCreationForm';
-import TaskCreationForm from '../../components/Modal/Subs/TaskCreationForm/TaskCreationForm';
 
 export default function SeoJeong() {
   const projectModal = useModal('project');
@@ -57,14 +56,6 @@ export default function SeoJeong() {
           subTitle="함께할 팀원들을 추가하고 새로운 프로젝트를 생성해보세요."
         >
           <ProjectCreationForm modalId="project" />
-        </Modal>
-
-        {/* 새 작업 작성 모달 */}
-        <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('task')}>
-          새 작업 작성 모달
-        </button>
-        <Modal modalId="task" title="새 작업 작성">
-          <TaskCreationForm modalId="task" />
         </Modal>
       </div>
     </L.SideBarLayout>

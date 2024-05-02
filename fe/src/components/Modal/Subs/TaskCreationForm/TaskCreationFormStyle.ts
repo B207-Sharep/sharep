@@ -13,10 +13,17 @@ export const TaskCreationFormWrapper = styled.div`
 export const IssueTitle = styled.div`
   display: flex;
   width: 100%;
+  gap: 8px;
   justify-content: space-between;
   align-items: center;
+  /* border: 1px solid black; */
 `;
 
+export const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
 export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
   color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
@@ -53,13 +60,10 @@ export const Container = styled.div`
 export const Preview = styled.img`
   max-width: 100%;
   height: auto;
-  margin-top: 20px;
   display: block;
 `;
 
 export const HiddenFileInput = styled.input`
-  height: auto;
-  margin-top: 20px;
   display: none;
 `;
 
@@ -77,6 +81,10 @@ export const DefaultContainer = styled.div`
 
 export const PreviewContainer = styled.div`
   width: 100%;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
   &:hover ${UploadButton} {
     display: flex;
   }
@@ -102,9 +110,15 @@ export const StyledInput = styled(BaseLabelWithInput.Input)<{ $icon?: boolean }>
   background: ${PALETTE.MAIN_WHITE};
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
   font-size: 12px;
-  font-family: 'Pretendard';
   width: 100%;
   &:focus {
     box-shadow: rgba(46, 184, 114, 0.05) 0px 6px 24px 0px, rgba(46, 184, 114, 0.08) 0px 0px 0px 3px;
   }
+`;
+
+export const IssueBadge = styled.div`
+  display: flex;
+  background-color: ${PALETTE.MAIN_COLOR};
+  border-radius: 6px;
+  padding: 2px 6px;
 `;

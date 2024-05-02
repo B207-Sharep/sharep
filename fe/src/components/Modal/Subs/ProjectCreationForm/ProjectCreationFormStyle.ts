@@ -30,7 +30,6 @@ export const StyledInput = styled(BaseLabelWithInput.Input)<{ $icon?: boolean }>
   background: ${PALETTE.MAIN_WHITE};
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
   font-size: 12px;
-  font-family: 'Pretendard';
   width: 100%;
   &:focus {
     box-shadow: rgba(46, 184, 114, 0.05) 0px 6px 24px 0px, rgba(46, 184, 114, 0.08) 0px 0px 0px 3px;

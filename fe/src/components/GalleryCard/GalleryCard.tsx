@@ -21,10 +21,10 @@ export default function GalleryCard({ issueName, createdAt, issueType, imageUrl 
           {issueName}
         </S.StyledText>
         <S.CardDate>
-          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
             수정된 날짜
           </S.StyledText>
-          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
             {createdAt}
           </S.StyledText>
         </S.CardDate>

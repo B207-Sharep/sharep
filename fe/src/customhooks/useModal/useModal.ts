@@ -23,7 +23,7 @@ export const useModal = <FormData extends { [key: string]: any }>(modalId: strin
       ...oldModalData,
       formData: { ...oldModalData.formData, ...newFormData },
     }));
-    console.log('update', newFormData);
+    // console.log('update', newFormData);
   };
 
   return { openModal, closeModal, updateFormData };
