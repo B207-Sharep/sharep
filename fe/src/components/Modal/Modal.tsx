@@ -20,6 +20,7 @@ export default function Modal({ modalId, title, subTitle, children }: T.ModalPro
   const handleCreateButtonClick = useRecoilCallback(({ snapshot, set }) => async () => {
     const modalData = await snapshot.getPromise(modalDataState(modalId));
     console.log(modalData.formData);
+    console.log(set);
     try {
       // api call
 

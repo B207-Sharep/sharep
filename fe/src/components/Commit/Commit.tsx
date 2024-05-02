@@ -35,7 +35,11 @@ export default function Commit({ description, nickname, createdAt, userImageUrl,
               </S.StyledText>
               <S.JobBadgeList>
                 {jobList.map((job, index) => (
-                  <JobBadge key={index} job={job as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'} />
+                  <JobBadge
+                    key={index}
+                    job={job as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
+                    selectAble={false}
+                  />
                 ))}
               </S.JobBadgeList>
               <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>

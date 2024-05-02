@@ -9,9 +9,6 @@ import { Info, MinusCircle, Search } from 'lucide-react';
 import { modalDataState } from '@/stores/atoms/modal';
 import { useModal } from '@/customhooks';
 
-//DUMMY
-import UIMG from '@/assets/imgs/youjack.png';
-
 const dummyResults: {
   accountId: number;
   email: string;
@@ -233,7 +230,8 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
 
             <S.RowContent>
               <S.UserProfile>
-                <Comp.UserImg size="xs" path={UIMG} />
+                <Comp.UserImg size="xs" path={'/youjack.png'} />
+
                 <S.UserInfo>
                   <S.StyledText fontSize={12}>jack@ssafy.com</S.StyledText>
                   <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
