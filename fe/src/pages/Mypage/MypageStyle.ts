@@ -52,6 +52,34 @@ export const GrassWrapper = styled.div`
   padding: 24px 24px;
 `;
 
+export const GrassTextWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const GrassYearWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  column-gap: 16px;
+  align-items: center;
+`;
+
+export const GrassYear = styled.div<{
+  selected?: boolean;
+}>`
+  font-size: 16px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  align-items: center;
+  color: ${props => (props.selected ? `${G.PALETTE.MAIN_WHITE}` : `${G.PALETTE.LIGHT_BLACK}`)};
+  background-color: ${props => (props.selected ? `${G.PALETTE.MAIN_COLOR}` : 'white')};
+`;
+
 export const Font = styled.div<FontOption>`
   font-size: ${({ $size }) => $size};
   font-weight: ${({ $weight }) => $weight};

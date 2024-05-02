@@ -1,15 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import * as G from '@styles';
-const GridSquare = styled.div<{
-  $active?: boolean;
-}>`
-  width: 12px;
-  height: 12px;
-  margin: 2px;
-  background-color: ${props => (props.$active ? `${G.PALETTE.GRASS_1}` : 'white')};
-  border: solid 1px ${G.PALETTE.GRASS_1};
-`;
+import * as S from './GrassStyle';
 
 const GitHubGrid = ({ data }: any) => {
   return (
@@ -17,7 +7,7 @@ const GitHubGrid = ({ data }: any) => {
       {data.map((row: any[], rowIndex: number) => (
         <div key={rowIndex}>
           {row.map((isActive: boolean | undefined, colIndex: number) => (
-            <GridSquare key={colIndex} $active={isActive} />
+            <S.GridSquare key={colIndex} $active={isActive} />
           ))}
         </div>
       ))}
