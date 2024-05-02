@@ -9,5 +9,6 @@ import Mypage from './Mypage/Mypage';
 
 import ScreenManual from './ScreenManual/ScreenManual';
 import InfraManual from './InfraManual/InfraManual';
+import Grass from '@/components/Grass/Grass';
 
-export { SeoJeong, SungGu, SungJe, FeatureManual, Login, Register, ScreenManual, InfraManual, Mypage };
+export { SeoJeong, SungGu, SungJe, FeatureManual, Login, Register, ScreenManual, InfraManual, Mypage, Grass };

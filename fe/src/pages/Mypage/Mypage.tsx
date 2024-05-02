@@ -7,6 +7,7 @@ import ProjectGridWrapper from '@/components/ProjectGridWrapper/ProjectGridWrapp
 //DUMMY
 import UIMG from '@/assets/imgs/youjack.png';
 import JD from '@/assets/imgs/jdragon.png';
+import Grass from '@/components/Grass/Grass';
 
 const issueList = [
   ...Array.from({ length: 7 }, (_, index) => ({
@@ -36,7 +37,9 @@ export default function Mypage() {
                 </S.Font>
               </S.ProfileTextWrapper>
             </S.ProfileWrapper>
-            <S.GrassWrapper>잔디밭</S.GrassWrapper>
+            <S.GrassWrapper>
+              <Grass />
+            </S.GrassWrapper>
           </S.HeaderWrapper>
           <ProjectGridWrapper issueList={issueList}></ProjectGridWrapper>
           {/* <GallPreryGridWrapper issueList={issueList}></GallPreryGridWrapper> */}

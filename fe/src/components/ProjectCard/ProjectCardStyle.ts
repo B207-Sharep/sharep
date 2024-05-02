@@ -25,10 +25,19 @@ export const ImgWrapper = styled.div`
   column-gap: 12px;
 `;
 
+export const AddWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 12px;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const StyledText = styled.span<{
   color?: string;
   fontSize?: number;
   fontWeight?: number;
+  addflag?: boolean;
 }>`
   color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
@@ -36,4 +45,5 @@ export const StyledText = styled.span<{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  visibility: ${props => (props.addflag ? 'hidden' : 'visible')};
 `;
