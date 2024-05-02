@@ -12,14 +12,12 @@ export const Wrapper = styled.div`
   flex-direction: column;
   padding: 0px 260px;
   row-gap: 36px;
-  background-color: blue;
 `;
 
 export const HeaderWrapper = styled.div`
   /* width: 100; */
   display: flex;
   row-gap: 36px;
-  background-color: red;
   column-gap: 4px;
   justify-content: space-between;
 `;
@@ -29,7 +27,6 @@ export const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 10px;
-  background-color: yellowgreen;
   padding: 0px 10px;
   justify-content: center;
   align-items: center;
