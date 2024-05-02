@@ -1,10 +1,7 @@
 import { NoneSideBarLayout } from '@/layouts';
 import * as S from './MypageStyle';
 import * as G from '@/styles';
-import { UserImg } from '@/components';
-
-//DUMMY
-import UIMG from '@/assets/imgs/youjack.png';
+import * as Comp from '@/components';
 
 export default function Mypage() {
   return (
@@ -13,7 +10,8 @@ export default function Mypage() {
         <S.Wrapper>
           <S.HeaderWrapper>
             <S.ProfileWrapper>
-              <UserImg size="lg" path={UIMG} />
+              <Comp.UserImg size="lg" path={'/youjack.png'} />
+
               <S.ProfileTextWrapper>
                 <S.Font $size="24px" $weight="600">
                   유재건

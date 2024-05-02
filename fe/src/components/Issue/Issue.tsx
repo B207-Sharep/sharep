@@ -20,7 +20,8 @@ export default function Issue({ name, commit, assignees, priority, dragAble }: T
 
   useEffect(() => {
     console.log(`isHolding :`, isHolding);
-  }, [isHolding]);
+    console.log(dragAble);
+  }, [isHolding, dragAble]);
 
   return (
     <S.RelativeWrapper>
