@@ -28,7 +28,7 @@ const dummyResults: {
   // { accountId: 9, email: 'jack@ssafy.com', nickname: '유재건' },
 ];
 
-const roles = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
+const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
 
 export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormProps) {
   const { updateContents } = useModal<{
@@ -39,7 +39,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
       accountId: number;
       email: string;
       nickname: string;
-      roles: { [key: string]: boolean };
+      roles: Record<'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER', boolean>;
     }[];
   }>(modalId);
   const modalData = useRecoilValue(modalDataState(modalId));
@@ -60,7 +60,12 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
     updateContents({
       ...contents,
       members: contents.members.map(
-        (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
+        (member: {
+          accountId: number;
+          email: string;
+          nickname: string;
+          roles: Record<'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER', boolean>;
+        }) =>
           member.accountId === accountId
             ? {
                 ...member,
@@ -102,7 +107,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
 
     // 이미 추가된 팀원인지 체크
     const isMemberAlreadyAdded = contents.members.some(
-      (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
+      (member: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) =>
         member.accountId === selectedUser.accountId,
     );
     if (!isMemberAlreadyAdded) {
@@ -120,13 +125,23 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
 
   // 추가된 팀원 목록에서 팀원 삭제
   const handleRemoveClick =
-    (selectedUser: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) => () => {
+    (selectedUser: {
+      accountId: number;
+      email: string;
+      nickname: string;
+      roles: Record<'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER', boolean>;
+    }) =>
+    () => {
       setSearchValue('');
       updateContents({
         ...contents,
         members: contents.members.filter(
-          (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
-            member.accountId !== selectedUser.accountId,
+          (member: {
+            accountId: number;
+            email: string;
+            nickname: string;
+            roles: Record<'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER', boolean>;
+          }) => member.accountId !== selectedUser.accountId,
         ),
       });
 
@@ -204,7 +219,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
               {searchResults.map(user => (
                 <S.SearchResultItem key={user.accountId} onClick={handleResultClick(user)}>
                   <S.UserProfile>
-                    <Comp.UserImg size="xs" path="https://via.placeholder.com/32x32" />
+                    <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
                     <S.UserInfo>
                       <S.StyledText fontSize={12}>{user.email}</S.StyledText>
                       <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
@@ -244,7 +259,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
               </S.UserProfile>
 
               <S.RoleBadgeList>
-                {roles.map(role => (
+                {roleList.map(role => (
                   <S.RoleBadgeBtn
                     key={role}
                     onClick={() => toggleRoleState(contents.members[0].accountId, role)}
@@ -265,42 +280,49 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
 
           {contents.members
             .slice(1)
-            .map((user: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) => (
-              <S.Row key={user.accountId}>
-                <S.DeleteBtn $cursor={true} onClick={handleRemoveClick(user)}>
-                  <MinusCircle color={PALETTE.LIGHT_BLACK} size={16} />
-                </S.DeleteBtn>
+            .map(
+              (user: {
+                accountId: number;
+                email: string;
+                nickname: string;
+                roles: Record<'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER', boolean>;
+              }) => (
+                <S.Row key={user.accountId}>
+                  <S.DeleteBtn $cursor={true} onClick={handleRemoveClick(user)}>
+                    <MinusCircle color={PALETTE.LIGHT_BLACK} size={16} />
+                  </S.DeleteBtn>
 
-                <S.RowContent>
-                  <S.UserProfile>
-                    <Comp.UserImg size="xs" path="https://via.placeholder.com/32x32" />
-                    <S.UserInfo>
-                      <S.StyledText fontSize={12}>{user.email}</S.StyledText>
-                      <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
-                        {user.nickname}
-                      </S.StyledText>
-                    </S.UserInfo>
-                  </S.UserProfile>
-                  <S.RoleBadgeList>
-                    {roles.map(role => (
-                      <S.RoleBadgeBtn
-                        key={role}
-                        onClick={() => toggleRoleState(user.accountId, role)}
-                        $state={user.roles[role]}
-                      >
-                        <Comp.RoleBadge
-                          role={role}
-                          selectAble={{
-                            state: user.roles[role],
-                            onClick: () => {},
-                          }}
-                        />
-                      </S.RoleBadgeBtn>
-                    ))}
-                  </S.RoleBadgeList>
-                </S.RowContent>
-              </S.Row>
-            ))}
+                  <S.RowContent>
+                    <S.UserProfile>
+                      <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
+                      <S.UserInfo>
+                        <S.StyledText fontSize={12}>{user.email}</S.StyledText>
+                        <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+                          {user.nickname}
+                        </S.StyledText>
+                      </S.UserInfo>
+                    </S.UserProfile>
+                    <S.RoleBadgeList>
+                      {roleList.map(role => (
+                        <S.RoleBadgeBtn
+                          key={role}
+                          onClick={() => toggleRoleState(user.accountId, role)}
+                          $state={user.roles[role]}
+                        >
+                          <Comp.RoleBadge
+                            role={role}
+                            selectAble={{
+                              state: user.roles[role],
+                              onClick: () => {},
+                            }}
+                          />
+                        </S.RoleBadgeBtn>
+                      ))}
+                    </S.RoleBadgeList>
+                  </S.RowContent>
+                </S.Row>
+              ),
+            )}
         </S.MemberList>
       </S.Content>
     </S.Wrapper>

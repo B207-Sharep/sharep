@@ -1,14 +1,45 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import * as S from './InfraTaskCreationFormStyle';
 import * as T from '@/types/components/Modal';
 import * as Comp from '@/components';
-import * as Icon from '@/assets';
 import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
 import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
-import ReactQuill from 'react-quill';
+import { Plus, X } from 'lucide-react';
 
+// const jobList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
+
+const dummyUsers: {
+  accountId: number;
+  nickname: string;
+  jobs: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+  userImageUrl?: string;
+}[] = [
+  {
+    accountId: 1,
+    nickname: '김성제',
+    jobs: ['FRONT_END', 'BACK_END'],
+  },
+  {
+    accountId: 2,
+    nickname: '오상훈',
+    jobs: ['INFRA', 'BACK_END'],
+    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
+  },
+  {
+    accountId: 3,
+    nickname: '오상훈',
+    jobs: ['INFRA', 'BACK_END'],
+    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
+  },
+  {
+    accountId: 4,
+    nickname: '오상훈',
+    jobs: ['INFRA', 'BACK_END'],
+    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
+  },
+];
 export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationFormProps) {
   const { updateContents } = useModal<{
     // TODO:
@@ -27,20 +58,36 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
           onChange={event => updateContents({ ...contents, name: event.target.value })}
         />
       </S.FormItem>
-      {data}
+      <S.FormItem>
+        <S.StyledText fontSize={16} fontWeight={400}>
+          알림
+        </S.StyledText>
+        <S.NotiContainer>
+          {dummyUsers.map(user => (
+            <S.NotiUser>
+              <S.CommitUserInfo>
+                <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
+                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                  {user.nickname}
+                </S.StyledText>
+                <S.JobBadgeList>
+                  {user.jobs.map((job, index) => (
+                    <Comp.JobBadge key={index} job={job} selectAble={false} />
+                  ))}
+                </S.JobBadgeList>
+              </S.CommitUserInfo>
+              <S.DeleteBtn>
+                <X size={10} color={PALETTE.SUB_BLACK} />
+              </S.DeleteBtn>
+            </S.NotiUser>
+          ))}
+          <S.AddUserBtn>
+            <Plus size={10} color={PALETTE.SUB_BLACK} />
+          </S.AddUserBtn>
+        </S.NotiContainer>
+      </S.FormItem>
+
       <S.EditorWrapper>
-        <ReactQuill
-          theme="snow"
-          value={contents.description}
-          modules={DEFAULT_MODULE}
-          formats={DEFAULT_TOOLBAR_FORMAT}
-          onChange={(newDescription: React.SetStateAction<string>) =>
-            updateContents({ ...contents, description: newDescription })
-          }
-          placeholder="내용을 입력하세요."
-        />
-      </S.EditorWrapper>
-      {/* <S.EditorWrapper>
         <Comp.QuillEditor
           width="100%"
           height="400px"
@@ -51,36 +98,7 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
           }
           placeholder="내용을 입력하세요."
         />
-      </S.EditorWrapper> */}
+      </S.EditorWrapper>
     </S.Wrapper>
   );
 }
-
-const data = `<p><strong>123123123123123123213</strong><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDABXkvxQ1LztUgsh9y3TJPqzcn9AKmbtFmtGN5o85nbZnsQME+/+cVl3J3ZGR6fhV64cquPzz61lX0nl2cr5IOCoNZU0dNRmIswMrvn\\"></p><p><br></p><p><br></p><p><br></p><p><strong style="color: rgb(230, 0, 0);"><em><u>바봉~~~</u></em></strong></p>`;
-const DEFAULT_MODULE = {
-  toolbar: [
-    [{ size: ['small', false, 'large'] }],
-    [{ color: [] }, { background: [] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-    ['link', 'image'],
-    ['clean'],
-  ],
-};
-const DEFAULT_TOOLBAR_FORMAT = [
-  'font',
-  'size',
-  'header',
-  'color',
-  'background',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'link',
-  // 'image',
-];
