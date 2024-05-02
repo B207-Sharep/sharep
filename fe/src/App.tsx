@@ -15,6 +15,8 @@ function App() {
 
         <Route path="/projects/:project-id/team-dashboard" element={<Page.TeamDashboard />} />
         <Route path="/:project-id/feature-manual" element={<Page.FeatureManual />} />
+        <Route path="/:project-id/team" element={<div>팀 대쉬보드 페이지</div>} />
+        <Route path="/:project-id/team/member/:member-id" element={<Page.TeamMember />} />
         <Route path="/login" element={<Page.Login />} />
         <Route path="/register" element={<Page.Register />} />
         {/* 나중에 사용자 이름으로 바꿔 */}

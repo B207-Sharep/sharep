@@ -49,11 +49,11 @@ export const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
     color: #1f2328;
+    font-family: Pretendard;
+    font-weight: 400;
   }
 
   body {
-    font-family: Pretendard;
-    font-weight: 400;
     margin: 0px;
     overflow-x: auto;
     overflow-y: auto;

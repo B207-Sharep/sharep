@@ -12,6 +12,7 @@ import { GalleryCardProps } from './components/GalleryCard';
 import { GalleryGridWrapperProps } from './components/GalleryGridWrapper';
 import { ModalProps, ProjectCreationFormProps, TaskCreationFormProps } from './components/Modal';
 import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualTable';
+import { IssueProps } from './components/Issue';
 /** ================= Components ================= */
 
 /** ================= Pages ================= */
@@ -37,6 +38,7 @@ export type {
   ManualTableProps,
   CelProps,
   SelectCelProps,
+  IssueProps,
   TeamDashboardProps,
   TeamMemberProps,
 };
