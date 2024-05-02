@@ -90,7 +90,7 @@ public class SecurityConfig {
                                 authorize
                                         .requestMatchers("/", "/accounts/**", "/h2-console/**",
                                                 "/auth/login", "/swagger-ui/**",
-                                                "/swagger-resources/**", "/v3/api-docs/**").permitAll()
+                                                "/swagger-resources/**", "/v3/api-docs/**", "/gs-guide-websocket/**").permitAll()
                                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                         .anyRequest().authenticated()
 
