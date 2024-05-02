@@ -31,7 +31,7 @@ const dummyResults: {
 const roles = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
 
 export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormProps) {
-  const { updateFormData } = useModal<{
+  const { updateContents } = useModal<{
     title: string;
     bio: string;
     secretKey: string;
@@ -43,7 +43,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
     }[];
   }>(modalId);
   const modalData = useRecoilValue(modalDataState(modalId));
-  const { formData } = modalData;
+  const { contents } = modalData;
   const [searchValue, setSearchValue] = useState<string>('');
   const [searchResults, setSearchResults] = useState<
     {
@@ -57,9 +57,9 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
 
   // 특정 Role의 선택 상태 토글
   const toggleRoleState = (accountId: number, role: 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER') => {
-    updateFormData({
-      ...formData,
-      members: formData.members.map(
+    updateContents({
+      ...contents,
+      members: contents.members.map(
         (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
           member.accountId === accountId
             ? {
@@ -101,7 +101,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
     setSearchValue('');
 
     // 이미 추가된 팀원인지 체크
-    const isMemberAlreadyAdded = formData.members.some(
+    const isMemberAlreadyAdded = contents.members.some(
       (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
         member.accountId === selectedUser.accountId,
     );
@@ -110,9 +110,9 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
         ...selectedUser,
         roles: { FRONT_END: false, BACK_END: false, INFRA: false, DESIGNER: false },
       };
-      updateFormData({
-        ...formData,
-        members: [...formData.members, newMember],
+      updateContents({
+        ...contents,
+        members: [...contents.members, newMember],
       });
     }
     setIsDropdownVisible(false);
@@ -122,9 +122,9 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
   const handleRemoveClick =
     (selectedUser: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) => () => {
       setSearchValue('');
-      updateFormData({
-        ...formData,
-        members: formData.members.filter(
+      updateContents({
+        ...contents,
+        members: contents.members.filter(
           (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
             member.accountId !== selectedUser.accountId,
         ),
@@ -141,8 +141,8 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
         <S.StyledInput
           id="title"
           type="text"
-          value={formData.title}
-          onChange={event => updateFormData({ ...formData, title: event.target.value })}
+          value={contents.title}
+          onChange={event => updateContents({ ...contents, title: event.target.value })}
         />
       </S.FormItem>
       {/* 프로젝트 소개 */}
@@ -151,8 +151,8 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
         <S.StyledInput
           id="bio"
           type="text"
-          value={formData.bio}
-          onChange={event => updateFormData({ ...formData, bio: event.target.value })}
+          value={contents.bio}
+          onChange={event => updateContents({ ...contents, bio: event.target.value })}
         />
       </S.FormItem>
       {/* 프로젝트 token */}
@@ -175,8 +175,8 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
             $icon={true}
             id="secretKey"
             type="text"
-            value={formData.secretKey}
-            onChange={event => updateFormData({ ...formData, secretKey: event.target.value })}
+            value={contents.secretKey}
+            onChange={event => updateContents({ ...contents, secretKey: event.target.value })}
           />
           <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $position="absolute">
             <Icon.GitIcon />
@@ -247,13 +247,13 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
                 {roles.map(role => (
                   <S.RoleBadgeBtn
                     key={role}
-                    onClick={() => toggleRoleState(formData.members[0].accountId, role)}
-                    $state={formData.members[0].roles[role]}
+                    onClick={() => toggleRoleState(contents.members[0].accountId, role)}
+                    $state={contents.members[0].roles[role]}
                   >
                     <Comp.RoleBadge
                       role={role}
                       selectAble={{
-                        state: formData.members[0].roles[role],
+                        state: contents.members[0].roles[role],
                         onClick: () => {},
                       }}
                     />
@@ -263,7 +263,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
             </S.RowContent>
           </S.Row>
 
-          {formData.members
+          {contents.members
             .slice(1)
             .map((user: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) => (
               <S.Row key={user.accountId}>

@@ -13,8 +13,10 @@ export const Wrapper = styled.div`
 export const EditorWrapper = styled.div`
   width: 100%;
   height: 600px;
+  border: 1px solid red;
   .quill {
     height: 100%;
+    /* background-color: black; */
   }
 `;
 
