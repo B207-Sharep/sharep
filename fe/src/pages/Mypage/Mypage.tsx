@@ -28,8 +28,6 @@ const modifiedIssueList = issueList.map(issue => ({
   add: false,
 }));
 
-const years = [2022, 2023, 2024];
-
 export default function Mypage() {
   const [clickedYear, setClickedYear] = useState(2024);
   //   useEffect(() => console.log(clickedYear, 'CY'), [clickedYear]);
@@ -77,7 +75,8 @@ export default function Mypage() {
                   잔디
                 </S.Font>
                 <S.GrassYearWrapper>
-                  {years?.map((year, idx) => (
+                  <S.GrassYear>{clickedYear}</S.GrassYear>
+                  {/* {years?.map((year, idx) => (
                     <S.GrassYear
                       key={idx}
                       onClick={() => setClickedYear(idx)}
@@ -85,7 +84,7 @@ export default function Mypage() {
                     >
                       {year}
                     </S.GrassYear>
-                  ))}
+                  ))} */}
                 </S.GrassYearWrapper>
               </S.GrassTextWrapper>
               <Grass />

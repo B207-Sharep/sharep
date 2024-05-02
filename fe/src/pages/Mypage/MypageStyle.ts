@@ -68,16 +68,14 @@ export const GrassYearWrapper = styled.div`
   align-items: center;
 `;
 
-export const GrassYear = styled.div<{
-  selected?: boolean;
-}>`
+export const GrassYear = styled.div`
   font-size: 16px;
   font-weight: 700;
   padding: 4px 8px;
   border-radius: 6px;
   align-items: center;
-  color: ${props => (props.selected ? `${G.PALETTE.MAIN_WHITE}` : `${G.PALETTE.LIGHT_BLACK}`)};
-  background-color: ${props => (props.selected ? `${G.PALETTE.MAIN_COLOR}` : 'white')};
+  color: ${G.PALETTE.MAIN_WHITE};
+  background-color: ${G.PALETTE.MAIN_COLOR};
 `;
 
 export const Font = styled.div<FontOption>`
