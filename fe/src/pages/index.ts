@@ -11,4 +11,18 @@ import FeatureManual from './FeatureManual/FeatureManual';
 import ScreenManual from './ScreenManual/ScreenManual';
 import InfraManual from './InfraManual/InfraManual';
 
-export { SeoJeong, SungGu, SungJe, CommitHistory, Login, Register, FeatureManual, ScreenManual, InfraManual, Mypage };
+import TeamDashboard from './TeamDashboard/TeamDashboard';
+
+export {
+  SeoJeong,
+  SungGu,
+  SungJe,
+  CommitHistory,
+  Login,
+  Register,
+  FeatureManual,
+  ScreenManual,
+  InfraManual,
+  Mypage,
+  TeamDashboard,
+};
