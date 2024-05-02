@@ -5,8 +5,8 @@ import { GalleryGridWrapper, UserImg } from '@/components';
 import ProjectGridWrapper from '@/components/ProjectGridWrapper/ProjectGridWrapper';
 
 //DUMMY
-import UIMG from '@/assets/imgs/youjack.png';
-import JD from '@/assets/imgs/jdragon.png';
+import JD from '../../../public/lee-jae-yong.png';
+import UIMG from '../../../public/youjack.png';
 import Grass from '@/components/Grass/Grass';
 import * as Comp from '@/components';
 
