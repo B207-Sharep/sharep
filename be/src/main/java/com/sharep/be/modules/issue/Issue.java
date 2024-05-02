@@ -110,6 +110,13 @@ public class Issue {
                 .epic(issueCreate.epic()).priority(issueCreate.priority()).project(project).build();
     }
 
+    public Issue from(IssueUpdate issueUpdate) {
+        return Issue.builder().id(id).issueName(issueUpdate.issueName())
+                .description(issueUpdate.description()).type(type).epic(issueUpdate.epic())
+                .createdAt(createdAt).priority(issueUpdate.priority()).api(api).assignees(assignees)
+                .jobs(jobs).project(project).storyboards(storyboards).build();
+    }
+
     public Issue deleteApi() {
         return Issue.builder().id(id).issueName(issueName).description(description).type(type)
                 .epic(epic).createdAt(createdAt).priority(priority).api(null).assignees(assignees)

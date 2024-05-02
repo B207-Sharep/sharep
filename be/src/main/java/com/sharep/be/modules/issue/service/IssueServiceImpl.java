@@ -40,12 +40,21 @@ public class IssueServiceImpl implements IssueService {
     private final AssigneeRepository assigneeRepository;
 
     @Override
-    public IssueCreated createIssue(Long projectId, IssueCreate issueCreate) {
+    public IssueCreated createIssue(Long projectId, Long accountId, IssueCreate issueCreate) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
 
         Issue issue = issueRepository.save(Issue.from(issueCreate, project));
         apiRepository.save(Api.builder().issue(issue).build());
+
+        IssueType type = issueCreate.type();
+        if (type.equals(IssueType.PRIVATE)) {
+            Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
+                    .orElseThrow(MemberNotFoundException::new);
+
+            assigneeRepository.save(
+                    Assignee.builder().issue(issue).member(member).state(State.YET).build());
+        }
 
         return issue.toCreated();
     }
@@ -72,14 +81,28 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public IssueResponse updateIssue(IssueUpdate issueCreate) {
-        // TODO: 상훈: 수정 권한 체크
-        return null;
+    public void updateIssue(Long id, Long accountId, Long projectId, IssueUpdate issueUpdate) {
+        Issue issue = issueRepository.findById(id).orElseThrow(IssueNotFoundException::new);
+        IssueType type = issue.getType();
+        if (type.equals(IssueType.PRIVATE)) {
+            Long memberId = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
+                    .orElseThrow(MemberNotFoundException::new).getId();
+
+            Assignee assignee = issue.getAssignees().stream().findFirst()
+                    .orElseThrow(AssigneeNotFoundException::new);
+
+            if (!assignee.getMember().getId().equals(memberId)) {
+                throw new UnauthorizedException();
+            }
+        }
+
+        issueRepository.save(issue.from(issueUpdate));
     }
 
     @Override
-    public IssueResponse deleteIssue(Long id) {
-        return null;
+    public void deleteIssue(Long id) {
+        // TODO: 권한 설정
+        issueRepository.deleteById(id);
     }
 
 }
