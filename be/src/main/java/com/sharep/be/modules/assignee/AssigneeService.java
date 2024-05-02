@@ -23,7 +23,7 @@ public class AssigneeService {
 
     public Long update(Long accountId, Long projectId, Long issueId, State state) {
 
-        Member member = memberRepository.findMemberIdByAccountIdAndProjectId(accountId, projectId)
+        Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
                 .orElseThrow(() -> new RuntimeException("해당하는 구성원이 존재하지 않습니다."));
 
         Assignee assignee = assigneeRepository.findByMemberIdAndIssueId(member.getId(), issueId)
@@ -36,7 +36,7 @@ public class AssigneeService {
 
     public Long create(Long projectId, Long issueId, Long accountId) {
 
-        Member member = memberRepository.findMemberByAccountIdAndProjectId(accountId, projectId)
+        Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
                 .orElseThrow(() -> new RuntimeException("해당하는 구성원이 존재하지 않습니다."));
 
         Issue issue = issueRepository.findById(issueId)
@@ -59,7 +59,7 @@ public class AssigneeService {
 
     public Long delete(Long projectId, Long issueId, Long accountId) {
 
-        Member member = memberRepository.findMemberIdByAccountIdAndProjectId(accountId, projectId)
+        Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
                 .orElseThrow(() -> new RuntimeException("해당하는 구성원이 존재하지 않습니다."));
 
         Assignee assignee = assigneeRepository.findByMemberIdAndIssueId(member.getId(), issueId)
