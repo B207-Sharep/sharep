@@ -35,7 +35,7 @@ public class IssueController {
     }
 
     @GetMapping("/private")
-    public ResponseEntity<List<IssueResponse>> getPrivateIssues(@PathVariable Long projectId,
+    public ResponseEntity<List<PrivateIssueResponse>> getPrivateIssues(@PathVariable Long projectId,
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
 
         return ResponseEntity.ok(issueService.getPrivateIssues(projectId, jwtAuthentication.id));
