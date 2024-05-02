@@ -18,8 +18,9 @@ const issueList = [
     id: `${index + 1} 페이지`,
     title: 'SCREEN',
     bio: 'Lorem ipsum',
-    imgs: ['/youjack.png', '/lee-jae-yong.png'],
+    accounts: ['/youjack.png', '/lee-jae-yong.png'],
     createdAt: '2024.04.27',
+    add: false,
   })),
 ];
 //이건 add 추가
@@ -31,25 +32,52 @@ const modifiedIssueList = issueList.map(issue => ({
 export default function Mypage() {
   const [clickedYear, setClickedYear] = useState(2024);
   //   useEffect(() => console.log(clickedYear, 'CY'), [clickedYear]);
-  //   const {
-  //     data: projectListResponse,
-  //     isFetched: projectListFetched,
-  //     isPending: projectListPending,
-  //   } = useQuery({
-  //     queryKey: [{ projectList: `projectList` }],
-  //     queryFn: () =>
-  //       API.getProjectList().then(res => {
-  //         if (res.status === 204) {
-  //           console.log('HI');
-  //           return { projectResponse: '' };
-  //         } else {
-  //           console.log('WHAT? ', res);
-  //         }
-  //         return res.data;
-  //       }),
-  //     retry: false,
-  //     // enabled: !!initalflag,
-  //   });
+  const {
+    data: projectListResponse,
+    isFetched: projectListFetched,
+    isPending: projectListPending,
+  } = useQuery({
+    queryKey: [{ projectList: `projectList` }],
+    queryFn: () =>
+      API.getProjectList().then(res => {
+        let modires = [];
+        if (res.status === 204) {
+          console.log('HI');
+          return { projectListResponse: '' };
+        } else {
+          modires = res.data.map((issue: any) => ({
+            ...issue,
+            add: false,
+          }));
+          console.log('WHAT? ', modires);
+        }
+
+        return modires;
+      }),
+    retry: false,
+    // enabled: !!initalflag,
+  });
+
+  const {
+    data: grassResponse,
+    isFetched: grassFetched,
+    isPending: grassPending,
+  } = useQuery({
+    queryKey: [{ grass: `grass` }],
+    queryFn: () =>
+      API.getGrass().then(res => {
+        if (res.status === 204) {
+          console.log('HI');
+          return { grassResponse: '' };
+        } else {
+          console.log('grass? ', res.data);
+        }
+
+        return res.data;
+      }),
+    retry: false,
+    // enabled: !!initalflag,
+  });
 
   return (
     <>
@@ -87,16 +115,10 @@ export default function Mypage() {
                   ))} */}
                 </S.GrassYearWrapper>
               </S.GrassTextWrapper>
-              <Grass />
+              <Grass grass={grassResponse} />
             </S.GrassWrapper>
           </S.HeaderWrapper>
-          <ProjectGridWrapper issueList={modifiedIssueList}></ProjectGridWrapper>
-          {/* <GallPreryGridWrapper issueList={issueList}></GallPreryGridWrapper> */}
-          {/* <ProjectGridWrapper>
-            <div>dd</div>
-            <div>dd</div>
-            <div>dd</div>
-          </ProjectGridWrapper> */}
+          {projectListFetched ? <ProjectGridWrapper issueList={projectListResponse}></ProjectGridWrapper> : <></>}
         </S.Wrapper>
       </NoneSideBarLayout>
     </>
