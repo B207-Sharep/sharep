@@ -10,7 +10,7 @@ import { useModal } from '@/customhooks';
 export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProps) {
   const projectModal = useModal('project');
 
-  const handleModalOpen = (modalId: string) => {
+  const handleModalOpen = () => {
     projectModal.openModal({
       title: '',
       bio: '',
@@ -34,7 +34,7 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
   return (
     <S.Grid>
       <S.CardList>
-        <S.ProjectAddBtn onClick={() => handleModalOpen('project')}>
+        <S.ProjectAddBtn onClick={handleModalOpen}>
           <ProjectCard key={0} title={'new'} bio={'새로 만들기'} id={'0'} imgs={null} createdAt={null} add={true} />
         </S.ProjectAddBtn>
         <Modal
