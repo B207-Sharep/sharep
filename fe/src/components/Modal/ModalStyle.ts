@@ -124,7 +124,7 @@ export const ModalBody = styled.div`
 `;
 export const ModalFooter = styled.div`
   display: flex;
-  padding: 0px 24px 24px 24px;
+  padding: 24px;
   align-items: flex-start;
   gap: 12px;
   align-self: stretch;

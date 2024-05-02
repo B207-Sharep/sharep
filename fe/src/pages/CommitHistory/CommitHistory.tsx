@@ -30,7 +30,7 @@ const commitDummy: {
   member: {
     memberId: number;
     nickname: string;
-    role: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+    roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
     userImageUrl?: string;
   };
   imageUrl?: string;
@@ -45,7 +45,7 @@ const commitDummy: {
     member: {
       memberId: 1,
       nickname: '임서정',
-      role: ['FRONT_END', 'DESIGNER'],
+      roles: ['FRONT_END', 'DESIGNER'],
     },
     imageUrl: 'https://via.placeholder.com/1440x1024',
   },
@@ -58,7 +58,7 @@ const commitDummy: {
     member: {
       memberId: 2,
       nickname: '오상훈',
-      role: ['BACK_END', 'INFRA'],
+      roles: ['BACK_END', 'INFRA'],
       userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
     },
   },
@@ -71,7 +71,7 @@ const commitDummy: {
     member: {
       memberId: 3,
       nickname: '조성규',
-      role: ['FRONT_END', 'BACK_END'],
+      roles: ['FRONT_END', 'BACK_END'],
       userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/2.jpg',
     },
     imageUrl: 'https://via.placeholder.com/1440x1024',
@@ -85,7 +85,7 @@ const commitDummy: {
     member: {
       memberId: 4,
       nickname: '이승민',
-      role: ['BACK_END', 'INFRA'],
+      roles: ['BACK_END', 'INFRA'],
     },
   },
 ];
@@ -182,7 +182,7 @@ export default function CommitHistory() {
                             <S.DropdowntItem key={value} onClick={() => selectValue(openFilter, value)}>
                               {filter.type === 'member' && (
                                 <S.UserProfile>
-                                  <Comp.UserImg size="xs" path="https://via.placeholder.com/32x32" />
+                                  <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
                                   <S.UserInfo>
                                     <S.StyledText>{value}</S.StyledText>
                                   </S.UserInfo>
@@ -216,7 +216,7 @@ export default function CommitHistory() {
               createdAt={commit.createdAt}
               member={{
                 nickname: commit.member.nickname,
-                role: commit.member.role,
+                roles: commit.member.roles,
                 userImageUrl: commit.member.userImageUrl,
               }}
               {...(commit.imageUrl ? { imageUrl: commit.imageUrl } : {})}

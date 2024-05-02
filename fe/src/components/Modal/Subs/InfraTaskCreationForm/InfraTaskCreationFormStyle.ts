@@ -3,21 +3,16 @@ import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
+  width: 100%;
+  height: 600px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   gap: 16px;
-  align-self: stretch;
+  flex-direction: column;
 `;
 
 export const EditorWrapper = styled.div`
   width: 100%;
-  height: 600px;
-  border: 1px solid red;
-  .quill {
-    height: 100%;
-    /* background-color: black; */
-  }
+  display: flex;
 `;
 
 export const FormItem = styled.div`
@@ -44,4 +39,69 @@ export const StyledInput = styled(InputWithLabel.Input)<{ $icon?: boolean }>`
   &:focus {
     box-shadow: rgba(46, 184, 114, 0.05) 0px 6px 24px 0px, rgba(46, 184, 114, 0.08) 0px 0px 0px 3px;
   }
+`;
+
+export const StyledText = styled.div<{ color?: string; fontSize?: number; fontWeight?: number }>`
+  color: ${props => props.color};
+  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
+  font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const NotiContainer = styled.div`
+  width: 100%;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const NotiUser = styled.div`
+  display: inline-flex;
+  border-radius: 4px;
+  background-color: ${PALETTE.MAIN_BACKGROUND};
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px 8px;
+  gap: 12px;
+`;
+
+export const DeleteBtn = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 3px;
+  cursor: pointer;
+`;
+
+export const CommitUserInfo = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+`;
+export const Img = styled.img<{ width: number; height: number; radius: number }>`
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  border-radius: ${props => props.radius}px;
+  box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
+`;
+
+export const JobBadgeList = styled.div`
+  display: flex;
+  gap: 4px;
+`;
+
+export const AddUserBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${PALETTE.MAIN_BACKGROUND};
+  border-radius: 45px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 `;

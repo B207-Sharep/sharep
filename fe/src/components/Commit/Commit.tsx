@@ -14,7 +14,7 @@ export default function Commit({
   member: {
     // memberId,
     nickname,
-    role,
+    roles,
     userImageUrl,
   },
 }: T.CommitProps) {
@@ -41,15 +41,15 @@ export default function Commit({
             </S.StyledText>
             {/* 유저 정보 + 작업 완료 시간 */}
             <S.CommitUserInfo>
-              <S.Img width={16} height={16} radius={8} src={userImageUrl || 'https://via.placeholder.com/16x16'} />
+              <Comp.UserImg size="sm" path={userImageUrl || 'https://via.placeholder.com/16x16'} />
               <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                 {nickname}
               </S.StyledText>
               <S.RoleBadgeList>
-                {role.map((_role, index) => (
+                {roles.map((role, index) => (
                   <Comp.RoleBadge
                     key={index}
-                    role={_role as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
+                    role={role as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
                     selectAble={false}
                   />
                 ))}
