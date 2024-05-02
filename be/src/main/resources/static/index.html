@@ -26,7 +26,7 @@
     import * as StompJs from '@stomp/stompjs';
 
     const stompClient = new StompJs.Client({
-      brokerURL: 'ws://share-p.com/api/gs-guide-websocket'
+      brokerURL: 'wss://share-p.com/api/gs-guide-websocket'
     });
 
     stompClient.onConnect = (frame) => {
