@@ -41,6 +41,7 @@ public class Assignee {
     @Enumerated(EnumType.STRING)
     private State state;
 
+    // FIXME 수정
     @CreatedDate
     private LocalDateTime startedAt;
 
