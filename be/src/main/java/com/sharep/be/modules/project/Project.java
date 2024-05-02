@@ -30,7 +30,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 @Getter
 @NamedEntityGraph(
         name = "Project.withMembersAndRoles",
-        attributeNodes ={
+        attributeNodes = {
                 @NamedAttributeNode(value = "members", subgraph = "roles"),
                 @NamedAttributeNode(value = "leader")
         },
@@ -43,7 +43,7 @@ public class Project {
     private Long id;
 
     @JoinColumn(name = "account_id", nullable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Account leader;
 
     @Size(min = 1, max = 100)
@@ -70,13 +70,13 @@ public class Project {
         this.createdAt = LocalDateTime.now(); // TODO auditing 달기
     }
 
-    public String createToken(){
+    public String createToken() {
         String random = RandomStringUtils.random(15, true, true);
         this.secretKey = random;
         return random;
     }
 
-    public boolean ifLeader(Account account){
+    public boolean ifLeader(Account account) {
         return leader.equals(account);
     }
 
