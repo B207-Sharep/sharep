@@ -62,23 +62,10 @@ public class JobController {
         );
     }
 
-    // 기여도 조회
-    @GetMapping("/projects/{projectId}/contribution")
-    public ResponseEntity<JobContributionResponse> readJobContribution(
-            @AuthenticationPrincipal JwtAuthentication authentication,
-            @PathVariable @Min(1) Long projectId
-    ){
-
-        
-
-        return null;
-    }
-
-
-    @GetMapping("/job/{year}")
-    public ResponseEntity<JobGrassResponse> grassRead(@PathVariable("year") Integer year,
+    @GetMapping("/jobs")
+    public ResponseEntity<JobGrassResponse> grassRead(
             @AuthenticationPrincipal JwtAuthentication authentication){
-        return ResponseEntity.ok(jobService.readGrass(authentication.id, year));
+        return ResponseEntity.ok(jobService.readGrass(authentication.id));
     }
 
 
