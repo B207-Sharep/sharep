@@ -10,6 +10,8 @@ import Mypage from './Mypage/Mypage';
 import FeatureManual from './FeatureManual/FeatureManual';
 import ScreenManual from './ScreenManual/ScreenManual';
 import InfraManual from './InfraManual/InfraManual';
+import Grass from '@/components/Grass/Grass';
+
 import TeamMember from './TeamMember/TeamMember';
 import TeamDashboard from './TeamDashboard/TeamDashboard';
 
@@ -26,4 +28,5 @@ export {
   Mypage,
   TeamDashboard,
   TeamMember,
+  Grass,
 };

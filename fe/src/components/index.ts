@@ -11,6 +11,8 @@ import QuillEditor from './QuillEditor/QuillEditor';
 import ManualTable from './ManualTable/ManualTable';
 import Modal from './Modal/Modal';
 import GalleryGridWrapper from './GalleryGridWrapper/GalleryGridWrapper';
+import ProjectCard from './ProjectCard/ProjectCard';
+import ProjectGridWrapper from './ProjectGridWrapper/ProjectGridWrapper';
 import Issue from './Issue/Issue';
 import Add from './Button/Add/Add';
 import HistoryBtn from './Button/History/HistoryBtn';
@@ -30,6 +32,8 @@ export {
   QuillEditor,
   Modal,
   GalleryGridWrapper,
+  ProjectCard,
+  ProjectGridWrapper,
   Issue,
   Add,
   HistoryBtn,
