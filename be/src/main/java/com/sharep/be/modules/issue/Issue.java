@@ -2,16 +2,9 @@ package com.sharep.be.modules.issue;
 
 import com.sharep.be.modules.api.Api;
 import com.sharep.be.modules.assignee.Assignee;
-import com.sharep.be.modules.assignee.AssigneeResponse;
-import com.sharep.be.modules.assignee.State;
-import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
-import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
-import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
-import com.sharep.be.modules.issue.IssueResponse.PrivateIssueResponse;
 import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.issue.type.PriorityType;
 import com.sharep.be.modules.job.Job;
-import com.sharep.be.modules.job.JobResponse;
 import com.sharep.be.modules.project.Project;
 import com.sharep.be.modules.storyboard.Storyboard;
 import jakarta.persistence.CascadeType;
@@ -30,9 +23,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDateTime;
-import java.util.EnumMap;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -104,143 +95,20 @@ public class Issue {
         this.storyboards = storyboards;
     }
 
-    public static Issue from(IssueCreate issueCreate, Project project) {
+    public static Issue deleteApiFrom(Issue issue) {
         return Issue.builder()
-                .issueName(issueCreate.issueName())
-                .description(issueCreate.description())
-                .type(issueCreate.type())
-                .epic(issueCreate.epic())
-                .priority(issueCreate.priority())
-                .project(project)
-                .build();
-    }
-
-    public Issue from(IssueUpdate issueUpdate) {
-        return Issue.builder()
-                .id(id)
-                .issueName(issueUpdate.issueName())
-                .description(issueUpdate.description())
-                .type(type)
-                .epic(issueUpdate.epic())
-                .createdAt(createdAt)
-                .priority(issueUpdate.priority())
-                .api(api)
-                .assignees(assignees)
-                .jobs(jobs)
-                .project(project)
-                .storyboards(storyboards)
-                .build();
-    }
-
-    public Issue deleteApi() {
-        return Issue.builder()
-                .id(id)
-                .issueName(issueName)
-                .description(description)
-                .type(type)
-                .epic(epic)
-                .createdAt(createdAt)
-                .priority(priority)
+                .id(issue.getId())
+                .issueName(issue.getIssueName())
+                .description(issue.getDescription())
+                .type(issue.getType())
+                .epic(issue.getEpic())
+                .createdAt(issue.getCreatedAt())
+                .priority(issue.getPriority())
                 .api(null)
-                .assignees(assignees)
-                .jobs(jobs)
-                .project(project)
-                .storyboards(storyboards)
+                .assignees(issue.getAssignees())
+                .jobs(issue.getJobs())
+                .project(issue.getProject())
+                .storyboards(issue.getStoryboards())
                 .build();
-    }
-
-    public IssueCreated toCreated() {
-        return IssueCreated.builder()
-                .id(id)
-                .build();
-    }
-
-    public PrivateIssueResponse toPrivateIssueResponse() {
-        return PrivateIssueResponse.builder()
-                .id(id)
-                .issueName(issueName)
-                .description(description)
-                .type(type)
-                .epic(epic)
-                .createdAt(createdAt)
-                .priority(priority)
-                .state(calculateState(assignees))
-                .assignees(assignees.stream()
-                        .map(assignee -> AssigneeResponse.builder()
-                                .name(assignee.getMember()
-                                        .getAccount()
-                                        .getNickname())
-                                .imageUrl(
-                                        assignee.getMember()
-                                                .getAccount()
-                                                .getImageUrl())
-                                .build())
-                        .toList())
-                .jobs(jobs.stream()
-                        .map(job -> JobResponse.builder()
-                                .id(job.getId())
-                                .name(job.getName())
-                                .description(job.getDescription())
-                                .createdAt(job.getCreatedAt())
-                                .imageUrl(job.getImageUrl())
-                                .build()
-                        ).toList())
-                .build();
-    }
-
-
-    public IssueResponse toResponse() {
-        return IssueResponse.builder()
-                .id(id)
-                .issueName(issueName)
-                .description(description)
-                .type(type)
-                .epic(epic)
-                .createdAt(createdAt)
-                .priority(priority)
-                .state(calculateState(assignees))
-                .api(api.toResponse())
-                .assignees(assignees.stream()
-                        .map(assignee -> AssigneeResponse.builder()
-                                .name(assignee.getMember()
-                                        .getAccount()
-                                        .getNickname())
-                                .imageUrl(
-                                        assignee.getMember()
-                                                .getAccount()
-                                                .getImageUrl())
-                                .build())
-                        .toList())
-                .jobs(jobs.stream()
-                        .map(job -> JobResponse.builder()
-                                .id(job.getId())
-                                .name(job.getName())
-                                .description(
-                                        job.getDescription())
-                                .createdAt(
-                                        job.getCreatedAt())
-                                .imageUrl(
-                                        job.getImageUrl())
-                                .build())
-                        .toList())
-                .build();
-    }
-
-    private State calculateState(Set<Assignee> assignees) {
-        EnumMap<State, Long> stateCount = assignees.stream().collect(
-                Collectors.groupingBy(Assignee::getState, () -> new EnumMap<>(State.class),
-                        Collectors.counting()));
-
-        long size = assignees.size();
-        long done = stateCount.getOrDefault(State.DONE, 0L);
-        long yet = stateCount.getOrDefault(State.YET, 0L);
-
-        if (yet == size) {
-            return State.YET;
-        } else if (done == size) {
-            return State.DONE;
-        } else {
-            return State.NOW;
-        }
     }
 }
