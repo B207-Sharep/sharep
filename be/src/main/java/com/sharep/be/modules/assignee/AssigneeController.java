@@ -37,11 +37,12 @@ public class AssigneeController {
             @RequestBody Map<String, State> request
     ) {
 
-        if(!request.containsKey("state")){
+        if (!request.containsKey("state")) {
             throw new RuntimeException("상태값을 입력하지 않았습니다.");
         }
 
-        Long assigneeId = assigneeService.update(accountId, projectId, issueId, request.get("state"));
+        Long assigneeId = assigneeService.update(accountId, projectId, issueId,
+                request.get("state"));
 
         return ResponseEntity.ok(
                 new AssigneeIdResponse(assigneeId)
@@ -55,7 +56,7 @@ public class AssigneeController {
             @PathVariable @Min(1) Long projectId,
             @PathVariable @Min(1) Long issueId,
             @PathVariable @Min(1) Long accountId
-    ){
+    ) {
 
         Long assigneeId = assigneeService.create(projectId, issueId, accountId);
 
@@ -72,7 +73,7 @@ public class AssigneeController {
             @PathVariable @Min(1) Long projectId,
             @PathVariable @Min(1) Long issueId,
             @PathVariable @Min(1) Long accountId
-    ){
+    ) {
 
         Long assigneeId = assigneeService.delete(projectId, issueId, accountId);
 
@@ -82,10 +83,10 @@ public class AssigneeController {
     }
 
     // 팀 페이지 - 팀원별 진행 이슈 조회
-    @GetMapping("/projects/{projectId}/issues")
+    @GetMapping("/projects/{projectId}/now/issues")
     public ResponseEntity<List<AssigneeProjectNowIssueResponse>> readProjectNowIssue(
             @PathVariable @Min(1) Long projectId
-    ){
+    ) {
 
         return ResponseEntity.ok(
                 assigneeService.readProjectNowIssue(projectId)
@@ -95,7 +96,8 @@ public class AssigneeController {
                             Issue issue = tuple.get(0, Issue.class);
 
                             if (account != null && issue != null) {
-                                return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
+                                return new AssigneeProjectNowIssueResponse(
+                                        AccountDto.toDto(account), issue.toResponse());
                             }
 
                             throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");
@@ -106,11 +108,11 @@ public class AssigneeController {
 
 
     // 본인 진행 이슈 조회
-    @GetMapping("/projects/{projectId}/own/issues")
+    @GetMapping("/projects/{projectId}/own/now/issues")
     public ResponseEntity<List<AssigneeProjectNowIssueResponse>> readProjectNowOwnIssue(
             @AuthenticationPrincipal JwtAuthentication authentication,
             @PathVariable @Min(1) Long projectId
-    ){
+    ) {
 
         return ResponseEntity.ok(
                 assigneeService.readProjectNowOwnIssue(projectId, authentication.id)
@@ -120,7 +122,8 @@ public class AssigneeController {
                             Issue issue = tuple.get(0, Issue.class);
 
                             if (account != null && issue != null) {
-                                return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
+                                return new AssigneeProjectNowIssueResponse(
+                                        AccountDto.toDto(account), issue.toResponse());
                             }
 
                             throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");
