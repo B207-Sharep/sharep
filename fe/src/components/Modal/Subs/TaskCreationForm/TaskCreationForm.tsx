@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import * as S from './TaskCreationFormStyle';
 import * as T from '@/types/components/Modal';
 import * as Comp from '@/components';
@@ -17,7 +17,6 @@ export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps
   const modalData = useRecoilValue(modalDataState(modalId));
   const { formData } = modalData;
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // const [preview, setPreview] = useState<string>('');
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -43,26 +42,38 @@ export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps
       const reader = new FileReader();
       reader.onloadend = () => {
         updateFormData({ ...formData, imageUrl: reader.result as string });
-        // setPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('!!', formData);
-    updateFormData({ ...formData, description: event.target.value });
+    const { id, value } = event.target;
+    updateFormData({ ...formData, [id]: value });
   };
 
   return (
-    <S.TaskCreationFormWrapper>
+    <S.Wrapper>
       <S.IssueTitle>
-        <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
-          # 진행 중인 이슈 제목
-        </S.StyledText>
-        <Comp.StatusBadge status="NOW" />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            gap: 6,
+            padding: '2px',
+          }}
+        >
+          <S.IssueBadge>
+            <S.StyledText color={PALETTE.MAIN_WHITE} fontSize={16}>
+              Issue
+            </S.StyledText>
+          </S.IssueBadge>
+          <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
+            진행 중인 이슈 이름
+          </S.StyledText>
+        </div>
       </S.IssueTitle>
-
       <S.Container onClick={handleButtonClick} onDragOver={handleDragOver} onDrop={handleDrop}>
         <S.HiddenFileInput type="file" ref={fileInputRef} onChange={handleChange} accept="image/*" />
         {formData.imageUrl ? (
@@ -85,9 +96,20 @@ export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps
       </S.Container>
 
       <S.FormItem>
-        <Comp.InputWithLabel.Label labelFor="description">작업 메시지</Comp.InputWithLabel.Label>
-        <S.StyledInput id="description" type="text" value={formData.description} onChange={handleInputChange} />
+        <Comp.InputWithLabel.Label labelFor="name">작업명</Comp.InputWithLabel.Label>
+        <S.StyledInput id="name" type="text" value={formData.name} onChange={handleInputChange} />
       </S.FormItem>
-    </S.TaskCreationFormWrapper>
+      <S.FormItem>
+        <Comp.InputWithLabel.Label labelFor="description">작업 메시지</Comp.InputWithLabel.Label>
+
+        <S.StyledInput
+          id="description"
+          type="text"
+          placeholder="작업 내용을 입력하세요."
+          value={formData.description}
+          onChange={handleInputChange}
+        />
+      </S.FormItem>
+    </S.Wrapper>
   );
 }
