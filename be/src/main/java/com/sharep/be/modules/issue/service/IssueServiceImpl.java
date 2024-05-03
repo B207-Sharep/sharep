@@ -54,6 +54,7 @@ public class IssueServiceImpl implements IssueService {
 
             assigneeRepository.save(
                     Assignee.builder().issue(issue).member(member).state(State.YET).build());
+
         }
 
         return issue.toCreated();
