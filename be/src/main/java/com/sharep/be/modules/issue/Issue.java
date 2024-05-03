@@ -105,53 +105,125 @@ public class Issue {
     }
 
     public static Issue from(IssueCreate issueCreate, Project project) {
-        return Issue.builder().issueName(issueCreate.issueName())
-                .description(issueCreate.description()).type(issueCreate.type())
-                .epic(issueCreate.epic()).priority(issueCreate.priority()).project(project).build();
+        return Issue.builder()
+                .issueName(issueCreate.issueName())
+                .description(issueCreate.description())
+                .type(issueCreate.type())
+                .epic(issueCreate.epic())
+                .priority(issueCreate.priority())
+                .project(project)
+                .build();
     }
 
     public Issue from(IssueUpdate issueUpdate) {
-        return Issue.builder().id(id).issueName(issueUpdate.issueName())
-                .description(issueUpdate.description()).type(type).epic(issueUpdate.epic())
-                .createdAt(createdAt).priority(issueUpdate.priority()).api(api).assignees(assignees)
-                .jobs(jobs).project(project).storyboards(storyboards).build();
+        return Issue.builder()
+                .id(id)
+                .issueName(issueUpdate.issueName())
+                .description(issueUpdate.description())
+                .type(type)
+                .epic(issueUpdate.epic())
+                .createdAt(createdAt)
+                .priority(issueUpdate.priority())
+                .api(api)
+                .assignees(assignees)
+                .jobs(jobs)
+                .project(project)
+                .storyboards(storyboards)
+                .build();
     }
 
     public Issue deleteApi() {
-        return Issue.builder().id(id).issueName(issueName).description(description).type(type)
-                .epic(epic).createdAt(createdAt).priority(priority).api(null).assignees(assignees)
-                .jobs(jobs).project(project).storyboards(storyboards).build();
+        return Issue.builder()
+                .id(id)
+                .issueName(issueName)
+                .description(description)
+                .type(type)
+                .epic(epic)
+                .createdAt(createdAt)
+                .priority(priority)
+                .api(null)
+                .assignees(assignees)
+                .jobs(jobs)
+                .project(project)
+                .storyboards(storyboards)
+                .build();
     }
 
     public IssueCreated toCreated() {
-        return IssueCreated.builder().id(id).build();
+        return IssueCreated.builder()
+                .id(id)
+                .build();
     }
 
     public PrivateIssueResponse toPrivateIssueResponse() {
-        return PrivateIssueResponse.builder().id(id).issueName(issueName).description(description)
-                .type(type).epic(epic).createdAt(createdAt).priority(priority)
-                .state(calculateState(assignees)).assignees(assignees.stream()
+        return PrivateIssueResponse.builder()
+                .id(id)
+                .issueName(issueName)
+                .description(description)
+                .type(type)
+                .epic(epic)
+                .createdAt(createdAt)
+                .priority(priority)
+                .state(calculateState(assignees))
+                .assignees(assignees.stream()
                         .map(assignee -> AssigneeResponse.builder()
-                                .name(assignee.getMember().getAccount().getNickname())
-                                .imageUrl(assignee.getMember().getAccount().getImageUrl()).build())
-                        .toList()).jobs(jobs.stream()
-                        .map(job -> JobResponse.builder().id(job.getId()).name(job.getName())
-                                .description(job.getDescription()).createdAt(job.getCreatedAt())
-                                .imageUrl(job.getImageUrl()).build()).toList()).build();
+                                .name(assignee.getMember()
+                                        .getAccount()
+                                        .getNickname())
+                                .imageUrl(
+                                        assignee.getMember()
+                                                .getAccount()
+                                                .getImageUrl())
+                                .build())
+                        .toList())
+                .jobs(jobs.stream()
+                        .map(job -> JobResponse.builder()
+                                .id(job.getId())
+                                .name(job.getName())
+                                .description(job.getDescription())
+                                .createdAt(job.getCreatedAt())
+                                .imageUrl(job.getImageUrl())
+                                .build()
+                        ).toList())
+                .build();
     }
 
 
     public IssueResponse toResponse() {
-        return IssueResponse.builder().id(id).issueName(issueName).description(description)
-                .type(type).epic(epic).createdAt(createdAt).priority(priority)
-                .state(calculateState(assignees)).api(api.toResponse()).assignees(assignees.stream()
+        return IssueResponse.builder()
+                .id(id)
+                .issueName(issueName)
+                .description(description)
+                .type(type)
+                .epic(epic)
+                .createdAt(createdAt)
+                .priority(priority)
+                .state(calculateState(assignees))
+                .api(api.toResponse())
+                .assignees(assignees.stream()
                         .map(assignee -> AssigneeResponse.builder()
-                                .name(assignee.getMember().getAccount().getNickname())
-                                .imageUrl(assignee.getMember().getAccount().getImageUrl()).build())
-                        .toList()).jobs(jobs.stream()
-                        .map(job -> JobResponse.builder().id(job.getId()).name(job.getName())
-                                .description(job.getDescription()).createdAt(job.getCreatedAt())
-                                .imageUrl(job.getImageUrl()).build()).toList()).build();
+                                .name(assignee.getMember()
+                                        .getAccount()
+                                        .getNickname())
+                                .imageUrl(
+                                        assignee.getMember()
+                                                .getAccount()
+                                                .getImageUrl())
+                                .build())
+                        .toList())
+                .jobs(jobs.stream()
+                        .map(job -> JobResponse.builder()
+                                .id(job.getId())
+                                .name(job.getName())
+                                .description(
+                                        job.getDescription())
+                                .createdAt(
+                                        job.getCreatedAt())
+                                .imageUrl(
+                                        job.getImageUrl())
+                                .build())
+                        .toList())
+                .build();
     }
 
     private State calculateState(Set<Assignee> assignees) {
