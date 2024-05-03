@@ -7,7 +7,6 @@ export const RelativeWrapper = styled.div`
   border-radius: 12px;
   background-color: white;
   box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.05);
-  position: relative;
 
   span {
     overflow: hidden;
@@ -73,7 +72,7 @@ export const TitleWrapper = styled.div`
   }
 `;
 
-export const RecentlyCommit = styled.p`
+export const RecentlyCommit = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -85,20 +84,20 @@ export const RecentlyCommit = styled.p`
     color: ${PALETTE.LIGHT_BLACK};
   }
 
-  div {
+  p {
     display: flex;
     gap: 4px;
     width: calc(100% - (42px + 8px + 24px));
   }
 
-  div > span {
+  p > span {
     width: calc(100% - 16px);
     height: 100%;
     text-align: left;
     font-size: 12px;
   }
 
-  div > span:hover::after {
+  p > span:hover::after {
     content: attr(aria-label);
     position: absolute;
     top: 20px;
