@@ -5,13 +5,19 @@ import static org.apache.commons.lang3.math.NumberUtils.toLong;
 import com.sharep.be.modules.project.ProjectRepository;
 import com.sharep.be.modules.security.JwtAuthenticationTokenFilter;
 import com.sharep.be.modules.security.ProjectBasedVoter;
+import com.sharep.be.modules.security.ProjectVoter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -25,8 +31,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
@@ -82,7 +91,6 @@ public class SecurityConfig {
                                                 "/auth/login", "/jobs/**", "/gs-guide-websocket/**",
                                                 "/index.html", "/swagger-ui/**",
                                                 "/swagger-resources/**", "/v3/api-docs/**").permitAll()
-
                                         .requestMatchers("/projects/*/**").access(customBasedVoter())
                                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                         .anyRequest().authenticated()
@@ -137,6 +145,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
 }
