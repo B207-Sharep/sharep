@@ -5,6 +5,7 @@ import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.assignee.response.AssigneeIdResponse;
 import com.sharep.be.modules.assignee.response.AssigneeProjectNowIssueResponse;
 import com.sharep.be.modules.issue.Issue;
+import com.sharep.be.modules.issue.IssueResponse;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.constraints.Min;
 import java.util.List;
@@ -97,7 +98,7 @@ public class AssigneeController {
 
                             if (account != null && issue != null) {
                                 return new AssigneeProjectNowIssueResponse(
-                                        AccountDto.toDto(account), issue.toResponse());
+                                        AccountDto.toDto(account), IssueResponse.from(issue));
                             }
 
                             throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");
@@ -123,7 +124,7 @@ public class AssigneeController {
 
                             if (account != null && issue != null) {
                                 return new AssigneeProjectNowIssueResponse(
-                                        AccountDto.toDto(account), issue.toResponse());
+                                        AccountDto.toDto(account), IssueResponse.from(issue));
                             }
 
                             throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");

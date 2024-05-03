@@ -44,16 +44,18 @@ public class IssueController {
     @GetMapping("/{issueId}")
     public ResponseEntity<IssueResponse> getIssue(@PathVariable Long issueId,
             @PathVariable Long projectId) {
-        return ResponseEntity.ok(issueService.getIssue(issueId));
+
+        return ResponseEntity.ok(IssueResponse.from(issueService.getIssue(issueId)));
     }
 
     @PostMapping
     private ResponseEntity<IssueCreated> createIssue(@PathVariable Long projectId,
             @RequestBody @Valid IssueCreate issueCreate,
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
-        IssueCreated created = issueService.createIssue(projectId, jwtAuthentication.id,
-                issueCreate);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(IssueCreated.from(
+                        issueService.createIssue(projectId, jwtAuthentication.id, issueCreate)));
     }
 
 

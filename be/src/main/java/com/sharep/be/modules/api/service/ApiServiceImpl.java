@@ -20,7 +20,8 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public void updateApi(Long apiId, ApiUpdate apiUpdate) {
         Api api = apiRepository.findById(apiId).orElseThrow(ApiNotFoundException::new);
-        apiRepository.save(api.from(apiUpdate));
+
+        apiRepository.save(apiUpdate.toEntityWith(api));
     }
 
     @Override
@@ -28,7 +29,7 @@ public class ApiServiceImpl implements ApiService {
         Issue issue = issueRepository.findById(apiId).orElseThrow(IssueNotFoundException::new);
         Api api = issue.getApi();
 
-        issueRepository.save(issue.deleteApi());
+        issueRepository.save(Issue.deleteApiFrom(issue));
         apiRepository.delete(api);
     }
 }
