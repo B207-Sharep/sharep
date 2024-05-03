@@ -4,20 +4,17 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import com.sharep.be.modules.project.Project;
 import com.sharep.be.modules.project.ProjectRepository;
-import com.sharep.be.modules.project.ProjectService;
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
-
+@Slf4j
 public class ProjectBasedVoter implements AuthorizationManager<RequestAuthorizationContext> {
     private final ProjectRepository projectRepository;
     private final Function<String, Long> idExtractor;
@@ -39,17 +36,20 @@ public class ProjectBasedVoter implements AuthorizationManager<RequestAuthorizat
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication,
             RequestAuthorizationContext context) {
-        JwtAuthentication jwtAuthentication = (JwtAuthentication) authentication.get();
+        log.info("======== security project based voter in ========");
+        JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication.get();
+        JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
 
-        System.out.println("=============voter ========");
 
         Long projectId = obtainTargetId(context.getRequest());
 
-        List<Project> projects = projectRepository.findAllByAccountId(jwtAuthentication.id);
+        List<Project> projects = projectRepository.findAllByAccountId(principal.id);
 
         if(projects.stream().map(Project::getId).anyMatch(p -> p.equals(projectId))){
+            log.info("======== granted voter out ========");
             return new AuthorizationDecision(true);
         }
+        log.info("======== not granted voter out ========");
         return new AuthorizationDecision(false);
     }
 

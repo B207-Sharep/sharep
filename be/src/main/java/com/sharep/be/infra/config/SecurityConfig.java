@@ -92,9 +92,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize.requestMatchers("/", "/accounts/**", "/h2-console/**",
-                                                "/auth/login", "/jobs/**", "/projects/**", "/gs-guide-websocket/**",
+                                                "/auth/login", "/jobs/**", "/gs-guide-websocket/**",
                                                 "/index.html", "/swagger-ui/**",
                                                 "/swagger-resources/**", "/v3/api-docs/**").permitAll()
+
                                         .requestMatchers("/projects/*/**").access(customBasedVoter())
                                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                         .anyRequest().authenticated()
