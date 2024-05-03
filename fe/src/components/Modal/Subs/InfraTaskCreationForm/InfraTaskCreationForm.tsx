@@ -11,30 +11,30 @@ import { Plus, X } from 'lucide-react';
 const dummyUsers: {
   accountId: number;
   nickname: string;
-  jobs: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+  roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
   userImageUrl?: string;
 }[] = [
   {
     accountId: 1,
     nickname: '임서정',
-    jobs: ['FRONT_END', 'DESIGNER'],
+    roles: ['FRONT_END', 'DESIGNER'],
   },
   {
     accountId: 2,
     nickname: '오상훈',
-    jobs: ['INFRA', 'BACK_END'],
+    roles: ['INFRA', 'BACK_END'],
     userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
   },
   {
     accountId: 3,
     nickname: '조성규',
-    jobs: ['FRONT_END', 'BACK_END'],
+    roles: ['FRONT_END', 'BACK_END'],
     userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/2.jpg',
   },
   {
     accountId: 4,
     nickname: '김성제',
-    jobs: ['INFRA', 'BACK_END'],
+    roles: ['INFRA', 'BACK_END'],
     userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/3.jpg',
   },
 ];
@@ -45,7 +45,7 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
     notiUsers: {
       accountId: number;
       nickname: string;
-      jobs: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+      roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
       userImageUrl?: string;
     }[];
     description: string;
@@ -54,24 +54,20 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
   const { contents } = modalData;
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState('left');
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const addbBtnRef = useRef<HTMLDivElement | null>(null);
   const notiContainerRef = useRef<HTMLDivElement | null>(null);
-
-  const toggleDropdown = () => {
-    setIsDropdownVisible(!isDropdownVisible);
-  };
 
   const handleAddNotiUser = (userToAdd: {
     accountId: number;
     nickname: string;
-    jobs: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+    roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
     userImageUrl?: string;
   }) => {
     const isAlreadyAdded = contents.notiUsers.some(
       (user: {
         accountId: number;
         nickname: string;
-        jobs: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+        roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
         userImageUrl?: string;
       }) => user.accountId === userToAdd.accountId,
     );
@@ -79,44 +75,64 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
     if (!isAlreadyAdded) {
       updateContentByKey('notiUsers', [...contents.notiUsers, userToAdd]);
     }
+
+    setIsDropdownVisible(false);
+  };
+
+  // 추가된 팀원 목록에서 팀원 삭제
+  const handleRemoveNotiUser =
+    (selectedUser: {
+      accountId: number;
+      nickname: string;
+      roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+      userImageUrl?: string;
+    }) =>
+    () => {
+      updateContentByKey(
+        'notiUsers',
+        contents.notiUsers.filter(
+          (notiUser: {
+            accountId: number;
+            nickname: string;
+            roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+            userImageUrl?: string;
+          }) => notiUser.accountId !== selectedUser.accountId,
+        ),
+      );
+
+      setIsDropdownVisible(false);
+    };
+
+  const toggleDropdown = () => {
+    if (!isDropdownVisible) handleDropdownPosition();
+    setIsDropdownVisible(!isDropdownVisible);
+  };
+
+  const handleDropdownPosition = () => {
+    const notiContainerRect = notiContainerRef.current?.getBoundingClientRect();
+    const addBtnRect = addbBtnRef.current?.getBoundingClientRect();
+
+    if (notiContainerRect && addBtnRect) {
+      setDropdownPosition(addBtnRect.right + 250 < notiContainerRect.right ? 'left' : 'right');
+    }
   };
 
   // 화면의 크기에 따라서 dropdown의 위치 동적으로 조정
   useEffect(() => {
-    const handleResize = () => {
-      if (dropdownRef.current && notiContainerRef.current) {
-        const dropdownChildren = dropdownRef.current.children;
-        let maxWidth = 0;
+    console.log('resize');
+    handleDropdownPosition();
 
-        Array.from(dropdownChildren).forEach(child => {
-          const rect = child.getBoundingClientRect();
-          maxWidth = Math.max(maxWidth, rect.width);
-        });
-
-        const dropdownRect = dropdownRef.current.getBoundingClientRect();
-        const notiContainerRect = notiContainerRef.current.getBoundingClientRect();
-
-        if (dropdownRect.right + maxWidth < notiContainerRect.right) {
-          setDropdownPosition('left');
-        } else {
-          setDropdownPosition('right');
-        }
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    handleResize();
+    window.addEventListener('resize', handleDropdownPosition);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleDropdownPosition);
     };
-  }, [dropdownRef, notiContainerRef]);
+  }, [addbBtnRef, notiContainerRef]);
 
   // dropdown 외 다른 컴포넌트 클릭시 dropdown 안 보이게 설정
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (addbBtnRef.current && !addbBtnRef.current.contains(event.target as Node)) {
         setIsDropdownVisible(false);
       }
     }
@@ -125,7 +141,7 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [dropdownRef]);
+  }, [addbBtnRef]);
 
   return (
     <S.Wrapper>
@@ -147,7 +163,7 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
             (user: {
               accountId: number;
               nickname: string;
-              jobs: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+              roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
               userImageUrl?: string;
             }) => (
               <S.NotiUser key={user.accountId}>
@@ -156,43 +172,47 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
                   <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                     {user.nickname}
                   </S.StyledText>
-                  <S.JobBadgeList>
-                    {user.jobs.map((job, index) => (
-                      <Comp.JobBadge key={index} job={job} selectAble={false} />
+                  <S.RoleBadgeList>
+                    {user.roles.map((role, index) => (
+                      <Comp.RoleBadge key={index} role={role} selectAble={false} />
                     ))}
-                  </S.JobBadgeList>
+                  </S.RoleBadgeList>
                 </S.UserInfo>
-                <S.DeleteBtn>
+                <S.DeleteBtn onClick={handleRemoveNotiUser(user)}>
                   <X size={10} color={PALETTE.SUB_BLACK} />
                 </S.DeleteBtn>
               </S.NotiUser>
             ),
           )}
-          <S.AddUserBtn ref={dropdownRef} onClick={toggleDropdown}>
-            <Plus size={10} color={PALETTE.SUB_BLACK} />
-            <S.Dropdown $isDropdownVisible={isDropdownVisible} $dropdownPosition={dropdownPosition}>
-              {dummyUsers.map(user => (
-                <S.DropdowntItem key={user.accountId} onClick={() => handleAddNotiUser(user)}>
-                  <S.UserInfo>
-                    <S.UserProfile>
-                      <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
-                      <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-                        {user.nickname}
-                      </S.StyledText>
-                    </S.UserProfile>
-                    <S.JobBadgeList>
-                      {user.jobs.map((job, index) => (
-                        <Comp.JobBadge
-                          key={index}
-                          job={job as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
-                          selectAble={false}
-                        />
-                      ))}
-                    </S.JobBadgeList>
-                  </S.UserInfo>
-                </S.DropdowntItem>
-              ))}
-            </S.Dropdown>
+          <S.AddUserBtn ref={addbBtnRef}>
+            <S.Icon onClick={toggleDropdown}>
+              <Plus size={10} color={PALETTE.SUB_BLACK} />
+            </S.Icon>
+            {isDropdownVisible && (
+              <S.Dropdown $dropdownPosition={dropdownPosition}>
+                {dummyUsers.map(user => (
+                  <S.DropdowntItem key={user.accountId} onClick={() => handleAddNotiUser(user)}>
+                    <S.UserInfo>
+                      <S.UserProfile>
+                        <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
+                        <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                          {user.nickname}
+                        </S.StyledText>
+                      </S.UserProfile>
+                      <S.RoleBadgeList>
+                        {user.roles.map((role, index) => (
+                          <Comp.RoleBadge
+                            key={index}
+                            role={role as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
+                            selectAble={false}
+                          />
+                        ))}
+                      </S.RoleBadgeList>
+                    </S.UserInfo>
+                  </S.DropdowntItem>
+                ))}
+              </S.Dropdown>
+            )}
           </S.AddUserBtn>
         </S.NotiContainer>
       </S.FormItem>

@@ -56,7 +56,6 @@ export const NotiContainer = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-  overflow-x: visible;
 `;
 
 export const NotiUser = styled.div`
@@ -84,7 +83,7 @@ export const Img = styled.img<{ width: number; height: number; radius: number }>
   box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
 `;
 
-export const JobBadgeList = styled.div`
+export const RoleBadgeList = styled.div`
   display: flex;
   gap: 4px;
 `;
@@ -93,21 +92,13 @@ export const AddUserBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${PALETTE.MAIN_BACKGROUND};
-  border-radius: 45px;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
   position: relative;
-  &:hover {
-    box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
-  }
 `;
 
-export const Dropdown = styled.div<{ $isDropdownVisible: boolean; $dropdownPosition: string }>`
-  display: ${props => (props.$isDropdownVisible ? 'flex' : 'none')};
+export const Dropdown = styled.div<{ $dropdownPosition: string }>`
+  display: flex;
   position: absolute;
-  bottom: 0%;
+  top: -100%;
   ${props => `${props.$dropdownPosition} : 150%;`}
   margin-top: 4px;
   padding-top: 8px;
@@ -152,4 +143,17 @@ export const UserProfile = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 8px;
+`;
+export const Icon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${PALETTE.MAIN_BACKGROUND};
+  border-radius: 45px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
+  }
 `;

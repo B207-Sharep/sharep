@@ -107,7 +107,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
 
     // 이미 추가된 팀원인지 체크
     const isMemberAlreadyAdded = contents.members.some(
-      (member: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) =>
+      (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
         member.accountId === selectedUser.accountId,
     );
     if (!isMemberAlreadyAdded) {
