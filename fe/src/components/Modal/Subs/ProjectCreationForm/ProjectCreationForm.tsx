@@ -28,7 +28,7 @@ const dummyResults: {
   // { accountId: 9, email: 'jack@ssafy.com', nickname: '유재건' },
 ];
 
-const jobs = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
+const roles = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
 
 export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormProps) {
   const { updateFormData } = useModal<{
@@ -39,7 +39,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
       accountId: number;
       email: string;
       nickname: string;
-      jobs: { [key: string]: boolean };
+      roles: { [key: string]: boolean };
     }[];
   }>(modalId);
   const modalData = useRecoilValue(modalDataState(modalId));
@@ -55,18 +55,18 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  // 특정 Job의 선택 상태 토글
-  const toggleJobState = (accountId: number, job: 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER') => {
+  // 특정 Role의 선택 상태 토글
+  const toggleRoleState = (accountId: number, role: 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER') => {
     updateFormData({
       ...formData,
       members: formData.members.map(
-        (member: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) =>
+        (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
           member.accountId === accountId
             ? {
                 ...member,
-                jobs: {
-                  ...member.jobs,
-                  [job]: !member.jobs[job],
+                roles: {
+                  ...member.roles,
+                  [role]: !member.roles[role],
                 },
               }
             : member,
@@ -102,11 +102,14 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
 
     // 이미 추가된 팀원인지 체크
     const isMemberAlreadyAdded = formData.members.some(
-      (member: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) =>
+      (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
         member.accountId === selectedUser.accountId,
     );
     if (!isMemberAlreadyAdded) {
-      const newMember = { ...selectedUser, jobs: { FRONT_END: false, BACK_END: false, INFRA: false, DESIGNER: false } };
+      const newMember = {
+        ...selectedUser,
+        roles: { FRONT_END: false, BACK_END: false, INFRA: false, DESIGNER: false },
+      };
       updateFormData({
         ...formData,
         members: [...formData.members, newMember],
@@ -117,12 +120,12 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
 
   // 추가된 팀원 목록에서 팀원 삭제
   const handleRemoveClick =
-    (selectedUser: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) => () => {
+    (selectedUser: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) => () => {
       setSearchValue('');
       updateFormData({
         ...formData,
         members: formData.members.filter(
-          (member: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) =>
+          (member: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) =>
             member.accountId !== selectedUser.accountId,
         ),
       });
@@ -240,29 +243,29 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
                 </S.UserInfo>
               </S.UserProfile>
 
-              <S.JobBadgeList>
-                {jobs.map(job => (
-                  <S.JobBadgeBtn
-                    key={job}
-                    onClick={() => toggleJobState(formData.members[0].accountId, job)}
-                    $state={formData.members[0].jobs[job]}
+              <S.RoleBadgeList>
+                {roles.map(role => (
+                  <S.RoleBadgeBtn
+                    key={role}
+                    onClick={() => toggleRoleState(formData.members[0].accountId, role)}
+                    $state={formData.members[0].roles[role]}
                   >
-                    <Comp.JobBadge
-                      job={job}
+                    <Comp.RoleBadge
+                      role={role}
                       selectAble={{
-                        state: formData.members[0].jobs[job],
+                        state: formData.members[0].roles[role],
                         onClick: () => {},
                       }}
                     />
-                  </S.JobBadgeBtn>
+                  </S.RoleBadgeBtn>
                 ))}
-              </S.JobBadgeList>
+              </S.RoleBadgeList>
             </S.RowContent>
           </S.Row>
 
           {formData.members
             .slice(1)
-            .map((user: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) => (
+            .map((user: { accountId: number; email: string; nickname: string; roles: { [key: string]: boolean } }) => (
               <S.Row key={user.accountId}>
                 <S.DeleteBtn $cursor={true} onClick={handleRemoveClick(user)}>
                   <MinusCircle color={PALETTE.LIGHT_BLACK} size={16} />
@@ -278,23 +281,23 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
                       </S.StyledText>
                     </S.UserInfo>
                   </S.UserProfile>
-                  <S.JobBadgeList>
-                    {jobs.map(job => (
-                      <S.JobBadgeBtn
-                        key={job}
-                        onClick={() => toggleJobState(user.accountId, job)}
-                        $state={user.jobs[job]}
+                  <S.RoleBadgeList>
+                    {roles.map(role => (
+                      <S.RoleBadgeBtn
+                        key={role}
+                        onClick={() => toggleRoleState(user.accountId, role)}
+                        $state={user.roles[role]}
                       >
-                        <Comp.JobBadge
-                          job={job}
+                        <Comp.RoleBadge
+                          role={role}
                           selectAble={{
-                            state: user.jobs[job],
+                            state: user.roles[role],
                             onClick: () => {},
                           }}
                         />
-                      </S.JobBadgeBtn>
+                      </S.RoleBadgeBtn>
                     ))}
-                  </S.JobBadgeList>
+                  </S.RoleBadgeList>
                 </S.RowContent>
               </S.Row>
             ))}

@@ -71,7 +71,7 @@ export const Img = styled.img<{ width: number; height: number; radius: number }>
   box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
 `;
 
-export const JobBadgeList = styled.div`
+export const RoleBadgeList = styled.div`
   display: flex;
   gap: 4px;
 `;

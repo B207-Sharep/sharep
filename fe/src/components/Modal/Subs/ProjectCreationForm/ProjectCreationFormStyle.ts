@@ -102,7 +102,7 @@ export const SearchResultItem = styled.div`
   }
 `;
 
-export const JobBadgeList = styled.div`
+export const RoleBadgeList = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
@@ -168,7 +168,7 @@ export const LeaderBadge = styled.div`
   padding: 2px 6px;
 `;
 
-export const JobBadgeBtn = styled.div<{ $state: boolean }>`
+export const RoleBadgeBtn = styled.div<{ $state: boolean }>`
   :hover {
     opacity: 0.6;
   }

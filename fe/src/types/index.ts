@@ -5,7 +5,7 @@ import { CommitProps } from './components/Commit';
 import { UserImgProps } from './components/UserImg';
 import { MainColorBtnProps } from './components/MainColorBtn';
 import { MethodBadgeProps } from './components/MethodBadge';
-import { JobBadgeProps } from './components/JobBadge';
+import { RoleBadgeProps } from './components/RoleBadge';
 import { PriorityBadgeProps } from './components/PriorityBadge';
 import { QuillEditorProps } from './components/QuillEditor';
 import { GalleryCardProps } from './components/GalleryCard';
@@ -28,7 +28,7 @@ export type {
   StatusBadgeProps,
   CommitProps,
   MethodBadgeProps,
-  JobBadgeProps,
+  RoleBadgeProps,
   PriorityBadgeProps,
   QuillEditorProps,
   UserImgProps,

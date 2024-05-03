@@ -30,8 +30,8 @@ const convertToGrid = (data: any[]) => {
 const mockData = [1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1];
 const grassData = {
   year: 2024,
-  jobCount: 4,
-  jobs: [
+  roleCount: 4,
+  roles: [
     {
       step: 0,
       count: 0,
@@ -72,5 +72,5 @@ const grassData = {
 };
 
 export default function Grass() {
-  return <GitHubGrid data={convertToGrid(grassData.jobs)} />;
+  return <GitHubGrid data={convertToGrid(grassData.roles)} />;
 }
