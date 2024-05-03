@@ -9,11 +9,88 @@ import { useModal } from '@/customhooks';
 import { TaskCreationForm } from '@/components/Modal/Subs';
 
 const dropdownDummy = {
-  member: ['팀원1', '팀원2', '팀원3'],
+  member: ['팀원1', '팀원2', '팀원3'], // /api/projects/{projectId}/members
   issue: ['이슈1', '이슈2', '이슈3'],
 };
 
-const roles = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
+/*
+/api/projects/{projectId}/jobs?accountId=&roleType=&issueId=
+
+아무것도 안넣으면 팀별
+accounId를 넣으면 구성원별
+roleType을 넣으면 역할별
+issueId를 넣으면 이슈별
+*/
+const commitDummy: {
+  id: number;
+  name: string;
+  description: string;
+  createdAt: string;
+  issueId: number;
+  member: {
+    memberId: number;
+    nickname: string;
+    role: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
+    userImageUrl?: string;
+  };
+  imageUrl?: string;
+}[] = [
+  {
+    id: 1,
+    name: '작업명',
+    description:
+      '도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가',
+    createdAt: '2024-04-26',
+    issueId: 1,
+    member: {
+      memberId: 1,
+      nickname: '임서정',
+      role: ['FRONT_END', 'DESIGNER'],
+    },
+    imageUrl: 'https://via.placeholder.com/1440x1024',
+  },
+  {
+    id: 2,
+    name: '작업명',
+    description: '??!!!??',
+    createdAt: '2024-04-26',
+    issueId: 2,
+    member: {
+      memberId: 2,
+      nickname: '오상훈',
+      role: ['BACK_END', 'INFRA'],
+      userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
+    },
+  },
+  {
+    id: 3,
+    name: '작업명',
+    description: '123123123',
+    createdAt: '2024-04-25',
+    issueId: 3,
+    member: {
+      memberId: 3,
+      nickname: '조성규',
+      role: ['FRONT_END', 'BACK_END'],
+      userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/2.jpg',
+    },
+    imageUrl: 'https://via.placeholder.com/1440x1024',
+  },
+  {
+    id: 4,
+    name: '작업명',
+    description: '에베베베ㅔ',
+    createdAt: '2024-04-25',
+    issueId: 4,
+    member: {
+      memberId: 4,
+      nickname: '이승민',
+      role: ['BACK_END', 'INFRA'],
+    },
+  },
+];
+
+const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
 
 const filters: {
   type: 'member' | 'role' | 'issue';
@@ -93,7 +170,7 @@ export default function CommitHistory() {
                     <S.Dropdown>
                       {openFilter === 'role' ? (
                         <>
-                          {roles.map(role => (
+                          {roleList.map(role => (
                             <S.DropdowntItem key={role} onClick={() => selectValue(openFilter, role)}>
                               <Comp.RoleBadge role={role} selectAble={false} />
                             </S.DropdowntItem>
@@ -131,21 +208,20 @@ export default function CommitHistory() {
         </S.Header>
         <S.Divider />
         <S.CommitList>
-          <Comp.Commit
-            description="
-          도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가"
-            nickname="임서정"
-            createdAt="2024-04-26"
-            roleList={['FRONT_END', 'DESIGNER']}
-            imageUrl="https://via.placeholder.com/1440x1024"
-          />
-          <Comp.Commit
-            description="??!!!??"
-            nickname="오상훈"
-            createdAt="2024-04-26"
-            roleList={['BACK_END', 'INFRA']}
-            userImageUrl="https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg"
-          />
+          {commitDummy.map(commit => (
+            <Comp.Commit
+              key={commit.id}
+              name={commit.name}
+              description={commit.description}
+              createdAt={commit.createdAt}
+              member={{
+                nickname: commit.member.nickname,
+                role: commit.member.role,
+                userImageUrl: commit.member.userImageUrl,
+              }}
+              {...(commit.imageUrl ? { imageUrl: commit.imageUrl } : {})}
+            />
+          ))}
         </S.CommitList>
       </S.CommitHistoryWrapper>
     </L.SideBarLayout>

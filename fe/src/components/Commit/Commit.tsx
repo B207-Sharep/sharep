@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
 import * as S from './CommitStyle';
 import * as T from '@/types';
+import * as Comp from '@/components';
 import { PALETTE } from '@/styles';
 import { ChevronDown } from 'lucide-react';
-import RoleBadge from '../RoleBadge/RoleBadge';
 
-export default function Commit({ description, nickname, createdAt, userImageUrl, roleList, imageUrl }: T.CommitProps) {
+export default function Commit({
+  name,
+  description,
+  createdAt,
+  imageUrl,
+  // issueId,
+  member: {
+    // memberId,
+    nickname,
+    role,
+    userImageUrl,
+  },
+}: T.CommitProps) {
   const [isOpen, setIsOpen] = useState(false);
   const isClickable = imageUrl !== undefined;
 
@@ -15,7 +27,7 @@ export default function Commit({ description, nickname, createdAt, userImageUrl,
         {isClickable ? (
           <S.AccordionIconButton>
             <S.AccordionIcon $isOpen={isOpen}>
-              <ChevronDown />
+              <ChevronDown color={PALETTE.LIGHT_BLACK} />
             </S.AccordionIcon>
           </S.AccordionIconButton>
         ) : (
@@ -24,8 +36,8 @@ export default function Commit({ description, nickname, createdAt, userImageUrl,
         <S.CommitContent>
           <S.CommitMessage>
             {/* 작업 메시지 */}
-            <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={500}>
-              {description}
+            <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={600}>
+              {name}
             </S.StyledText>
             {/* 유저 정보 + 작업 완료 시간 */}
             <S.CommitUserInfo>
@@ -34,10 +46,10 @@ export default function Commit({ description, nickname, createdAt, userImageUrl,
                 {nickname}
               </S.StyledText>
               <S.RoleBadgeList>
-                {roleList.map((role, index) => (
-                  <RoleBadge
+                {role.map((_role, index) => (
+                  <Comp.RoleBadge
                     key={index}
-                    role={role as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
+                    role={_role as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
                     selectAble={false}
                   />
                 ))}
@@ -54,9 +66,14 @@ export default function Commit({ description, nickname, createdAt, userImageUrl,
         {isClickable && <S.Img width={60} height={60} radius={10} src={imageUrl} />}
       </S.CommitInfo>
       {isClickable && isOpen && (
-        <S.CommitImageDetail>
-          <S.Img width={800} height={600} radius={0} src={imageUrl} />
-        </S.CommitImageDetail>
+        // TODO :작업명, 작업 설명 스타일 적용
+        <>
+          <div>{name}</div>
+          <div>{description}</div>
+          <S.CommitImageDetail>
+            <S.Img width={800} height={600} radius={0} src={imageUrl} />
+          </S.CommitImageDetail>
+        </>
       )}
     </S.CommitWrapper>
   );
