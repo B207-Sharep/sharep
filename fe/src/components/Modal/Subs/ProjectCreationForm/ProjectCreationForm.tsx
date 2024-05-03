@@ -31,7 +31,7 @@ const dummyResults: {
 const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
 
 export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormProps) {
-  const { updateContents } = useModal<{
+  const { updateContentByKey } = useModal<{
     title: string;
     bio: string;
     secretKey: string;
@@ -57,9 +57,9 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
 
   // 특정 Role의 선택 상태 토글
   const toggleRoleState = (accountId: number, role: 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER') => {
-    updateContents({
-      ...contents,
-      members: contents.members.map(
+    updateContentByKey(
+      'members',
+      contents.members.map(
         (member: {
           accountId: number;
           email: string;
@@ -76,7 +76,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
               }
             : member,
       ),
-    });
+    );
   };
 
   // dropdown에 팀원 이메일 검색내역 불러오기
@@ -115,10 +115,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
         ...selectedUser,
         roles: { FRONT_END: false, BACK_END: false, INFRA: false, DESIGNER: false },
       };
-      updateContents({
-        ...contents,
-        members: [...contents.members, newMember],
-      });
+      updateContentByKey('members', [...contents.members, newMember]);
     }
     setIsDropdownVisible(false);
   };
@@ -133,9 +130,9 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
     }) =>
     () => {
       setSearchValue('');
-      updateContents({
-        ...contents,
-        members: contents.members.filter(
+      updateContentByKey(
+        'members',
+        contents.members.filter(
           (member: {
             accountId: number;
             email: string;
@@ -143,7 +140,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
             roles: Record<'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER', boolean>;
           }) => member.accountId !== selectedUser.accountId,
         ),
-      });
+      );
 
       setIsDropdownVisible(false);
     };
@@ -157,7 +154,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
           id="title"
           type="text"
           value={contents.title}
-          onChange={event => updateContents({ ...contents, title: event.target.value })}
+          onChange={event => updateContentByKey('title', event.target.value)}
         />
       </S.FormItem>
       {/* 프로젝트 소개 */}
@@ -167,7 +164,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
           id="bio"
           type="text"
           value={contents.bio}
-          onChange={event => updateContents({ ...contents, bio: event.target.value })}
+          onChange={event => updateContentByKey('bio', event.target.value)}
         />
       </S.FormItem>
       {/* 프로젝트 token */}
@@ -191,7 +188,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
             id="secretKey"
             type="text"
             value={contents.secretKey}
-            onChange={event => updateContents({ ...contents, secretKey: event.target.value })}
+            onChange={event => updateContentByKey('secretKey', event.target.value)}
           />
           <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $position="absolute">
             <Icon.GitIcon />
