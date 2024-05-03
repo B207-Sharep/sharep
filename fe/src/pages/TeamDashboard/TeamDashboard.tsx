@@ -67,7 +67,7 @@ const DUMMY_USER: T.TeamMemberProps[] = [
     id: 1,
     name: '쨰용이행님',
     imageUrl: '/lee-jae-yong.png',
-    jobs: ['FRONT_END', 'DESIGNER'] as Extract<T.JobBadgeProps, 'job'>[],
+    roles: ['FRONT_END', 'DESIGNER'] as Extract<T.RoleBadgeProps, 'role'>[],
   },
 ];
 

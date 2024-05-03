@@ -20,7 +20,7 @@ export const IssuesContainer = styled.div`
   padding-top: 12px;
 `;
 
-export const CanvanTitle = styled.h1`
+export const KanbanTitle = styled.h1`
   width: 100%;
   height: 36px;
   padding: 0px 8px 4px 8px;

@@ -3,9 +3,9 @@ import * as S from './CommitStyle';
 import * as T from '@/types';
 import { PALETTE } from '@/styles';
 import { ChevronDown } from 'lucide-react';
-import JobBadge from '../JobBadge/JobBadge';
+import RoleBadge from '../RoleBadge/RoleBadge';
 
-export default function Commit({ description, nickname, createdAt, userImageUrl, jobList, imageUrl }: T.CommitProps) {
+export default function Commit({ description, nickname, createdAt, userImageUrl, roleList, imageUrl }: T.CommitProps) {
   const [isOpen, setIsOpen] = useState(false);
   const isClickable = imageUrl !== undefined;
 
@@ -33,15 +33,15 @@ export default function Commit({ description, nickname, createdAt, userImageUrl,
               <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                 {nickname}
               </S.StyledText>
-              <S.JobBadgeList>
-                {jobList.map((job, index) => (
-                  <JobBadge
+              <S.RoleBadgeList>
+                {roleList.map((role, index) => (
+                  <RoleBadge
                     key={index}
-                    job={job as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
+                    role={role as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
                     selectAble={false}
                   />
                 ))}
-              </S.JobBadgeList>
+              </S.RoleBadgeList>
               <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
                 작업 완료
               </S.StyledText>

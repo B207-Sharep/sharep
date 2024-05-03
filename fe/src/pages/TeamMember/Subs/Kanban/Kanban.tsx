@@ -1,9 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
-import * as S from './CanvanStyle';
+import * as S from './KanbanStyle';
 import * as T from '@types';
 import * as Comp from '@components';
 
-export default function Canvan({ state, issues, setIssues, dragEnterdState, setDragEnterdState }: T.CananProps) {
+export default function Kanban({ state, issues, setIssues, dragEnterdState, setDragEnterdState }: T.CananProps) {
   const issuesContainerRef = useRef<HTMLElement>(null);
   const issuesWrapperRef = useRef<HTMLDivElement>(null);
   const [holdingIssueId, setHoldingIssueId] = useState<null | number>(null);
@@ -61,9 +61,9 @@ export default function Canvan({ state, issues, setIssues, dragEnterdState, setD
 
   return (
     <S.IssuesWrapper ref={issuesContainerRef}>
-      <S.CanvanTitle>
+      <S.KanbanTitle>
         <Comp.StatusBadge status={state} />
-      </S.CanvanTitle>
+      </S.KanbanTitle>
       <S.IssuesContainer
         id={state}
         ref={issuesWrapperRef}

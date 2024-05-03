@@ -20,7 +20,7 @@ export default function SeoJeong() {
             accountId: 9,
             email: 'jack@ssafy.com',
             nickname: '유재건',
-            jobs: {
+            roles: {
               FRONT_END: false,
               BACK_END: false,
               INFRA: false,

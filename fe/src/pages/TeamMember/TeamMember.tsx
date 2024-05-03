@@ -10,9 +10,9 @@ export default function TeamMember() {
 
   return (
     <L.SideBarLayout>
-      <S.CanvansWrapper>
+      <S.KanbansWrapper>
         {['YET', 'NOW', 'DONE'].map(state => (
-          <Sub.Canvan
+          <Sub.Kanban
             key={`kanban-${state}`}
             state={state as 'YET' | 'NOW' | 'DONE'}
             dragEnterdState={dragEnterdState}
@@ -21,7 +21,7 @@ export default function TeamMember() {
             setIssues={setIssues}
           />
         ))}
-      </S.CanvansWrapper>
+      </S.KanbansWrapper>
     </L.SideBarLayout>
   );
 }

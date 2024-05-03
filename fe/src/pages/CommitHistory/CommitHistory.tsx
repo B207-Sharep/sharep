@@ -13,15 +13,15 @@ const dropdownDummy = {
   issue: ['이슈1', '이슈2', '이슈3'],
 };
 
-const jobs = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
+const roles = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
 
 const filters: {
-  type: 'member' | 'job' | 'issue';
+  type: 'member' | 'role' | 'issue';
   icon: React.JSX.Element;
   label: string;
 }[] = [
   { type: 'member', icon: <UsersRound color={PALETTE.LIGHT_BLACK} size={14} />, label: '팀원' },
-  { type: 'job', icon: <BriefcaseBusiness color={PALETTE.LIGHT_BLACK} size={14} />, label: '직무' },
+  { type: 'role', icon: <BriefcaseBusiness color={PALETTE.LIGHT_BLACK} size={14} />, label: '직무' },
   { type: 'issue', icon: <CircleDotDashed color={PALETTE.LIGHT_BLACK} size={14} />, label: '이슈' },
 ];
 
@@ -30,18 +30,18 @@ export default function CommitHistory() {
   const navigate = useNavigate();
   const taskModal = useModal('task');
 
-  const [openFilter, setOpenFilter] = useState<'member' | 'job' | 'issue' | null>(null);
+  const [openFilter, setOpenFilter] = useState<'member' | 'role' | 'issue' | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<{ [key: string]: string | null }>({
     member: null,
-    job: null,
+    role: null,
     issue: null,
   });
 
-  const toggleDropdown = (filter: 'member' | 'job' | 'issue') => {
+  const toggleDropdown = (filter: 'member' | 'role' | 'issue') => {
     setOpenFilter(openFilter === filter ? null : filter);
   };
 
-  const selectValue = (filter: 'member' | 'job' | 'issue', value: string) => {
+  const selectValue = (filter: 'member' | 'role' | 'issue', value: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set(filter, value);
 
@@ -58,12 +58,12 @@ export default function CommitHistory() {
 
   useEffect(() => {
     const member = searchParams.get('member');
-    const job = searchParams.get('job');
+    const role = searchParams.get('role');
     const issue = searchParams.get('issue');
 
     setSelectedFilter({
       member,
-      job,
+      role,
       issue,
     });
   }, [searchParams]);
@@ -91,11 +91,11 @@ export default function CommitHistory() {
                   </S.AccordionIconButton>
                   {openFilter === filter.type && (
                     <S.Dropdown>
-                      {openFilter === 'job' ? (
+                      {openFilter === 'role' ? (
                         <>
-                          {jobs.map(job => (
-                            <S.DropdowntItem key={job} onClick={() => selectValue(openFilter, job)}>
-                              <Comp.JobBadge job={job} selectAble={false} />
+                          {roles.map(role => (
+                            <S.DropdowntItem key={role} onClick={() => selectValue(openFilter, role)}>
+                              <Comp.RoleBadge role={role} selectAble={false} />
                             </S.DropdowntItem>
                           ))}
                         </>
@@ -136,14 +136,14 @@ export default function CommitHistory() {
           도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가"
             nickname="임서정"
             createdAt="2024-04-26"
-            jobList={['FRONT_END', 'DESIGNER']}
+            roleList={['FRONT_END', 'DESIGNER']}
             imageUrl="https://via.placeholder.com/1440x1024"
           />
           <Comp.Commit
             description="??!!!??"
             nickname="오상훈"
             createdAt="2024-04-26"
-            jobList={['BACK_END', 'INFRA']}
+            roleList={['BACK_END', 'INFRA']}
             userImageUrl="https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg"
           />
         </S.CommitList>

@@ -1,7 +1,7 @@
 import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
-export const CanvansWrapper = styled.section`
+export const KanbansWrapper = styled.section`
   display: flex;
   gap: 24px;
   justify-content: space-between;
@@ -26,7 +26,7 @@ export const IssuesContainer = styled.div`
   height: 100%;
 `;
 
-export const CanvanTitle = styled.h1`
+export const KanbanTitle = styled.h1`
   width: 100%;
   height: 36px;
   padding: 0px 8px 4px 8px;
