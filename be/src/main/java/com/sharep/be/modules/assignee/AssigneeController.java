@@ -7,6 +7,7 @@ import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.assignee.response.AssigneeIdResponse;
 import com.sharep.be.modules.assignee.response.AssigneeProjectNowIssueResponse;
 import com.sharep.be.modules.issue.Issue;
+import com.sharep.be.modules.issue.IssueResponse;
 import com.sharep.be.modules.security.JwtAuthentication;
 import io.jsonwebtoken.lang.Assert;
 import jakarta.validation.constraints.Min;
@@ -99,8 +100,15 @@ public class AssigneeController {
                             Account account = tuple.get(2, Account.class);
                             Issue issue = tuple.get(0, Issue.class);
 
+<<<<<<< HEAD
                             notNull(account);
                             notNull(issue);
+=======
+                            if (account != null && issue != null) {
+                                return new AssigneeProjectNowIssueResponse(
+                                        AccountDto.toDto(account), IssueResponse.from(issue));
+                            }
+>>>>>>> 8859b58 ([Refactor] 엔터티 변환 로직 변경)
 
                             return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
                         })
