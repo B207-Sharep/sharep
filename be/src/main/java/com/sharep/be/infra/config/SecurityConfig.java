@@ -150,26 +150,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    @Bean
-    public ProjectVoter projectVoter(){
-        final String regex = "^/api/projects/([^/]+)(/.*)?$";
-        final Pattern pattern = Pattern.compile(regex);
-        RequestMatcher requiresAuthorizationRequestMatcher =
-                new RegexRequestMatcher(pattern.pattern(), null);
-        return new ProjectVoter(requiresAuthorizationRequestMatcher,  (String url) -> {
-            /* url에서 targetId를 추출하기 위해 정규식 처리 */
-            Matcher matcher = pattern.matcher(url);
-            return matcher.matches() ? toLong(matcher.group(1), -1) : -1;
-        }, projectRepository);
-    }
 
-    @Bean
-    public AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<?>> decisionVoters = new ArrayList<>();
-        decisionVoters.add(new WebExpressionVoter());
-        // voter 목록에 connectionBasedVoter 를 추가함
-        decisionVoters.add(projectVoter());
-        // 모든 voter 승인해야 해야함
-        return new UnanimousBased(decisionVoters);
-    }
+
 }
