@@ -34,6 +34,7 @@ export const ModalWrapper = styled.div`
   width: 50%;
   height: fit-content;
   max-height: 90%;
+  max-width: 90%;
   position: fixed;
   top: 50%;
   left: 50%;

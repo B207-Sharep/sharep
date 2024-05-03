@@ -10,7 +10,7 @@ import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
 
 export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps) {
-  const { updateContents } = useModal<{
+  const { updateContentByKey } = useModal<{
     name: string;
     imageFile: File;
     description: string;
@@ -41,8 +41,8 @@ export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps
   const uploadImage = (files: FileList | null) => {
     if (files && files.length > 0) {
       const file = files[0];
-      updateContents({ ...contents, imageFile: file });
-      console.log(file);
+      updateContentByKey('imageFile', file);
+
       const previewUrl = URL.createObjectURL(file);
       setImagePreviewUrl(previewUrl);
     }
@@ -50,8 +50,7 @@ export default function TaskCreationForm({ modalId }: T.ProjectCreationFormProps
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    console.log(id, value);
-    updateContents({ ...contents, [id]: value });
+    updateContentByKey(id as 'imageFile' | 'name' | 'description', value);
   };
 
   return (

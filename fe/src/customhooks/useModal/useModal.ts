@@ -18,12 +18,16 @@ export const useModal = <Contents extends { [key: string]: any }>(modalId: strin
     }));
   };
 
-  const updateContents = (newContents: Partial<Contents>) => {
+  const updateContentByKey = <K extends keyof Contents>(key: K, value: Contents[K]) => {
     setModalData(oldModalData => ({
       ...oldModalData,
-      contents: { ...oldModalData.contents, ...newContents },
+      contents: { ...oldModalData.contents, [key]: value },
     }));
   };
 
-  return { openModal, closeModal, updateContents };
+  return {
+    openModal,
+    closeModal,
+    updateContentByKey,
+  };
 };

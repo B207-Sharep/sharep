@@ -52,11 +52,11 @@ export const StyledText = styled.div<{ color?: string; fontSize?: number; fontWe
 
 export const NotiContainer = styled.div`
   width: 100%;
-  /* border: 1px solid black; */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
+  overflow-x: visible;
 `;
 
 export const NotiUser = styled.div`
@@ -77,12 +77,6 @@ export const DeleteBtn = styled.div`
   cursor: pointer;
 `;
 
-export const CommitUserInfo = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 8px;
-`;
 export const Img = styled.img<{ width: number; height: number; radius: number }>`
   width: ${props => props.width}px;
   height: ${props => props.height}px;
@@ -104,4 +98,58 @@ export const AddUserBtn = styled.div`
   width: 20px;
   height: 20px;
   cursor: pointer;
+  position: relative;
+  &:hover {
+    box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
+  }
+`;
+
+export const Dropdown = styled.div<{ $isDropdownVisible: boolean; $dropdownPosition: string }>`
+  display: ${props => (props.$isDropdownVisible ? 'flex' : 'none')};
+  position: absolute;
+  bottom: 0%;
+  ${props => `${props.$dropdownPosition} : 150%;`}
+  margin-top: 4px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: ${PALETTE.MAIN_WHITE};
+  box-shadow: 0px 30px 150px rgba(139, 139, 139, 0.1);
+  border: 1px solid rgba(139, 139, 139, 0.1);
+  border-radius: 8px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  z-index: 1;
+  overflow-y: auto;
+  max-height: 30vh;
+`;
+
+export const DropdowntItem = styled.div`
+  align-self: stretch;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const UserInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+`;
+
+export const UserProfile = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
 `;
