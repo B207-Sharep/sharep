@@ -3,6 +3,7 @@ package com.sharep.be.modules.issue.controller;
 import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
+import com.sharep.be.modules.issue.IssueResponse.FeatureIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
 import com.sharep.be.modules.issue.IssueResponse.PrivateIssueResponse;
 import com.sharep.be.modules.issue.service.IssueService;
@@ -29,16 +30,22 @@ public class IssueController {
 
     private final IssueService issueService;
 
-    @GetMapping
-    public ResponseEntity<List<IssueResponse>> getIssues(@PathVariable Long projectId) {
-        return ResponseEntity.ok(issueService.getIssues(projectId));
-    }
-
     @GetMapping("/private")
     public ResponseEntity<List<PrivateIssueResponse>> getPrivateIssues(@PathVariable Long projectId,
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
 
-        return ResponseEntity.ok(issueService.getPrivateIssues(projectId, jwtAuthentication.id));
+        return ResponseEntity.ok(
+                issueService.getPrivateIssues(projectId, jwtAuthentication.id).stream()
+                        .map(PrivateIssueResponse::from).toList());
+    }
+
+    @GetMapping("/feature")
+    public ResponseEntity<List<FeatureIssueResponse>> getFeatureIssues(
+            @PathVariable Long projectId) {
+
+        return ResponseEntity.ok(
+                issueService.getFeatureIssues(projectId).stream()
+                        .map(FeatureIssueResponse::from).toList());
     }
 
     @GetMapping("/{issueId}")
@@ -69,8 +76,10 @@ public class IssueController {
 
     @DeleteMapping("/{issueId}")
     private ResponseEntity<Void> deleteIssue(@PathVariable Long projectId,
-            @PathVariable Long issueId) {
-        issueService.deleteIssue(issueId);
+            @PathVariable Long issueId,
+            @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
+
+        issueService.deleteIssue(issueId, jwtAuthentication.id, projectId);
         return ResponseEntity.ok().build();
     }
 

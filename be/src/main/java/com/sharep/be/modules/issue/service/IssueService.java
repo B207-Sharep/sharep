@@ -1,23 +1,21 @@
 package com.sharep.be.modules.issue.service;
 
+import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
-import com.sharep.be.modules.issue.IssueResponse;
-import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
-import com.sharep.be.modules.issue.IssueResponse.PrivateIssueResponse;
 import java.util.List;
 
 public interface IssueService {
 
-    IssueCreated createIssue(Long projectId, Long accountId, IssueCreate issueCreate);
+    Issue createIssue(Long projectId, Long accountId, IssueCreate issueCreate);
 
-    List<IssueResponse> getIssues(Long projectId);
-
-    IssueResponse getIssue(Long id);
+    Issue getIssue(Long id);
 
     void updateIssue(Long id, Long accountId, Long projectId, IssueUpdate issueUpdate);
 
-    void deleteIssue(Long id);
+    void deleteIssue(Long id, Long accountId, Long projectId);
 
-    List<PrivateIssueResponse> getPrivateIssues(Long projectId, Long accountId);
+    List<Issue> getPrivateIssues(Long projectId, Long accountId);
+
+    List<Issue> getFeatureIssues(Long projectId);
 }
