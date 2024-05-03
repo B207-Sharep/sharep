@@ -1,14 +1,18 @@
 package com.sharep.be.modules.assignee;
 
+import static io.jsonwebtoken.lang.Assert.*;
+
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.assignee.response.AssigneeIdResponse;
 import com.sharep.be.modules.assignee.response.AssigneeProjectNowIssueResponse;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.security.JwtAuthentication;
+import io.jsonwebtoken.lang.Assert;
 import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,11 +98,10 @@ public class AssigneeController {
                             Account account = tuple.get(2, Account.class);
                             Issue issue = tuple.get(0, Issue.class);
 
-                            if (account != null && issue != null) {
-                                return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
-                            }
+                            notNull(account);
+                            notNull(issue);
 
-                            throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");
+                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
                         })
                         .toList()
         );
@@ -119,11 +122,10 @@ public class AssigneeController {
                             Account account = tuple.get(2, Account.class);
                             Issue issue = tuple.get(0, Issue.class);
 
-                            if (account != null && issue != null) {
-                                return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
-                            }
+                            notNull(account);
+                            notNull(issue);
 
-                            throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");
+                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
                         })
                         .toList()
         );

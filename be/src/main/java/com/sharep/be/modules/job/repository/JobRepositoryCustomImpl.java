@@ -78,9 +78,8 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
                 .innerJoin(job.member, member)
                 .innerJoin(member.account, account)
                 // 1년 체크
-                .where(job.createdAt.between(oneYearAgo, now)
-                        .and(account.id.eq(accountId))
-                )
+                .where(job.createdAt.between(oneYearAgo, now))
+                .where(account.id.eq(accountId))
                 .orderBy(job.createdAt.desc())
                 .fetch();
     }

@@ -6,7 +6,6 @@ import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.job.repository.JobRepository;
 import com.sharep.be.modules.job.request.JobCreateRequest;
 import com.sharep.be.modules.job.request.JobReadRequest;
-import com.sharep.be.modules.job.response.JobGrass;
 import com.sharep.be.modules.job.response.JobGrassResponse;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.MemberRepository;
