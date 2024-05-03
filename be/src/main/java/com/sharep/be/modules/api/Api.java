@@ -46,9 +46,19 @@ public class Api {
         this.issue = issue;
     }
 
-    public static Api from(Long id, ApiUpdate apiUpdate) {
+    public Api from(ApiUpdate apiUpdate) {
         return Api.builder().id(id).request(apiUpdate.request()).response(apiUpdate.response())
                 .url(apiUpdate.url()).method(apiUpdate.method()).build();
+    }
+
+    public ApiResponse toResponse() {
+        return ApiResponse.builder()
+                .id(id)
+                .request(request)
+                .response(response)
+                .url(url)
+                .method(method)
+                .build();
     }
 
 }

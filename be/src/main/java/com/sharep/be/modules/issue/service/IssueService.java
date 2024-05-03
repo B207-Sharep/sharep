@@ -4,19 +4,20 @@ import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
+import com.sharep.be.modules.issue.IssueResponse.PrivateIssueResponse;
 import java.util.List;
 
 public interface IssueService {
 
-    IssueCreated createIssue(Long projectId, IssueCreate issueCreate);
+    IssueCreated createIssue(Long projectId, Long accountId, IssueCreate issueCreate);
 
     List<IssueResponse> getIssues(Long projectId);
 
     IssueResponse getIssue(Long id);
 
-    IssueResponse updateIssue(IssueUpdate issueCreate);
+    void updateIssue(Long id, Long accountId, Long projectId, IssueUpdate issueUpdate);
 
-    IssueResponse deleteIssue(Long id);
+    void deleteIssue(Long id);
 
-    List<IssueResponse> getPrivateIssues(Long projectId, Long accountId);
+    List<PrivateIssueResponse> getPrivateIssues(Long projectId, Long accountId);
 }

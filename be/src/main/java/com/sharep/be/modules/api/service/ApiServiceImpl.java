@@ -19,8 +19,8 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public void updateApi(Long apiId, ApiUpdate apiUpdate) {
-        apiRepository.findById(apiId).orElseThrow(ApiNotFoundException::new);
-        apiRepository.save(Api.from(apiId, apiUpdate));
+        Api api = apiRepository.findById(apiId).orElseThrow(ApiNotFoundException::new);
+        apiRepository.save(api.from(apiUpdate));
     }
 
     @Override
