@@ -34,6 +34,7 @@ export const ModalWrapper = styled.div`
   width: 50%;
   height: fit-content;
   max-height: 90%;
+  max-width: 90%;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -124,7 +125,7 @@ export const ModalBody = styled.div`
 `;
 export const ModalFooter = styled.div`
   display: flex;
-  padding: 0px 24px 24px 24px;
+  padding: 24px;
   align-items: flex-start;
   gap: 12px;
   align-self: stretch;
