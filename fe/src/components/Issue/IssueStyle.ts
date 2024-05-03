@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 import { PALETTE } from '@/styles';
 
-export const RelativeWrapper = styled.button`
+export const RelativeWrapper = styled.div`
   width: 100%;
   height: 116px;
   border-radius: 12px;
   background-color: white;
   box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.05);
-  position: relative;
 
   span {
     overflow: hidden;
@@ -16,11 +15,14 @@ export const RelativeWrapper = styled.button`
   }
 
   *::after {
+    width: 100%;
+    font-size: 10px;
+    white-space: pre-wrap;
     z-index: 1;
   }
 `;
 
-export const DragAbleContainer = styled.div<{ $isHolding: boolean; $position: { x: number; y: number } }>`
+export const DragAbleContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -29,9 +31,6 @@ export const DragAbleContainer = styled.div<{ $isHolding: boolean; $position: { 
   height: 116px;
   background-color: white;
   border-radius: 12px;
-  position: ${({ $isHolding }) => ($isHolding ? 'fixed' : 'relative')};
-  top: ${({ $isHolding, $position }) => $isHolding && $position.y}%;
-  left: ${({ $isHolding, $position }) => $isHolding && $position.x}%;
 `;
 
 export const TitleWrapper = styled.div`
@@ -42,9 +41,11 @@ export const TitleWrapper = styled.div`
   position: relative;
 
   span {
-    max-width: 218px;
+    max-width: calc(100% - 32px);
+    width: 100%;
     padding-top: 4px;
     vertical-align: bottom;
+    text-align: left;
     font-size: 14px;
     font-weight: 700;
   }
@@ -71,10 +72,11 @@ export const TitleWrapper = styled.div`
   }
 `;
 
-export const RecentlyCommit = styled.p`
+export const RecentlyCommit = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: space-between;
+
   height: 18px;
   position: relative;
 
@@ -82,12 +84,20 @@ export const RecentlyCommit = styled.p`
     color: ${PALETTE.LIGHT_BLACK};
   }
 
-  span:nth-of-type(1) {
-    max-width: 200px;
+  p {
+    display: flex;
+    gap: 4px;
+    width: calc(100% - (42px + 8px + 24px));
+  }
+
+  p > span {
+    width: calc(100% - 16px);
+    height: 100%;
+    text-align: left;
     font-size: 12px;
   }
 
-  span:nth-of-type(1):hover::after {
+  p > span:hover::after {
     content: attr(aria-label);
     position: absolute;
     top: 20px;
@@ -98,9 +108,11 @@ export const RecentlyCommit = styled.p`
     background-color: ${PALETTE.LIGHT_BLACK};
   }
 
-  span:nth-of-type(2) {
+  & > span {
+    line-height: 16px;
     font-size: 10px;
     padding-left: 4px;
+    align-self: flex-end;
   }
 `;
 
