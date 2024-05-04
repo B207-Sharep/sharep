@@ -37,6 +37,10 @@ public class ProjectBasedVoter implements AuthorizationManager<RequestAuthorizat
     public AuthorizationDecision check(Supplier<Authentication> authentication,
             RequestAuthorizationContext context) {
         log.info("======== security project based voter in ========");
+
+        // when jwt token 검증 X
+        if(!(authentication.get() instanceof JwtAuthenticationToken))return new AuthorizationDecision(false);
+
         JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication.get();
         JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
 
