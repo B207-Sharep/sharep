@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import * as L from '@layouts';
+import * as T from '@/types';
 import * as S from './CommitHistoryStyle';
 import * as Comp from '@components';
 import { PALETTE } from '@/styles';
-import { BriefcaseBusiness, ChevronDown, CircleDotDashed, UsersRound } from 'lucide-react';
+import { BriefcaseBusiness, ChevronDown, CircleDotDashed, GitCommitHorizontal, UsersRound } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useModal } from '@/customhooks';
-import { TaskCreationForm } from '@/components/Modal/Subs';
 
 const dropdownDummy = {
   member: ['팀원1', '팀원2', '팀원3'], // /api/projects/{projectId}/members
@@ -21,20 +21,7 @@ accounId를 넣으면 구성원별
 roleType을 넣으면 역할별
 issueId를 넣으면 이슈별
 */
-const commitDummy: {
-  id: number;
-  name: string;
-  description: string;
-  createdAt: string;
-  issueId: number;
-  member: {
-    memberId: number;
-    nickname: string;
-    roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
-    userImageUrl?: string;
-  };
-  imageUrl?: string;
-}[] = [
+const commitDummy: T.CommitHistoryProps[] = [
   {
     id: 1,
     name: '작업명1',
@@ -45,7 +32,7 @@ const commitDummy: {
     member: {
       memberId: 1,
       nickname: '임서정',
-      roles: ['FRONT_END', 'DESIGNER'],
+      roles: ['FRONT_END', 'DESIGNER'] as Extract<T.RoleBadgeProps, 'role'>[],
     },
     imageUrl: 'https://via.placeholder.com/1440x1024',
   },
@@ -58,7 +45,7 @@ const commitDummy: {
     member: {
       memberId: 2,
       nickname: '오상훈',
-      roles: ['BACK_END', 'INFRA'],
+      roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
       userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
     },
   },
@@ -71,7 +58,7 @@ const commitDummy: {
     member: {
       memberId: 3,
       nickname: '조성규',
-      roles: ['FRONT_END', 'BACK_END'],
+      roles: ['FRONT_END', 'DESIGNER'] as Extract<T.RoleBadgeProps, 'role'>[],
       userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/2.jpg',
     },
     imageUrl: 'https://via.placeholder.com/1440x1024',
@@ -85,40 +72,49 @@ const commitDummy: {
     member: {
       memberId: 4,
       nickname: '이승민',
-      roles: ['BACK_END', 'INFRA'],
+      roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
     },
   },
 ];
 
 const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
 
-const filters: {
-  type: 'member' | 'role' | 'issue';
-  icon: React.JSX.Element;
-  label: string;
-}[] = [
+const filters: T.FilterProps[] = [
   { type: 'member', icon: <UsersRound color={PALETTE.LIGHT_BLACK} size={14} />, label: '팀원' },
   { type: 'role', icon: <BriefcaseBusiness color={PALETTE.LIGHT_BLACK} size={14} />, label: '직무' },
   { type: 'issue', icon: <CircleDotDashed color={PALETTE.LIGHT_BLACK} size={14} />, label: '이슈' },
 ];
+
+function groupCommitsByDate(commits: T.CommitHistoryProps[]): Record<string, T.CommitHistoryProps[]> {
+  return commits.reduce((acc, commit) => {
+    const date = commit.createdAt;
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(commit);
+    return acc;
+  }, {} as Record<string, T.CommitHistoryProps[]>);
+}
 
 export default function CommitHistory() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const taskModal = useModal('task');
 
-  const [openFilter, setOpenFilter] = useState<'member' | 'role' | 'issue' | null>(null);
-  const [selectedFilter, setSelectedFilter] = useState<{ [key: string]: string | null }>({
+  const groupedCommits = groupCommitsByDate(commitDummy);
+
+  const [openFilter, setOpenFilter] = useState<T.FilterProps['type'] | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<Record<T.FilterProps['type'], string | null>>({
     member: null,
     role: null,
     issue: null,
   });
 
-  const toggleDropdown = (filter: 'member' | 'role' | 'issue') => {
+  const toggleDropdown = (filter: T.FilterProps['type']) => {
     setOpenFilter(openFilter === filter ? null : filter);
   };
 
-  const selectValue = (filter: 'member' | 'role' | 'issue', value: string) => {
+  const selectValue = (filter: T.FilterProps['type'], value: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set(filter, value);
 
@@ -201,30 +197,40 @@ export default function CommitHistory() {
                 <Comp.Add />
               </S.CommitAddBtn>
               <Comp.Modal modalId="task" title="새 작업 작성">
-                <TaskCreationForm modalId="task" />
+                <Comp.TaskCreationForm modalId="task" />
               </Comp.Modal>
             </S.FilterWrapper>
           </div>
         </S.Header>
         <S.Divider />
-        <S.CommitList>
-          {commitDummy.map(commit => (
-            <Comp.Commit
-              key={commit.id}
-              id={commit.id}
-              name={commit.name}
-              description={commit.description}
-              createdAt={commit.createdAt}
-              member={{
-                nickname: commit.member.nickname,
-                roles: commit.member.roles,
-                userImageUrl: commit.member.userImageUrl,
-              }}
-              {...(commit.imageUrl ? { imageUrl: commit.imageUrl } : {})}
-              disabled={false}
-            />
-          ))}
-        </S.CommitList>
+        {Object.entries(groupedCommits).map(([date, commits]) => (
+          <div key={date}>
+            <S.CommitDateWrapper>
+              <S.CommitIconContainer>
+                <GitCommitHorizontal size={16} />
+              </S.CommitIconContainer>
+              <S.StyledText color={PALETTE.LIGHT_BLACK}>{date}</S.StyledText>
+            </S.CommitDateWrapper>
+            <S.CommitList>
+              {commits.map(commit => (
+                <Comp.Commit
+                  key={commit.id}
+                  id={commit.id}
+                  name={commit.name}
+                  description={commit.description}
+                  createdAt={commit.createdAt}
+                  member={{
+                    nickname: commit.member.nickname,
+                    roles: commit.member.roles,
+                    userImageUrl: commit.member.userImageUrl,
+                  }}
+                  {...(commit.imageUrl ? { imageUrl: commit.imageUrl } : {})}
+                  disabled={false}
+                />
+              ))}
+            </S.CommitList>
+          </div>
+        ))}
       </S.CommitHistoryWrapper>
     </L.SideBarLayout>
   );
