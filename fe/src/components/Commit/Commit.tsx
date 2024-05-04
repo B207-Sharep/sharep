@@ -6,7 +6,7 @@ import { PALETTE } from '@/styles';
 import { ChevronDown } from 'lucide-react';
 
 export default function Commit({
-  id,
+  // id,
   name,
   description,
   createdAt,
