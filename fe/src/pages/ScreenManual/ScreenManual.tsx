@@ -1,6 +1,8 @@
 import React from 'react';
 import * as Comp from '@components';
 import * as L from '@layouts';
+import * as S from './ScreenManualStyle';
+import { PALETTE } from '@/styles';
 
 const screenIssueList = [
   ...Array.from({ length: 7 }, (_, index) => ({
@@ -13,7 +15,14 @@ const screenIssueList = [
 export default function ScreenManual() {
   return (
     <L.SideBarLayout>
-      <Comp.GalleryGridWrapper issueList={screenIssueList} />
+      <S.Wrapper>
+        <S.Header>
+          <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
+            화면 정의서
+          </S.StyledText>
+        </S.Header>
+        <Comp.GalleryGridWrapper issueList={screenIssueList} />
+      </S.Wrapper>
     </L.SideBarLayout>
   );
 }
