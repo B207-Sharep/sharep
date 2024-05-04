@@ -25,6 +25,11 @@ public class ApiServiceImpl implements ApiService {
     private final IssueRepository issueRepository;
 
     @Override
+    public List<Api> getApis(Long projectId) {
+        return apiRepository.findApisByProjectId(projectId);
+    }
+
+    @Override
     public Api createApi(ApiCreate apiCreate) {
         Issue issue = issueRepository.findById(apiCreate.issueId())
                 .orElseThrow(IssueNotFoundException::new);

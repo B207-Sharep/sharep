@@ -3,8 +3,10 @@ package com.sharep.be.modules.api.controller;
 import com.sharep.be.modules.api.ApiRequest.ApiCreate;
 import com.sharep.be.modules.api.ApiRequest.ApiUpdate;
 import com.sharep.be.modules.api.ApiResponse.ApiCreated;
+import com.sharep.be.modules.api.ApiResponse.ApiDetailResponse;
 import com.sharep.be.modules.api.service.ApiService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,10 +28,12 @@ public class ApiController {
 
     private final ApiService apiService;
 
-    /*
-        TODO: API를 실수로 삭제했을 때 재생성할 수 있게 PostMapping 추가
-            API가 이미 존재하면 안됨
-     */
+    @GetMapping
+    public ResponseEntity<List<ApiDetailResponse>> getApis(@PathVariable Long projectId) {
+        return ResponseEntity.ok(
+                apiService.getApis(projectId).stream().map(ApiDetailResponse::from).toList());
+    }
+
     @PostMapping
     public ResponseEntity<ApiCreated> createApi(@PathVariable Long projectId,
             @RequestBody @Valid ApiCreate apiCreate) {

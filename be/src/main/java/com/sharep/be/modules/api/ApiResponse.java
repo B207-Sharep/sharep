@@ -1,6 +1,9 @@
 package com.sharep.be.modules.api;
 
 import com.sharep.be.modules.api.type.MethodType;
+import com.sharep.be.modules.assignee.AssigneeResponse;
+import com.sharep.be.modules.assignee.State;
+import java.util.List;
 import java.util.Optional;
 import lombok.Builder;
 
@@ -25,6 +28,28 @@ public record ApiResponse(Long id, String request, String response, String url, 
         public static ApiCreated from(Api api) {
             return ApiCreated.builder()
                     .id(api.getId())
+                    .build();
+        }
+    }
+
+    @Builder
+    public record ApiDetailResponse(Long id, String epic, State state, MethodType method,
+                                    String url, String description,
+                                    String request, String response,
+                                    List<AssigneeResponse> assignees) {
+
+        public static ApiDetailResponse from(Api api) {
+            return ApiDetailResponse.builder()
+                    .id(api.getId())
+                    .epic(api.getIssue().getEpic())
+                    .state(api.getIssue().calculateState())
+                    .method(api.getMethod())
+                    .url(api.getUrl())
+                    .description(api.getIssue().getDescription())
+                    .request(api.getRequest())
+                    .response(api.getResponse())
+                    .assignees(api.getIssue().getAssignees().stream()
+                            .map(AssigneeResponse::from).toList())
                     .build();
         }
     }
