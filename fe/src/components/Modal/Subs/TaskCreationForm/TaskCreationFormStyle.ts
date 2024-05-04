@@ -45,6 +45,14 @@ export const UploadButton = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
 `;
 
+export const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 2px;
+`;
+
 export const Container = styled.div`
   width: 100%;
   display: flex;
@@ -121,4 +129,3 @@ export const IssueBadge = styled.div`
   border-radius: 6px;
   padding: 2px 6px;
 `;
-

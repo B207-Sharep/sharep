@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as S from './InfraTaskCreationFormStyle';
-import * as T from '@/types/components/Modal';
+import * as T from '@/types';
 import * as Comp from '@/components';
 import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
@@ -8,12 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
 import { Plus, X } from 'lucide-react';
 
-const dummyUsers: {
-  accountId: number;
-  nickname: string;
-  roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
-  userImageUrl?: string;
-}[] = [
+const dummyUsers: T.InfraTaskCreationFormProps['notiUsers'][number][] = [
   {
     accountId: 1,
     nickname: '임서정',
@@ -39,18 +34,8 @@ const dummyUsers: {
   },
 ];
 
-
-export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationFormProps) {
-  const { updateContentByKey } = useModal<{
-    name: string;
-    notiUsers: {
-      accountId: number;
-      nickname: string;
-      roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
-      userImageUrl?: string;
-    }[];
-    description: string;
-  }>(modalId);
+export default function InfraTaskCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
+  const { updateContentByKey } = useModal<T.InfraTaskCreationFormProps>(modalId);
   const modalData = useRecoilValue(modalDataState(modalId));
   const { contents } = modalData;
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -58,19 +43,9 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
   const addbBtnRef = useRef<HTMLDivElement | null>(null);
   const notiContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleAddNotiUser = (userToAdd: {
-    accountId: number;
-    nickname: string;
-    roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
-    userImageUrl?: string;
-  }) => {
+  const handleAddNotiUser = (userToAdd: T.InfraTaskCreationFormProps['notiUsers'][number]) => {
     const isAlreadyAdded = contents.notiUsers.some(
-      (user: {
-        accountId: number;
-        nickname: string;
-        roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
-        userImageUrl?: string;
-      }) => user.accountId === userToAdd.accountId,
+      (user: T.InfraTaskCreationFormProps['notiUsers'][number]) => user.accountId === userToAdd.accountId,
     );
 
     if (!isAlreadyAdded) {
@@ -81,28 +56,16 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
   };
 
   // 추가된 팀원 목록에서 팀원 삭제
-  const handleRemoveNotiUser =
-    (selectedUser: {
-      accountId: number;
-      nickname: string;
-      roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
-      userImageUrl?: string;
-    }) =>
-    () => {
-      updateContentByKey(
-        'notiUsers',
-        contents.notiUsers.filter(
-          (notiUser: {
-            accountId: number;
-            nickname: string;
-            roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
-            userImageUrl?: string;
-          }) => notiUser.accountId !== selectedUser.accountId,
-        ),
-      );
+  const handleRemoveNotiUser = (selectedUser: T.InfraTaskCreationFormProps['notiUsers'][number]) => () => {
+    updateContentByKey(
+      'notiUsers',
+      contents.notiUsers.filter(
+        (notiUser: T.InfraTaskCreationFormProps['notiUsers'][number]) => notiUser.accountId !== selectedUser.accountId,
+      ),
+    );
 
-      setIsDropdownVisible(false);
-    };
+    setIsDropdownVisible(false);
+  };
 
   const toggleDropdown = () => {
     if (!isDropdownVisible) handleDropdownPosition();
@@ -160,31 +123,24 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
           알림
         </S.StyledText>
         <S.NotiContainer ref={notiContainerRef}>
-          {contents.notiUsers.map(
-            (user: {
-              accountId: number;
-              nickname: string;
-              roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
-              userImageUrl?: string;
-            }) => (
-              <S.NotiUser key={user.accountId}>
-                <S.UserInfo>
-                  <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
-                  <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-                    {user.nickname}
-                  </S.StyledText>
-                  <S.RoleBadgeList>
-                    {user.roles.map((role, index) => (
-                      <Comp.RoleBadge key={index} role={role} selectAble={false} />
-                    ))}
-                  </S.RoleBadgeList>
-                </S.UserInfo>
-                <S.DeleteBtn onClick={handleRemoveNotiUser(user)}>
-                  <X size={10} color={PALETTE.SUB_BLACK} />
-                </S.DeleteBtn>
-              </S.NotiUser>
-            ),
-          )}
+          {contents.notiUsers.map((user: T.InfraTaskCreationFormProps['notiUsers'][number]) => (
+            <S.NotiUser key={user.accountId}>
+              <S.UserInfo>
+                <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
+                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                  {user.nickname}
+                </S.StyledText>
+                <S.RoleBadgeList>
+                  {user.roles.map((role, index) => (
+                    <Comp.RoleBadge key={index} role={role} selectAble={false} />
+                  ))}
+                </S.RoleBadgeList>
+              </S.UserInfo>
+              <S.DeleteBtn onClick={handleRemoveNotiUser(user)}>
+                <X size={10} color={PALETTE.SUB_BLACK} />
+              </S.DeleteBtn>
+            </S.NotiUser>
+          ))}
           <S.AddUserBtn ref={addbBtnRef}>
             <S.Icon onClick={toggleDropdown}>
               <Plus size={10} color={PALETTE.SUB_BLACK} />
@@ -202,11 +158,7 @@ export default function InfraTaskCreationForm({ modalId }: T.ProjectCreationForm
                       </S.UserProfile>
                       <S.RoleBadgeList>
                         {user.roles.map((role, index) => (
-                          <Comp.RoleBadge
-                            key={index}
-                            role={role as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
-                            selectAble={false}
-                          />
+                          <Comp.RoleBadge key={index} role={role} selectAble={false} />
                         ))}
                       </S.RoleBadgeList>
                     </S.UserInfo>

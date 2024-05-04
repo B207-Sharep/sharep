@@ -10,7 +10,12 @@ import { PriorityBadgeProps } from './components/PriorityBadge';
 import { QuillEditorProps } from './components/QuillEditor';
 import { GalleryCardProps } from './components/GalleryCard';
 import { GalleryGridWrapperProps } from './components/GalleryGridWrapper';
-import { ModalProps, ProjectCreationFormProps, TaskCreationFormProps } from './components/Modal';
+import {
+  ModalProps,
+  ProjectCreationFormProps,
+  TaskCreationFormProps,
+  InfraTaskCreationFormProps,
+} from './components/Modal';
 import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualTable';
 import { ProjectGridWrapperProps } from './components/ProjectGridWrapper';
 import { ProjectCardProps } from './components/ProjectCard';
@@ -20,6 +25,7 @@ import { IssueProps } from './components/Issue';
 /** ================= Pages ================= */
 import { TeamDashboardProps, TeamMemberProps, GanttChartProps } from './pages/TeamDashboard';
 import { CananProps } from './pages/TeamMember';
+import { CommitHistoryProps, FilterProps } from './pages/CommitHistory';
 /** ================= Pages ================= */
 export type {
   BaseInputProps,
@@ -38,6 +44,7 @@ export type {
   ModalProps,
   ProjectCreationFormProps,
   TaskCreationFormProps,
+  InfraTaskCreationFormProps,
   ManualTableProps,
   CelProps,
   SelectCelProps,
@@ -48,4 +55,6 @@ export type {
   TeamMemberProps,
   GanttChartProps,
   CananProps,
+  CommitHistoryProps,
+  FilterProps,
 };
