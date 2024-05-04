@@ -11,8 +11,8 @@ export default function SeoJeong() {
     if (modalId === 'infra-task') {
       infraTaskModal.openModal({
         name: '',
-        notiUsers: [],
         description: '',
+        notiUsers: [],
       });
     }
   };
