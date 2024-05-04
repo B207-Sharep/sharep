@@ -8,15 +8,15 @@ import lombok.Builder;
 public record ApiResponse(Long id, String request, String response, String url, MethodType method) {
 
     public static ApiResponse from(Api api) {
-        return Optional.of(
-                ApiResponse.builder()
-                        .id(api.getId())
-                        .request(api.getRequest())
-                        .response(api.getResponse())
-                        .url(api.getUrl())
-                        .method(api.getMethod())
-                        .build()
-        ).orElse(null);
+        return Optional.ofNullable(api)
+                .map(a -> ApiResponse.builder()
+                        .id(a.getId())
+                        .request(a.getRequest())
+                        .response(a.getResponse())
+                        .url(a.getUrl())
+                        .method(a.getMethod())
+                        .build())
+                .orElse(null);
     }
 
     @Builder

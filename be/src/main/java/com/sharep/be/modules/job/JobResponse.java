@@ -9,14 +9,14 @@ public record JobResponse(Long id, String name, String description, LocalDateTim
                           String imageUrl) {
 
     public static JobResponse from(Job job) {
-        return Optional.of(
-                JobResponse.builder()
-                        .id(job.getId())
-                        .name(job.getName())
-                        .description(job.getDescription())
-                        .createdAt(job.getCreatedAt())
-                        .imageUrl(job.getImageUrl())
+        return Optional.ofNullable(job)
+                .map(j -> JobResponse.builder()
+                        .id(j.getId())
+                        .name(j.getName())
+                        .description(j.getDescription())
+                        .createdAt(j.getCreatedAt())
+                        .imageUrl(j.getImageUrl())
                         .build()
-        ).orElse(null);
+                ).orElse(null);
     }
 }
