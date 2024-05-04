@@ -31,29 +31,11 @@ public record IssueResponse(Long id, String issueName, String description, Issue
                 .epic(issue.getEpic())
                 .createdAt(issue.getCreatedAt())
                 .priority(issue.getPriority())
-                .state(calculateState(issue.getAssignees()))
+                .state(issue.calculateState())
                 .api(ApiResponse.from(issue.getApi()))
                 .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
                 .jobs(issue.getJobs().stream().map(JobResponse::from).toList())
                 .build();
-    }
-
-    private static State calculateState(Set<Assignee> assignees) {
-        EnumMap<State, Long> stateCount = assignees.stream().collect(
-                Collectors.groupingBy(Assignee::getState, () -> new EnumMap<>(State.class),
-                        Collectors.counting()));
-
-        long size = assignees.size();
-        long done = stateCount.getOrDefault(State.DONE, 0L);
-        long yet = stateCount.getOrDefault(State.YET, 0L);
-
-        if (yet == size) {
-            return State.YET;
-        } else if (done == size) {
-            return State.DONE;
-        } else {
-            return State.NOW;
-        }
     }
 
     @Builder
@@ -81,7 +63,7 @@ public record IssueResponse(Long id, String issueName, String description, Issue
                     .epic(issue.getEpic())
                     .createdAt(issue.getCreatedAt())
                     .priority(issue.getPriority())
-                    .state(calculateState(issue.getAssignees()))
+                    .state(issue.calculateState())
                     .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
                     .jobs(issue.getJobs().stream().map(JobResponse::from).toList())
                     .build();
@@ -104,7 +86,7 @@ public record IssueResponse(Long id, String issueName, String description, Issue
                     .description(issue.getDescription())
                     .type(issue.getType())
                     .epic(issue.getEpic())
-                    .state(calculateState(issue.getAssignees()))
+                    .state(issue.calculateState())
                     .createdAt(issue.getCreatedAt())
                     .priority(issue.getPriority())
                     .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
