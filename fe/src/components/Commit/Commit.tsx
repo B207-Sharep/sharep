@@ -6,21 +6,29 @@ import { PALETTE } from '@/styles';
 import { ChevronDown } from 'lucide-react';
 
 export default function Commit({
+  // id,
+  name,
   description,
   createdAt,
-  user: { nickname, userImageUrl, roles },
   imageUrl,
+  // issueId,
+  member: {
+    // memberId,
+    nickname,
+    roles,
+    userImageUrl,
+  },
+  disabled,
 }: T.CommitProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const isClickable = imageUrl !== undefined;
 
   return (
     <S.CommitWrapper>
-      <S.CommitInfo $isClickable={isClickable} onClick={() => setIsOpen(!isOpen)}>
-        {isClickable ? (
+      <S.CommitInfo onClick={() => setIsOpen(!isOpen)}>
+        {!disabled ? (
           <S.AccordionIconButton>
             <S.AccordionIcon $isOpen={isOpen}>
-              <ChevronDown />
+              <ChevronDown color={PALETTE.LIGHT_BLACK} />
             </S.AccordionIcon>
           </S.AccordionIconButton>
         ) : (
@@ -29,8 +37,8 @@ export default function Commit({
         <S.CommitContent>
           <S.CommitMessage>
             {/* 작업 메시지 */}
-            <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={500}>
-              {description}
+            <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={600}>
+              {name}
             </S.StyledText>
             {/* 유저 정보 + 작업 완료 시간 */}
             <S.CommitUserInfo>
@@ -56,12 +64,22 @@ export default function Commit({
             </S.CommitUserInfo>
           </S.CommitMessage>
         </S.CommitContent>
-        {isClickable && <S.Img width={60} height={60} radius={10} src={imageUrl} />}
+        {imageUrl && <S.Img width={60} height={60} radius={10} src={imageUrl} />}
       </S.CommitInfo>
-      {isClickable && isOpen && (
-        <S.CommitImageDetail>
-          <S.Img width={800} height={600} radius={0} src={imageUrl} />
-        </S.CommitImageDetail>
+      {!disabled && isOpen && (
+        <S.CommitDetailContainer>
+          <S.CommitContentDetail>
+            <S.CommitText color={PALETTE.SUB_BLACK} fontSize={16}>
+              {name}
+            </S.CommitText>
+            <S.CommitText color={PALETTE.LIGHT_BLACK} fontSize={14}>
+              {description}
+            </S.CommitText>
+          </S.CommitContentDetail>
+          <S.CommitImageDetail>
+            {imageUrl && <S.Img width={800} height={600} radius={0} src={imageUrl} />}
+          </S.CommitImageDetail>
+        </S.CommitDetailContainer>
       )}
     </S.CommitWrapper>
   );

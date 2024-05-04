@@ -9,15 +9,26 @@ import { useModal } from '@/customhooks';
 import { TaskCreationForm } from '@/components/Modal/Subs';
 
 const dropdownDummy = {
-  member: ['팀원1', '팀원2', '팀원3'],
+  member: ['팀원1', '팀원2', '팀원3'], // /api/projects/{projectId}/members
   issue: ['이슈1', '이슈2', '이슈3'],
 };
 
+/*
+/api/projects/{projectId}/jobs?accountId=&roleType=&issueId=
+
+아무것도 안넣으면 팀별
+accounId를 넣으면 구성원별
+roleType을 넣으면 역할별
+issueId를 넣으면 이슈별
+*/
 const commitDummy: {
-  commitId: number;
+  id: number;
+  name: string;
   description: string;
   createdAt: string;
-  user: {
+  issueId: number;
+  member: {
+    memberId: number;
     nickname: string;
     roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
     userImageUrl?: string;
@@ -25,31 +36,40 @@ const commitDummy: {
   imageUrl?: string;
 }[] = [
   {
-    commitId: 1,
+    id: 1,
+    name: '작업명1',
     description:
       '도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가',
     createdAt: '2024-04-26',
-    user: {
+    issueId: 1,
+    member: {
+      memberId: 1,
       nickname: '임서정',
       roles: ['FRONT_END', 'DESIGNER'],
     },
     imageUrl: 'https://via.placeholder.com/1440x1024',
   },
   {
-    commitId: 2,
+    id: 2,
+    name: '작업명2',
     description: '??!!!??',
     createdAt: '2024-04-26',
-    user: {
+    issueId: 2,
+    member: {
+      memberId: 2,
       nickname: '오상훈',
       roles: ['BACK_END', 'INFRA'],
       userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
     },
   },
   {
-    commitId: 3,
+    id: 3,
+    name: '작업명3',
     description: '123123123',
     createdAt: '2024-04-25',
-    user: {
+    issueId: 3,
+    member: {
+      memberId: 3,
       nickname: '조성규',
       roles: ['FRONT_END', 'BACK_END'],
       userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/2.jpg',
@@ -57,10 +77,13 @@ const commitDummy: {
     imageUrl: 'https://via.placeholder.com/1440x1024',
   },
   {
-    commitId: 4,
+    id: 4,
+    name: '작업명4',
     description: '에베베베ㅔ',
     createdAt: '2024-04-25',
-    user: {
+    issueId: 4,
+    member: {
+      memberId: 4,
       nickname: '이승민',
       roles: ['BACK_END', 'INFRA'],
     },
@@ -187,15 +210,18 @@ export default function CommitHistory() {
         <S.CommitList>
           {commitDummy.map(commit => (
             <Comp.Commit
-              key={commit.commitId}
+              key={commit.id}
+              id={commit.id}
+              name={commit.name}
               description={commit.description}
               createdAt={commit.createdAt}
-              user={{
-                nickname: commit.user.nickname,
-                roles: commit.user.roles,
-                userImageUrl: commit.user.userImageUrl,
+              member={{
+                nickname: commit.member.nickname,
+                roles: commit.member.roles,
+                userImageUrl: commit.member.userImageUrl,
               }}
               {...(commit.imageUrl ? { imageUrl: commit.imageUrl } : {})}
+              disabled={false}
             />
           ))}
         </S.CommitList>
