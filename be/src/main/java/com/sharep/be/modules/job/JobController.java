@@ -5,6 +5,7 @@ import com.sharep.be.modules.job.request.JobReadRequest;
 import com.sharep.be.modules.job.response.JobGrassResponse;
 import com.sharep.be.modules.job.response.JobIdResponse;
 import com.sharep.be.modules.job.response.JobReadResponse;
+import com.sharep.be.modules.project.dto.GitlabHook;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -17,7 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,5 +67,13 @@ public class JobController {
     public ResponseEntity<JobGrassResponse> grassRead(
             @AuthenticationPrincipal JwtAuthentication authentication){
         return ResponseEntity.ok(jobService.readGrass(authentication.id));
+    }
+
+    @PostMapping("/projects/{projectId}/hook")
+    public ResponseEntity<Void> readHook(@RequestBody GitlabHook hook,
+            @PathVariable("projectId") Long projectId) {
+        // TODO hook work
+        jobService.commitCreated(hook, projectId);
+        return ResponseEntity.ok().build();
     }
 }

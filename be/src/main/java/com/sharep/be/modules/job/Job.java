@@ -3,6 +3,7 @@ package com.sharep.be.modules.job;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.job.request.JobCreateRequest;
 import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.project.dto.GitlabHook.Commit;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -49,6 +50,9 @@ public class Job {
     @JoinColumn
     private Member member;
 
+    @Column(length = 100)
+    private String commitId;
+
     public static Job from(JobCreateRequest jobCreateRequest, Member member, Issue issue, String imageUrl) {
         Job jobEntity = new Job();
         jobEntity.name = jobCreateRequest.name();
@@ -56,6 +60,16 @@ public class Job {
         jobEntity.imageUrl = imageUrl;
         jobEntity.member = member;
         jobEntity.issue = issue;
+        return jobEntity;
+    }
+
+    public static Job from(Member member, Issue issue, Commit commit){
+        Job jobEntity = new Job();
+        jobEntity.name = commit.getTitle();
+        jobEntity.description = commit.getMessage();
+        jobEntity.member = member;
+        jobEntity.issue = issue;
+        jobEntity.commitId = commit.getId();
         return jobEntity;
     }
 }

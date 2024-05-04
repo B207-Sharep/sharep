@@ -53,5 +53,6 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
                 .where(issue.type.eq(issueType).and(project.id.eq(projectId)))
                 .fetch();
     }
+
 }
 

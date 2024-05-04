@@ -73,11 +73,7 @@ public class ProjectController {
         return ResponseEntity.ok(new TokenDto(projectId, token));
     }
 
-    @PostMapping("/{projectId}/hook")
-    public ResponseEntity<Void> readHook(@RequestBody GitlabHook hook) {
-        // TODO hook work
-        return ResponseEntity.ok().build();
-    }
+
 
 
 }
