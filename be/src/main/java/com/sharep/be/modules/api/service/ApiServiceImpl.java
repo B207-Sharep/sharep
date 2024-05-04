@@ -1,5 +1,8 @@
 package com.sharep.be.modules.api.service;
 
+import static org.springframework.util.Assert.isNull;
+import static org.springframework.util.Assert.notNull;
+
 import com.sharep.be.modules.api.Api;
 import com.sharep.be.modules.api.ApiRequest.ApiCreate;
 import com.sharep.be.modules.api.ApiRequest.ApiUpdate;
@@ -8,12 +11,14 @@ import com.sharep.be.modules.exception.ApiNotFoundException;
 import com.sharep.be.modules.exception.IssueNotFoundException;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.repository.IssueRepository;
+import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ApiServiceImpl implements ApiService {
 
     private final ApiRepository apiRepository;
@@ -24,7 +29,7 @@ public class ApiServiceImpl implements ApiService {
         Issue issue = issueRepository.findById(apiCreate.issueId())
                 .orElseThrow(IssueNotFoundException::new);
 
-        Assert.isNull(issue.getApi(), "");
+        isNull(issue.getApi(), "");
 
         return apiRepository.save(apiCreate.toEntityWith(issue));
     }
@@ -41,7 +46,9 @@ public class ApiServiceImpl implements ApiService {
         Issue issue = issueRepository.findById(apiId).orElseThrow(IssueNotFoundException::new);
         Api api = issue.getApi();
 
-        issueRepository.save(Issue.deleteApiFrom(issue));
-        apiRepository.delete(api);
+        notNull(api, "api가 이미 없습니다.");
+
+        apiRepository.deleteById(apiId);
+        issue.deleteApi();
     }
 }

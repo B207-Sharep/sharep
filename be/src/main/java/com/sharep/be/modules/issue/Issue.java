@@ -95,20 +95,7 @@ public class Issue {
         this.storyboards = storyboards;
     }
 
-    public static Issue deleteApiFrom(Issue issue) {
-        return Issue.builder()
-                .id(issue.getId())
-                .issueName(issue.getIssueName())
-                .description(issue.getDescription())
-                .type(issue.getType())
-                .epic(issue.getEpic())
-                .createdAt(issue.getCreatedAt())
-                .priority(issue.getPriority())
-                .api(null)
-                .assignees(issue.getAssignees())
-                .jobs(issue.getJobs())
-                .project(issue.getProject())
-                .storyboards(issue.getStoryboards())
-                .build();
+    public void deleteApi() {
+        this.api = null;
     }
 }

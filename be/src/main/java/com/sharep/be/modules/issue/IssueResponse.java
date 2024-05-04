@@ -1,5 +1,6 @@
 package com.sharep.be.modules.issue;
 
+import com.sharep.be.modules.api.ApiResponse;
 import com.sharep.be.modules.assignee.Assignee;
 import com.sharep.be.modules.assignee.AssigneeResponse;
 import com.sharep.be.modules.assignee.State;
@@ -17,7 +18,9 @@ import lombok.Builder;
 @Builder
 public record IssueResponse(Long id, String issueName, String description, IssueType type,
                             String epic, State state, LocalDateTime createdAt,
-                            PriorityType priority) {
+                            PriorityType priority, ApiResponse api,
+                            List<AssigneeResponse> assignees, List<JobResponse> jobs) {
+
 
     public static IssueResponse from(Issue issue) {
         return IssueResponse.builder()
@@ -29,9 +32,9 @@ public record IssueResponse(Long id, String issueName, String description, Issue
                 .createdAt(issue.getCreatedAt())
                 .priority(issue.getPriority())
                 .state(calculateState(issue.getAssignees()))
-//                .api(ApiResponse.from(issue.getApi()))
-//                .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
-//                .jobs(issue.getJobs().stream().map(JobResponse::from).toList())
+                .api(ApiResponse.from(issue.getApi()))
+                .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
+                .jobs(issue.getJobs().stream().map(JobResponse::from).toList())
                 .build();
     }
 

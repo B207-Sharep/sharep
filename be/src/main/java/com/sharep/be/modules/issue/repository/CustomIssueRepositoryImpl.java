@@ -6,6 +6,8 @@ import static com.sharep.be.modules.assignee.QAssignee.assignee;
 import static com.sharep.be.modules.issue.QIssue.issue;
 import static com.sharep.be.modules.job.QJob.job;
 import static com.sharep.be.modules.member.QMember.member;
+import static com.sharep.be.modules.project.QProject.project;
+import static com.sharep.be.modules.storyboard.QStoryboard.storyboard;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharep.be.modules.issue.Issue;

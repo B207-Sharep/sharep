@@ -1,5 +1,7 @@
 package com.sharep.be.modules.issue.service;
 
+import static org.springframework.util.Assert.isTrue;
+
 import com.sharep.be.modules.api.Api;
 import com.sharep.be.modules.api.repository.ApiRepository;
 import com.sharep.be.modules.assignee.Assignee;
@@ -22,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 @Service
 @Transactional
@@ -99,10 +100,10 @@ public class IssueServiceImpl implements IssueService {
                     .orElseThrow(MemberNotFoundException::new).getId();
 
             Set<Assignee> assignees = issue.getAssignees();
-            Assert.isTrue(assignees.size() == 1, "");
+            isTrue(assignees.size() == 1, "");
 
             Assignee assignee = assignees.stream().findFirst().get();
-            Assert.isTrue(assignee.getMember().getId().equals(memberId), "");
+            isTrue(assignee.getMember().getId().equals(memberId), "");
         }
     }
 
