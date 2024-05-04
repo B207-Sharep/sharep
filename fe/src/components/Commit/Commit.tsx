@@ -48,11 +48,7 @@ export default function Commit({
               </S.StyledText>
               <S.RoleBadgeList>
                 {roles.map((role, index) => (
-                  <Comp.RoleBadge
-                    key={index}
-                    role={role as 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER'}
-                    selectAble={false}
-                  />
+                  <Comp.RoleBadge key={index} role={role} selectAble={false} />
                 ))}
               </S.RoleBadgeList>
               <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>

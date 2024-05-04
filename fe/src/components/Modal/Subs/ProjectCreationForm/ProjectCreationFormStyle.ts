@@ -173,3 +173,9 @@ export const RoleBadgeBtn = styled.div<{ $state: boolean }>`
     opacity: 0.6;
   }
 `;
+
+export const TokenInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;

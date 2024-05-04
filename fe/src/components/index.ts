@@ -10,6 +10,7 @@ import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
 import ManualTable from './ManualTable/ManualTable';
 import Modal from './Modal/Modal';
+import { ProjectCreationForm, TaskCreationForm, InfraTaskCreationForm } from './Modal/Subs';
 import GalleryGridWrapper from './GalleryGridWrapper/GalleryGridWrapper';
 import ProjectCard from './ProjectCard/ProjectCard';
 import ProjectGridWrapper from './ProjectGridWrapper/ProjectGridWrapper';
@@ -17,7 +18,6 @@ import Issue from './Issue/Issue';
 import Add from './Button/Add/Add';
 import HistoryBtn from './Button/History/HistoryBtn';
 import MainColorBtn from './Button/MainColorBtn/MainColorBtn';
-
 export {
   InputWithLabel,
   StatusBadge,
@@ -31,6 +31,9 @@ export {
   ManualTable,
   QuillEditor,
   Modal,
+  ProjectCreationForm,
+  TaskCreationForm,
+  InfraTaskCreationForm,
   GalleryGridWrapper,
   ProjectCard,
   ProjectGridWrapper,
