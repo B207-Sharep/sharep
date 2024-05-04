@@ -9,10 +9,7 @@ import com.sharep.be.modules.issue.type.PriorityType;
 import com.sharep.be.modules.job.JobResponse;
 import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.Builder;
 
 @Builder
@@ -109,6 +106,18 @@ public record IssueResponse(Long id, String issueName, String description, Issue
 
         public static ScreenIssueResponse from(Issue issue) {
             return ScreenIssueResponse.builder()
+                    .id(issue.getId())
+                    .issueName(issue.getIssueName())
+                    .description(issue.getDescription())
+                    .build();
+        }
+    }
+
+    @Builder
+    public record SimpleIssueResponse(Long id, String issueName, String description) {
+
+        public static SimpleIssueResponse from(Issue issue) {
+            return SimpleIssueResponse.builder()
                     .id(issue.getId())
                     .issueName(issue.getIssueName())
                     .description(issue.getDescription())

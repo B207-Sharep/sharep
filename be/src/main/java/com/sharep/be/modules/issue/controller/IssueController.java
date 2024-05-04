@@ -6,6 +6,7 @@ import com.sharep.be.modules.issue.IssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.FeatureIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
 import com.sharep.be.modules.issue.IssueResponse.PrivateIssueResponse;
+import com.sharep.be.modules.issue.IssueResponse.SimpleIssueResponse;
 import com.sharep.be.modules.issue.service.IssueService;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
@@ -53,6 +54,13 @@ public class IssueController {
             @PathVariable Long projectId) {
 
         return ResponseEntity.ok(IssueResponse.from(issueService.getIssue(issueId)));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SimpleIssueResponse>> getIssues(@PathVariable Long projectId) {
+
+        return ResponseEntity.ok(issueService.getIssues(projectId).stream()
+                .map(SimpleIssueResponse::from).toList());
     }
 
     @PostMapping

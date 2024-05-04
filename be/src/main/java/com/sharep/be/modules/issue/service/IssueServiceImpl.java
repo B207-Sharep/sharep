@@ -66,6 +66,12 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
+    public List<Issue> getIssues(Long projectId) {
+
+        return issueRepository.findByProjectId(projectId);
+    }
+
+    @Override
     public List<Issue> getPrivateIssues(Long projectId, Long accountId) {
         Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
                 .orElseThrow(MemberNotFoundException::new);

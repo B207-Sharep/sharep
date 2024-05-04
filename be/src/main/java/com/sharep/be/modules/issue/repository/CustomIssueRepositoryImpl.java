@@ -53,5 +53,16 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
                 .where(issue.type.eq(issueType).and(project.id.eq(projectId)))
                 .fetch();
     }
+
+    @Override
+    public List<Issue> findByProjectId(Long projectId) {
+        return queryFactory
+                .select(issue)
+                .from(issue)
+                .leftJoin(issue.api, api).fetchJoin()
+                .innerJoin(issue.project, project)
+                .where(project.id.eq(projectId))
+                .fetch();
+    }
 }
 
