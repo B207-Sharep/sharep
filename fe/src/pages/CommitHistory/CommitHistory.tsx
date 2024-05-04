@@ -37,7 +37,7 @@ const commitDummy: {
 }[] = [
   {
     id: 1,
-    name: '작업명',
+    name: '작업명1',
     description:
       '도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가도커란 무엇인가',
     createdAt: '2024-04-26',
@@ -51,7 +51,7 @@ const commitDummy: {
   },
   {
     id: 2,
-    name: '작업명',
+    name: '작업명2',
     description: '??!!!??',
     createdAt: '2024-04-26',
     issueId: 2,
@@ -64,7 +64,7 @@ const commitDummy: {
   },
   {
     id: 3,
-    name: '작업명',
+    name: '작업명3',
     description: '123123123',
     createdAt: '2024-04-25',
     issueId: 3,
@@ -78,7 +78,7 @@ const commitDummy: {
   },
   {
     id: 4,
-    name: '작업명',
+    name: '작업명4',
     description: '에베베베ㅔ',
     createdAt: '2024-04-25',
     issueId: 4,
@@ -211,6 +211,7 @@ export default function CommitHistory() {
           {commitDummy.map(commit => (
             <Comp.Commit
               key={commit.id}
+              id={commit.id}
               name={commit.name}
               description={commit.description}
               createdAt={commit.createdAt}
@@ -220,6 +221,7 @@ export default function CommitHistory() {
                 userImageUrl: commit.member.userImageUrl,
               }}
               {...(commit.imageUrl ? { imageUrl: commit.imageUrl } : {})}
+              disabled={false}
             />
           ))}
         </S.CommitList>

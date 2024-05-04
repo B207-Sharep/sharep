@@ -8,7 +8,7 @@ export const CommitWrapper = styled.div`
   border: 1px solid rgba(208, 215, 222, 0.7);
 `;
 
-export const CommitInfo = styled.div<{ $isClickable?: boolean }>`
+export const CommitInfo = styled.div`
   width: 100%;
   height: 84px;
   padding: 24px 16px;
@@ -17,7 +17,7 @@ export const CommitInfo = styled.div<{ $isClickable?: boolean }>`
   gap: 24px;
   align-items: center;
   border-radius: 6px;
-  cursor: ${({ $isClickable }) => ($isClickable ? 'pointer' : 'default')};
+  cursor: pointer;
 `;
 
 export const AccordionIconButton = styled.button`
@@ -76,10 +76,13 @@ export const RoleBadgeList = styled.div`
   gap: 4px;
 `;
 
-export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
+export const CommitText = styled.div<{ color?: string; fontSize?: number; fontWeight?: number }>`
   color: ${props => props.color};
   font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
   font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
+`;
+
+export const StyledText = styled(CommitText)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -90,4 +93,13 @@ export const CommitImageDetail = styled.div`
   justify-content: center;
   align-items: center;
   padding: 16px 64px;
+`;
+
+export const CommitDetailContainer = styled.div``;
+
+export const CommitContentDetail = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 64px;
+  gap: 10px;
 `;

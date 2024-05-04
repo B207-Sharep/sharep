@@ -6,6 +6,7 @@ import { PALETTE } from '@/styles';
 import { ChevronDown } from 'lucide-react';
 
 export default function Commit({
+  id,
   name,
   description,
   createdAt,
@@ -17,14 +18,14 @@ export default function Commit({
     roles,
     userImageUrl,
   },
+  disabled,
 }: T.CommitProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const isClickable = imageUrl !== undefined;
 
   return (
     <S.CommitWrapper>
-      <S.CommitInfo $isClickable={isClickable} onClick={() => setIsOpen(!isOpen)}>
-        {isClickable ? (
+      <S.CommitInfo onClick={() => setIsOpen(!isOpen)}>
+        {!disabled ? (
           <S.AccordionIconButton>
             <S.AccordionIcon $isOpen={isOpen}>
               <ChevronDown color={PALETTE.LIGHT_BLACK} />
@@ -63,17 +64,22 @@ export default function Commit({
             </S.CommitUserInfo>
           </S.CommitMessage>
         </S.CommitContent>
-        {isClickable && <S.Img width={60} height={60} radius={10} src={imageUrl} />}
+        {imageUrl && <S.Img width={60} height={60} radius={10} src={imageUrl} />}
       </S.CommitInfo>
-      {isClickable && isOpen && (
-        // TODO :작업명, 작업 설명 스타일 적용
-        <>
-          <div>{name}</div>
-          <div>{description}</div>
+      {!disabled && isOpen && (
+        <S.CommitDetailContainer>
+          <S.CommitContentDetail>
+            <S.CommitText color={PALETTE.SUB_BLACK} fontSize={16}>
+              {name}
+            </S.CommitText>
+            <S.CommitText color={PALETTE.LIGHT_BLACK} fontSize={14}>
+              {description}
+            </S.CommitText>
+          </S.CommitContentDetail>
           <S.CommitImageDetail>
-            <S.Img width={800} height={600} radius={0} src={imageUrl} />
+            {imageUrl && <S.Img width={800} height={600} radius={0} src={imageUrl} />}
           </S.CommitImageDetail>
-        </>
+        </S.CommitDetailContainer>
       )}
     </S.CommitWrapper>
   );
