@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import * as S from './TaskCreationFormStyle';
+import * as S from './JobCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
 import * as Icon from '@/assets';
@@ -9,8 +9,8 @@ import { useModal } from '@/customhooks';
 import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
 
-export default function TaskCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
-  const { updateContentByKey } = useModal<T.TaskCreationFormProps>(modalId);
+export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
+  const { updateContentByKey } = useModal<T.JobCreationFormProps>(modalId);
   const modalData = useRecoilValue(modalDataState(modalId));
   const { contents } = modalData;
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -46,7 +46,7 @@ export default function TaskCreationForm({ modalId }: Pick<T.ModalProps, 'modalI
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    updateContentByKey(id as keyof T.TaskCreationFormProps, value);
+    updateContentByKey(id as keyof T.JobCreationFormProps, value);
   };
 
   return (
@@ -54,7 +54,7 @@ export default function TaskCreationForm({ modalId }: Pick<T.ModalProps, 'modalI
       <S.TitleContainer>
         <S.IssueTitle>
           <S.IssueBadge>
-            <S.StyledText color={PALETTE.MAIN_WHITE} fontSize={16}>
+            <S.StyledText color={PALETTE.MAIN_WHITE} fontSize={16} fontWeight={600}>
               Issue
             </S.StyledText>
           </S.IssueBadge>

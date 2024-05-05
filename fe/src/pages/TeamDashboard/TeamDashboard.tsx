@@ -78,6 +78,7 @@ const DUMMY_YESTERDAY_WORK = `달이 떴다고 전화를 주시다니요. 이 �
 
 const DUMMY_SCREEN_LIST = [
   ...Array.from({ length: 7 }, (_, index) => ({
+    issueId: index + 1,
     issueName: `화면 이슈 ${index + 1}`,
     createdAt: '2024.04.27',
     issueType: 'SCREEN' as 'SCREEN',

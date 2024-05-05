@@ -8,7 +8,7 @@ export interface ModalProps {
   children: React.ReactNode;
 }
 
-export interface TaskCreationFormProps {
+export interface JobCreationFormProps {
   name: string;
   imageFile: File;
   description: string;
@@ -26,7 +26,7 @@ export interface ProjectCreationFormProps {
   }[];
 }
 
-export interface InfraTaskCreationFormProps {
+export interface InfraJobCreationFormProps {
   name: string;
   description: string;
   notiUsers: {

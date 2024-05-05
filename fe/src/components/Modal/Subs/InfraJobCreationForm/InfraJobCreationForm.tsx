@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as S from './InfraTaskCreationFormStyle';
+import * as S from './InfraJobCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
 import { PALETTE } from '@/styles';
@@ -8,34 +8,8 @@ import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
 import { Plus, X } from 'lucide-react';
 
-const dummyUsers: T.InfraTaskCreationFormProps['notiUsers'][number][] = [
-  {
-    accountId: 1,
-    nickname: '임서정',
-    roles: ['FRONT_END', 'DESIGNER'],
-  },
-  {
-    accountId: 2,
-    nickname: '오상훈',
-    roles: ['INFRA', 'BACK_END'],
-    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
-  },
-  {
-    accountId: 3,
-    nickname: '조성규',
-    roles: ['FRONT_END', 'BACK_END'],
-    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/2.jpg',
-  },
-  {
-    accountId: 4,
-    nickname: '김성제',
-    roles: ['INFRA', 'BACK_END'],
-    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/3.jpg',
-  },
-];
-
-export default function InfraTaskCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
-  const { updateContentByKey } = useModal<T.InfraTaskCreationFormProps>(modalId);
+export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
+  const { updateContentByKey } = useModal<T.InfraJobCreationFormProps>(modalId);
   const modalData = useRecoilValue(modalDataState(modalId));
   const { contents } = modalData;
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -43,9 +17,9 @@ export default function InfraTaskCreationForm({ modalId }: Pick<T.ModalProps, 'm
   const addbBtnRef = useRef<HTMLDivElement | null>(null);
   const notiContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleAddNotiUser = (userToAdd: T.InfraTaskCreationFormProps['notiUsers'][number]) => {
+  const handleAddNotiUser = (userToAdd: T.InfraJobCreationFormProps['notiUsers'][number]) => {
     const isAlreadyAdded = contents.notiUsers.some(
-      (user: T.InfraTaskCreationFormProps['notiUsers'][number]) => user.accountId === userToAdd.accountId,
+      (user: T.InfraJobCreationFormProps['notiUsers'][number]) => user.accountId === userToAdd.accountId,
     );
 
     if (!isAlreadyAdded) {
@@ -56,11 +30,11 @@ export default function InfraTaskCreationForm({ modalId }: Pick<T.ModalProps, 'm
   };
 
   // 추가된 팀원 목록에서 팀원 삭제
-  const handleRemoveNotiUser = (selectedUser: T.InfraTaskCreationFormProps['notiUsers'][number]) => () => {
+  const handleRemoveNotiUser = (selectedUser: T.InfraJobCreationFormProps['notiUsers'][number]) => () => {
     updateContentByKey(
       'notiUsers',
       contents.notiUsers.filter(
-        (notiUser: T.InfraTaskCreationFormProps['notiUsers'][number]) => notiUser.accountId !== selectedUser.accountId,
+        (notiUser: T.InfraJobCreationFormProps['notiUsers'][number]) => notiUser.accountId !== selectedUser.accountId,
       ),
     );
 
@@ -123,7 +97,7 @@ export default function InfraTaskCreationForm({ modalId }: Pick<T.ModalProps, 'm
           알림
         </S.StyledText>
         <S.NotiContainer ref={notiContainerRef}>
-          {contents.notiUsers.map((user: T.InfraTaskCreationFormProps['notiUsers'][number]) => (
+          {contents.notiUsers.map((user: T.InfraJobCreationFormProps['notiUsers'][number]) => (
             <S.NotiUser key={user.accountId}>
               <S.UserInfo>
                 <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
@@ -187,3 +161,29 @@ export default function InfraTaskCreationForm({ modalId }: Pick<T.ModalProps, 'm
     </S.Wrapper>
   );
 }
+
+const dummyUsers: T.InfraJobCreationFormProps['notiUsers'][number][] = [
+  {
+    accountId: 1,
+    nickname: '임서정',
+    roles: ['FRONT_END', 'DESIGNER'],
+  },
+  {
+    accountId: 2,
+    nickname: '오상훈',
+    roles: ['INFRA', 'BACK_END'],
+    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
+  },
+  {
+    accountId: 3,
+    nickname: '조성규',
+    roles: ['FRONT_END', 'BACK_END'],
+    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/2.jpg',
+  },
+  {
+    accountId: 4,
+    nickname: '김성제',
+    roles: ['INFRA', 'BACK_END'],
+    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/3.jpg',
+  },
+];

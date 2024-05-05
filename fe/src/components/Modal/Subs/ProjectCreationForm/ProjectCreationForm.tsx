@@ -9,23 +9,6 @@ import { Info, MinusCircle, Search } from 'lucide-react';
 import { modalDataState } from '@/stores/atoms/modal';
 import { useModal } from '@/customhooks';
 
-const dummyResults: Omit<T.ProjectCreationFormProps['members'][number], 'roles'>[] = [
-  {
-    accountId: 2,
-    email: 'ssafy1234@ssafy.com',
-    nickname: '사용자1',
-  },
-  { accountId: 3, email: 'ssafy5678@ssafy.com', nickname: '사용자2' },
-  { accountId: 4, email: 'oh4@ssafy.com', nickname: '오상훈' },
-  { accountId: 5, email: 'sj@ssafy.com', nickname: '임서정' },
-  { accountId: 6, email: 'jo@ssafy.com', nickname: '조성규' },
-  { accountId: 7, email: 'princess@ssafy.com', nickname: '김성제' },
-  { accountId: 8, email: 'mehot@ssafy.com', nickname: '이승민' },
-  // { accountId: 9, email: 'jack@ssafy.com', nickname: '유재건' },
-];
-
-const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
-
 export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
   const { updateContentByKey } = useModal<T.ProjectCreationFormProps>(modalId);
   const modalData = useRecoilValue(modalDataState(modalId));
@@ -279,3 +262,20 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
     </S.Wrapper>
   );
 }
+
+const dummyResults: Omit<T.ProjectCreationFormProps['members'][number], 'roles'>[] = [
+  {
+    accountId: 2,
+    email: 'ssafy1234@ssafy.com',
+    nickname: '사용자1',
+  },
+  { accountId: 3, email: 'ssafy5678@ssafy.com', nickname: '사용자2' },
+  { accountId: 4, email: 'oh4@ssafy.com', nickname: '오상훈' },
+  { accountId: 5, email: 'sj@ssafy.com', nickname: '임서정' },
+  { accountId: 6, email: 'jo@ssafy.com', nickname: '조성규' },
+  { accountId: 7, email: 'princess@ssafy.com', nickname: '김성제' },
+  { accountId: 8, email: 'mehot@ssafy.com', nickname: '이승민' },
+  // { accountId: 9, email: 'jack@ssafy.com', nickname: '유재건' },
+];
+
+const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
