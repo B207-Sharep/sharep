@@ -2,6 +2,7 @@ package com.sharep.be.modules.issue;
 
 import com.sharep.be.modules.api.Api;
 import com.sharep.be.modules.assignee.domain.Assignee;
+import com.sharep.be.modules.assignee.domain.State;
 import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.issue.type.PriorityType;
 import com.sharep.be.modules.job.domain.Job;
@@ -23,7 +24,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDateTime;
+import java.util.EnumMap;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,15 +61,14 @@ public class Issue {
     @Enumerated(EnumType.STRING)
     private PriorityType priority;
 
-
     @OneToOne(mappedBy = "issue", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @PrimaryKeyJoinColumn
     private Api api;
 
-    @OneToMany(mappedBy = "issue")
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Assignee> assignees;
 
-    @OneToMany(mappedBy = "issue")
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Job> jobs;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -95,7 +97,25 @@ public class Issue {
         this.storyboards = storyboards;
     }
 
-    public void deleteApi() {
-        this.api = null;
+    public void updateApi(Api api) {
+        this.api = api;
+    }
+
+    public State calculateState() {
+        EnumMap<State, Long> stateCount = assignees.stream().collect(
+                Collectors.groupingBy(Assignee::getState, () -> new EnumMap<>(State.class),
+                        Collectors.counting()));
+
+        long size = assignees.size();
+        long done = stateCount.getOrDefault(State.DONE, 0L);
+        long yet = stateCount.getOrDefault(State.YET, 0L);
+
+        if (yet == size) {
+            return State.YET;
+        } else if (done == size) {
+            return State.DONE;
+        } else {
+            return State.NOW;
+        }
     }
 }
