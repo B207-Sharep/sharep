@@ -10,7 +10,8 @@ import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
 import ManualTable from './ManualTable/ManualTable';
 import Modal from './Modal/Modal';
-import { ProjectCreationForm, TaskCreationForm, InfraTaskCreationForm } from './Modal/Subs';
+import { ProjectCreationForm, JobCreationForm, InfraJobCreationForm } from './Modal/Subs';
+import GalleryCard from './GalleryCard/GalleryCard';
 import GalleryGridWrapper from './GalleryGridWrapper/GalleryGridWrapper';
 import ProjectCard from './ProjectCard/ProjectCard';
 import ProjectGridWrapper from './ProjectGridWrapper/ProjectGridWrapper';
@@ -32,8 +33,9 @@ export {
   QuillEditor,
   Modal,
   ProjectCreationForm,
-  TaskCreationForm,
-  InfraTaskCreationForm,
+  JobCreationForm,
+  InfraJobCreationForm,
+  GalleryCard,
   GalleryGridWrapper,
   ProjectCard,
   ProjectGridWrapper,
