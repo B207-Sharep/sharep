@@ -7,6 +7,110 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
 
+export default function ScreenManualDetail() {
+  const { projectId } = useParams();
+  const navigate = useNavigate();
+  const jobModal = useModal('job');
+
+  const handleModalOpen = () => {
+    jobModal.openModal({
+      name: '',
+      imageFile: null,
+      description: '',
+    });
+  };
+
+  return (
+    <L.SideBarLayout>
+      <S.Wrapper>
+        <S.HeaderContainer>
+          <S.Header>
+            <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
+              {/* TODO: 화면 이슈 이름 */}
+              페이지 이름
+            </S.StyledText>
+            <S.IssueAssigneeContainer>
+              <S.AssigneeBadge>
+                <S.StyledText color={PALETTE.MAIN_WHITE} fontWeight={600}>
+                  담당자
+                </S.StyledText>
+              </S.AssigneeBadge>
+              <S.CommitUserInfo>
+                <Comp.UserImg size="sm" path={dummyAssignee.userImageUrl || 'https://via.placeholder.com/16x16'} />
+                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                  {dummyAssignee.nickname}
+                </S.StyledText>
+                <S.RoleBadgeList>
+                  {dummyAssignee.roles.map((role, index) => (
+                    <Comp.RoleBadge key={index} role={role} selectAble={false} />
+                  ))}
+                </S.RoleBadgeList>
+              </S.CommitUserInfo>
+            </S.IssueAssigneeContainer>
+          </S.Header>
+          <S.CommitWrapper>
+            {/* TODO: histroy btn color 수정 필요 */}
+            <div onClick={() => navigate(`/projects/${projectId}/commit-history`)}>
+              <Comp.HistoryBtn />
+            </div>
+            <div onClick={handleModalOpen}>
+              <Comp.Add />
+            </div>
+            <Comp.Modal modalId="job" title="새 작업 작성">
+              <Comp.JobCreationForm modalId="job" />
+            </Comp.Modal>
+          </S.CommitWrapper>
+        </S.HeaderContainer>
+        <S.Divider />
+
+        <S.ContentContainer>
+          <Comp.Commit
+            name={dummyRecentCommit.name}
+            description={dummyRecentCommit.description}
+            createdAt={dummyRecentCommit.createdAt}
+            member={dummyRecentCommit.member}
+            disabled={false}
+          />
+          {dummyRecentCommit.imageUrl && (
+            <S.ContentItem>
+              <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
+                화면
+              </S.StyledText>
+              <S.CommitImageDetail>
+                <S.Img src={dummyRecentCommit.imageUrl} />
+              </S.CommitImageDetail>
+            </S.ContentItem>
+          )}
+          <S.ContentItem>
+            <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
+              기능 명세서
+            </S.StyledText>
+            <S.ManualWrapper>
+              <Comp.ManualTable
+                columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
+                dataList={FEATURE_MANUAL_DUMMY}
+                usingFor="FEATURE"
+              />
+            </S.ManualWrapper>
+          </S.ContentItem>
+          <S.ContentItem>
+            <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
+              API 명세서
+            </S.StyledText>
+            <S.ManualWrapper>
+              <Comp.ManualTable
+                columnTitles={API_MANUAL_COLUMN_TITLES}
+                dataList={API_MANUAL_DUMMY}
+                usingFor="FEATURE"
+              />
+            </S.ManualWrapper>
+          </S.ContentItem>
+        </S.ContentContainer>
+      </S.Wrapper>
+    </L.SideBarLayout>
+  );
+}
+
 const dummyAssignee = {
   memberId: 2,
   nickname: '김성제',
@@ -156,107 +260,3 @@ const API_MANUAL_DUMMY = [
     assignees: '담당자 - 3', //
   },
 ];
-
-export default function ScreenManualDetail() {
-  const { 'project-id': projectId, 'manual-id': manualId } = useParams();
-  const navigate = useNavigate();
-  const taskModal = useModal('task');
-
-  const handleModalOpen = () => {
-    taskModal.openModal({
-      name: '',
-      imageFile: null,
-      description: '',
-    });
-  };
-
-  return (
-    <L.SideBarLayout>
-      <S.Wrapper>
-        <S.HeaderContainer>
-          <S.Header>
-            <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
-              {/* TODO: 화면 이슈 이름 */}
-              페이지 이름
-            </S.StyledText>
-            <S.IssueAssigneeContainer>
-              <S.AssigneeBadge>
-                <S.StyledText color={PALETTE.MAIN_WHITE} fontWeight={600}>
-                  담당자
-                </S.StyledText>
-              </S.AssigneeBadge>
-              <S.CommitUserInfo>
-                <Comp.UserImg size="sm" path={dummyAssignee.userImageUrl || 'https://via.placeholder.com/16x16'} />
-                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-                  {dummyAssignee.nickname}
-                </S.StyledText>
-                <S.RoleBadgeList>
-                  {dummyAssignee.roles.map((role, index) => (
-                    <Comp.RoleBadge key={index} role={role} selectAble={false} />
-                  ))}
-                </S.RoleBadgeList>
-              </S.CommitUserInfo>
-            </S.IssueAssigneeContainer>
-          </S.Header>
-          <S.CommitWrapper>
-            {/* TODO: histroy btn color 수정 필요 */}
-            <div onClick={() => navigate(`/projects/${projectId}/commit-history`)}>
-              <Comp.HistoryBtn />
-            </div>
-            <div onClick={handleModalOpen}>
-              <Comp.Add />
-            </div>
-            <Comp.Modal modalId="task" title="새 작업 작성">
-              <Comp.TaskCreationForm modalId="task" />
-            </Comp.Modal>
-          </S.CommitWrapper>
-        </S.HeaderContainer>
-        <S.Divider />
-
-        <S.ContentContainer>
-          <Comp.Commit
-            name={dummyRecentCommit.name}
-            description={dummyRecentCommit.description}
-            createdAt={dummyRecentCommit.createdAt}
-            member={dummyRecentCommit.member}
-            disabled={false}
-          />
-          {dummyRecentCommit.imageUrl && (
-            <S.ContentItem>
-              <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
-                화면
-              </S.StyledText>
-              <S.CommitImageDetail>
-                <S.Img src={dummyRecentCommit.imageUrl} />
-              </S.CommitImageDetail>
-            </S.ContentItem>
-          )}
-          <S.ContentItem>
-            <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
-              기능 명세서
-            </S.StyledText>
-            <S.ManualWrapper>
-              <Comp.ManualTable
-                columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
-                dataList={FEATURE_MANUAL_DUMMY}
-                usingFor="FEATURE"
-              />
-            </S.ManualWrapper>
-          </S.ContentItem>
-          <S.ContentItem>
-            <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
-              API 명세서
-            </S.StyledText>
-            <S.ManualWrapper>
-              <Comp.ManualTable
-                columnTitles={API_MANUAL_COLUMN_TITLES}
-                dataList={API_MANUAL_DUMMY}
-                usingFor="FEATURE"
-              />
-            </S.ManualWrapper>
-          </S.ContentItem>
-        </S.ContentContainer>
-      </S.Wrapper>
-    </L.SideBarLayout>
-  );
-}

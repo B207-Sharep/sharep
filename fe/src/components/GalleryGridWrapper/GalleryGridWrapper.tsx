@@ -1,11 +1,11 @@
 import React from 'react';
 import * as S from './GalleryGridWrapperStyle';
-import GalleryCard from '../GalleryCard/GalleryCard';
-import { GalleryGridWrapperProps } from '@/types/components/GalleryGridWrapper';
+import * as T from '@/types';
+import * as Comp from '@/components';
 import { PALETTE } from '@/styles';
 import { Plus } from 'lucide-react';
 
-export default function GalleryGridWrapper({ issueList }: GalleryGridWrapperProps) {
+export default function GalleryGridWrapper({ issueList }: T.GalleryGridWrapperProps) {
   const handleAddBtn = () => {
     console.log('add');
   };
@@ -14,7 +14,7 @@ export default function GalleryGridWrapper({ issueList }: GalleryGridWrapperProp
     <S.Grid>
       <S.CardList>
         {issueList.map((issue, index) => (
-          <GalleryCard
+          <Comp.GalleryCard
             key={index}
             issueId={issue.issueId}
             issueName={issue.issueName}
