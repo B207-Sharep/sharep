@@ -29,6 +29,7 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
                 .innerJoin(job.member, member)
                 .innerJoin(member.project, project)
                 .where(project.id.eq(projectId))
+                .orderBy(job.createdAt.desc())
                 .fetch();
     }
 
@@ -41,6 +42,7 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
                 .innerJoin(member.project, project)
                 .where(account.id.eq(accountId))
                 .where(project.id.eq(projectId))
+                .orderBy(job.createdAt.desc())
                 .fetch();
     }
 
@@ -53,6 +55,7 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
                 .innerJoin(member.project, project)
                 .where(project.id.eq(projectId))
                 .where(role1.role.eq(roleType))
+                .orderBy(job.createdAt.desc())
                 .fetch();
     }
 
@@ -64,6 +67,7 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
                 .innerJoin(member.project, project)
                 .where(project.id.eq(projectId))
                 .where(issue.id.eq(issueId))
+                .orderBy(job.createdAt.desc())
                 .fetch();
 
     }

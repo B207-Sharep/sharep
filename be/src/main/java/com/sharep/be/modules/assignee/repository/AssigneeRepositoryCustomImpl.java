@@ -28,6 +28,7 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom{
                 .innerJoin(member.account, account)
                 .innerJoin(issue.project, project)
                 .where(project.id.eq(projectId))
+                .orderBy(issue.createdAt.desc())
                 .fetch();
     }
 
@@ -42,6 +43,7 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom{
                 .innerJoin(issue.project, project)
                 .where(project.id.eq(projectId))
                 .where(account.id.eq(accountId))
+                .orderBy(issue.createdAt.desc())
                 .fetch();
     }
 }
