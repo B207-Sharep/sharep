@@ -13,8 +13,8 @@ import { GalleryGridWrapperProps } from './components/GalleryGridWrapper';
 import {
   ModalProps,
   ProjectCreationFormProps,
-  TaskCreationFormProps,
-  InfraTaskCreationFormProps,
+  JobCreationFormProps,
+  InfraJobCreationFormProps,
 } from './components/Modal';
 import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualTable';
 import { ProjectGridWrapperProps } from './components/ProjectGridWrapper';
@@ -43,8 +43,8 @@ export type {
   GalleryGridWrapperProps,
   ModalProps,
   ProjectCreationFormProps,
-  TaskCreationFormProps,
-  InfraTaskCreationFormProps,
+  JobCreationFormProps,
+  InfraJobCreationFormProps,
   ManualTableProps,
   CelProps,
   SelectCelProps,

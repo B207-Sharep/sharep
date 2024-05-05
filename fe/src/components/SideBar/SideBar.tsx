@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import * as S from './SideBarStyle';
 import { History as CommitHistory, Plus } from 'lucide-react';
 import * as G from '@/styles';
-
+import * as Comp from '@/components';
 import API from '@/assets/svgs/api-docs-icon.svg?react';
 // import ETC from '../../../public/svgs/etc-docs-icon.svg?react';
 import INFRA from '@/assets/svgs/infra-docs-icon.svg?react';
@@ -15,12 +15,10 @@ import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 import UserImg from '../UserImg/UserImg';
 import { useModal } from '@/customhooks';
-import { Modal } from '..';
-import { TaskCreationForm } from '../Modal/Subs';
 
 export default function SideBar() {
   const navigate = useNavigate();
-  const taskModal = useModal('task');
+  const jobModal = useModal('job');
 
   const handleHistoryClick = () => {
     navigate('/projects/1/commit-history');
@@ -46,7 +44,7 @@ export default function SideBar() {
   };
 
   const handleModalOpen = () => {
-    taskModal.openModal({
+    jobModal.openModal({
       name: '',
       imageFile: null,
       description: '',
@@ -81,9 +79,9 @@ export default function SideBar() {
                   <S.SideBarBtn onClick={handleModalOpen}>
                     <Plus color={G.PALETTE.MAIN_COLOR} size={14}></Plus>
                   </S.SideBarBtn>
-                  <Modal modalId="task" title="새 작업 작성">
-                    <TaskCreationForm modalId="task" />
-                  </Modal>
+                  <Comp.Modal modalId="job" title="새 작업 작성">
+                    <Comp.JobCreationForm modalId="job" />
+                  </Comp.Modal>
                 </S.SideBarBtnGroup>
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleTeamDashClick}>

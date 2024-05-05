@@ -1,15 +1,14 @@
 import React from 'react';
 import * as L from '@/layouts';
-import { Modal } from '@/components';
+import * as Comp from '@/components';
 import { useModal } from '@/customhooks';
-import { InfraTaskCreationForm } from '@/components/Modal/Subs';
 
 export default function SeoJeong() {
-  const infraTaskModal = useModal('infra-task');
+  const infraJobModal = useModal('infra-job');
 
   const handleModalOpen = (modalId: string) => {
-    if (modalId === 'infra-task') {
-      infraTaskModal.openModal({
+    if (modalId === 'infra-job') {
+      infraJobModal.openModal({
         name: '',
         description: '',
         notiUsers: [],
@@ -28,12 +27,12 @@ export default function SeoJeong() {
         }}
       >
         {/* 새 인프라 작업 생성 모달 */}
-        <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('infra-task')}>
+        <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('infra-job')}>
           새 인프라 작업 생성 모달
         </button>
-        <Modal modalId="infra-task" title="인프라 명세서 > 이슈 제목">
-          <InfraTaskCreationForm modalId="infra-task" />
-        </Modal>
+        <Comp.Modal modalId="infra-job" title="인프라 명세서 > 이슈 제목">
+          <Comp.InfraJobCreationForm modalId="infra-job" />
+        </Comp.Modal>
       </div>
     </L.SideBarLayout>
   );
