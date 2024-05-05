@@ -6,6 +6,7 @@ import { PALETTE } from '@/styles';
 
 const screenIssueList = [
   ...Array.from({ length: 7 }, (_, index) => ({
+    issueId: index + 1,
     issueName: `화면 이슈 ${index + 1}`,
     createdAt: '2024.04.27',
     issueType: 'SCREEN' as 'SCREEN',

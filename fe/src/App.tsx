@@ -25,6 +25,7 @@ function App() {
         <Route path="/projects/:project-id/feature-manual" element={<Page.FeatureManual />} />
         <Route path="/projects/:project-id/api-manual" element={<Page.FeatureManual />} />
         <Route path="/projects/:project-id/screen-manual" element={<Page.ScreenManual />} />
+        <Route path="/projects/:project-id/screen-manual/:manual-id" element={<Page.ScreenManualDetail />} />
         <Route path="/projects/:project-id/infra-manual" element={<Page.InfraManual />} />
       </Routes>
     </>

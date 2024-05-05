@@ -64,11 +64,12 @@ export const CommitUserInfo = styled.div`
   gap: 8px;
 `;
 
-export const Img = styled.img<{ width: number; height: number; radius: number }>`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
+export const Img = styled.img<{ width?: number; height?: number; radius?: number }>`
+  width: ${props => (props.width ? `${props.width}px` : '100%')};
+  height: ${props => (props.height ? `${props.height}px` : '100%')};
   border-radius: ${props => props.radius}px;
   box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
+  object-fit: ${props => (props.width && props.height ? 'cover' : 'contain')};
 `;
 
 export const RoleBadgeList = styled.div`

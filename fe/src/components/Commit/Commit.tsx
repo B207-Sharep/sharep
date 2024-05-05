@@ -73,7 +73,7 @@ export default function Commit({
             </S.CommitText>
           </S.CommitContentDetail>
           <S.CommitImageDetail>
-            {imageUrl && <S.Img width={800} height={600} radius={0} src={imageUrl} />}
+            {imageUrl && <S.Img src={imageUrl} />}
           </S.CommitImageDetail>
         </S.CommitDetailContainer>
       )}
