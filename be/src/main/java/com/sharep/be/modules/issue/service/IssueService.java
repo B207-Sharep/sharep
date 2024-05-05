@@ -17,7 +17,7 @@ public interface IssueService {
 
     void deleteIssue(Long id, Long accountId, Long projectId);
 
-    List<Issue> getPrivateIssues(Long projectId, Long accountId);
+    List<Issue> getKanbanIssues(Long projectId, Long accountId);
 
     List<Issue> getFeatureIssues(Long projectId);
 
