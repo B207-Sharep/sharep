@@ -9,7 +9,11 @@ import com.sharep.be.modules.job.response.JobReadResponse;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-//@RequestMapping("/jobs")
 @RequiredArgsConstructor
 public class JobController {
 
@@ -62,8 +65,24 @@ public class JobController {
         );
     }
 
+    // 기여도 조회
+    @GetMapping("/projects/{projectId}/accounts/{accountId}/contributions")
+    public ResponseEntity<Map<String, Integer>> readContribution(
+            @PathVariable @Min(1) Long projectId,
+            @PathVariable @Min(1) Long accountId
+    ){
+
+        List<Job> jobs = jobService.readContribution(projectId, accountId);
+
+        return ResponseEntity.ok(
+                JobContributionResponse.from(jobs)
+        );
+    }
+
     @GetMapping("/jobs")
     public ResponseEntity<JobGrassResponse> grassRead(
+
+
             @AuthenticationPrincipal JwtAuthentication authentication){
         return ResponseEntity.ok(jobService.readGrass(authentication.id));
     }

@@ -15,4 +15,6 @@ public interface JobRepositoryCustom {
     List<Job> findAllByProjectIdAndIssueId(Long projectId, Long issueId);
 
     List<Job> findAllByAccountId(Long accountId);
+
+    List<Job> findContributionByProjectIdAndAccountId(Long projectId, Long accountId);
 }

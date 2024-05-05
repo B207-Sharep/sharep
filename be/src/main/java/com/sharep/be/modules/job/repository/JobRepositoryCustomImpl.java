@@ -84,4 +84,16 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
                 .fetch();
     }
 
+    @Override
+    public List<Job> findContributionByProjectIdAndAccountId(Long projectId, Long accountId) {
+        return queryFactory.select(job)
+                .from(job)
+                .innerJoin(job.member, member)
+                .innerJoin(member.project, project)
+                .innerJoin(member.account, account)
+                .where(project.id.eq(projectId))
+                .where(account.id.eq(accountId))
+                .fetch();
+    }
+
 }

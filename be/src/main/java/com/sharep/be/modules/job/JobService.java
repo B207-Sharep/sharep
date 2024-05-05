@@ -10,6 +10,7 @@ import com.sharep.be.modules.job.response.JobGrassResponse;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.MemberRepository;
 import com.sharep.be.modules.member.Role.RoleType;
+import jakarta.validation.constraints.Min;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -89,5 +90,10 @@ public class JobService{
             currentDate = currentDate.minusDays(1);
         }
         return new JobGrassResponse(jobCount, grasses);
+    }
+
+    public List<Job> readContribution(Long projectId, Long accountId) {
+        System.out.println(jobRepository.findContributionByProjectIdAndAccountId(projectId, accountId).size());
+        return jobRepository.findContributionByProjectIdAndAccountId(projectId, accountId);
     }
 }
