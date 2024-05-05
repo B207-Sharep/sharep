@@ -8,7 +8,7 @@ import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
 
 export default function ScreenManualDetail() {
-  const { projectId } = useParams();
+  const { 'project-id': projectId } = useParams();
   const navigate = useNavigate();
   const jobModal = useModal('job');
 
