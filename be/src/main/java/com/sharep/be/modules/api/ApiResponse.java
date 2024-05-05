@@ -1,7 +1,7 @@
 package com.sharep.be.modules.api;
 
 import com.sharep.be.modules.api.type.MethodType;
-import com.sharep.be.modules.assignee.AssigneeResponse;
+import com.sharep.be.modules.assignee.controller.response.AssigneeResponse;
 import com.sharep.be.modules.assignee.domain.State;
 import java.util.List;
 import java.util.Optional;

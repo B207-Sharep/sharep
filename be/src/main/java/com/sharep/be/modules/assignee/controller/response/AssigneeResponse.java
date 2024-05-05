@@ -8,12 +8,12 @@ import lombok.Builder;
 public record AssigneeResponse(String name, String imageUrl) {
 
     public static AssigneeResponse from(Assignee assignee) {
-        return Optional.of(
-                AssigneeResponse.builder()
-                        .name(assignee.getMember().getAccount().getNickname())
-                        .imageUrl(assignee.getMember().getAccount().getImageUrl())
+        return Optional.ofNullable(assignee)
+                .map(a -> AssigneeResponse.builder()
+                        .name(a.getMember().getAccount().getNickname())
+                        .imageUrl(a.getMember().getAccount().getImageUrl())
                         .build()
-        ).orElse(null);
+                ).orElse(null);
     }
 
 }
