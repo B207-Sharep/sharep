@@ -1,5 +1,6 @@
-package com.sharep.be.modules.job;
+package com.sharep.be.modules.job.controller.response;
 
+import com.sharep.be.modules.job.domain.Job;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.Builder;

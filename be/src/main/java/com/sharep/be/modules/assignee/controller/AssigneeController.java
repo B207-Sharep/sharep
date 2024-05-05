@@ -1,19 +1,19 @@
-package com.sharep.be.modules.assignee;
+package com.sharep.be.modules.assignee.controller;
 
-import static io.jsonwebtoken.lang.Assert.*;
+import static io.jsonwebtoken.lang.Assert.notNull;
 
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.account.dto.AccountDto;
-import com.sharep.be.modules.assignee.response.AssigneeIdResponse;
-import com.sharep.be.modules.assignee.response.AssigneeProjectNowIssueResponse;
+import com.sharep.be.modules.assignee.service.AssigneeService;
+import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.assignee.controller.response.AssigneeIdResponse;
+import com.sharep.be.modules.assignee.controller.response.AssigneeProjectNowIssueResponse;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.IssueResponse;
 import com.sharep.be.modules.security.JwtAuthentication;
-import io.jsonwebtoken.lang.Assert;
 import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +55,6 @@ public class AssigneeController {
     }
 
     // 이슈 담당자 생성
-    // TODO 권한 확인 필요
     @PostMapping("/projects/{projectId}/issues/{issueId}/accounts/{accountId}/assignees")
     public ResponseEntity<AssigneeIdResponse> createAssignee(
             @PathVariable @Min(1) Long projectId,
@@ -72,7 +71,6 @@ public class AssigneeController {
 
 
     // 이슈 담당자 삭제
-    // TODO 권한확인 필요
     @DeleteMapping("/projects/{projectId}/issues/{issueId}/accounts/{accountId}/assignees")
     public ResponseEntity<AssigneeIdResponse> deleteAssignee(
             @PathVariable @Min(1) Long projectId,
@@ -127,7 +125,7 @@ public class AssigneeController {
                             notNull(account);
                             notNull(issue);
 
-                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), issue.toResponse());
+                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), IssueResponse.from(issue));
                         })
                         .toList()
         );

@@ -1,16 +1,16 @@
-package com.sharep.be.modules.job;
+package com.sharep.be.modules.job.service;
 
 import com.sharep.be.modules.common.service.port.S3Repository;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.repository.IssueRepository;
-import com.sharep.be.modules.job.repository.JobRepository;
-import com.sharep.be.modules.job.request.JobCreateRequest;
-import com.sharep.be.modules.job.request.JobReadRequest;
-import com.sharep.be.modules.job.response.JobGrassResponse;
+import com.sharep.be.modules.job.domain.Job;
+import com.sharep.be.modules.job.domain.JobGrass;
+import com.sharep.be.modules.job.controller.request.JobCreateRequest;
+import com.sharep.be.modules.job.controller.request.JobReadRequest;
+import com.sharep.be.modules.job.controller.response.JobGrassResponse;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.MemberRepository;
 import com.sharep.be.modules.member.Role.RoleType;
-import jakarta.validation.constraints.Min;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +40,8 @@ public class JobService{
         Issue issue = issueRepository.findById(issueId)
                 .orElseThrow(() -> new RuntimeException("해당하는 이슈를 찾을 수 없습니다."));
 
-        Job job = Job.from(jobCreateRequest, member, issue, imageUrl);
+//        Job job = Job.from(jobCreateRequest, member, issue, imageUrl);
+        Job job = jobCreateRequest.toEntity(member, issue, imageUrl);
 
         jobRepository.save(job);
 
@@ -93,7 +94,6 @@ public class JobService{
     }
 
     public List<Job> readContribution(Long projectId, Long accountId) {
-        System.out.println(jobRepository.findContributionByProjectIdAndAccountId(projectId, accountId).size());
         return jobRepository.findContributionByProjectIdAndAccountId(projectId, accountId);
     }
 }

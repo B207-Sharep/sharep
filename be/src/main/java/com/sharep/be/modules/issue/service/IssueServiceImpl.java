@@ -4,9 +4,9 @@ import static org.springframework.util.Assert.isTrue;
 
 import com.sharep.be.modules.api.Api;
 import com.sharep.be.modules.api.repository.ApiRepository;
-import com.sharep.be.modules.assignee.Assignee;
-import com.sharep.be.modules.assignee.State;
-import com.sharep.be.modules.assignee.repository.AssigneeRepository;
+import com.sharep.be.modules.assignee.domain.Assignee;
+import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.assignee.service.AssigneeRepository;
 import com.sharep.be.modules.exception.IssueNotFoundException;
 import com.sharep.be.modules.exception.MemberNotFoundException;
 import com.sharep.be.modules.exception.ProjectNotFoundException;

@@ -1,8 +1,7 @@
-package com.sharep.be.modules.job.response;
+package com.sharep.be.modules.job.controller.response;
 
-import com.sharep.be.modules.job.Job;
+import com.sharep.be.modules.job.domain.Job;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 

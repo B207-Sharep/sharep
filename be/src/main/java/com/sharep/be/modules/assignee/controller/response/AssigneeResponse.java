@@ -1,5 +1,6 @@
-package com.sharep.be.modules.assignee;
+package com.sharep.be.modules.assignee.controller.response;
 
+import com.sharep.be.modules.assignee.domain.Assignee;
 import java.util.Optional;
 import lombok.Builder;
 

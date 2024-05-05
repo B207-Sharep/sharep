@@ -1,6 +1,6 @@
 package com.sharep.be.modules.job.repository;
 
-import com.sharep.be.modules.job.Job;
+import com.sharep.be.modules.job.domain.Job;
 import com.sharep.be.modules.member.Role.RoleType;
 import java.util.List;
 

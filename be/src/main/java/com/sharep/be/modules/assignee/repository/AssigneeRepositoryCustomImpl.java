@@ -1,7 +1,7 @@
 package com.sharep.be.modules.assignee.repository;
 
 import static com.sharep.be.modules.account.QAccount.account;
-import static com.sharep.be.modules.assignee.QAssignee.assignee;
+import static com.sharep.be.modules.assignee.domain.QAssignee.assignee;
 import static com.sharep.be.modules.issue.QIssue.issue;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.project.QProject.project;

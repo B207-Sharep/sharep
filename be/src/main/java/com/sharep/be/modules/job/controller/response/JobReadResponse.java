@@ -1,6 +1,6 @@
-package com.sharep.be.modules.job.response;
+package com.sharep.be.modules.job.controller.response;
 
-import com.sharep.be.modules.job.Job;
+import com.sharep.be.modules.job.domain.Job;
 import java.time.LocalDateTime;
 
 public record JobReadResponse(
