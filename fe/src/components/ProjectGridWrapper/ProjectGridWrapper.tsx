@@ -3,8 +3,7 @@ import * as S from './ProjectGridWrapperStyle';
 import { ProjectGridWrapperProps } from '@/types';
 import ProjectCard from '../ProjectCard/ProjectCard';
 import UIMG from '@/assets/imgs/youjack.png';
-import { Modal } from '..';
-import { ProjectCreationForm } from '../Modal/Subs';
+import * as Comp from '@/components';
 import { useModal } from '@/customhooks';
 
 export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProps) {
@@ -37,13 +36,13 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
         <S.ProjectAddBtn onClick={handleModalOpen}>
           <ProjectCard key={0} title={'new'} bio={'새로 만들기'} id={'0'} imgs={null} createdAt={null} add={true} />
         </S.ProjectAddBtn>
-        <Modal
+        <Comp.Modal
           modalId="project"
           title="새 프로젝트 생성"
           subTitle="함께할 팀원들을 추가하고 새로운 프로젝트를 생성해보세요."
         >
-          <ProjectCreationForm modalId="project" />
-        </Modal>
+          <Comp.ProjectCreationForm modalId="project" />
+        </Comp.Modal>
         {issueList.map((issue, index) => (
           <ProjectCard
             key={index}
