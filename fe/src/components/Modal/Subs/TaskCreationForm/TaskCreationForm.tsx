@@ -54,7 +54,7 @@ export default function TaskCreationForm({ modalId }: Pick<T.ModalProps, 'modalI
       <S.TitleContainer>
         <S.IssueTitle>
           <S.IssueBadge>
-            <S.StyledText color={PALETTE.MAIN_WHITE} fontSize={16}>
+            <S.StyledText color={PALETTE.MAIN_WHITE} fontSize={16} fontWeight={600}>
               Issue
             </S.StyledText>
           </S.IssueBadge>

@@ -16,6 +16,7 @@ export default function GalleryGridWrapper({ issueList }: GalleryGridWrapperProp
         {issueList.map((issue, index) => (
           <GalleryCard
             key={index}
+            issueId={issue.issueId}
             issueName={issue.issueName}
             createdAt={issue.createdAt}
             issueType={issue.issueType as 'SCREEN' | 'PRIVATE'}
