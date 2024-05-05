@@ -4,12 +4,12 @@ import static io.jsonwebtoken.lang.Assert.notNull;
 
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.account.dto.AccountDto;
-import com.sharep.be.modules.assignee.service.AssigneeService;
-import com.sharep.be.modules.assignee.domain.State;
 import com.sharep.be.modules.assignee.controller.response.AssigneeIdResponse;
 import com.sharep.be.modules.assignee.controller.response.AssigneeProjectNowIssueResponse;
+import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.assignee.service.AssigneeService;
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.issue.IssueResponse;
+import com.sharep.be.modules.issue.IssueNowResponse;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.constraints.Min;
 import java.util.List;
@@ -95,13 +95,13 @@ public class AssigneeController {
                 assigneeService.readProjectNowIssue(projectId)
                         .stream()
                         .map(tuple -> {
-                            Account account = tuple.get(2, Account.class);
+                            Account account = tuple.get(1, Account.class);
                             Issue issue = tuple.get(0, Issue.class);
 
                             notNull(account);
                             notNull(issue);
 
-                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), IssueResponse.from(issue));
+                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), IssueNowResponse.from(issue));
                         })
                         .toList()
         );
@@ -119,13 +119,13 @@ public class AssigneeController {
                 assigneeService.readProjectNowOwnIssue(projectId, authentication.id)
                         .stream()
                         .map(tuple -> {
-                            Account account = tuple.get(2, Account.class);
+                            Account account = tuple.get(1, Account.class);
                             Issue issue = tuple.get(0, Issue.class);
 
                             notNull(account);
                             notNull(issue);
 
-                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), IssueResponse.from(issue));
+                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), IssueNowResponse.from(issue));
                         })
                         .toList()
         );
