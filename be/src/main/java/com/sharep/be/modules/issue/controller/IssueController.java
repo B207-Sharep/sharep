@@ -6,6 +6,7 @@ import com.sharep.be.modules.issue.IssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.FeatureIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
 import com.sharep.be.modules.issue.IssueResponse.PrivateIssueResponse;
+import com.sharep.be.modules.issue.IssueResponse.ScreenIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.SimpleIssueResponse;
 import com.sharep.be.modules.issue.service.IssueService;
 import com.sharep.be.modules.security.JwtAuthentication;
@@ -45,8 +46,20 @@ public class IssueController {
             @PathVariable Long projectId) {
 
         return ResponseEntity.ok(
-                issueService.getFeatureIssues(projectId).stream()
-                        .map(FeatureIssueResponse::from).toList());
+                issueService.getFeatureIssues(projectId).stream().map(FeatureIssueResponse::from)
+                        .toList());
+    }
+
+    /* NOTE:
+        ScreenIssueResponse 데이터 변경될 수 있음
+     */
+
+    @GetMapping("/screen")
+    public ResponseEntity<?> getScreenIssues(@PathVariable Long projectId) {
+
+        return ResponseEntity.ok(
+                issueService.getScreenIssues(projectId).stream().map(ScreenIssueResponse::from)
+                        .toList());
     }
 
     @GetMapping("/{issueId}")
@@ -59,8 +72,8 @@ public class IssueController {
     @GetMapping
     public ResponseEntity<List<SimpleIssueResponse>> getIssues(@PathVariable Long projectId) {
 
-        return ResponseEntity.ok(issueService.getIssues(projectId).stream()
-                .map(SimpleIssueResponse::from).toList());
+        return ResponseEntity.ok(
+                issueService.getIssues(projectId).stream().map(SimpleIssueResponse::from).toList());
     }
 
     @PostMapping
@@ -68,9 +81,8 @@ public class IssueController {
             @RequestBody @Valid IssueCreate issueCreate,
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(IssueCreated.from(
-                        issueService.createIssue(projectId, jwtAuthentication.id, issueCreate)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(IssueCreated.from(
+                issueService.createIssue(projectId, jwtAuthentication.id, issueCreate)));
     }
 
 

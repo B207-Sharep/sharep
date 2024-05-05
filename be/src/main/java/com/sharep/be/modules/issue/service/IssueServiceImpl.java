@@ -86,6 +86,12 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
+    public List<Issue> getScreenIssues(Long projectId) {
+
+        return issueRepository.findIssuesByProjectIdAndIssueType(projectId, IssueType.SCREEN);
+    }
+
+    @Override
     public void updateIssue(Long id, Long accountId, Long projectId, IssueUpdate issueUpdate) {
         Issue issue = issueRepository.findById(id).orElseThrow(IssueNotFoundException::new);
         assertPrivateIssueModifyAuthorization(accountId, projectId, issue);

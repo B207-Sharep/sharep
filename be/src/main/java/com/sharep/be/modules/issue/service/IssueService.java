@@ -20,4 +20,6 @@ public interface IssueService {
     List<Issue> getPrivateIssues(Long projectId, Long accountId);
 
     List<Issue> getFeatureIssues(Long projectId);
+
+    List<Issue> getScreenIssues(Long projectId);
 }
