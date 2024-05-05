@@ -30,8 +30,8 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
                 .from(issue)
                 .leftJoin(issue.api, api).fetchJoin()
                 .innerJoin(issue.assignees, assignee).fetchJoin()
-                .innerJoin(assignee.member, member)
-                .innerJoin(member.account, account)
+                .innerJoin(assignee.member, member).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
                 .leftJoin(issue.jobs, job).fetchJoin()
                 .where(issue.type.eq(issueType).and(member.id.eq(memberId)))
                 .fetch();
@@ -44,13 +44,24 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
                 .select(issue)
                 .from(issue)
                 .leftJoin(issue.assignees, assignee).fetchJoin()
-                .leftJoin(assignee.member, member)
-                .leftJoin(member.account, account)
+                .leftJoin(assignee.member, member).fetchJoin()
+                .leftJoin(member.account, account).fetchJoin()
                 .innerJoin(issue.project, project)
                 .leftJoin(issue.storyboards, storyboard).fetchJoin()
                 .leftJoin(storyboard.screenIssue, new QIssue("screenIssue")).fetchJoin()
                 .leftJoin(issue.api, api).fetchJoin()
                 .where(issue.type.eq(issueType).and(project.id.eq(projectId)))
+                .fetch();
+    }
+
+    @Override
+    public List<Issue> findByProjectId(Long projectId) {
+        return queryFactory
+                .select(issue)
+                .from(issue)
+                .leftJoin(issue.api, api).fetchJoin()
+                .innerJoin(issue.project, project)
+                .where(project.id.eq(projectId))
                 .fetch();
     }
 }

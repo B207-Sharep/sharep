@@ -9,10 +9,7 @@ import com.sharep.be.modules.issue.type.PriorityType;
 import com.sharep.be.modules.job.JobResponse;
 import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.Builder;
 
 @Builder
@@ -31,29 +28,11 @@ public record IssueResponse(Long id, String issueName, String description, Issue
                 .epic(issue.getEpic())
                 .createdAt(issue.getCreatedAt())
                 .priority(issue.getPriority())
-                .state(calculateState(issue.getAssignees()))
+                .state(issue.calculateState())
                 .api(ApiResponse.from(issue.getApi()))
                 .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
                 .jobs(issue.getJobs().stream().map(JobResponse::from).toList())
                 .build();
-    }
-
-    private static State calculateState(Set<Assignee> assignees) {
-        EnumMap<State, Long> stateCount = assignees.stream().collect(
-                Collectors.groupingBy(Assignee::getState, () -> new EnumMap<>(State.class),
-                        Collectors.counting()));
-
-        long size = assignees.size();
-        long done = stateCount.getOrDefault(State.DONE, 0L);
-        long yet = stateCount.getOrDefault(State.YET, 0L);
-
-        if (yet == size) {
-            return State.YET;
-        } else if (done == size) {
-            return State.DONE;
-        } else {
-            return State.NOW;
-        }
     }
 
     @Builder
@@ -81,7 +60,7 @@ public record IssueResponse(Long id, String issueName, String description, Issue
                     .epic(issue.getEpic())
                     .createdAt(issue.getCreatedAt())
                     .priority(issue.getPriority())
-                    .state(calculateState(issue.getAssignees()))
+                    .state(issue.calculateState())
                     .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
                     .jobs(issue.getJobs().stream().map(JobResponse::from).toList())
                     .build();
@@ -104,7 +83,7 @@ public record IssueResponse(Long id, String issueName, String description, Issue
                     .description(issue.getDescription())
                     .type(issue.getType())
                     .epic(issue.getEpic())
-                    .state(calculateState(issue.getAssignees()))
+                    .state(issue.calculateState())
                     .createdAt(issue.getCreatedAt())
                     .priority(issue.getPriority())
                     .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
@@ -127,6 +106,18 @@ public record IssueResponse(Long id, String issueName, String description, Issue
 
         public static ScreenIssueResponse from(Issue issue) {
             return ScreenIssueResponse.builder()
+                    .id(issue.getId())
+                    .issueName(issue.getIssueName())
+                    .description(issue.getDescription())
+                    .build();
+        }
+    }
+
+    @Builder
+    public record SimpleIssueResponse(Long id, String issueName, String description) {
+
+        public static SimpleIssueResponse from(Issue issue) {
+            return SimpleIssueResponse.builder()
                     .id(issue.getId())
                     .issueName(issue.getIssueName())
                     .description(issue.getDescription())

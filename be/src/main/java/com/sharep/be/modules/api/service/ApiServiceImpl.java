@@ -25,13 +25,21 @@ public class ApiServiceImpl implements ApiService {
     private final IssueRepository issueRepository;
 
     @Override
+    public List<Api> getApis(Long projectId) {
+        return apiRepository.findApisByProjectId(projectId);
+    }
+
+    @Override
     public Api createApi(ApiCreate apiCreate) {
         Issue issue = issueRepository.findById(apiCreate.issueId())
                 .orElseThrow(IssueNotFoundException::new);
 
-        isNull(issue.getApi(), "");
+        isNull(issue.getApi(), "Api가 이미 존재합니다.");
 
-        return apiRepository.save(apiCreate.toEntityWith(issue));
+        Api api = apiCreate.toEntityWith(issue);
+        issue.updateApi(api);
+        
+        return api;
     }
 
     @Override
@@ -48,7 +56,6 @@ public class ApiServiceImpl implements ApiService {
 
         notNull(api, "api가 이미 없습니다.");
 
-        apiRepository.deleteById(apiId);
-        issue.deleteApi();
+        issue.updateApi(null);
     }
 }
