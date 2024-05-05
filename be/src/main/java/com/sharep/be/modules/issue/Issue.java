@@ -61,14 +61,14 @@ public class Issue {
     @Enumerated(EnumType.STRING)
     private PriorityType priority;
 
-    @OneToOne(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "issue", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @PrimaryKeyJoinColumn
     private Api api;
 
     @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Assignee> assignees;
 
-    @OneToMany(mappedBy = "issue")
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Job> jobs;
 
     @ManyToOne(fetch = FetchType.LAZY)
