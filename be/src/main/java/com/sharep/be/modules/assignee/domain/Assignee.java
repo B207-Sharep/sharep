@@ -17,8 +17,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -31,21 +29,18 @@ public class Assignee {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "issue_id")
+    @JoinColumn
     private Issue issue;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn
     private Member member;
 
     @Enumerated(EnumType.STRING)
     private State state;
 
-    // FIXME 수정
-    @CreatedDate
     private LocalDateTime startedAt;
 
-    @LastModifiedDate
     private LocalDateTime finishedAt;
 
     @Builder
@@ -59,6 +54,20 @@ public class Assignee {
     }
 
     public void updateState(State state){
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if(state == State.YET){
+            startedAt = null;
+            finishedAt = null;
+        } else if(state == State.NOW){
+            startedAt = now;
+            finishedAt = null;
+        } else if(state == State.DONE){
+            startedAt = startedAt == null ? now : startedAt;
+            finishedAt = now;
+        }
+
         this.state = state;
     }
 }
