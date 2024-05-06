@@ -65,11 +65,11 @@ export const CommitUserInfo = styled.div`
 `;
 
 export const Img = styled.img<{ width?: number; height?: number; radius?: number }>`
-  width: ${props => (props.width ? `${props.width}px` : '100%')};
-  height: ${props => (props.height ? `${props.height}px` : '100%')};
-  border-radius: ${props => props.radius}px;
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
+  height: ${({ height }) => (height ? `${height}px` : '100%')};
+  border-radius: ${({ radius }) => radius}px;
   box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
-  object-fit: ${props => (props.width && props.height ? 'cover' : 'contain')};
+  object-fit: ${({ width, height }) => (width && height ? 'cover' : 'contain')};
 `;
 
 export const RoleBadgeList = styled.div`
@@ -78,9 +78,9 @@ export const RoleBadgeList = styled.div`
 `;
 
 export const CommitText = styled.div<{ color?: string; fontSize?: number; fontWeight?: number }>`
-  color: ${props => props.color};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
-  font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? `${fontWeight}` : '400')};
 `;
 
 export const StyledText = styled(CommitText)`

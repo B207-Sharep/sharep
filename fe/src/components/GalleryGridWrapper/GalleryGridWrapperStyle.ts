@@ -36,9 +36,9 @@ export const StyledText = styled.span<{
   fontSize?: number;
   fontWeight?: number;
 }>`
-  color: ${props => props.color};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
-  font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? `${fontWeight}` : '400')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
