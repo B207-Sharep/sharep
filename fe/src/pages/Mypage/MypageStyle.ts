@@ -78,7 +78,7 @@ export const GrassHeader = styled.div`
 export const GrassStep = styled.div`
   display: flex;
   flex-direction: row;
-  column-gap: 2px;
+  column-gap: 1px;
 `;
 
 export const GrassYear = styled.div`

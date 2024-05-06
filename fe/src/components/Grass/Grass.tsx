@@ -1,21 +1,22 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from './GrassStyle';
 
 const GitHubGrid = ({ data }: any) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // 컴포넌트가 마운트될 때 스크롤 위치를 가장 오른쪽으로 이동시킵니다.
   useEffect(() => {
     if (scrollContainerRef.current) {
       const scrollContainer = scrollContainerRef.current;
-      // 스크롤 컨테이너의 가장 오른쪽 위치를 계산합니다.
       const scrollWidth = scrollContainer.scrollWidth;
       const clientWidth = scrollContainer.clientWidth;
       const maxScrollLeft = scrollWidth - clientWidth;
-      // 가장 오른쪽 위치로 스크롤을 이동시킵니다.
       scrollContainer.scrollLeft = maxScrollLeft;
     }
   }, []);
+
+  // 각 GridSquare의 툴팁 상태를 저장하는 배열
+  const [tooltipContent, setTooltipContent] = useState<Array<string>>(Array(data.length).fill(''));
+
   return (
     <div
       ref={scrollContainerRef}
@@ -29,7 +30,32 @@ const GitHubGrid = ({ data }: any) => {
       {data.map((row: any[], rowIndex: number) => (
         <div key={rowIndex}>
           {row.map((isActive: any, colIndex: number) => (
-            <S.GridSquare key={colIndex} $active={isActive.step}></S.GridSquare>
+            <S.GridSquare
+              key={colIndex}
+              $active={isActive.step}
+              onMouseEnter={() => {
+                if (isActive.step !== 0) {
+                  setTooltipContent(prevState => {
+                    const newState = [...prevState];
+                    newState[rowIndex * row.length + colIndex] = isActive.step;
+                    return newState;
+                  });
+                }
+              }}
+              onMouseLeave={() => {
+                if (isActive.step !== 0) {
+                  setTooltipContent(prevState => {
+                    const newState = [...prevState];
+                    newState[rowIndex * row.length + colIndex] = '';
+                    return newState;
+                  });
+                }
+              }}
+            >
+              {tooltipContent[rowIndex * row.length + colIndex] && (
+                <S.Tooltip>{tooltipContent[rowIndex * row.length + colIndex]} 커밋</S.Tooltip>
+              )}
+            </S.GridSquare>
           ))}
         </div>
       ))}
