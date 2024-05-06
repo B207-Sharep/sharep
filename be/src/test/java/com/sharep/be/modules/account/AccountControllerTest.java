@@ -3,6 +3,7 @@ package com.sharep.be.modules.account;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharep.be.infra.MockMvcTest;
 import com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockMvcTest
@@ -31,6 +31,7 @@ class AccountControllerTest {
     public void beforeEach(){
         accountRepository.deleteAll();
     }
+
 
     @Test
     @DisplayName("회원 가입 처리 - 입력값 정상")
