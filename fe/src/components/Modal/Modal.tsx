@@ -10,8 +10,7 @@ import { X } from 'lucide-react';
 export default function Modal({ modalId, title, subTitle, children }: T.ModalProps) {
   const { closeModal } = useModal(modalId);
 
-  const modalData = useRecoilValue(modalDataState(modalId));
-  const { isOpen } = modalData;
+  const { isOpen } = useRecoilValue(modalDataState(modalId));
 
   const handleModalClose = () => {
     closeModal();

@@ -20,6 +20,7 @@ import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualT
 import { ProjectGridWrapperProps } from './components/ProjectGridWrapper';
 import { ProjectCardProps } from './components/ProjectCard';
 import { IssueProps } from './components/Issue';
+import { NotiProps } from './components/SideBar';
 /** ================= Components ================= */
 
 /** ================= Pages ================= */
@@ -51,6 +52,7 @@ export type {
   ProjectGridWrapperProps,
   ProjectCardProps,
   IssueProps,
+  NotiProps,
   TeamDashboardProps,
   TeamMemberProps,
   GanttChartProps,
