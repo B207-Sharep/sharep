@@ -1,11 +1,11 @@
 package com.sharep.be.modules.issue;
 
 import com.sharep.be.modules.api.Api;
-import com.sharep.be.modules.assignee.Assignee;
-import com.sharep.be.modules.assignee.State;
+import com.sharep.be.modules.assignee.domain.Assignee;
+import com.sharep.be.modules.assignee.domain.State;
 import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.issue.type.PriorityType;
-import com.sharep.be.modules.job.Job;
+import com.sharep.be.modules.job.domain.Job;
 import com.sharep.be.modules.project.Project;
 import com.sharep.be.modules.storyboard.Storyboard;
 import jakarta.persistence.CascadeType;

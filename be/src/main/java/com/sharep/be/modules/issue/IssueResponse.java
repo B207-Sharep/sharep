@@ -1,12 +1,12 @@
 package com.sharep.be.modules.issue;
 
 import com.sharep.be.modules.api.ApiResponse;
-import com.sharep.be.modules.assignee.Assignee;
-import com.sharep.be.modules.assignee.AssigneeResponse;
-import com.sharep.be.modules.assignee.State;
+import com.sharep.be.modules.assignee.domain.Assignee;
+import com.sharep.be.modules.assignee.controller.response.AssigneeResponse;
+import com.sharep.be.modules.assignee.domain.State;
 import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.issue.type.PriorityType;
-import com.sharep.be.modules.job.JobResponse;
+import com.sharep.be.modules.job.controller.response.JobResponse;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;

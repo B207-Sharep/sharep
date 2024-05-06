@@ -1,11 +1,15 @@
-package com.sharep.be.modules.assignee;
+package com.sharep.be.modules.assignee.controller;
+
+import static io.jsonwebtoken.lang.Assert.notNull;
 
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.account.dto.AccountDto;
-import com.sharep.be.modules.assignee.response.AssigneeIdResponse;
-import com.sharep.be.modules.assignee.response.AssigneeProjectNowIssueResponse;
+import com.sharep.be.modules.assignee.controller.response.AssigneeIdResponse;
+import com.sharep.be.modules.assignee.controller.response.AssigneeProjectNowIssueResponse;
+import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.assignee.service.AssigneeService;
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.issue.IssueResponse;
+import com.sharep.be.modules.issue.IssueNowResponse;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.constraints.Min;
 import java.util.List;
@@ -51,7 +55,6 @@ public class AssigneeController {
     }
 
     // 이슈 담당자 생성
-    // TODO 권한 확인 필요
     @PostMapping("/projects/{projectId}/issues/{issueId}/accounts/{accountId}/assignees")
     public ResponseEntity<AssigneeIdResponse> createAssignee(
             @PathVariable @Min(1) Long projectId,
@@ -68,7 +71,6 @@ public class AssigneeController {
 
 
     // 이슈 담당자 삭제
-    // TODO 권한확인 필요
     @DeleteMapping("/projects/{projectId}/issues/{issueId}/accounts/{accountId}/assignees")
     public ResponseEntity<AssigneeIdResponse> deleteAssignee(
             @PathVariable @Min(1) Long projectId,
@@ -93,15 +95,13 @@ public class AssigneeController {
                 assigneeService.readProjectNowIssue(projectId)
                         .stream()
                         .map(tuple -> {
-                            Account account = tuple.get(2, Account.class);
+                            Account account = tuple.get(1, Account.class);
                             Issue issue = tuple.get(0, Issue.class);
 
-                            if (account != null && issue != null) {
-                                return new AssigneeProjectNowIssueResponse(
-                                        AccountDto.toDto(account), IssueResponse.from(issue));
-                            }
+                            notNull(account);
+                            notNull(issue);
 
-                            throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");
+                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), IssueNowResponse.from(issue));
                         })
                         .toList()
         );
@@ -119,15 +119,13 @@ public class AssigneeController {
                 assigneeService.readProjectNowOwnIssue(projectId, authentication.id)
                         .stream()
                         .map(tuple -> {
-                            Account account = tuple.get(2, Account.class);
+                            Account account = tuple.get(1, Account.class);
                             Issue issue = tuple.get(0, Issue.class);
 
-                            if (account != null && issue != null) {
-                                return new AssigneeProjectNowIssueResponse(
-                                        AccountDto.toDto(account), IssueResponse.from(issue));
-                            }
+                            notNull(account);
+                            notNull(issue);
 
-                            throw new RuntimeException("예상하지 못한 null값이 나왔습니다.");
+                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), IssueNowResponse.from(issue));
                         })
                         .toList()
         );
