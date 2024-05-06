@@ -1,15 +1,11 @@
 package com.sharep.be.modules.member;
 
 import com.sharep.be.modules.account.Account;
+import com.sharep.be.modules.job.Job;
 import com.sharep.be.modules.project.Project;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Set;
 
 import lombok.Builder;
@@ -38,9 +34,19 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "member")
+    private List<Job> jobs;
+
+    @Column(length = 255)
+    private String summary;
+
     @Builder
     public Member(Project project, Account account) {
         this.project = project;
         this.account = account;
+    }
+
+    public void updateSummary(String summary){
+        this.summary = summary;
     }
 }

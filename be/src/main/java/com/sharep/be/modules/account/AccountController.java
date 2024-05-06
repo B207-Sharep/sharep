@@ -2,9 +2,11 @@ package com.sharep.be.modules.account;
 
 import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.account.validator.AccountValidator;
+import com.sharep.be.modules.gpt.GptService;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +18,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/accounts")
 @RequiredArgsConstructor
+@Slf4j
 public class AccountController {
 
     private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final AccountValidator accountValidator;
+
+    private final GptService gptService;
 
     @InitBinder("accountRequestDto")
     public void initBinder(WebDataBinder webDataBinder) {
@@ -53,4 +58,13 @@ public class AccountController {
         accountService.updateImage(authentication.id, image);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+//    @GetMapping("/gpt")
+//    public ResponseEntity<Void> checkCPT(){
+//        log.info("gpt controller : {}", gptService.queryGPT("[Refactor] Route 이름 변경\n" +
+//                "[Home] GanttChart 생성 전 \n" +
+//                "[Refactor] 글로벌 스타일 수정 \n" +
+//                "[Add] dayjs package 추가"));
+//        return ResponseEntity.ok().build();
+//    }
 }
