@@ -1,18 +1,16 @@
 import { NoneSideBarLayout } from '@/layouts';
 import * as S from './MypageStyle';
+import * as GS from '@/components/Grass/GrassStyle';
 import * as G from '@/styles';
 import * as API from '@/apis/projects';
 import { GalleryGridWrapper, UserImg } from '@/components';
 import ProjectGridWrapper from '@/components/ProjectGridWrapper/ProjectGridWrapper';
 
-//DUMMY
-import JD from '../../../public/lee-jae-yong.png';
-import UIMG from '../../../public/youjack.png';
 import Grass from '@/components/Grass/Grass';
 import * as Comp from '@/components';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-
+////////////////////////DUMMY
 const issueList = [
   ...Array.from({ length: 7 }, (_, index) => ({
     id: `${index + 1} 페이지`,
@@ -28,6 +26,8 @@ const modifiedIssueList = issueList.map(issue => ({
   ...issue,
   add: false,
 }));
+
+////////////////////////////DUMMY
 
 export default function Mypage() {
   const [clickedYear, setClickedYear] = useState(2024);
@@ -122,10 +122,12 @@ export default function Mypage() {
                       {grassResponse.jobCount}개의 작업
                     </S.Font>
                     <S.GrassStep>
-                      <S.Font $size="12px" $weight="400">
+                      <S.Font $size="12px" $weight="400" style={{ marginRight: 4 }}>
                         단계
                       </S.Font>
-                      <></>
+                      {[...Array(5)].map((_, idx) => (
+                        <GS.GridSquare key={idx} $active={idx} />
+                      ))}
                     </S.GrassStep>
                   </S.GrassHeader>
                   <Grass grass={grassResponse} />
