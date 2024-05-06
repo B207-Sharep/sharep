@@ -4,10 +4,10 @@ import * as T from '@/types';
 import { PALETTE } from '@/styles';
 import { useNavigate } from 'react-router-dom';
 
-export default function GalleryCard({ issueId, issueName, createdAt, issueType, imageUrl }: T.GalleryCardProps) {
+export default function GalleryCard({ issueId, issueName, createdAt, type, imageUrl }: T.GalleryCardProps) {
   const navigate = useNavigate();
   const handleCardClick = () => {
-    if (issueType === 'SCREEN') {
+    if (type === 'SCREEN') {
       // TODO: projectId
       navigate(`/projects/1/screen-manual/${issueId}`);
     }
@@ -16,7 +16,7 @@ export default function GalleryCard({ issueId, issueName, createdAt, issueType, 
   return (
     <S.Card className="hover-moving" onClick={handleCardClick}>
       <S.CardContent>
-        {issueType === 'SCREEN' ? (
+        {type === 'SCREEN' ? (
           <S.Img src={imageUrl}></S.Img>
         ) : (
           <S.PreviewContent>

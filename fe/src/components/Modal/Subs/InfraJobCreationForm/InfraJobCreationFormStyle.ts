@@ -42,9 +42,9 @@ export const StyledInput = styled(InputWithLabel.Input)<{ $icon?: boolean }>`
 `;
 
 export const StyledText = styled.div<{ color?: string; fontSize?: number; fontWeight?: number }>`
-  color: ${props => props.color};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
-  font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : '400')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -77,9 +77,9 @@ export const DeleteBtn = styled.div`
 `;
 
 export const Img = styled.img<{ width: number; height: number; radius: number }>`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
-  border-radius: ${props => props.radius}px;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  border-radius: ${({ radius }) => radius}px;
   box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
 `;
 
@@ -99,7 +99,7 @@ export const Dropdown = styled.div<{ $dropdownPosition: string }>`
   display: flex;
   position: absolute;
   top: -100%;
-  ${props => `${props.$dropdownPosition} : 150%;`}
+  ${({ $dropdownPosition }) => `${$dropdownPosition} : 150%;`}
   margin-top: 4px;
   padding-top: 8px;
   padding-bottom: 8px;
