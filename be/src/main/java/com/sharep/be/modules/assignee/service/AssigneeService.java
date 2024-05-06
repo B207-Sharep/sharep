@@ -1,6 +1,9 @@
 package com.sharep.be.modules.assignee.service;
 
+import static io.jsonwebtoken.lang.Assert.notNull;
+
 import com.querydsl.core.Tuple;
+import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.domain.State;
 import com.sharep.be.modules.issue.Issue;
@@ -9,7 +12,10 @@ import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.repository.MemberRepository;
 
 
+import com.sharep.be.modules.notification.domain.NotificationMessage;
+import com.sharep.be.modules.notification.service.NotificationService;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class AssigneeService {
+
+    private final NotificationService notificationService;
 
     private final AssigneeRepository assigneeRepository;
     private final MemberRepository memberRepository;
@@ -32,6 +40,29 @@ public class AssigneeService {
                 .orElseThrow(() -> new RuntimeException("해당하는 담당자가 존재하지 않습니다."));
 
         assignee.updateState(state);
+
+        if(state == State.DONE){
+            List<Tuple> assigneesByIssue = assigneeRepository.findAccountIdsByIssueId(issueId);
+
+            for(Tuple assigneeByIssue : assigneesByIssue){
+                Account anotherAccount = assigneeByIssue.get(0, Account.class);
+                Member anotherMember = assigneeByIssue.get(1, Member.class);
+                Assignee anotherAssignee = assigneeByIssue.get(2, Assignee.class);
+                Issue anotherIssue = assigneeByIssue.get(3, Issue.class);
+
+                notNull(anotherAccount);
+                notNull(anotherMember);
+                notNull(anotherAssignee);
+                notNull(anotherIssue);
+
+                if(Objects.equals(accountId, anotherAccount.getId())) continue;
+
+                notificationService.notify(
+                        anotherAccount.getId(),
+                        NotificationMessage.from(anotherAccount, anotherMember, anotherAssignee, anotherIssue)
+                );
+            }
+        }
 
         return assignee.getId();
     }
@@ -77,6 +108,6 @@ public class AssigneeService {
     }
 
     public List<Tuple> readProjectNowOwnIssue(Long projectId, Long accountId) {
-        return assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountID(projectId, accountId);
+        return assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(projectId, accountId);
     }
 }

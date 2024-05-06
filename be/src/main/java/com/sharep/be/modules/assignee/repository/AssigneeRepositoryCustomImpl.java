@@ -43,7 +43,7 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom{
     }
 
     @Override
-    public List<Tuple> findAllProjectNowIssueByProjectIdAndAccountID(Long projectId,
+    public List<Tuple> findAllProjectNowIssueByProjectIdAndAccountId(Long projectId,
             Long accountId) {
         return queryFactory.select(issue, account)
                 .from(assignee)
@@ -61,13 +61,23 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom{
 
     @Override
     public Optional<Assignee> findByAccountIdAndProjectId(Long accountId, Long projectId) {
-         return Optional.of(queryFactory.select(assignee)
-                 .from(assignee)
-                 .join(assignee.member, member)
-                 .join(assignee.issue, issue)
-                 .where(member.account.id.eq(accountId)
-                         .and(member.project.id.eq(projectId))
-                         .and(assignee.state.eq(State.NOW)))
-                 .fetchFirst());
+        return Optional.of(queryFactory.select(assignee)
+                .from(assignee)
+                .join(assignee.member, member)
+                .join(assignee.issue, issue)
+                .where(member.account.id.eq(accountId)
+                        .and(member.project.id.eq(projectId))
+                        .and(assignee.state.eq(State.NOW)))
+                .fetchFirst());
+    }
+
+
+    public List<Tuple> findAccountIdsByIssueId(Long issueId) {
+        return queryFactory.select(account, member, assignee, issue)
+                .from(assignee)
+                .innerJoin(assignee.member, member)
+                .innerJoin(member.account, account)
+                .innerJoin(assignee.issue)
+                .fetch();
     }
 }
