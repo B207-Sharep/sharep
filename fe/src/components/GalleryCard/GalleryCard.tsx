@@ -4,12 +4,12 @@ import * as T from '@/types';
 import { PALETTE } from '@/styles';
 import { useNavigate } from 'react-router-dom';
 
-export default function GalleryCard({ issueId, issueName, createdAt, type, imageUrl }: T.GalleryCardProps) {
+export default function GalleryCard({ id, issueName, createdAt, type, imageUrl }: T.GalleryCardProps) {
   const navigate = useNavigate();
   const handleCardClick = () => {
     if (type === 'SCREEN') {
       // TODO: projectId
-      navigate(`/projects/1/screen-manual/${issueId}`);
+      navigate(`/projects/1/screen-manual/${id}`);
     }
   };
 
@@ -17,7 +17,19 @@ export default function GalleryCard({ issueId, issueName, createdAt, type, image
     <S.Card className="hover-moving" onClick={handleCardClick}>
       <S.CardContent>
         {type === 'SCREEN' ? (
-          <S.Img src={imageUrl}></S.Img>
+          <>
+            {imageUrl ? (
+              <S.Img src={imageUrl}></S.Img>
+            ) : (
+              <div
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: PALETTE.MAIN_BACKGROUND,
+                }}
+              ></div>
+            )}
+          </>
         ) : (
           <S.PreviewContent>
             <div>임시 컴포넌트ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ??</div>

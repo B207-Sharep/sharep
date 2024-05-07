@@ -6,6 +6,7 @@ export interface ModalProps {
   title: string;
   subTitle?: string;
   children: React.ReactNode;
+  btnText?: string;
 }
 
 export interface JobCreationFormProps {
@@ -17,7 +18,6 @@ export interface JobCreationFormProps {
 export interface ProjectCreationFormProps {
   title: string;
   bio: string;
-  secretKey: string;
   members: {
     accountId: number;
     email: string;
@@ -35,4 +35,8 @@ export interface InfraJobCreationFormProps {
     roles: T.RoleBadgeProps['role'][];
     userImageUrl?: string;
   }[];
+}
+
+export interface SecretKeyFormProps {
+  secretKey: string;
 }
