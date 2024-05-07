@@ -1,13 +1,61 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from './GrassStyle';
 
 const GitHubGrid = ({ data }: any) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const scrollContainer = scrollContainerRef.current;
+      const scrollWidth = scrollContainer.scrollWidth;
+      const clientWidth = scrollContainer.clientWidth;
+      const maxScrollLeft = scrollWidth - clientWidth;
+      scrollContainer.scrollLeft = maxScrollLeft;
+    }
+  }, []);
+
+  // 각 GridSquare의 툴팁 상태를 저장하는 배열
+  const [tooltipContent, setTooltipContent] = useState<Array<string>>(Array(data.length).fill(''));
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
+    <div
+      ref={scrollContainerRef}
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        overflowX: 'auto',
+      }}
+    >
       {data.map((row: any[], rowIndex: number) => (
         <div key={rowIndex}>
           {row.map((isActive: any, colIndex: number) => (
-            <S.GridSquare key={colIndex} $active={isActive.step} />
+            <S.GridSquare
+              key={colIndex}
+              $active={isActive.step}
+              onMouseEnter={() => {
+                if (isActive.step !== 0) {
+                  setTooltipContent(prevState => {
+                    const newState = [...prevState];
+                    newState[rowIndex * row.length + colIndex] = isActive.step;
+                    return newState;
+                  });
+                }
+              }}
+              onMouseLeave={() => {
+                if (isActive.step !== 0) {
+                  setTooltipContent(prevState => {
+                    const newState = [...prevState];
+                    newState[rowIndex * row.length + colIndex] = '';
+                    return newState;
+                  });
+                }
+              }}
+            >
+              {tooltipContent[rowIndex * row.length + colIndex] && (
+                <S.Tooltip>{tooltipContent[rowIndex * row.length + colIndex]} 커밋</S.Tooltip>
+              )}
+            </S.GridSquare>
           ))}
         </div>
       ))}
@@ -16,61 +64,18 @@ const GitHubGrid = ({ data }: any) => {
 };
 
 const convertToGrid = (data: any[]) => {
-  const rows = Math.ceil(data.length / 7); // 전체 길이를 7로 나누어 행 수 계산
+  const rows = Math.ceil(data.length / 7);
   const grid: any[][] = [];
 
   for (let i = 0; i < rows; i++) {
-    grid.push(data.slice(i * 7, (i + 1) * 7)); // 각 행에 해당하는 7개 요소로 나누어서 grid에 추가
+    grid.push(data.slice(i * 7, (i + 1) * 7));
   }
   console.log(grid, 'GRID');
 
   return grid;
 };
 
-const mockData = [1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1];
-const grassData = {
-  year: 2024,
-  roleCount: 4,
-  roles: [
-    {
-      step: 0,
-      count: 0,
-    },
-    {
-      step: 1,
-      count: 5,
-    },
-    {
-      step: 2,
-      count: 3,
-    },
-    {
-      step: 3,
-      count: 9,
-    },
-    {
-      step: 3,
-      count: 9,
-    },
-    {
-      step: 3,
-      count: 9,
-    },
-    {
-      step: 3,
-      count: 9,
-    },
-    {
-      step: 3,
-      count: 9,
-    },
-    {
-      step: 3,
-      count: 9,
-    },
-  ],
-};
-
-export default function Grass() {
-  return <GitHubGrid data={convertToGrid(grassData.roles)} />;
+export default function Grass({ grass }: any) {
+  console.log(grass, 'grass');
+  return <GitHubGrid data={convertToGrid(grass.jobs)} />;
 }

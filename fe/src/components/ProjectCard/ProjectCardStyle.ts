@@ -23,6 +23,7 @@ export const ImgWrapper = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 12px;
+  position: relative;
 `;
 
 export const AddWrapper = styled.div`
@@ -31,6 +32,21 @@ export const AddWrapper = styled.div`
   column-gap: 12px;
   justify-content: center;
   align-items: center;
+`;
+
+export const Tooltip = styled.div`
+  position: absolute;
+  top: -40px;
+  /* left: -10px; */
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 8px;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  z-index: 2;
 `;
 
 export const StyledText = styled.span<{
