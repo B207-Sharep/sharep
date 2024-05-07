@@ -38,7 +38,7 @@ export default function Mypage() {
   const user = useRecoilValue(userState);
 
   // user 상태 사용
-  console.log(user);
+  // console.log(user);
   const {
     data: projectListResponse,
     isFetched: projectListFetched,
@@ -49,19 +49,19 @@ export default function Mypage() {
       API.getProjectList().then(res => {
         let modires = [];
         if (res.status === 204) {
-          console.log('HI');
+          // console.log('HI');
           return { projectListResponse: '' };
         } else {
           modires = res.data.map((issue: any) => ({
             ...issue,
             add: false,
           }));
-          console.log('WHAT? ', modires);
+          // console.log('WHAT? ', modires);
         }
 
         return modires;
       }),
-    retry: true,
+    retry: false,
     // enabled: !!initalflag,
   });
 
@@ -74,15 +74,15 @@ export default function Mypage() {
     queryFn: () =>
       API.getGrass().then(res => {
         if (res.status === 204) {
-          console.log('HI');
+          // console.log('HI');
           return { grassResponse: '' };
         } else {
-          console.log('grass? ', res.data);
+          // console.log('grass? ', res.data);
         }
 
         return res.data;
       }),
-    retry: true,
+    retry: false,
     // enabled: !!initalflag,
   });
 
@@ -92,15 +92,15 @@ export default function Mypage() {
         <S.Wrapper>
           <S.HeaderWrapper>
             <S.ProfileWrapper>
-              <Comp.UserImg size="lg" path={'/youjack.png'} />
+              <Comp.UserImg size="lg" path={user?.imageUrl} />
 
               <S.ProfileTextWrapper>
                 <S.Font $size="24px" $weight="600">
-                  유재건
+                  {user?.nickname}
                 </S.Font>
 
                 <S.Font $size="16px" $weight="400" style={{ color: `${G.PALETTE.LIGHT_BLACK}` }}>
-                  @jackU
+                  {user?.email}
                 </S.Font>
               </S.ProfileTextWrapper>
             </S.ProfileWrapper>

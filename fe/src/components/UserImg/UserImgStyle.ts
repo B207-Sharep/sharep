@@ -6,7 +6,7 @@ import * as G from '@/styles';
  * size ex) lg, md , sm
  */
 interface Options {
-  $path: string;
+  $path: string | null | undefined;
   $size: string;
 }
 

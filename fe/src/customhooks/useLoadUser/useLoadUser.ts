@@ -6,13 +6,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 interface User {
   // 사용자 정보에 대한 타입 정의
-  id: string;
-  username: string;
+  id: number;
   email: string;
+  nickname: string;
+  imageUrl: string | null;
   // 필요한 다른 사용자 정보 추가 가능
 }
 
-const useLoadUser = (): User | null => {
+export const useLoadUser = (): User | null => {
   const [user, setUser] = useRecoilState<User | null>(userState);
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,7 +27,7 @@ const useLoadUser = (): User | null => {
           const response = await account();
           if (response) {
             setUser(response.data); // Recoil 상태 업데이트
-            console.log(response.data, 'IMHERE AXIOS');
+            // console.log(response.data, 'IMHERE AXIOS');
           }
         } catch (error) {
           console.error('사용자 정보를 불러오는데 실패했습니다.', error);
@@ -34,6 +35,7 @@ const useLoadUser = (): User | null => {
         }
       }
       if (!token) {
+        console.log('NO TK');
         if (location.pathname !== '/login' && location.pathname !== '/' && location.pathname !== '/register') {
           navigate('/');
         }
@@ -42,9 +44,7 @@ const useLoadUser = (): User | null => {
 
     loadUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, setUser]); // user 또는 setUser가 변경될 때마다 이 effect를 재실행
+  }, [user, setUser, location]); // user 또는 setUser가 변경될 때마다 이 effect를 재실행
 
   return user; // 현재 로그인한 사용자 정보를 반환
 };
-
-export default useLoadUser;
