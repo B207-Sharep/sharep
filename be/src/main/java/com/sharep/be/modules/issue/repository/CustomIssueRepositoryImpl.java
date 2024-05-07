@@ -7,11 +7,9 @@ import static com.sharep.be.modules.issue.QIssue.issue;
 import static com.sharep.be.modules.job.domain.QJob.job;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.project.QProject.project;
-import static com.sharep.be.modules.storyboard.QStoryboard.storyboard;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.issue.QIssue;
 import com.sharep.be.modules.issue.type.IssueType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +38,8 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
     @Override
     public List<Issue> findAllByProjectIdAndIssueType(Long projectId,
             IssueType issueType) {
+
+        boolean isFeature = IssueType.FEATURE.equals(issueType);
         return queryFactory
                 .select(issue)
                 .from(issue)
@@ -47,8 +47,8 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
                 .leftJoin(assignee.member, member).fetchJoin()
                 .leftJoin(member.account, account).fetchJoin()
                 .innerJoin(issue.project, project)
-                .leftJoin(issue.storyboards, storyboard).fetchJoin()
-                .leftJoin(storyboard.screenIssue, new QIssue("screenIssue")).fetchJoin()
+                .leftJoin(isFeature ? issue.featureStoryboards : issue.screenStoryboards)
+                .fetchJoin()
                 .leftJoin(issue.api, api).fetchJoin()
                 .where(issue.type.eq(issueType).and(project.id.eq(projectId)))
                 .fetch();
