@@ -24,7 +24,7 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Issue> findIssuesByMemberId(Long memberId) {
+    public List<Issue> findAllByMemberId(Long memberId) {
         return queryFactory
                 .select(issue)
                 .from(issue)
@@ -38,7 +38,7 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
     }
 
     @Override
-    public List<Issue> findIssuesByProjectIdAndIssueType(Long projectId,
+    public List<Issue> findAllByProjectIdAndIssueType(Long projectId,
             IssueType issueType) {
         return queryFactory
                 .select(issue)
@@ -55,7 +55,7 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
     }
 
     @Override
-    public List<Issue> findIssuesByProjectId(Long projectId) {
+    public List<Issue> findAllByProjectId(Long projectId) {
         return queryFactory
                 .select(issue)
                 .from(issue)

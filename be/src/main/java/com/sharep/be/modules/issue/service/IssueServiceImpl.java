@@ -68,7 +68,7 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public List<Issue> getIssues(Long projectId) {
 
-        return issueRepository.findIssuesByProjectId(projectId);
+        return issueRepository.findAllByProjectId(projectId);
     }
 
     @Override
@@ -76,19 +76,19 @@ public class IssueServiceImpl implements IssueService {
         Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
                 .orElseThrow(MemberNotFoundException::new);
 
-        return issueRepository.findIssuesByMemberId(member.getId());
+        return issueRepository.findAllByMemberId(member.getId());
     }
 
     @Override
     public List<Issue> getFeatureIssues(Long projectId) {
 
-        return issueRepository.findIssuesByProjectIdAndIssueType(projectId, IssueType.FEATURE);
+        return issueRepository.findAllByProjectIdAndIssueType(projectId, IssueType.FEATURE);
     }
 
     @Override
     public List<Issue> getScreenIssues(Long projectId) {
 
-        return issueRepository.findIssuesByProjectIdAndIssueType(projectId, IssueType.SCREEN);
+        return issueRepository.findAllByProjectIdAndIssueType(projectId, IssueType.SCREEN);
     }
 
     @Override
