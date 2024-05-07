@@ -6,7 +6,7 @@ import { modalDataState } from '@/stores/atoms/modal';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
-import { createNewJob } from '@/apis/projects';
+import * as API from '@/apis/projects';
 import { useParams } from 'react-router-dom';
 
 export default function Modal({ modalId, title, subTitle, children, btnText }: T.ModalProps) {
@@ -26,7 +26,12 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
       if (contents) {
         switch (modalId) {
           case 'project':
-            processProjectData(contents as T.ProjectCreationFormProps);
+            {
+              const result = processProjectData(contents as T.ProjectCreationFormProps);
+              if (result) {
+                API.createNewProject(result);
+              } else throw Error;
+            }
             break;
           case 'job':
             console.log('projectId', projectId);
@@ -88,14 +93,21 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
 }
 
 function processProjectData(contents: T.ProjectCreationFormProps) {
+  const hasMemberWithoutRole = contents.members.some(member => Object.values(member.roles).every(hasRole => !hasRole));
+
+  if (hasMemberWithoutRole) {
+    alert('담당 역할이 선택되지 않은 팀원이 있습니다.');
+    return null;
+  }
+
   return {
     title: contents.title,
     bio: contents.bio,
     members: contents.members.map(member => ({
-      id: member.accountId,
+      id: member.id,
       roles: Object.entries(member.roles)
         .filter(([_, hasRole]) => hasRole)
-        .map(([role, _]) => role),
+        .map(([role, _]) => role) as T.RoleBadgeProps['role'][],
     })),
   };
 }

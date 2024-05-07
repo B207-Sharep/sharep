@@ -2,7 +2,7 @@ import { instanceOfFormData, instanceOfJson } from '../instance';
 import * as T from '@types';
 
 export async function getGrass() {
-  return await instanceOfJson.get(`/job/2022`);
+  return await instanceOfJson.get(`/jobs`);
 }
 export async function getProjectList() {
   return await instanceOfJson.get(`/projects`);
@@ -56,7 +56,14 @@ export async function getScreenIssueList({ projectId }: { projectId: number }) {
 }
 
 /** 새 프로젝트 생성 */
-export async function createNewProject(newProject: T.ProjectCreationFormProps) {
+export async function createNewProject(newProject: {
+  title: string;
+  bio: string;
+  members: {
+    id: number;
+    roles: T.RoleBadgeProps['role'][];
+  }[];
+}) {
   return await instanceOfJson.post(`/projects`, newProject);
 }
 
@@ -71,4 +78,9 @@ export async function createNewJob({
   newJob: T.JobCreationFormProps;
 }) {
   return await instanceOfFormData.post(`/projects/${projectId}/issues/${issueId}/jobs`, newJob);
+}
+
+/** 이메일 계정 조회 */
+export async function searchByEmail({ email }: { email: string }) {
+  return await instanceOfJson.get(`/accounts/email?email=${email}`);
 }

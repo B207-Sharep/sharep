@@ -20,7 +20,7 @@ export interface ProjectCreationFormProps {
   title: string;
   bio: string;
   members: {
-    accountId: number;
+    id: number;
     email: string;
     nickname: string;
     roles: Record<T.RoleBadgeProps['role'], boolean>;
