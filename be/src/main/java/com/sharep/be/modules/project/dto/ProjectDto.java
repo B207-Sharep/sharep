@@ -4,7 +4,7 @@ import static com.sharep.be.modules.member.Role.RoleType;
 
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.account.dto.AccountDto;
-import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
+import com.sharep.be.modules.account.dto.AccountDto.AccountResponse;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.project.Project;
 import jakarta.validation.constraints.NotBlank;
@@ -15,31 +15,35 @@ import java.util.stream.Collectors;
 
 public class ProjectDto {
 
-    public record ProjectRequestDto(
+    public record ProjectCreate(
             @NotBlank @Size(min = 1, max = 100) String title,
             @NotBlank @Size(min = 1, max = 100) String bio,
-
-            List<RoleType> roles
+            List<MemberCreate> members
     ) {
+        public record MemberCreate(
+                Long id,
+                List<RoleType> roles
+        ){
 
+        }
     }
 
     public record ProjectResponseDto(
             Long id,
             String title,
             String bio,
-            List<AccountResponseDto> accounts,
+            List<AccountResponse> accounts,
             LocalDateTime createdAt
     ) {
 
     }
 
-    public static Project convertSave(ProjectRequestDto projectRequestDto,
+    public static Project convertSave(ProjectCreate projectCreate,
             Account account) {
         return Project.builder()
                 .leader(account)
-                .title(projectRequestDto.title())
-                .bio(projectRequestDto.bio())
+                .title(projectCreate.title())
+                .bio(projectCreate.bio())
                 .build();
     }
 

@@ -1,15 +1,12 @@
 package com.sharep.be.modules.account;
 
-import static com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
 import static com.sharep.be.modules.account.dto.AccountDto.toDto;
 
-import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
+import com.sharep.be.modules.account.dto.AccountDto;
+import com.sharep.be.modules.account.dto.AccountDto.AccountResponse;
 import com.sharep.be.modules.account.repository.AccountRepository;
 import com.sharep.be.modules.account.service.AccountService;
 import com.sharep.be.modules.account.validator.AccountValidator;
-import com.sharep.be.modules.gpt.GptService;
-import com.sharep.be.modules.member.Member;
-import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -48,13 +45,13 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(
-            @RequestBody @Valid AccountCreateDto accountCreateDto) {
-        accountService.signUp(accountCreateDto);
+            @RequestBody @Valid AccountDto.AccountCreate accountCreate) {
+        accountService.signUp(accountCreate);
         return ResponseEntity
                 .status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/email")
+    @GetMapping("/email-check")
     public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
         return ResponseEntity
                 .ok(accountRepository.existsByEmail(email));
@@ -85,8 +82,14 @@ public class AccountController {
 //    }
 
     @GetMapping
-    public ResponseEntity<AccountResponseDto> readAccount(
+    public ResponseEntity<AccountResponse> readAccount(
             @AuthenticationPrincipal JwtAuthentication authentication){
         return ResponseEntity.ok(toDto(accountService.readAccount(authentication.id)));
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<List<AccountResponse>> readAccount(@RequestParam String email){
+        return ResponseEntity.ok(accountService.readAccounts(email).stream()
+                .map(AccountDto::toDto).toList());
     }
 }
