@@ -9,7 +9,7 @@ import com.sharep.be.infra.MockMvcTest;
 import com.sharep.be.modules.account.repository.AccountRepository;
 import com.sharep.be.modules.account.service.AccountService;
 import com.sharep.be.modules.account.WithMockAccount;
-import com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
+import com.sharep.be.modules.account.dto.AccountDto.AccountCreate;
 import com.sharep.be.modules.auth.dto.AuthDto.AuthRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,13 +38,10 @@ class AuthControllerTest {
     }
 
     public void makeAccount(){
-        AccountCreateDto account = new AccountCreateDto();
-        String email = "hello@google.com";
-        account.setEmail(email);
-        account.setPassword("1q2w3e4r");
-        account.setNickname("poobao");
 
-        accountService.signUp(account);
+        String email = "hello@google.com";
+        AccountCreate accountCreate = new AccountCreate("nickname", email, "1q2w3e4r");
+        accountService.signUp(accountCreate);
 
     }
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import static com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
+import static com.sharep.be.modules.account.dto.AccountDto.AccountCreate;
 
 @Component
 @RequiredArgsConstructor
@@ -19,15 +19,15 @@ public class AccountValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
         System.out.println("support");
-        return AccountCreateDto.class.isAssignableFrom(clazz);
+        return AccountCreate.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        AccountCreateDto signUpForm = (AccountCreateDto) target;
+        AccountCreate signUpForm = (AccountCreate) target;
         System.out.println("checkehck");
 
-        if (accountRepository.existsByEmail(signUpForm.getEmail())) {
+        if (accountRepository.existsByEmail(signUpForm.email())) {
 //            errors.rejectValue("email", "email.duplicate", "이미 사용 중인 이메일입니다.");
             throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
         }

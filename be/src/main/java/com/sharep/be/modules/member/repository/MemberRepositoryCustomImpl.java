@@ -4,12 +4,18 @@ import static com.sharep.be.modules.account.QAccount.*;
 import static com.sharep.be.modules.job.domain.QJob.job;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.member.QRole.*;
+import static com.sharep.be.modules.project.QProject.*;
 import static com.sharep.be.modules.project.QProject.project;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import com.sharep.be.modules.job.domain.QJob;
 import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.member.QMember;
+import com.sharep.be.modules.member.QRole;
+import com.sharep.be.modules.project.Project;
+import com.sharep.be.modules.project.QProject;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,14 +28,13 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Member> findAllByProjectIdAndAccountId(Long projectId, Long accountId) {
-        return queryFactory.selectFrom(member)
+    public List<Member> findAllByProjectId(Long projectId) {
+        return queryFactory.select(member)
                 .from(member)
-                .join(project.leader, account)
-                .join(project.members, member)
-                .join(member.roles, role1)
-                .where(project.id.eq(projectId)
-                        .and(member.account.id.eq(accountId)))
+                .innerJoin(member.project, project).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
+                .leftJoin(member.roles, role1).fetchJoin()
+                .where(member.project.id.eq(projectId))
                 .fetch();
     }
 

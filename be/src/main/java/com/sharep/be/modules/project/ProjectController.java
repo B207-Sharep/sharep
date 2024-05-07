@@ -1,7 +1,6 @@
 package com.sharep.be.modules.project;
 
-import com.sharep.be.modules.project.dto.MemberDto.MemberRequestDto;
-import com.sharep.be.modules.project.dto.MemberDto.MemberResponseDto;
+import com.sharep.be.modules.project.dto.MemberDto.MemberResponse;
 import com.sharep.be.modules.project.dto.ProjectDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectResponseDto;
 import com.sharep.be.modules.project.dto.TokenDto;
@@ -44,24 +43,27 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.readProject(jwtAuthentication.id));
     }
 
+    /*
+    멤버 추가는 추후 구현
+     */
 
-    @PostMapping("/{projectId}/members")
-    public ResponseEntity<Void> addMember(@RequestBody MemberRequestDto memberRequestDto,
-            @AuthenticationPrincipal JwtAuthentication jwtAuthentication,
-            @PathVariable Long projectId) {
-        log.info("member 추가 controller jwt id : {}, projectId : {}, member  : {}",
-                jwtAuthentication.id, projectId, memberRequestDto);
-        projectService.addMember(projectId, jwtAuthentication.id, memberRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+//    @PostMapping("/{projectId}/members")
+//    public ResponseEntity<Void> addMember(@RequestBody MemberRequestDto memberRequestDto,
+//            @AuthenticationPrincipal JwtAuthentication jwtAuthentication,
+//            @PathVariable Long projectId) {
+//        log.info("member 추가 controller jwt id : {}, projectId : {}, member  : {}",
+//                jwtAuthentication.id, projectId, memberRequestDto);
+//        projectService.addMember(projectId, jwtAuthentication.id, memberRequestDto);
+//        return ResponseEntity.status(HttpStatus.CREATED).build();
+//    }
 
     @GetMapping("/{projectId}/members")
-    public ResponseEntity<List<MemberResponseDto>> readMember(
+    public ResponseEntity<List<MemberResponse>> readMember(
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication,
             @PathVariable Long projectId) {
         log.info("member 조회 controller jwt id : {}, projectId : {}", jwtAuthentication.id,
                 projectId);
-        return ResponseEntity.ok(projectService.readMember(projectId, jwtAuthentication.id));
+        return ResponseEntity.ok(projectService.readMember(projectId));
     }
 
     @PostMapping("/{projectId}/token")

@@ -4,7 +4,7 @@ import static com.sharep.be.modules.member.Role.RoleType;
 
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.account.dto.AccountDto;
-import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
+import com.sharep.be.modules.account.dto.AccountDto.AccountResponse;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.project.Project;
 import jakarta.validation.constraints.NotBlank;
@@ -32,7 +32,7 @@ public class ProjectDto {
             Long id,
             String title,
             String bio,
-            List<AccountResponseDto> accounts,
+            List<AccountResponse> accounts,
             LocalDateTime createdAt
     ) {
 

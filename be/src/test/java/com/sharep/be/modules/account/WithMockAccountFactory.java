@@ -1,7 +1,7 @@
 package com.sharep.be.modules.account;
 
-import com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
-import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
+import com.sharep.be.modules.account.dto.AccountDto.AccountCreate;
+import com.sharep.be.modules.account.dto.AccountDto.AccountResponse;
 import com.sharep.be.modules.account.service.AccountService;
 import com.sharep.be.modules.security.JwtAuthentication;
 import com.sharep.be.modules.security.JwtAuthenticationToken;
@@ -18,18 +18,15 @@ public class WithMockAccountFactory implements
     @Override
     public SecurityContext createSecurityContext(WithMockAccount withMockAccount) {
         // sign up
-        AccountCreateDto account = new AccountCreateDto();
+        AccountCreate account = new AccountCreate("poobao", withMockAccount.email(), "1q2w3e4r");
         String email = withMockAccount.email();
-        account.setEmail(email);
-        account.setPassword("1q2w3e4r");
-        account.setNickname("poobao");
 
-        AccountResponseDto accountResponseDto = accountService.signUp(account);
+        AccountResponse accountResponse = accountService.signUp(account);
         UserDetails userDetails = accountService.loadUserByUsername(email);
 
         // log in
         JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(
-                new JwtAuthentication(accountResponseDto.getId(), email), null, userDetails.getAuthorities());
+                new JwtAuthentication(accountResponse.id(), email), null, userDetails.getAuthorities());
 
         System.out.println(jwtAuthenticationToken);
         // make test context

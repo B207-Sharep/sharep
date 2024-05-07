@@ -25,10 +25,12 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final S3Repository s3Repository;
 
-    public AccountResponseDto signUp(AccountCreateDto accountDto) {
-        accountDto.setPassword(passwordEncoder.encode(accountDto.getPassword())); // Password Encode
-        Account account = AccountDto.toEntity(accountDto);
-        return toDto(accountRepository.save(account));
+    public AccountResponse signUp(AccountCreate accountCreate) {
+
+        AccountCreate encodeAccount = new AccountCreate(accountCreate.nickname(),
+                accountCreate.email(),
+                passwordEncoder.encode(accountCreate.password()));// Password Encode
+        return toDto(accountRepository.save(toEntity(encodeAccount)));
     }
 
     @Override
