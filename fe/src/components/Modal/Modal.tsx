@@ -10,8 +10,7 @@ import { X } from 'lucide-react';
 export default function Modal({ modalId, title, subTitle, children }: T.ModalProps) {
   const { closeModal } = useModal(modalId);
 
-  const modalData = useRecoilValue(modalDataState(modalId));
-  const { isOpen } = modalData;
+  const { isOpen } = useRecoilValue(modalDataState(modalId));
 
   const handleModalClose = () => {
     closeModal();
@@ -19,7 +18,7 @@ export default function Modal({ modalId, title, subTitle, children }: T.ModalPro
 
   const handleCreateButtonClick = useRecoilCallback(({ snapshot, set }) => async () => {
     const modalData = await snapshot.getPromise(modalDataState(modalId));
-    console.log(modalData.formData);
+    console.log(modalData.contents);
     console.log(set);
     try {
       // api call

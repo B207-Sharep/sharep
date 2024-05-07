@@ -2,7 +2,7 @@ import BaseLabelWithInput from '@/components/InputWithLabel/InputWithLabel';
 import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
-export const ProjectCreationFormWrapper = styled.div`
+export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -30,7 +30,6 @@ export const StyledInput = styled(BaseLabelWithInput.Input)<{ $icon?: boolean }>
   background: ${PALETTE.MAIN_WHITE};
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
   font-size: 12px;
-  font-family: 'Pretendard';
   width: 100%;
   &:focus {
     box-shadow: rgba(46, 184, 114, 0.05) 0px 6px 24px 0px, rgba(46, 184, 114, 0.08) 0px 0px 0px 3px;
@@ -49,18 +48,18 @@ export const Icon = styled.div<{ $position?: string; $fillColor?: string; $strok
   height: 12px;
   display: flex;
   align-items: center;
-  position: ${props => (props.$position ? props.$position : 'static')};
+  position: ${({ $position }) => ($position ? $position : 'static')};
   left: 10px;
   & > svg {
-    fill: ${props => (props.$fillColor ? props.$fillColor : 'none')};
-    stroke: ${props => (props.$strokeColor ? props.$strokeColor : 'none')};
+    fill: ${({ $fillColor }) => ($fillColor ? $fillColor : 'none')};
+    stroke: ${({ $strokeColor }) => ($strokeColor ? $strokeColor : 'none')};
   }
 `;
 
 export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
-  color: ${props => props.color};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
-  font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : '400')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -103,7 +102,7 @@ export const SearchResultItem = styled.div`
   }
 `;
 
-export const JobBadgeList = styled.div`
+export const RoleBadgeList = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
@@ -159,7 +158,7 @@ export const DeleteBtn = styled.div<{ $cursor: boolean }>`
   align-items: center;
   width: 40px;
   height: 32px;
-  cursor: ${props => (props.$cursor ? 'pointer' : 'default')};
+  cursor: ${({ $cursor }) => ($cursor ? 'pointer' : 'default')};
 `;
 
 export const LeaderBadge = styled.div`
@@ -169,8 +168,14 @@ export const LeaderBadge = styled.div`
   padding: 2px 6px;
 `;
 
-export const JobBadgeBtn = styled.div<{ $state: boolean }>`
+export const RoleBadgeBtn = styled.div<{ $state: boolean }>`
   :hover {
     opacity: 0.6;
   }
+`;
+
+export const TokenInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;

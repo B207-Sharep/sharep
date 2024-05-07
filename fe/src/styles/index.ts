@@ -78,7 +78,8 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0px;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     background-color: #f7f7f7;
   }
 

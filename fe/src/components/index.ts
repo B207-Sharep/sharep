@@ -3,13 +3,15 @@ import InputWithLabel from './InputWithLabel/InputWithLabel';
 import StatusBadge from './StatusBadge/StatusBadge';
 import Commit from './Commit/Commit';
 import MethodBadge from './MethodBadge/MethodBadge';
-import JobBadge from './JobBadge/JobBadge';
+import RoleBadge from './RoleBadge/RoleBadge';
 import PriorityBadge from './PriorityBadge/PriorityBadge';
 import UserImg from './UserImg/UserImg';
 import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
 import ManualTable from './ManualTable/ManualTable';
 import Modal from './Modal/Modal';
+import { ProjectCreationForm, JobCreationForm, InfraJobCreationForm } from './Modal/Subs';
+import GalleryCard from './GalleryCard/GalleryCard';
 import GalleryGridWrapper from './GalleryGridWrapper/GalleryGridWrapper';
 import ProjectCard from './ProjectCard/ProjectCard';
 import ProjectGridWrapper from './ProjectGridWrapper/ProjectGridWrapper';
@@ -17,13 +19,12 @@ import Issue from './Issue/Issue';
 import Add from './Button/Add/Add';
 import HistoryBtn from './Button/History/HistoryBtn';
 import MainColorBtn from './Button/MainColorBtn/MainColorBtn';
-
 export {
   InputWithLabel,
   StatusBadge,
   Commit,
   MethodBadge,
-  JobBadge,
+  RoleBadge,
   PriorityBadge,
   SideBar,
   UserImg,
@@ -31,6 +32,10 @@ export {
   ManualTable,
   QuillEditor,
   Modal,
+  ProjectCreationForm,
+  JobCreationForm,
+  InfraJobCreationForm,
+  GalleryCard,
   GalleryGridWrapper,
   ProjectCard,
   ProjectGridWrapper,

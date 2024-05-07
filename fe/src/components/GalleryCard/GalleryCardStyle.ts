@@ -1,9 +1,8 @@
-import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
 export const Card = styled.div`
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  aspect-ratio: 16/9;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -13,12 +12,13 @@ export const Card = styled.div`
 `;
 
 export const CardContent = styled.div`
-  height: 160px;
+  width: 100%;
+  height: 200px;
   overflow: hidden;
 `;
 
 export const CardText = styled.div`
-  height: 40px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,9 +37,9 @@ export const StyledText = styled.span<{
   fontSize?: number;
   fontWeight?: number;
 }>`
-  color: ${props => props.color};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
-  font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? `${fontWeight}` : '400')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

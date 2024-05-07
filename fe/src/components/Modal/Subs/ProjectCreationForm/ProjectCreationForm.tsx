@@ -2,76 +2,39 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { PALETTE } from '@/styles';
 import * as S from './ProjectCreationFormStyle';
-import * as T from '@/types/components/Modal';
+import * as T from '@/types';
 import * as Icon from '@/assets';
 import * as Comp from '@/components';
 import { Info, MinusCircle, Search } from 'lucide-react';
 import { modalDataState } from '@/stores/atoms/modal';
 import { useModal } from '@/customhooks';
 
-const dummyResults: {
-  accountId: number;
-  email: string;
-  nickname: string;
-}[] = [
-  {
-    accountId: 2,
-    email: 'ssafy1234@ssafy.com',
-    nickname: '사용자1',
-  },
-  { accountId: 3, email: 'ssafy5678@ssafy.com', nickname: '사용자2' },
-  { accountId: 4, email: 'oh4@ssafy.com', nickname: '오상훈' },
-  { accountId: 5, email: 'sj@ssafy.com', nickname: '임서정' },
-  { accountId: 6, email: 'jo@ssafy.com', nickname: '조성규' },
-  { accountId: 7, email: 'princess@ssafy.com', nickname: '김성제' },
-  { accountId: 8, email: 'mehot@ssafy.com', nickname: '이승민' },
-  // { accountId: 9, email: 'jack@ssafy.com', nickname: '유재건' },
-];
-
-const jobs = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
-
-export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormProps) {
-  const { updateFormData } = useModal<{
-    title: string;
-    bio: string;
-    secretKey: string;
-    members: {
-      accountId: number;
-      email: string;
-      nickname: string;
-      jobs: { [key: string]: boolean };
-    }[];
-  }>(modalId);
-  const modalData = useRecoilValue(modalDataState(modalId));
-  const { formData } = modalData;
+export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
+  const { updateContentByKey } = useModal<T.ProjectCreationFormProps>(modalId);
+  const { contents } = useRecoilValue(modalDataState(modalId));
   const [searchValue, setSearchValue] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<
-    {
-      accountId: number;
-      email: string;
-      nickname: string;
-    }[]
-  >([]);
+  const [searchResults, setSearchResults] = useState<Omit<T.ProjectCreationFormProps['members'][number], 'roles'>[]>(
+    [],
+  );
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  // 특정 Job의 선택 상태 토글
-  const toggleJobState = (accountId: number, job: 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER') => {
-    updateFormData({
-      ...formData,
-      members: formData.members.map(
-        (member: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) =>
-          member.accountId === accountId
-            ? {
-                ...member,
-                jobs: {
-                  ...member.jobs,
-                  [job]: !member.jobs[job],
-                },
-              }
-            : member,
+  // 특정 Role의 선택 상태 토글
+  const toggleRoleState = (accountId: number, role: T.RoleBadgeProps['role']) => {
+    updateContentByKey(
+      'members',
+      contents.members.map((member: T.ProjectCreationFormProps['members'][number]) =>
+        member.accountId === accountId
+          ? {
+              ...member,
+              roles: {
+                ...member.roles,
+                [role]: !member.roles[role],
+              },
+            }
+          : member,
       ),
-    });
+    );
   };
 
   // dropdown에 팀원 이메일 검색내역 불러오기
@@ -97,49 +60,46 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
   };
 
   // 팀원 이메일 검색 내역 dropdown item 선택 했을 때, 중복 제외하고 선택된 팀원 추가
-  const handleResultClick = (selectedUser: { accountId: number; email: string; nickname: string }) => () => {
+  const handleResultClick = (selectedUser: Omit<T.ProjectCreationFormProps['members'][number], 'roles'>) => () => {
     setSearchValue('');
 
     // 이미 추가된 팀원인지 체크
-    const isMemberAlreadyAdded = formData.members.some(
-      (member: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) =>
-        member.accountId === selectedUser.accountId,
+    const isMemberAlreadyAdded = contents.members.some(
+      (member: T.ProjectCreationFormProps['members'][number]) => member.accountId === selectedUser.accountId,
     );
     if (!isMemberAlreadyAdded) {
-      const newMember = { ...selectedUser, jobs: { FRONT_END: false, BACK_END: false, INFRA: false, DESIGNER: false } };
-      updateFormData({
-        ...formData,
-        members: [...formData.members, newMember],
-      });
+      const newMember = {
+        ...selectedUser,
+        roles: { FRONT_END: false, BACK_END: false, INFRA: false, DESIGNER: false },
+      };
+      updateContentByKey('members', [...contents.members, newMember]);
     }
     setIsDropdownVisible(false);
   };
 
   // 추가된 팀원 목록에서 팀원 삭제
-  const handleRemoveClick =
-    (selectedUser: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) => () => {
-      setSearchValue('');
-      updateFormData({
-        ...formData,
-        members: formData.members.filter(
-          (member: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) =>
-            member.accountId !== selectedUser.accountId,
-        ),
-      });
+  const handleRemoveClick = (selectedUser: T.ProjectCreationFormProps['members'][number]) => () => {
+    setSearchValue('');
+    updateContentByKey(
+      'members',
+      contents.members.filter(
+        (member: T.ProjectCreationFormProps['members'][number]) => member.accountId !== selectedUser.accountId,
+      ),
+    );
 
-      setIsDropdownVisible(false);
-    };
+    setIsDropdownVisible(false);
+  };
 
   return (
-    <S.ProjectCreationFormWrapper>
+    <S.Wrapper>
       {/* 프로젝트 이름 */}
       <S.FormItem>
         <Comp.InputWithLabel.Label labelFor="title">프로젝트 이름</Comp.InputWithLabel.Label>
         <S.StyledInput
           id="title"
           type="text"
-          value={formData.title}
-          onChange={event => updateFormData({ ...formData, title: event.target.value })}
+          value={contents.title}
+          onChange={event => updateContentByKey('title', event.target.value)}
         />
       </S.FormItem>
       {/* 프로젝트 소개 */}
@@ -148,8 +108,8 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
         <S.StyledInput
           id="bio"
           type="text"
-          value={formData.bio}
-          onChange={event => updateFormData({ ...formData, bio: event.target.value })}
+          value={contents.bio}
+          onChange={event => updateContentByKey('bio', event.target.value)}
         />
       </S.FormItem>
       {/* 프로젝트 token */}
@@ -157,14 +117,14 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
         <Comp.InputWithLabel.Label labelFor="secretKey">
           <S.StyledLabel>
             Token
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <S.TokenInfo>
               <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $strokeColor={PALETTE.MAIN_WHITE}>
                 <Info size={12} />
               </S.Icon>
               <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
                 repository의 read 권한이 있는 token을 등록해주세요.
               </S.StyledText>
-            </div>
+            </S.TokenInfo>
           </S.StyledLabel>
         </Comp.InputWithLabel.Label>
         <S.InputContainer>
@@ -172,8 +132,8 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
             $icon={true}
             id="secretKey"
             type="text"
-            value={formData.secretKey}
-            onChange={event => updateFormData({ ...formData, secretKey: event.target.value })}
+            value={contents.secretKey}
+            onChange={event => updateContentByKey('secretKey', event.target.value)}
           />
           <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $position="absolute">
             <Icon.GitIcon />
@@ -201,7 +161,7 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
               {searchResults.map(user => (
                 <S.SearchResultItem key={user.accountId} onClick={handleResultClick(user)}>
                   <S.UserProfile>
-                    <Comp.UserImg size="xs" path="https://via.placeholder.com/32x32" />
+                    <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
                     <S.UserInfo>
                       <S.StyledText fontSize={12}>{user.email}</S.StyledText>
                       <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
@@ -240,66 +200,81 @@ export default function ProjectCreationForm({ modalId }: T.ProjectCreationFormPr
                 </S.UserInfo>
               </S.UserProfile>
 
-              <S.JobBadgeList>
-                {jobs.map(job => (
-                  <S.JobBadgeBtn
-                    key={job}
-                    onClick={() => toggleJobState(formData.members[0].accountId, job)}
-                    $state={formData.members[0].jobs[job]}
+              <S.RoleBadgeList>
+                {roleList.map(role => (
+                  <S.RoleBadgeBtn
+                    key={role}
+                    onClick={() => toggleRoleState(contents.members[0].accountId, role)}
+                    $state={contents.members[0].roles[role]}
                   >
-                    <Comp.JobBadge
-                      job={job}
+                    <Comp.RoleBadge
+                      role={role}
                       selectAble={{
-                        state: formData.members[0].jobs[job],
+                        state: contents.members[0].roles[role],
                         onClick: () => {},
                       }}
                     />
-                  </S.JobBadgeBtn>
+                  </S.RoleBadgeBtn>
                 ))}
-              </S.JobBadgeList>
+              </S.RoleBadgeList>
             </S.RowContent>
           </S.Row>
 
-          {formData.members
-            .slice(1)
-            .map((user: { accountId: number; email: string; nickname: string; jobs: { [key: string]: boolean } }) => (
-              <S.Row key={user.accountId}>
-                <S.DeleteBtn $cursor={true} onClick={handleRemoveClick(user)}>
-                  <MinusCircle color={PALETTE.LIGHT_BLACK} size={16} />
-                </S.DeleteBtn>
+          {contents.members.slice(1).map((member: T.ProjectCreationFormProps['members'][number]) => (
+            <S.Row key={member.accountId}>
+              <S.DeleteBtn $cursor={true} onClick={handleRemoveClick(member)}>
+                <MinusCircle color={PALETTE.LIGHT_BLACK} size={16} />
+              </S.DeleteBtn>
 
-                <S.RowContent>
-                  <S.UserProfile>
-                    <Comp.UserImg size="xs" path="https://via.placeholder.com/32x32" />
-                    <S.UserInfo>
-                      <S.StyledText fontSize={12}>{user.email}</S.StyledText>
-                      <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
-                        {user.nickname}
-                      </S.StyledText>
-                    </S.UserInfo>
-                  </S.UserProfile>
-                  <S.JobBadgeList>
-                    {jobs.map(job => (
-                      <S.JobBadgeBtn
-                        key={job}
-                        onClick={() => toggleJobState(user.accountId, job)}
-                        $state={user.jobs[job]}
-                      >
-                        <Comp.JobBadge
-                          job={job}
-                          selectAble={{
-                            state: user.jobs[job],
-                            onClick: () => {},
-                          }}
-                        />
-                      </S.JobBadgeBtn>
-                    ))}
-                  </S.JobBadgeList>
-                </S.RowContent>
-              </S.Row>
-            ))}
+              <S.RowContent>
+                <S.UserProfile>
+                  <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
+                  <S.UserInfo>
+                    <S.StyledText fontSize={12}>{member.email}</S.StyledText>
+                    <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+                      {member.nickname}
+                    </S.StyledText>
+                  </S.UserInfo>
+                </S.UserProfile>
+                <S.RoleBadgeList>
+                  {roleList.map(role => (
+                    <S.RoleBadgeBtn
+                      key={role}
+                      onClick={() => toggleRoleState(member.accountId, role)}
+                      $state={member.roles[role]}
+                    >
+                      <Comp.RoleBadge
+                        role={role}
+                        selectAble={{
+                          state: member.roles[role],
+                          onClick: () => {},
+                        }}
+                      />
+                    </S.RoleBadgeBtn>
+                  ))}
+                </S.RoleBadgeList>
+              </S.RowContent>
+            </S.Row>
+          ))}
         </S.MemberList>
       </S.Content>
-    </S.ProjectCreationFormWrapper>
+    </S.Wrapper>
   );
 }
+
+const dummyResults: Omit<T.ProjectCreationFormProps['members'][number], 'roles'>[] = [
+  {
+    accountId: 2,
+    email: 'ssafy1234@ssafy.com',
+    nickname: '사용자1',
+  },
+  { accountId: 3, email: 'ssafy5678@ssafy.com', nickname: '사용자2' },
+  { accountId: 4, email: 'oh4@ssafy.com', nickname: '오상훈' },
+  { accountId: 5, email: 'sj@ssafy.com', nickname: '임서정' },
+  { accountId: 6, email: 'jo@ssafy.com', nickname: '조성규' },
+  { accountId: 7, email: 'princess@ssafy.com', nickname: '김성제' },
+  { accountId: 8, email: 'mehot@ssafy.com', nickname: '이승민' },
+  // { accountId: 9, email: 'jack@ssafy.com', nickname: '유재건' },
+];
+
+const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];

@@ -27,3 +27,12 @@ export const Tooltip = styled.div`
   flex-direction: row;
   width: 30px;
 `;
+// {
+//     "year": 2024,
+//     "roleCount": 4,
+//     "roles": [
+//     {
+//     "step": 0,
+//     "count": 0
+//     },
+//     }

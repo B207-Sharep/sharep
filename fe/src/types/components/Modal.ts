@@ -1,4 +1,5 @@
 import React from 'react';
+import * as T from '@/types';
 
 export interface ModalProps {
   modalId: string;
@@ -7,10 +8,31 @@ export interface ModalProps {
   children: React.ReactNode;
 }
 
-export interface ProjectCreationFormProps {
-  modalId: string;
+export interface JobCreationFormProps {
+  name: string;
+  imageFile: File;
+  description: string;
 }
 
-export interface TaskCreationFormProps {
-  modalId: string;
+export interface ProjectCreationFormProps {
+  title: string;
+  bio: string;
+  secretKey: string;
+  members: {
+    accountId: number;
+    email: string;
+    nickname: string;
+    roles: Record<T.RoleBadgeProps['role'], boolean>;
+  }[];
+}
+
+export interface InfraJobCreationFormProps {
+  name: string;
+  description: string;
+  notiUsers: {
+    accountId: number;
+    nickname: string;
+    roles: T.RoleBadgeProps['role'][];
+    userImageUrl?: string;
+  }[];
 }
