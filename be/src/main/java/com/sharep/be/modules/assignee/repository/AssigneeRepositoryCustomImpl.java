@@ -41,7 +41,7 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
                 .innerJoin(assignee.issue, issue)
                 .rightJoin(assignee.member, member)
                 .on(assignee.state.eq(State.NOW))
-                .leftJoin(member.roles, role1)
+                .leftJoin(member.account, account)
                 .leftJoin(member.project, project)
                 .where(project.id.eq(projectId))
                 .orderBy(assignee.startedAt.desc())
