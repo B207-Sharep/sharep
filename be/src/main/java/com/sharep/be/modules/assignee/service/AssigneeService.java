@@ -12,10 +12,14 @@ import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.repository.MemberRepository;
 
 
+import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
+import com.sharep.be.modules.notification.repository.NotificationRepository;
 import com.sharep.be.modules.notification.service.NotificationService;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +34,7 @@ public class AssigneeService {
     private final AssigneeRepository assigneeRepository;
     private final MemberRepository memberRepository;
     private final IssueRepository issueRepository;
+    private final NotificationRepository notificationRepository;
 
     public Long update(Long accountId, Long projectId, Long issueId, State state) {
 
@@ -41,25 +46,36 @@ public class AssigneeService {
 
         assignee.updateState(state);
 
-        if(state == State.DONE){
-            List<Tuple> assigneesByIssue = assigneeRepository.findAccountIdsByIssueId(issueId);
+        if (state == State.DONE) {
+            List<Assignee> assigneesByIssue = assigneeRepository.findAccountIdsByIssueId(issueId);
 
-            for(Tuple assigneeByIssue : assigneesByIssue){
-                Account anotherAccount = assigneeByIssue.get(0, Account.class);
-                Member anotherMember = assigneeByIssue.get(1, Member.class);
-                Assignee anotherAssignee = assigneeByIssue.get(2, Assignee.class);
-                Issue anotherIssue = assigneeByIssue.get(3, Issue.class);
+            for (Assignee anotherAssignee : assigneesByIssue) {
+
+                Account anotherAccount = anotherAssignee.getMember().getAccount();
+                Member anotherMember = anotherAssignee.getMember();
+                Issue anotherIssue = anotherAssignee.getIssue();
+
+                if (accountId.equals(anotherAccount.getId())) {
+                    continue;
+                }
 
                 notNull(anotherAccount);
                 notNull(anotherMember);
                 notNull(anotherAssignee);
                 notNull(anotherIssue);
 
-                if(Objects.equals(accountId, anotherAccount.getId())) continue;
+                Notification notification = Notification.builder()
+                        .assignee(anotherAssignee)
+                        .isRead(false)
+                        .member(anotherMember)
+                        .build();
+
+                notificationRepository.save(notification);
 
                 notificationService.notify(
                         anotherAccount.getId(),
-                        NotificationMessage.from(anotherAccount, anotherMember, anotherAssignee, anotherIssue)
+                        NotificationMessage.from(notification, anotherAccount, anotherMember,
+                                anotherAssignee, anotherIssue)
                 );
             }
         }
@@ -75,7 +91,7 @@ public class AssigneeService {
         Issue issue = issueRepository.findById(issueId)
                 .orElseThrow(() -> new RuntimeException("해당하는 이슈가 존재하지 않습니다."));
 
-        if(assigneeRepository.existsByMemberIdAndIssueId(member.getId(), issue.getId())){
+        if (assigneeRepository.existsByMemberIdAndIssueId(member.getId(), issue.getId())) {
             throw new RuntimeException("이미 해당하는 이슈의 해당 구성원이 존재합니다.");
         }
 
@@ -108,6 +124,7 @@ public class AssigneeService {
     }
 
     public List<Tuple> readProjectNowOwnIssue(Long projectId, Long accountId) {
-        return assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(projectId, accountId);
+        return assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(projectId,
+                accountId);
     }
 }

@@ -7,6 +7,7 @@ import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
 import com.sharep.be.modules.notification.repository.EmitterRepository;
 import com.sharep.be.modules.notification.repository.NotificationRepository;
@@ -28,37 +29,40 @@ public class NotificationService {
     public SseEmitter subscribe(Long projectId, Long accountId) {
         SseEmitter emitter = createEmitter(accountId);
 
-        List<Tuple> notifications = notificationRepository.findALlByProjectIdAndAccountId(projectId, accountId);
+        List<NotificationMessage> notificationMessages = notificationRepository.findAllByProjectIdAndAccountId(projectId, accountId).stream()
+                        .map(notification -> {
+                            Member anotherMember = notification.getMember();
+                            Assignee anotherAssignee = notification.getAssignee();
+                            Issue anotherIssue = anotherAssignee.getIssue();
+                            Account anotherAccount = anotherMember.getAccount();
 
-        for(Tuple notification : notifications){
-            Account anotherAccount = notification.get(0, Account.class);
-            Member anotherMember = notification.get(1, Member.class);
-            Assignee anotherAssignee = notification.get(2, Assignee.class);
-            Issue anotherIssue = notification.get(3, Issue.class);
+                            notNull(anotherAccount);
+                            notNull(anotherMember);
+                            notNull(anotherAssignee);
+                            notNull(anotherIssue);
 
-            notNull(anotherAccount);
-            notNull(anotherMember);
-            notNull(anotherAssignee);
-            notNull(anotherIssue);
+                            return NotificationMessage.from(notification, anotherAccount, anotherMember, anotherAssignee, anotherIssue);
+                        })
+                        .toList();
 
-            notify(
-                    accountId,
-                    NotificationMessage.from(anotherAccount, anotherMember, anotherAssignee, anotherIssue)
-            );
-        }
+        notify(
+                accountId,
+                notificationMessages
+        );
+
 
         return emitter;
     }
 
-    public void notify(Long userId, NotificationMessage notificationMessage) {
-        sendToClient(userId, notificationMessage);
+    public void notify(Long userId, Object data) {
+        sendToClient(userId, data);
     }
 
-    private void sendToClient(Long id, NotificationMessage notificationMessage) {
+    private void sendToClient(Long id, Object data) {
         SseEmitter emitter = emitterRepository.get(id);
         if (emitter != null) {
             try {
-                emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sse").data(notificationMessage));
+                emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sse").data(data));
             } catch (IOException exception) {
                 emitterRepository.deleteById(id);
                 emitter.completeWithError(exception);

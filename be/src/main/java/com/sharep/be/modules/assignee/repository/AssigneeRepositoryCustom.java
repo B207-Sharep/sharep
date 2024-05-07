@@ -13,5 +13,5 @@ public interface AssigneeRepositoryCustom {
 
     List<Tuple> findAllProjectNowIssueByProjectIdAndAccountId(Long projectId, Long accountId);
 
-    List<Tuple> findAccountIdsByIssueId(Long issueId);
+    List<Assignee> findAccountIdsByIssueId(Long issueId);
 }

@@ -12,6 +12,7 @@ import lombok.Builder;
 
 @Builder
 public record NotificationMessage(
+        Long notificationId,
         Long accountId,
         String nickname,
         List<RoleType> roles,
@@ -20,8 +21,9 @@ public record NotificationMessage(
         LocalDateTime finishedAt,
         boolean isRead
 ) {
-    public static NotificationMessage from(Account account, Member member, Assignee assignee, Issue issue){
+    public static NotificationMessage from(Notification notification, Account account, Member member, Assignee assignee, Issue issue){
         return NotificationMessage.builder()
+                .notificationId(notification.getId())
                 .accountId(account.getId())
                 .nickname(account.getNickname())
                 .roles(
@@ -35,4 +37,5 @@ public record NotificationMessage(
                 .isRead(false)
                 .build();
     }
+
 }

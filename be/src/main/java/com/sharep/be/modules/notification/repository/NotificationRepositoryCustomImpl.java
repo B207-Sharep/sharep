@@ -1,13 +1,15 @@
 package com.sharep.be.modules.notification.repository;
 
 import static com.sharep.be.modules.account.QAccount.account;
+import static com.sharep.be.modules.api.QApi.api;
 import static com.sharep.be.modules.assignee.domain.QAssignee.assignee;
 import static com.sharep.be.modules.issue.QIssue.issue;
 import static com.sharep.be.modules.member.QMember.member;
+import static com.sharep.be.modules.member.QRole.role1;
 import static com.sharep.be.modules.notification.domain.QNotification.notification;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sharep.be.modules.notification.domain.Notification;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,13 +22,15 @@ public class NotificationRepositoryCustomImpl implements NotificationRepositoryC
 
 
     @Override
-    public List<Tuple> findALlByProjectIdAndAccountId(Long projectId, Long accountId) {
-        return queryFactory.select(account, member, assignee, issue)
+    public List<Notification> findAllByProjectIdAndAccountId(Long projectId, Long accountId) {
+        return queryFactory.select(notification)
                 .from(notification)
-                .innerJoin(notification.assignee, assignee)
-                .innerJoin(notification.member, member)
-                .innerJoin(member.account, account)
-                .innerJoin(assignee.issue, issue)
+                .innerJoin(notification.assignee, assignee).fetchJoin()
+                .innerJoin(notification.member, member).fetchJoin()
+                .innerJoin(member.roles, role1).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
+                .innerJoin(assignee.issue, issue).fetchJoin()
+                .innerJoin(issue.api, api).fetchJoin()
                 .fetch();
     }
 }

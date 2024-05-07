@@ -7,11 +7,11 @@ import static com.sharep.be.modules.assignee.domain.QAssignee.assignee;
 
 import static com.sharep.be.modules.issue.QIssue.issue;
 import static com.sharep.be.modules.member.QMember.member;
+import static com.sharep.be.modules.member.QRole.role1;
 import static com.sharep.be.modules.project.QProject.project;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.domain.State;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom{
+public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
@@ -45,7 +45,7 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom{
     @Override
     public List<Tuple> findAllProjectNowIssueByProjectIdAndAccountId(Long projectId,
             Long accountId) {
-        return queryFactory.select(issue, account)
+        return queryFactory.select(issue, account).distinct()
                 .from(assignee)
                 .leftJoin(assignee.issue, issue)
                 .innerJoin(assignee.member, member)
@@ -72,12 +72,15 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom{
     }
 
 
-    public List<Tuple> findAccountIdsByIssueId(Long issueId) {
-        return queryFactory.select(account, member, assignee, issue)
+    public List<Assignee> findAccountIdsByIssueId(Long issueId) {
+        return queryFactory.select(assignee).distinct()
                 .from(assignee)
-                .innerJoin(assignee.member, member)
-                .innerJoin(member.account, account)
-                .innerJoin(assignee.issue)
+                .innerJoin(assignee.member, member).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
+                .innerJoin(assignee.issue, issue).fetchJoin()
+                .leftJoin(issue.api, api).fetchJoin()
+                .leftJoin(member.roles, role1).fetchJoin()
+                .where(issue.id.eq(issueId))
                 .fetch();
     }
 }
