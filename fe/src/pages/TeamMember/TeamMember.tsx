@@ -14,25 +14,31 @@ export default function TeamMember() {
   const [issues, setIssues] = useState(DUMMY);
   const [dragEnterdState, setDragEnterdState] = useState<null | 'YET' | 'NOW' | 'DONE'>(null);
 
-  const [
-    { data: jobListResponse, isFetching: isJobListResponseFeting },
-    // { data: contributionsResponse, isFetching: isContributionsResponseFeting },
-  ] = useQueries({
-    queries: [
-      {
-        queryKey: [{ func: `get-job-list`, projectId, memberId }],
-        queryFn: () =>
-          API.project.getJobList({ projectId: Number(projectId), accountId: 1, issueId: null, roleType: null }),
-      },
-      // {
-      //   queryKey: [{ func: `get-contributions`, projectId, accountId: 1 }],
-      //   queryFn: () => API.project.getContributions({ projectId: Number(projectId), accountId: 1 }),
-      // },
-    ],
-  });
+  // const [
+  //   { data: jobListResponse, isFetching: isJobListResponseFeting },
+  // { data: contributionsResponse, isFetching: isContributionsResponseFeting },
+  // { data: kanvanListResponse, isFetching: isKanvanListResponseFeting },
+  // ] = useQueries({
+  // queries: [
+  //   {
+  //     queryKey: [{ func: `get-job-list`, projectId, memberId }],
+  //     queryFn: () =>
+  //       API.project.getJobList({ projectId: Number(projectId), accountId: 1, issueId: null, roleType: null }),
+  //   },
+  // {
+  //   queryKey: [{ func: `get-contributions`, projectId, accountId: 1 }],
+  //   queryFn: () => API.project.getContributions({ projectId: Number(projectId), accountId: 1 }),
+  // },
+  // {
+  //   queryKey: [{ func: `get-kanvan`, projectId, accountId: 1 }],
+  //   queryFn: () => API.project.getKanvanList({ projectId: Number(projectId), accountId: 1 }),
+  // },
+  //   ],
+  // });
 
-  console.log(`jobListResponse :`, jobListResponse);
+  // console.log(`jobListResponse :`, jobListResponse?.data);
   // console.log(`contributionsResponse :`, contributionsResponse);
+  // console.log(`kanvanListResponse :`, kanvanListResponse);
 
   return (
     <L.SideBarLayout>

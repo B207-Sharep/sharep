@@ -10,7 +10,7 @@ export const WhiteBoxWrapper = styled.article<{ $direction: 'row' | 'column' }>`
   display: flex;
   flex-direction: ${({ $direction }) => $direction};
   width: calc(50% - 12px);
-  height: 244px;
+  height: 344px;
   padding: 16px;
   border-radius: 12px;
   background-color: white;
@@ -34,7 +34,7 @@ export const MemberWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 16px;
   width: fit-content;
   height: 100%;

@@ -10,13 +10,37 @@ import {
   LinearScale,
   CategoryScale,
   LineElement,
+  Filler,
 } from 'chart.js';
-import { Chart, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
+import { PALETTE } from '@/styles';
 
-ChartJS.register(Title, Tooltip, Legend, PointElement, LinearScale, CategoryScale, LineElement);
+ChartJS.register(Title, Tooltip, Filler, Legend, PointElement, LinearScale, CategoryScale, LineElement);
 
 export default function ContributionsChart({ dataList }: T.ContributionsChartProps) {
-  const options = {};
+  const options = {
+    type: 'line',
+    responsive: true,
+    plugins: { title: { display: false }, legend: { display: false } },
+    scales: {
+      y: { ticks: { font: { size: 10, famliy: 'Pretendard' } } },
+      x: { ticks: { font: { size: 10, famliy: 'Pretendard' } }, grid: { display: false } },
+    },
+    aspectRatio: 2 / 1,
+  };
+
+  const data = {
+    labels: ['Label1', 'Label2', 'Label3', 'Label1', 'Label2', 'Label3', 'Label1', 'Label2', 'Label3'],
+    datasets: [
+      {
+        data: [1, 3, 41, 3, 5, 12, 8, 9, 10],
+        fill: 'start',
+        backgroundColor: PALETTE.MAIN_COLOR,
+        borderColor: PALETTE.MAIN_COLOR,
+        pointRadius: 1,
+      },
+    ],
+  };
 
   return (
     <S.ChartWrapper>
@@ -24,18 +48,3 @@ export default function ContributionsChart({ dataList }: T.ContributionsChartPro
     </S.ChartWrapper>
   );
 }
-
-const data = {
-  labels: ['Label1', 'Label2', 'Label3'],
-  datasets: [
-    {
-      label: 'legend1',
-      data: [12, 19, 3],
-      borderDash: [10, 5],
-    },
-    {
-      label: 'legend2',
-      data: [22, 9, 13],
-    },
-  ],
-};
