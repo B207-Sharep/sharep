@@ -10,10 +10,11 @@ import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.member.QRole.role1;
 import static com.sharep.be.modules.project.QProject.project;
 
-import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.assignee.repository.projection.MemberAndIssueProjection;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -27,34 +28,44 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Tuple> findAllProjectNowIssueByProjectId(Long projectId) {
+    public List<MemberAndIssueProjection> findAllProjectNowIssueByProjectId(Long projectId) {
 
-        return queryFactory.select(issue, account)
+        return queryFactory.select(
+                        Projections.constructor(
+                                MemberAndIssueProjection.class,
+                                member,
+                                issue
+                        )
+                )
                 .from(assignee)
-                .leftJoin(assignee.issue, issue)
-                .innerJoin(assignee.member, member)
-                .innerJoin(member.account, account)
-                .innerJoin(issue.project, project)
-                .innerJoin(issue.api, api).fetchJoin()
+                .innerJoin(assignee.issue, issue)
+                .rightJoin(assignee.member, member)
+                .on(assignee.state.eq(State.NOW))
+                .leftJoin(member.account, account)
+                .leftJoin(member.project, project)
                 .where(project.id.eq(projectId))
-                .where(assignee.state.eq(State.NOW))
                 .orderBy(assignee.startedAt.desc())
                 .fetch();
     }
 
     @Override
-    public List<Tuple> findAllProjectNowIssueByProjectIdAndAccountId(Long projectId,
+    public List<MemberAndIssueProjection> findAllProjectNowIssueByProjectIdAndAccountId(Long projectId,
             Long accountId) {
-        return queryFactory.select(issue, account).distinct()
+        return queryFactory.select(
+                        Projections.constructor(
+                                MemberAndIssueProjection.class,
+                                member,
+                                issue
+                        )
+                )
                 .from(assignee)
-                .leftJoin(assignee.issue, issue)
-                .innerJoin(assignee.member, member)
-                .innerJoin(member.account, account)
-                .innerJoin(issue.project, project)
-                .innerJoin(issue.api, api).fetchJoin()
+                .innerJoin(assignee.issue, issue)
+                .rightJoin(assignee.member, member)
+                .on(assignee.state.eq(State.NOW))
+                .leftJoin(member.account, account)
+                .leftJoin(member.project, project)
                 .where(project.id.eq(projectId))
                 .where(account.id.eq(accountId))
-                .where(assignee.state.eq(State.NOW))
                 .orderBy(assignee.startedAt.desc())
                 .fetch();
     }

@@ -1,15 +1,15 @@
 package com.sharep.be.modules.assignee.controller;
 
-import static io.jsonwebtoken.lang.Assert.notNull;
+import static org.springframework.util.Assert.notNull;
 
 import com.sharep.be.modules.account.Account;
-import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.assignee.controller.response.AssigneeIdResponse;
 import com.sharep.be.modules.assignee.controller.response.AssigneeProjectNowIssueResponse;
 import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.assignee.repository.projection.MemberAndIssueProjection;
 import com.sharep.be.modules.assignee.service.AssigneeService;
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.issue.IssueNowResponse;
+import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.constraints.Min;
 import java.util.List;
@@ -94,14 +94,13 @@ public class AssigneeController {
         return ResponseEntity.ok(
                 assigneeService.readProjectNowIssue(projectId)
                         .stream()
-                        .map(tuple -> {
-                            Account account = tuple.get(1, Account.class);
-                            Issue issue = tuple.get(0, Issue.class);
+                        .map(accountAndIssueProjection -> {
+                            Member member = accountAndIssueProjection.member();
+                            Issue issue = accountAndIssueProjection.issue();
 
-                            notNull(account);
-                            notNull(issue);
+                            notNull(member, "해당하는 계정이 없습니다.");
 
-                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), IssueNowResponse.from(issue));
+                            return new AssigneeProjectNowIssueResponse(member, issue);
                         })
                         .toList()
         );
@@ -110,24 +109,21 @@ public class AssigneeController {
 
     // 본인 진행 이슈 조회
     @GetMapping("/projects/{projectId}/own/now/issues")
-    public ResponseEntity<List<AssigneeProjectNowIssueResponse>> readProjectNowOwnIssue(
+    public ResponseEntity<AssigneeProjectNowIssueResponse> readProjectNowOwnIssue(
             @AuthenticationPrincipal JwtAuthentication authentication,
             @PathVariable @Min(1) Long projectId
     ) {
 
+        MemberAndIssueProjection result = assigneeService.readProjectNowOwnIssue(projectId,
+                authentication.id);
+
+        Member member = result.member();
+        Issue issue = result.issue();
+
+        notNull(member, "해당하는 계정이 없습니다.");
+
         return ResponseEntity.ok(
-                assigneeService.readProjectNowOwnIssue(projectId, authentication.id)
-                        .stream()
-                        .map(tuple -> {
-                            Account account = tuple.get(1, Account.class);
-                            Issue issue = tuple.get(0, Issue.class);
-
-                            notNull(account);
-                            notNull(issue);
-
-                            return new AssigneeProjectNowIssueResponse(AccountDto.toDto(account), IssueNowResponse.from(issue));
-                        })
-                        .toList()
+                new AssigneeProjectNowIssueResponse(member, issue)
         );
     }
 
