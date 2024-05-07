@@ -28,6 +28,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Job {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,16 +56,6 @@ public class Job {
     @Column(length = 100)
     private String commitId;
 
-    public static Job from(JobCreateRequest jobCreateRequest, Member member, Issue issue, String imageUrl) {
-        Job jobEntity = new Job();
-        jobEntity.name = jobCreateRequest.name();
-        jobEntity.description = jobCreateRequest.description();
-        jobEntity.imageUrl = imageUrl;
-        jobEntity.member = member;
-        jobEntity.issue = issue;
-        return jobEntity;
-    }
-
     @Builder
     public Job(String name, String description, LocalDateTime createdAt, String imageUrl,
             Issue issue,
@@ -77,7 +68,7 @@ public class Job {
         this.member = member;
     }
 
-    public static Job from(Member member, Issue issue, Commit commit){
+    public static Job from(Member member, Issue issue, Commit commit) {
         Job jobEntity = new Job();
         jobEntity.name = commit.getTitle();
         jobEntity.description = commit.getMessage();

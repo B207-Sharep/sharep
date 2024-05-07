@@ -50,7 +50,7 @@ public class MemberService {
         }
 
         // send GPT
-        String summary = gptService.queryGPT(sendGPT.toString());
+        String summary = gptService.queryGpt(sendGPT.toString());
 
         // save Summary
         member.updateSummary(summary);

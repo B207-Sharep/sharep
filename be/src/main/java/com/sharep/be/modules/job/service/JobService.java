@@ -133,7 +133,6 @@ public class JobService {
             Assignee assignee = assigneeRepository.findByAccountIdAndProjectId(account.getId(),
                             projectId)
                     .orElseThrow(() -> new IllegalArgumentException("no assignee"));
-
             jobRepository.save(Job.from(member, assignee.getIssue(), commit));
         }
     }

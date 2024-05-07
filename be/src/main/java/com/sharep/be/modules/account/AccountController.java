@@ -7,8 +7,12 @@ import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
 import com.sharep.be.modules.account.repository.AccountRepository;
 import com.sharep.be.modules.account.service.AccountService;
 import com.sharep.be.modules.account.validator.AccountValidator;
+import com.sharep.be.modules.gpt.GptService;
+import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -71,12 +75,12 @@ public class AccountController {
 
 //    @GetMapping("/gpt")
 //    public ResponseEntity<Void> checkCPT(){
-////        log.info("gpt controller : {}", gptService.queryGPT("[Refactor] Route 이름 변경\n" +
-////                "[Home] GanttChart 생성 전 \n" +
-////                "[Refactor] 글로벌 스타일 수정 \n" +
-////                "[Add] dayjs package 추가"));
-//        List<Member> allWithIssueAndJob = memberRepository.findAllWithIssueAndJob();
-//        log.info("member size  {}", allWithIssueAndJob.size());
+//        log.info("gpt controller : {}", gptService.queryGPT("[Refactor] Route 이름 변경\n" +
+//                "[Home] GanttChart 생성 전 \n" +
+//                "[Refactor] 글로벌 스타일 수정 \n" +
+//                "[Add] dayjs package 추가"));
+////        List<Member> allWithIssueAndJob = memberRepository.findAllWithIssueAndJob();
+////        log.info("member size  {}", allWithIssueAndJob.size());
 //        return ResponseEntity.ok().build();
 //    }
 

@@ -37,7 +37,7 @@ public class GptService {
         this.objectMapper = objectMapper;
     }
 
-    public String queryGPT(String input){
+    public String queryGpt(String input){
         String query = makeQuery(input);
 
         RestClient restClient = RestClient.create();
@@ -57,7 +57,7 @@ public class GptService {
     }
 
     private String extractResult(ResponseEntity<GptResponse> responseQuery) {
-        String content = responseQuery.getBody().getChoices().get(0).getMessage().getContent();
+        String content = responseQuery.getBody().choices().get(0).message().content();
 
         try{
             return objectMapper.readTree(content).path("result").asText();
