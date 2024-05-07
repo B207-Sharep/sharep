@@ -60,7 +60,7 @@ export default function SideBar() {
   return (
     <>
       <S.SideBarWrapper>
-        <S.SideBarProfile>
+        <S.SideBarProfile onClick={handleMyDashClick}>
           <UserImg size="md" path={'/youjack.png'} />
           <S.SideBarProfileName>
             <S.SideBarFont $size="24px" $weight={700}>

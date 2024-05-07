@@ -2,7 +2,7 @@ import { instance } from '../instance';
 import * as T from '@types';
 
 export async function getGrass() {
-  return await instance.get(`/job/2022`);
+  return await instance.get(`/jobs`);
 }
 export async function getProjectList() {
   return await instance.get(`/projects`);

@@ -10,6 +10,8 @@ import Grass from '@/components/Grass/Grass';
 import * as Comp from '@/components';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/stores/atoms/loadUser';
 ////////////////////////DUMMY
 const issueList = [
   ...Array.from({ length: 7 }, (_, index) => ({
@@ -32,6 +34,11 @@ const modifiedIssueList = issueList.map(issue => ({
 export default function Mypage() {
   const [clickedYear, setClickedYear] = useState(2024);
   //   useEffect(() => console.log(clickedYear, 'CY'), [clickedYear]);
+
+  const user = useRecoilValue(userState);
+
+  // user 상태 사용
+  console.log(user);
   const {
     data: projectListResponse,
     isFetched: projectListFetched,
@@ -54,7 +61,7 @@ export default function Mypage() {
 
         return modires;
       }),
-    retry: false,
+    retry: true,
     // enabled: !!initalflag,
   });
 
@@ -75,7 +82,7 @@ export default function Mypage() {
 
         return res.data;
       }),
-    retry: false,
+    retry: true,
     // enabled: !!initalflag,
   });
 

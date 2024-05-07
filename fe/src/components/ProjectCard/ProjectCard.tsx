@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as S from './ProjectCardStyle';
 import * as T from '@/types';
 import { PALETTE } from '@/styles';
@@ -6,8 +6,23 @@ import { UserImg } from '..';
 import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+interface TooltipData {
+  nickname: string;
+  email: string;
+}
+
 export default function ProjectCard({ title, bio, accounts, add, id }: T.ProjectCardProps) {
   const navigate = useNavigate();
+  const [tooltipData, setTooltipData] = useState<TooltipData | null>(null);
+
+  const handleMouseEnter = (nickname: any, email: any) => {
+    setTooltipData({ nickname, email });
+  };
+
+  const handleMouseLeave = () => {
+    setTooltipData(null);
+  };
+
   const handleCardClick = () => {
     if (id !== '0') {
       navigate(`/projects/${id}`);
@@ -36,7 +51,20 @@ export default function ProjectCard({ title, bio, accounts, add, id }: T.Project
       {!add ? (
         <S.ImgWrapper>
           {accounts?.map((img: any, idx) => (
-            <UserImg size="sm" path={img.imageUrl} key={idx} />
+            <div
+              key={idx}
+              onMouseEnter={() => handleMouseEnter(img.nickname, img.email)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <UserImg size="sm" path={img.imageUrl} />
+              {tooltipData && (
+                <S.Tooltip>
+                  {tooltipData.nickname}
+                  <br />
+                  {tooltipData.email}
+                </S.Tooltip>
+              )}
+            </div>
           ))}
         </S.ImgWrapper>
       ) : (
