@@ -2,14 +2,74 @@ import React, { useState } from 'react';
 import * as S from './TeamMemberStyle';
 import * as T from '@types';
 import * as Sub from './Subs';
+import * as Comp from '@components';
 import * as L from '@layouts';
+import * as API from '@apis';
+import { useQueries, useQuery } from '@tanstack/react-query';
+import { useLocation, useParams } from 'react-router-dom';
 
 export default function TeamMember() {
+  const location = useLocation();
+  const { projectId, memberId } = useParams();
   const [issues, setIssues] = useState(DUMMY);
   const [dragEnterdState, setDragEnterdState] = useState<null | 'YET' | 'NOW' | 'DONE'>(null);
 
+  const [
+    { data: jobListResponse, isFetching: isJobListResponseFeting },
+    // { data: contributionsResponse, isFetching: isContributionsResponseFeting },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: [{ func: `get-job-list`, projectId, memberId }],
+        queryFn: () =>
+          API.project.getJobList({ projectId: Number(projectId), accountId: 1, issueId: null, roleType: null }),
+      },
+      // {
+      //   queryKey: [{ func: `get-contributions`, projectId, accountId: 1 }],
+      //   queryFn: () => API.project.getContributions({ projectId: Number(projectId), accountId: 1 }),
+      // },
+    ],
+  });
+
+  console.log(`jobListResponse :`, jobListResponse);
+  // console.log(`contributionsResponse :`, contributionsResponse);
+
   return (
     <L.SideBarLayout>
+      <S.RowWrapper>
+        <S.WhiteBoxWrapper $direction="row">
+          <S.MemberWrapper>
+            <Comp.UserImg size="lg" path="/seung-min.png" />
+            <p>
+              <span>이승민</span>
+              <span>@B-end</span>
+            </p>
+          </S.MemberWrapper>
+          <S.WorksWrapper>
+            <S.Title>
+              <span>어제 한 일</span>
+            </S.Title>
+            <S.YesterdayWork>
+              <p aria-label={DUMMY_YESTERDAY_WORK}>{DUMMY_YESTERDAY_WORK}</p>
+            </S.YesterdayWork>
+            <S.Title>
+              <span>최근 작업들</span>
+            </S.Title>
+            <S.RecentlyCommitsScrollWrapper>
+              {/* {jobListResponse?.data.map(job => (
+                <Comp.Commit key={job.commitId} {...job} />
+              ))} */}
+            </S.RecentlyCommitsScrollWrapper>
+          </S.WorksWrapper>
+        </S.WhiteBoxWrapper>
+        <S.WhiteBoxWrapper $direction="column">
+          <S.Title>
+            <span>이승민님의 기여도</span>
+          </S.Title>
+          {/* <S.ChartWrapper></S.ChartWrapper> */}
+          <Sub.ContributionsChart dataList={DATA_LIST} />
+        </S.WhiteBoxWrapper>
+      </S.RowWrapper>
       <S.KanbansWrapper>
         {['YET', 'NOW', 'DONE'].map(state => (
           <Sub.Kanban
@@ -101,3 +161,11 @@ const DUMMY: Omit<T.IssueProps, 'dragAble'>[] = [
     type: 'SCREEN',
   },
 ];
+
+const DUMMY_YESTERDAY_WORK = `달이 떴다고 전화를 주시다니요. 이 밤 너무 신나고 근사해요. `;
+
+const DATA_LIST = {
+  '2024-05-01': 5,
+  '2024-05-03': 2,
+  '2024-05-04': 1,
+};

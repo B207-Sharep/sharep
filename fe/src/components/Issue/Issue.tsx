@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import * as S from './IssueStyle';
 import * as T from '@types';
 import * as Comp from '@components';
@@ -6,13 +6,9 @@ import { MoreVertical, GitCommit } from 'lucide-react';
 import { PALETTE } from '@/styles';
 
 export default function Issue({ id, name, commit, assignees, priority, dragAble }: T.IssueProps) {
-  const issueRef = useRef<HTMLDivElement>(null);
-
   return (
     <S.RelativeWrapper
-      ref={issueRef}
       onDragStart={() => (dragAble !== false ? dragAble.setter(() => id) : undefined)}
-      // onDragEnd={e => (dragAble !== false ? dragAble.onDrop(e) : undefined)}
       draggable={dragAble !== false ? true : false}
     >
       <S.DragAbleContainer>

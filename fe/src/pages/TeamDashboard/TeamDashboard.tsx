@@ -49,7 +49,6 @@ export default function TeamDashboard() {
             <Sub.GanttChart />
           </S.GantChartScrollContainer>
         </S.WhiteBoxWrapper>
-
         <S.WhiteBoxWrapper $flex="1" $height="fit-content">
           <S.Title>
             <Icon.GantChart />

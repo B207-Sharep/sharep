@@ -22,9 +22,9 @@ export const WhiteBoxWrapper = styled.article<{ $flex: string; $height: string }
 export const Title = styled.h2`
   display: flex;
   gap: 10px;
-  padding-bottom: 20px;
   width: 100%;
-  height: calc(24px + 20px);
+  height: 30px;
+  padding-bottom: 6px;
 
   span {
     font-size: 20px;
@@ -35,6 +35,7 @@ export const RootScrollContainer = styled.div`
   width: 100%;
   height: calc(100% - (24px + 20px));
   overflow: auto;
+  padding-top: 20px;
 `;
 
 export const YesterdayWorksScrollContainer = styled(RootScrollContainer)``;

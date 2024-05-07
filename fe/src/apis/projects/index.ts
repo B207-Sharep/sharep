@@ -23,3 +23,7 @@ export async function getJobList({
     `/projects/${projectId}/jobs?accountId=${accountId || ''}&roleType=${roleType || ''}&issueId=${issueId || ''}`,
   );
 }
+
+export async function getContributions({ projectId, accountId }: { projectId: number; accountId: number }) {
+  return await instance.get(`/projects/${projectId}/accounts/${accountId}/contributions`);
+}

@@ -8,7 +8,7 @@ export default function TeamMember({ id, name, roles, imageUrl }: T.TeamMemberPr
   const location = useLocation();
 
   return (
-    <S.UserWrapper to={`${location.pathname}/members/${id}`}>
+    <S.UserWrapper to={`${location.pathname}/members/${id}`} aria-label={`${name} 팀원 페이지로 가기`}>
       <Comp.UserImg size="56px" path={imageUrl} />
       <div>
         <p>{name}</p>
