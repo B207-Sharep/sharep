@@ -10,6 +10,7 @@ export interface ModalProps {
 }
 
 export interface JobCreationFormProps {
+  issueId: number;
   name: string;
   imageFile: File;
   description: string;

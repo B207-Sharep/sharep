@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from './JobCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
@@ -10,7 +10,7 @@ import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
 
 export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
-  const { updateContentByKey } = useModal<T.JobCreationFormProps>(modalId);
+  const { updateContentByKey, updateIsValid } = useModal<T.JobCreationFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
@@ -36,6 +36,12 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   const uploadImage = (files: FileList | null) => {
     if (files && files.length > 0) {
       const file = files[0];
+
+      if (!file.type.startsWith('image/')) {
+        alert('이미지 파일만 업로드 가능합니다.');
+        return;
+      }
+
       updateContentByKey('imageFile', file);
 
       const previewUrl = URL.createObjectURL(file);
@@ -45,8 +51,18 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    updateContentByKey(id as keyof T.JobCreationFormProps, value);
+    updateContentByKey(id as keyof Omit<T.JobCreationFormProps, 'issueId'>, value);
+
+    if (id == 'name') {
+      updateIsValid(value.length > 0);
+    }
   };
+
+  useEffect(() => {
+    // TODO : 진행 중인 이슈 조회
+    // const issueId = '';
+    // updateContentByKey('issueId', issueId);
+  }, []);
 
   return (
     <S.Wrapper>
