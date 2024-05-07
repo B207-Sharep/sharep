@@ -4,7 +4,7 @@ import * as S from '../Login/LoginStyle';
 import * as G from '@/styles';
 import MainColorBtn from '@/components/Button/MainColorBtn/MainColorBtn';
 import { UserRound, Lock } from 'lucide-react';
-import { emailDuplicateCheck, signup } from '@/apis/accounts';
+import { emailDuplicateCheck, login, signup } from '@/apis/accounts';
 import { useNavigate } from 'react-router';
 export default function Register() {
   const navigate = useNavigate();
@@ -72,14 +72,17 @@ export default function Register() {
       //   setEmailCheck(true);
       //   setEmailAvailable(true);
       const responseData = await emailDuplicateCheck(email);
-      if (responseData) {
+      console.log(responseData, 'res');
+      if (!responseData.data) {
         setEmailError('사용 가능한 이메일입니다.');
         setEmailCheck(true);
         setEmailAvailable(true);
+        console.log('OK');
         return true;
       } else {
         setEmailError('이미 사용중인 이메일입니다.');
         setEmailAvailable(false);
+        console.log('Occpi');
         return false;
       }
     } catch (error) {
@@ -129,13 +132,17 @@ export default function Register() {
   };
 
   const passwordCheckHandler = (password: string, confirm: string) => {
-    const passwordRegex = /^[a-z\d!@*&-_]{8,16}$/;
+    // const passwordRegex = /^[a-z\d!@*&-_]{8,16}$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
+
     if (password === '') {
       setPasswordError('비밀번호를 입력해주세요.');
       setPwAvailable(false);
       return false;
     } else if (!passwordRegex.test(password)) {
-      setPasswordError('비밀번호는 8~16자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.');
+      setPasswordError(
+        '비밀번호는 8~16자의 영소문자, 숫자, !@*&-_만 입력 가능합니다. 각각 최소 한개 이상 포함해야 합니다.',
+      );
       setPwAvailable(false);
       return false;
     } else if (confirm !== password) {
@@ -173,7 +180,20 @@ export default function Register() {
       const responseData = await signup(email, uid, confirm);
       if (responseData) {
         // localStorage.setItem('loginId', uid);
-        navigate('/login');
+
+        try {
+          console.log(email, password);
+          const res = await login(email, password);
+          if (res) {
+            console.log(res.data.apiToken);
+            localStorage.setItem('token', res.data.apiToken);
+            navigate('/projects');
+          } else {
+            console.log('ERROR');
+          }
+        } catch (error) {
+          alert('로그인에 실패하였습니다. 다시 시도해주세요.');
+        }
       } else {
         alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
       }

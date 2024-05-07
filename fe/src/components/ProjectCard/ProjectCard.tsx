@@ -4,10 +4,18 @@ import * as T from '@/types';
 import { PALETTE } from '@/styles';
 import { UserImg } from '..';
 import { Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-export default function ProjectCard({ title, bio, accounts, add }: T.ProjectCardProps) {
+export default function ProjectCard({ title, bio, accounts, add, id }: T.ProjectCardProps) {
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    if (id !== '0') {
+      navigate(`/projects/${id}`);
+    }
+  };
+
   return (
-    <S.Card className="hover-moving">
+    <S.Card className="hover-moving" onClick={handleCardClick}>
       <S.CardTextWrapper>
         <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={700} fontSize={20} $add={add}>
           {title}
