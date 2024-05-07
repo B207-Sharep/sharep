@@ -18,13 +18,13 @@ public record JobCreateRequest(
         String description
 ) {
 
-        public Job toEntity(Member member, Issue issue, String imageUrl) {
-                return Job.builder()
-                        .name(name)
-                        .description(description)
-                        .imageUrl(imageUrl)
-                        .member(member)
-                        .issue(issue)
-                        .build();
-        }
+    public Job toEntity(Member member, Issue issue, String imageUrl) {
+        return Job.builder()
+                .name(name)
+                .description(description)
+                .imageUrl(imageUrl)
+                .member(member)
+                .issue(issue)
+                .build();
+    }
 }

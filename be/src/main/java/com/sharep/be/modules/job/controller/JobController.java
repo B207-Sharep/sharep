@@ -83,9 +83,8 @@ public class JobController {
 
     @GetMapping("/jobs")
     public ResponseEntity<JobGrassResponse> grassRead(
-
-
-            @AuthenticationPrincipal JwtAuthentication authentication){
+            @AuthenticationPrincipal JwtAuthentication authentication
+    ){
         return ResponseEntity.ok(jobService.readGrass(authentication.id));
     }
 
