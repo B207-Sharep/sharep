@@ -2,7 +2,6 @@ package com.sharep.be.modules.notification.service;
 
 import static io.jsonwebtoken.lang.Assert.notNull;
 
-import com.querydsl.core.Tuple;
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.issue.Issue;
@@ -11,13 +10,16 @@ import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
 import com.sharep.be.modules.notification.repository.EmitterRepository;
 import com.sharep.be.modules.notification.repository.NotificationRepository;
+import jakarta.validation.constraints.Min;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class NotificationService {
 
@@ -80,4 +82,12 @@ public class NotificationService {
         return emitter;
     }
 
+    public Long updateNotificationState(Long accountId, Long notificationId) {
+        Notification notification = notificationRepository.findByIdAndMemberAccountId(notificationId, accountId)
+                .orElseThrow(() -> new RuntimeException("해당하는 알림이 없습니다."));
+
+        notification.readNotification();
+
+        return notificationId;
+    }
 }

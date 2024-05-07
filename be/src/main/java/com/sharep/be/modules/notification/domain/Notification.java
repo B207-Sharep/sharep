@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,12 +41,16 @@ public class Notification {
     private Member member;
 
     @CreatedDate
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Builder
     public Notification(Assignee assignee, boolean isRead, Member member) {
         this.assignee = assignee;
         this.isRead = isRead;
         this.member = member;
+    }
+
+    public void readNotification(){
+        isRead = true;
     }
 }
