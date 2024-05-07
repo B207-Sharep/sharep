@@ -22,5 +22,5 @@ export async function login(email: string, password: string) {
 }
 
 export async function account() {
-  return await instance.get(`/accounts`);
+  return await instanceOfJson.get(`/accounts`);
 }

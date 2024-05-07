@@ -2,11 +2,11 @@ import React from 'react';
 import { GlobalStyle } from './styles';
 import { Route, Routes } from 'react-router-dom';
 import * as Page from './pages';
-import useLoadUser from './customhooks/useLoadUser/useLoadUser';
+import { useLoadUser } from './customhooks';
 
 function App() {
   const user = useLoadUser();
-  console.log(user, 'USER APP');
+  // console.log(user, 'USER APP');
   return (
     <>
       <GlobalStyle />
