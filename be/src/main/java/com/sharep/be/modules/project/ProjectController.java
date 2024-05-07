@@ -2,7 +2,7 @@ package com.sharep.be.modules.project;
 
 import com.sharep.be.modules.project.dto.MemberDto.MemberRequestDto;
 import com.sharep.be.modules.project.dto.MemberDto.MemberResponseDto;
-import com.sharep.be.modules.project.dto.ProjectDto.ProjectRequestDto;
+import com.sharep.be.modules.project.dto.ProjectDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectResponseDto;
 import com.sharep.be.modules.project.dto.TokenDto;
 import com.sharep.be.modules.project.service.ProjectService;
@@ -31,9 +31,9 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<Void> createProject(
-            @RequestBody @Valid ProjectRequestDto projectRequestDto,
+            @RequestBody @Valid ProjectDto.ProjectCreate projectCreate,
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
-        projectService.saveProject(projectRequestDto, jwtAuthentication.id);
+        projectService.saveProject(projectCreate, jwtAuthentication.id);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

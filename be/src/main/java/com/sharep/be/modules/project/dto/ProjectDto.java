@@ -15,13 +15,17 @@ import java.util.stream.Collectors;
 
 public class ProjectDto {
 
-    public record ProjectRequestDto(
+    public record ProjectCreate(
             @NotBlank @Size(min = 1, max = 100) String title,
             @NotBlank @Size(min = 1, max = 100) String bio,
-
-            List<RoleType> roles
+            List<MemberCreate> members
     ) {
+        public record MemberCreate(
+                Long id,
+                List<RoleType> roles
+        ){
 
+        }
     }
 
     public record ProjectResponseDto(
@@ -34,12 +38,12 @@ public class ProjectDto {
 
     }
 
-    public static Project convertSave(ProjectRequestDto projectRequestDto,
+    public static Project convertSave(ProjectCreate projectCreate,
             Account account) {
         return Project.builder()
                 .leader(account)
-                .title(projectRequestDto.title())
-                .bio(projectRequestDto.bio())
+                .title(projectCreate.title())
+                .bio(projectCreate.bio())
                 .build();
     }
 

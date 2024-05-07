@@ -14,11 +14,12 @@ import com.sharep.be.modules.project.dto.MemberDto;
 import com.sharep.be.modules.project.dto.MemberDto.MemberRequestDto;
 import com.sharep.be.modules.project.dto.MemberDto.MemberResponseDto;
 import com.sharep.be.modules.project.dto.ProjectDto;
-import com.sharep.be.modules.project.dto.ProjectDto.ProjectRequestDto;
+import com.sharep.be.modules.project.dto.ProjectDto.ProjectCreate.MemberCreate;
 import com.sharep.be.modules.project.repository.ProjectRepository;
 import jakarta.validation.Valid;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,17 +35,31 @@ public class ProjectService {
     private final RoleRepository roleRepository;
 
 
-    public void saveProject(@Valid ProjectRequestDto projectRequestDto, Long accountId){
+    public void saveProject(@Valid ProjectDto.ProjectCreate projectCreate, Long accountId){
         Account account = accountRepository.findById(accountId).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-        Project project = projectRepository.save(convertSave(projectRequestDto, account));
+        Project project = projectRepository.save(convertSave(projectCreate, account));
 
+        List<MemberCreate> members = projectCreate.members();
+        createMembers(project, members);
 
-        Member member = createMember(project, account);
+//        Member member = createMember(project, account);
         // roles 추가
-        createRoles(member, projectRequestDto.roles());
+//        createRoles(member, projectCreate.roles());
 
+    }
+
+    private void createMembers(Project project, List<MemberCreate> members) {
+        for(MemberCreate memberCreate : members){
+            Account account = accountRepository.findById(memberCreate.id())
+                    .orElseThrow(() -> new UsernameNotFoundException("no member"));
+
+            Member member = createMember(project, account);
+
+            createRoles(member, memberCreate.roles());
+
+        }
     }
 
     public String createToken(Long projectId, Long accountId) {
