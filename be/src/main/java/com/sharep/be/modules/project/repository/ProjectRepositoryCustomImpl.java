@@ -1,10 +1,7 @@
-package com.sharep.be.modules.project;
+package com.sharep.be.modules.project.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sharep.be.modules.account.QAccount;
-import com.sharep.be.modules.member.Member;
-import com.sharep.be.modules.member.QMember;
-import com.sharep.be.modules.member.QRole;
+import com.sharep.be.modules.project.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,11 +17,19 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom{
     private final JPAQueryFactory queryFactory;
     @Override
     public List<Project> findAllByAccountId(Long accountId) {
-        return queryFactory.selectFrom(project)
+        List<Long> ids = queryFactory.select(project.id)
                 .from(project)
-                .join(project.members, member)
-                .join(member.account, account)
+                .leftJoin(project.members, member)
+                .innerJoin(member.account, account)
                 .where(member.account.id.eq(accountId))
+                .distinct()
+                .fetch();
+
+        return queryFactory.select(project)
+                .from(project)
+                .leftJoin(project.members, member).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
+                .where(project.id.in(ids))
                 .fetch();
     }
 

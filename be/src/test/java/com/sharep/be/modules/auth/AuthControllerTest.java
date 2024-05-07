@@ -6,8 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharep.be.infra.MockMvcTest;
-import com.sharep.be.modules.account.AccountRepository;
-import com.sharep.be.modules.account.AccountService;
+import com.sharep.be.modules.account.repository.AccountRepository;
+import com.sharep.be.modules.account.service.AccountService;
 import com.sharep.be.modules.account.WithMockAccount;
 import com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
 import com.sharep.be.modules.auth.dto.AuthDto.AuthRequestDto;

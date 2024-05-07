@@ -1,7 +1,9 @@
 package com.sharep.be.modules.job.domain;
 
 import com.sharep.be.modules.issue.Issue;
+import com.sharep.be.modules.job.controller.request.JobCreateRequest;
 import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.project.dto.GitlabHook.Commit;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -26,6 +28,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Job {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,6 +52,10 @@ public class Job {
     @JoinColumn
     private Member member;
 
+
+    @Column(length = 100)
+    private String commitId;
+
     @Builder
     public Job(String name, String description, LocalDateTime createdAt, String imageUrl,
             Issue issue,
@@ -59,5 +66,15 @@ public class Job {
         this.imageUrl = imageUrl;
         this.issue = issue;
         this.member = member;
+    }
+
+    public static Job from(Member member, Issue issue, Commit commit) {
+        Job jobEntity = new Job();
+        jobEntity.name = commit.getTitle();
+        jobEntity.description = commit.getMessage();
+        jobEntity.member = member;
+        jobEntity.issue = issue;
+        jobEntity.commitId = commit.getId();
+        return jobEntity;
     }
 }

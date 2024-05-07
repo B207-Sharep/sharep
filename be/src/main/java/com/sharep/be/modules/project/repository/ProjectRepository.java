@@ -1,6 +1,6 @@
-package com.sharep.be.modules.project;
+package com.sharep.be.modules.project.repository;
 
-import java.util.List;
+import com.sharep.be.modules.project.Project;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

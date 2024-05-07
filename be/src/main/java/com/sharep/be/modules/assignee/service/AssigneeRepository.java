@@ -13,4 +13,6 @@ public interface AssigneeRepository extends JpaRepository<Assignee, Long>,
     Optional<Assignee> findByMemberIdAndIssueId(Long memberId, Long issueId);
 
     boolean existsByMemberIdAndIssueId(Long id, Long id1);
+
+
 }

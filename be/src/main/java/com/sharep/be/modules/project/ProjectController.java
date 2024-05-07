@@ -1,11 +1,11 @@
 package com.sharep.be.modules.project;
 
-import com.sharep.be.modules.project.dto.GitlabHook;
 import com.sharep.be.modules.project.dto.MemberDto.MemberRequestDto;
 import com.sharep.be.modules.project.dto.MemberDto.MemberResponseDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectRequestDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectResponseDto;
 import com.sharep.be.modules.project.dto.TokenDto;
+import com.sharep.be.modules.project.service.ProjectService;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -73,11 +73,7 @@ public class ProjectController {
         return ResponseEntity.ok(new TokenDto(projectId, token));
     }
 
-    @PostMapping("/{projectId}/hook")
-    public ResponseEntity<Void> readHook(@RequestBody GitlabHook hook) {
-        // TODO hook work
-        return ResponseEntity.ok().build();
-    }
+
 
 
 }

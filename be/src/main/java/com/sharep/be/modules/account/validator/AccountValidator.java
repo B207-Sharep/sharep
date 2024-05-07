@@ -1,7 +1,7 @@
 package com.sharep.be.modules.account.validator;
 
 
-import com.sharep.be.modules.account.AccountRepository;
+import com.sharep.be.modules.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

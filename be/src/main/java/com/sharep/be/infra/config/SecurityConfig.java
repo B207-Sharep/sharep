@@ -2,7 +2,7 @@ package com.sharep.be.infra.config;
 
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
-import com.sharep.be.modules.project.ProjectRepository;
+import com.sharep.be.modules.project.repository.ProjectRepository;
 import com.sharep.be.modules.security.JwtAuthenticationTokenFilter;
 import com.sharep.be.modules.security.ProjectBasedVoter;
 import java.util.Arrays;
@@ -81,7 +81,7 @@ public class SecurityConfig {
                                 authorize.requestMatchers("/", "/accounts/**", "/h2-console/**",
                                                 "/auth/login", "/jobs/**", "/gs-guide-websocket/**",
                                                 "/index.html", "/swagger-ui/**",
-                                                "/swagger-resources/**", "/v3/api-docs/**").permitAll()
+                                                "/swagger-resources/**", "/v3/api-docs/**", "/projects/*/hook").permitAll()
                                         .requestMatchers("/projects/*/**").access(customBasedVoter())
                                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                         .anyRequest().authenticated()

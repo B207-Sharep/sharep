@@ -1,19 +1,21 @@
-package com.sharep.be.modules.project;
+package com.sharep.be.modules.project.service;
 
 import static com.sharep.be.modules.project.dto.ProjectDto.*;
 
 import com.sharep.be.modules.account.Account;
-import com.sharep.be.modules.account.AccountRepository;
+import com.sharep.be.modules.account.repository.AccountRepository;
 import com.sharep.be.modules.member.Member;
-import com.sharep.be.modules.member.MemberRepository;
+import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.member.Role;
 import com.sharep.be.modules.member.Role.RoleType;
-import com.sharep.be.modules.member.RoleRepository;
+import com.sharep.be.modules.member.repository.RoleRepository;
+import com.sharep.be.modules.project.Project;
 import com.sharep.be.modules.project.dto.MemberDto;
 import com.sharep.be.modules.project.dto.MemberDto.MemberRequestDto;
 import com.sharep.be.modules.project.dto.MemberDto.MemberResponseDto;
 import com.sharep.be.modules.project.dto.ProjectDto;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectRequestDto;
+import com.sharep.be.modules.project.repository.ProjectRepository;
 import jakarta.validation.Valid;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;

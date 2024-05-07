@@ -6,7 +6,9 @@ import com.sharep.be.modules.assignee.domain.State;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.member.Member;
-import com.sharep.be.modules.member.MemberRepository;
+import com.sharep.be.modules.member.repository.MemberRepository;
+
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

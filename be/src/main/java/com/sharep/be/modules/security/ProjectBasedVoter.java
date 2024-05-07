@@ -3,7 +3,7 @@ package com.sharep.be.modules.security;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.sharep.be.modules.project.Project;
-import com.sharep.be.modules.project.ProjectRepository;
+import com.sharep.be.modules.project.repository.ProjectRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.function.Function;
@@ -37,6 +37,10 @@ public class ProjectBasedVoter implements AuthorizationManager<RequestAuthorizat
     public AuthorizationDecision check(Supplier<Authentication> authentication,
             RequestAuthorizationContext context) {
         log.info("======== security project based voter in ========");
+
+        // when jwt token 검증 X
+        if(!(authentication.get() instanceof JwtAuthenticationToken))return new AuthorizationDecision(false);
+
         JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication.get();
         JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
 
