@@ -5,45 +5,39 @@ import * as Sub from './Subs';
 import * as Comp from '@components';
 import * as L from '@layouts';
 import * as API from '@apis';
-import { useQueries, useQuery } from '@tanstack/react-query';
-import { useLocation, useParams } from 'react-router-dom';
+import { useQueries } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 export default function TeamMember() {
-  const location = useLocation();
   const { projectId, memberId } = useParams();
-  const [issues, setIssues] = useState(DUMMY);
   const [dragEnterdState, setDragEnterdState] = useState<null | 'YET' | 'NOW' | 'DONE'>(null);
 
-  // const [
-  //   { data: jobListResponse, isFetching: isJobListResponseFeting },
-  // { data: contributionsResponse, isFetching: isContributionsResponseFeting },
-  // { data: kanvanListResponse, isFetching: isKanvanListResponseFeting },
-  // ] = useQueries({
-  // queries: [
-  //   {
-  //     queryKey: [{ func: `get-job-list`, projectId, memberId }],
-  //     queryFn: () =>
-  //       API.project.getJobList({ projectId: Number(projectId), accountId: 1, issueId: null, roleType: null }),
-  //   },
-  // {
-  //   queryKey: [{ func: `get-contributions`, projectId, accountId: 1 }],
-  //   queryFn: () => API.project.getContributions({ projectId: Number(projectId), accountId: 1 }),
-  // },
-  // {
-  //   queryKey: [{ func: `get-kanvan`, projectId, accountId: 1 }],
-  //   queryFn: () => API.project.getKanvanList({ projectId: Number(projectId), accountId: 1 }),
-  // },
-  //   ],
-  // });
-
-  // console.log(`jobListResponse :`, jobListResponse?.data);
-  // console.log(`contributionsResponse :`, contributionsResponse);
-  // console.log(`kanvanListResponse :`, kanvanListResponse);
+  const [
+    { data: jobsResponse, isFetching: isJobsResponseFeting },
+    { data: contributionsResponse, isFetching: isContributionsResponseFeting },
+    { data: kanvansResponse, isFetching: isKanvansResponseFeting },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: [{ func: `get-job-list`, projectId, memberId }],
+        queryFn: () =>
+          API.project.getJobList({ projectId: Number(projectId), accountId: 1, issueId: null, roleType: null }),
+      },
+      {
+        queryKey: [{ func: `get-contributions`, projectId, accountId: 1 }],
+        queryFn: () => API.project.getContributions({ projectId: Number(projectId), accountId: 1 }),
+      },
+      {
+        queryKey: [{ func: `get-kanvan`, projectId, accountId: 1 }],
+        queryFn: () => API.project.getKanvanList({ projectId: Number(projectId), accountId: 1 }),
+      },
+    ],
+  });
 
   return (
     <L.SideBarLayout>
       <S.RowWrapper>
-        <S.WhiteBoxWrapper $direction="row">
+        <S.WhiteBoxWrapper $flex="2" $direction="row">
           <S.MemberWrapper>
             <Comp.UserImg size="lg" path="/seung-min.png" />
             <p>
@@ -52,28 +46,29 @@ export default function TeamMember() {
             </p>
           </S.MemberWrapper>
           <S.WorksWrapper>
-            <S.Title>
-              <span>어제 한 일</span>
-            </S.Title>
-            <S.YesterdayWork>
+            <S.YesterdayWork id="1">
+              <S.Title>
+                <span>어제 한 일</span>
+              </S.Title>
               <p aria-label={DUMMY_YESTERDAY_WORK}>{DUMMY_YESTERDAY_WORK}</p>
             </S.YesterdayWork>
-            <S.Title>
-              <span>최근 작업들</span>
-            </S.Title>
-            <S.RecentlyCommitsScrollWrapper>
-              {/* {jobListResponse?.data.map(job => (
-                <Comp.Commit key={job.commitId} {...job} />
-              ))} */}
-            </S.RecentlyCommitsScrollWrapper>
+            <S.RecentlyCommitsWrapper>
+              <S.Title>
+                <span>최근 작업들</span>
+              </S.Title>
+              <S.RecentlyCommitsScrollContainer>
+                {jobsResponse?.data.map((job: T.CommitProps) => (
+                  <Comp.Commit key={`job-in-team-member-page-${job.id}`} {...job} disabled={true} />
+                ))}
+              </S.RecentlyCommitsScrollContainer>
+            </S.RecentlyCommitsWrapper>
           </S.WorksWrapper>
         </S.WhiteBoxWrapper>
-        <S.WhiteBoxWrapper $direction="column">
+        <S.WhiteBoxWrapper $flex="1" $direction="column">
           <S.Title>
             <span>이승민님의 기여도</span>
           </S.Title>
-          {/* <S.ChartWrapper></S.ChartWrapper> */}
-          <Sub.ContributionsChart dataList={DATA_LIST} />
+          <Sub.ContributionsChart dataList={contributionsResponse?.data} />
         </S.WhiteBoxWrapper>
       </S.RowWrapper>
       <S.KanbansWrapper>
@@ -83,8 +78,7 @@ export default function TeamMember() {
             state={state as 'YET' | 'NOW' | 'DONE'}
             dragEnterdState={dragEnterdState}
             setDragEnterdState={setDragEnterdState}
-            issues={issues}
-            setIssues={setIssues}
+            issues={kanvansResponse?.data}
           />
         ))}
       </S.KanbansWrapper>

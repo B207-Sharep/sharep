@@ -28,6 +28,7 @@ export const Title = styled.h2`
 
   span {
     font-size: 20px;
+    font-weight: 700;
   }
 `;
 

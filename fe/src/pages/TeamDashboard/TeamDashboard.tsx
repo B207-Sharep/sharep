@@ -3,12 +3,31 @@ import * as S from './TeamDashboardStyle';
 import * as T from '@types';
 import * as L from '@layouts';
 import * as Sub from './Subs';
+import * as API from '@apis';
 import * as Comp from '@components';
 import * as Icon from '@assets';
 import { useQueries } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 export default function TeamDashboard() {
-  // const [{}] = useQueries({queries: []})
+  const { projectId, accountId } = useParams();
+  const [
+    { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
+    // { data: featureIssuesResponse, isFetching: isFeatureIssuesResponseFetching },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: [{ func: `get-now-issues`, projectId }],
+        queryFn: () => API.project.getNowIssueAboutTeamMembers({ projectId: Number(projectId) }),
+      },
+      // {
+      //   queryKey: [{ func: `get-now-issues`, projectId }],
+      //   queryFn: () => API.project.getNowIssueAboutTeamMembers({ projectId: Number(projectId) }),
+      // },
+    ],
+  });
+  console.log(`issuesResponse :`, nowIssuesResponse?.data);
+
   return (
     <L.SideBarLayout>
       <S.Container>
@@ -19,11 +38,8 @@ export default function TeamDashboard() {
               <span>어제 업무 요약</span>
             </S.Title>
             <S.YesterdayWorksScrollContainer>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <S.YesterdayWork key={`yesterday-work-${i}`}>
-                  <Sub.TeamMember {...DUMMY_USER[0]} />
-                  <p aria-label={DUMMY_YESTERDAY_WORK}>{DUMMY_YESTERDAY_WORK}</p>
-                </S.YesterdayWork>
+              {Array.from({ length: 6 }).map((res, i) => (
+                <Sub.YesterdayWork key={`yesterday-work-${i}`} {...DUMMY_USER[0]} />
               ))}
             </S.YesterdayWorksScrollContainer>
           </S.WhiteBoxWrapper>
@@ -33,7 +49,7 @@ export default function TeamDashboard() {
               <span>가장 최근 작업 중인 이슈</span>
             </S.Title>
             <S.CurrentWorksScrollContainer>
-              {Array.from({ length: 6 }).map((_, i) => (
+              {Array.from({ length: 6 }).map((res, i) => (
                 <S.CurrentWork key={`current-work-${i}`}>
                   <Sub.TeamMember {...DUMMY_USER[0]} />
                   <Comp.Issue {...DUMMY_ISSUE.NOW[0]} dragAble={false} />
@@ -63,19 +79,31 @@ export default function TeamDashboard() {
   );
 }
 
-const DUMMY_USER: T.TeamMemberProps[] = [
+// interface Test {
+//   account: {
+//     email: string;
+//     id: number;
+//     imageUrl: string;
+//     nickname: string;
+//   };
+
+//   issue: {
+//     description: string;
+//     epic: string;
+//     id: number;
+//     issueName: string;
+//     priorityType: 'HIGH' | 'MEDIUM' | 'LOW',
+//     type: 'FEATURE';
+//   };
+// }
+const DUMMY_USER: T.YesterdayWorkProps[] = [
   {
     id: 1,
-    name: '쨰용이행님',
+    nickname: '쨰용이행님',
     imageUrl: '/lee-jae-yong.png',
     roles: ['FRONT_END', 'DESIGNER'] as Extract<T.RoleBadgeProps, 'role'>[],
   },
 ];
-
-const DUMMY_YESTERDAY_WORK = `달이 떴다고 전화를 주시다니요. 이 밤 너무 신나고 근사해요. 내 마음에도 생전 처음 보는 환한 달이
-떠오르고 산아래 작은 마을이 그려집니다. 간절한 이 그리움들을, 사무쳐오는 이 연정들을 달빛에 실어
-당신께 보냅니다. 세상에, 강변에 달이 곱다고 전화를 다 주시다니요. 흐르는 물 어디쯤 눈부시게 부서지는
-소리 문득 들려옵니다.`;
 
 const DUMMY_SCREEN_LIST = [
   ...Array.from({ length: 7 }, (_, index) => ({

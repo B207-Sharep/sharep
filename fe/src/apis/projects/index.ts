@@ -74,3 +74,25 @@ export async function createNewJob({
 }) {
   return await instanceOfFormData.post(`/projects/${projectId}/issues/${issueId}/jobs`, newJob);
 }
+
+/** 이슈 상태 변경 */
+export async function patchIssueState({
+  projectId,
+  issueId,
+  accountId,
+  state,
+}: {
+  projectId: number;
+  issueId: number;
+  accountId: number;
+  state: 'YET' | 'NOW' | 'DONE';
+}) {
+  return await instanceOfJson.patch(`/projects/${projectId}/issues/${issueId}/accounts/${accountId}/assignee`, {
+    state: state,
+  });
+}
+
+/** 프로젝트의 맴버 리스트 조회 */
+export async function getProjectMemberList({ projectId }: { projectId: number }) {
+  return await instanceOfJson.get(`/projects/${projectId}/members`);
+}

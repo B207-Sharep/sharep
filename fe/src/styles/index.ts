@@ -22,6 +22,7 @@ export const PALETTE = {
   MAIN_COLOR: '#2eb872',
   SUB_COLOR: '#83cc61',
   LIGHT_COLOR: '#a3de83',
+  GANTT_CHART: '#cdcdcd',
 };
 
 export const GlobalStyle = createGlobalStyle`

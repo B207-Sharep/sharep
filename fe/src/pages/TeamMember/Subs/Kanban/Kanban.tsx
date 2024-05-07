@@ -1,16 +1,28 @@
 import React, { useCallback, useRef, useState } from 'react';
 import * as S from './KanbanStyle';
 import * as T from '@types';
+import * as API from '@apis';
 import * as Comp from '@components';
+import { useMutation } from '@tanstack/react-query';
+import { useParams } from 'react-router';
 
-export default function Kanban({ state, issues, setIssues, dragEnterdState, setDragEnterdState }: T.KanbanProps) {
-  const issuesContainerRef = useRef<HTMLElement>(null);
+export default function Kanban({ state, issues, dragEnterdState, setDragEnterdState }: T.KanbanProps) {
   const issuesWrapperRef = useRef<HTMLDivElement>(null);
+  const { projectId, accountId } = useParams();
   const [holdingIssueId, setHoldingIssueId] = useState<null | number>(null);
+  const { mutate: changeIssueState } = useMutation({
+    mutationFn: ({ issueId }: { issueId: number }) =>
+      API.project.patchIssueState({
+        issueId: issueId,
+        projectId: Number(projectId),
+        accountId: Number(accountId),
+        state: dragEnterdState as 'YET' | 'NOW' | 'DONE',
+      }),
+  });
 
   const filteringResponse = useCallback(
     ({ state }: { state: 'YET' | 'NOW' | 'DONE' }): Omit<T.IssueProps, 'dragAble'>[] => {
-      return issues.map(issue => issue.state === state && issue).filter(el => el) as Omit<T.IssueProps, 'dragAble'>[];
+      return issues?.map(issue => issue.state === state && issue).filter(el => el) as Omit<T.IssueProps, 'dragAble'>[];
     },
     [issues],
   );
@@ -49,18 +61,18 @@ export default function Kanban({ state, issues, setIssues, dragEnterdState, setD
   };
 
   const handleOnDrop = (e: React.DragEvent) => {
+    /** TODO: params의 accountId와 client에서 관리되고 있는 accountId를 확인해 이슈를 옮길 수 있는 권한이 있는지 확인하기 */
     e.preventDefault();
 
-    const newIssues = issues.map(issue =>
-      issue.id === holdingIssueId ? { ...issue, state: dragEnterdState as 'YET' | 'NOW' | 'DONE' } : issue,
-    );
-
-    setIssues(newIssues);
+    changeIssueState({ issueId: Number(holdingIssueId) });
     setHoldingIssueId(() => null);
+    // const newIssues = issues.map(issue =>
+    //   issue.id === holdingIssueId ? { ...issue, state: dragEnterdState as 'YET' | 'NOW' | 'DONE' } : issue,
+    // );
   };
 
   return (
-    <S.IssuesWrapper ref={issuesContainerRef}>
+    <S.IssuesWrapper>
       <S.KanbanTitle>
         <Comp.StatusBadge status={state} />
       </S.KanbanTitle>
@@ -71,7 +83,7 @@ export default function Kanban({ state, issues, setIssues, dragEnterdState, setD
         onDragEnter={handleDragEnter}
         onDragEnd={handleOnDrop}
       >
-        {filteringResponse({ state }).map((issue, idx) => (
+        {filteringResponse({ state })?.map((issue, idx) => (
           <Comp.Issue
             key={`${state}-${issue.name}-${idx}`}
             {...issue}
