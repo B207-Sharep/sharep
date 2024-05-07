@@ -1,6 +1,6 @@
 package com.sharep.be.modules.job.repository;
 
-import com.sharep.be.modules.job.Job;
+import com.sharep.be.modules.job.domain.Job;
 import com.sharep.be.modules.member.Role.RoleType;
 import java.util.List;
 
@@ -15,4 +15,6 @@ public interface JobRepositoryCustom {
     List<Job> findAllByProjectIdAndIssueId(Long projectId, Long issueId);
 
     List<Job> findAllByAccountId(Long accountId);
+
+    List<Job> findContributionByProjectIdAndAccountId(Long projectId, Long accountId);
 }

@@ -1,22 +1,25 @@
 package com.sharep.be.modules.issue.service;
 
+import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
-import com.sharep.be.modules.issue.IssueResponse;
-import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
 import java.util.List;
 
 public interface IssueService {
 
-    IssueCreated createIssue(Long projectId, IssueCreate issueCreate);
+    Issue createIssue(Long projectId, Long accountId, IssueCreate issueCreate);
 
-    List<IssueResponse> getIssues(Long projectId);
+    Issue getIssue(Long id);
 
-    IssueResponse getIssue(Long id);
+    List<Issue> getIssues(Long projectId);
 
-    IssueResponse updateIssue(IssueUpdate issueCreate);
+    void updateIssue(Long id, Long accountId, Long projectId, IssueUpdate issueUpdate);
 
-    IssueResponse deleteIssue(Long id);
+    void deleteIssue(Long id, Long accountId, Long projectId);
 
-    List<IssueResponse> getPrivateIssues(Long projectId, Long accountId);
+    List<Issue> getKanbanIssues(Long projectId, Long accountId);
+
+    List<Issue> getFeatureIssues(Long projectId);
+
+    List<Issue> getScreenIssues(Long projectId);
 }

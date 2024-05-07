@@ -2,8 +2,7 @@ package com.sharep.be.modules.auth;
 
 import com.sharep.be.infra.config.JwtUtil;
 import com.sharep.be.modules.account.Account;
-import com.sharep.be.modules.account.AccountRepository;
-import com.sharep.be.modules.auth.dto.AuthDto;
+import com.sharep.be.modules.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

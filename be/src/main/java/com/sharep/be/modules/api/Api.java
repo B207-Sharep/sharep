@@ -1,6 +1,5 @@
 package com.sharep.be.modules.api;
 
-import com.sharep.be.modules.api.ApiRequest.ApiUpdate;
 import com.sharep.be.modules.api.type.MethodType;
 import com.sharep.be.modules.issue.Issue;
 import jakarta.persistence.Entity;
@@ -12,10 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Api {
 
     @Id
@@ -45,10 +46,4 @@ public class Api {
         this.method = method;
         this.issue = issue;
     }
-
-    public static Api from(Long id, ApiUpdate apiUpdate) {
-        return Api.builder().id(id).request(apiUpdate.request()).response(apiUpdate.response())
-                .url(apiUpdate.url()).method(apiUpdate.method()).build();
-    }
-
 }

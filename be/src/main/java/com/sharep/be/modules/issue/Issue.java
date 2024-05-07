@@ -1,11 +1,11 @@
 package com.sharep.be.modules.issue;
 
 import com.sharep.be.modules.api.Api;
-import com.sharep.be.modules.assignee.Assignee;
-import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
-import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
+import com.sharep.be.modules.assignee.domain.Assignee;
+import com.sharep.be.modules.assignee.domain.State;
 import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.issue.type.PriorityType;
+import com.sharep.be.modules.job.domain.Job;
 import com.sharep.be.modules.project.Project;
 import com.sharep.be.modules.storyboard.Storyboard;
 import jakarta.persistence.CascadeType;
@@ -24,7 +24,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDateTime;
+import java.util.EnumMap;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,13 +61,15 @@ public class Issue {
     @Enumerated(EnumType.STRING)
     private PriorityType priority;
 
-
     @OneToOne(mappedBy = "issue", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @PrimaryKeyJoinColumn
     private Api api;
 
-    @OneToMany(mappedBy = "issue")
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Assignee> assignees;
+
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Job> jobs;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
@@ -74,10 +78,11 @@ public class Issue {
     @OneToMany(mappedBy = "featureIssue")
     private Set<Storyboard> storyboards;
 
+
     @Builder
     public Issue(Long id, String issueName, String description, IssueType type, String epic,
             LocalDateTime createdAt, PriorityType priority, Api api, Set<Assignee> assignees,
-            Project project, Set<Storyboard> storyboards) {
+            Set<Job> jobs, Project project, Set<Storyboard> storyboards) {
         this.id = id;
         this.issueName = issueName;
         this.description = description;
@@ -87,28 +92,30 @@ public class Issue {
         this.priority = priority;
         this.api = api;
         this.assignees = assignees;
+        this.jobs = jobs;
         this.project = project;
         this.storyboards = storyboards;
     }
 
-    public static Issue from(IssueCreate issueCreate, Project project) {
-        return Issue.builder().issueName(issueCreate.issueName())
-                .description(issueCreate.description()).type(issueCreate.type())
-                .epic(issueCreate.epic()).priority(issueCreate.priority()).project(project).build();
+    public void updateApi(Api api) {
+        this.api = api;
     }
 
-    public Issue deleteApi() {
-        return Issue.builder().id(id).issueName(issueName).description(description).type(type)
-                .epic(epic).createdAt(createdAt).priority(priority).api(null).assignees(assignees)
-                .project(project).storyboards(storyboards).build();
-    }
+    public State calculateState() {
+        EnumMap<State, Long> stateCount = assignees.stream().collect(
+                Collectors.groupingBy(Assignee::getState, () -> new EnumMap<>(State.class),
+                        Collectors.counting()));
 
-    public IssueCreated toCreated() {
-        return IssueCreated.builder().id(id).build();
-    }
+        long size = assignees.size();
+        long done = stateCount.getOrDefault(State.DONE, 0L);
+        long yet = stateCount.getOrDefault(State.YET, 0L);
 
-    public IssueResponse toResponse() {
-        return IssueResponse.builder().id(id).issueName(issueName).description(description)
-                .type(type).epic(epic).priority(priority).projectId(project.getId()).build();
+        if (yet == size) {
+            return State.YET;
+        } else if (done == size) {
+            return State.DONE;
+        } else {
+            return State.NOW;
+        }
     }
 }
