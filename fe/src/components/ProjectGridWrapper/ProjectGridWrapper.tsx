@@ -34,7 +34,7 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
     <S.Grid>
       <S.CardList>
         <S.ProjectAddBtn onClick={handleModalOpen}>
-          <ProjectCard key={0} title={'new'} bio={'새로 만들기'} id={'0'} imgs={null} createdAt={null} add={true} />
+          <ProjectCard key={0} title={'new'} bio={'새로 만들기'} id={'0'} accounts={null} createdAt={null} add={true} />
         </S.ProjectAddBtn>
         <Comp.Modal
           modalId="project"
@@ -49,9 +49,9 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
             title={issue.title}
             bio={issue.bio}
             id={issue.id}
-            imgs={issue.imgs}
+            accounts={issue.accounts}
             createdAt={issue.createdAt}
-            add={issue.add}
+            add={false}
           />
         ))}
       </S.CardList>
