@@ -8,9 +8,6 @@ import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
-import com.sharep.be.modules.notification.repository.EmitterRepository;
-import com.sharep.be.modules.notification.repository.NotificationRepository;
-import jakarta.validation.constraints.Min;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,27 +28,28 @@ public class NotificationService {
     public SseEmitter subscribe(Long projectId, Long accountId) {
         SseEmitter emitter = createEmitter(accountId);
 
-        List<NotificationMessage> notificationMessages = notificationRepository.findAllByProjectIdAndAccountId(projectId, accountId).stream()
-                        .map(notification -> {
-                            Member anotherMember = notification.getMember();
-                            Assignee anotherAssignee = notification.getAssignee();
-                            Issue anotherIssue = anotherAssignee.getIssue();
-                            Account anotherAccount = anotherMember.getAccount();
+        List<NotificationMessage> notificationMessages = notificationRepository.findAllByProjectIdAndAccountId(
+                        projectId, accountId).stream()
+                .map(notification -> {
+                    Member anotherMember = notification.getMember();
+                    Assignee anotherAssignee = notification.getAssignee();
+                    Issue anotherIssue = anotherAssignee.getIssue();
+                    Account anotherAccount = anotherMember.getAccount();
 
-                            notNull(anotherAccount);
-                            notNull(anotherMember);
-                            notNull(anotherAssignee);
-                            notNull(anotherIssue);
+                    notNull(anotherAccount);
+                    notNull(anotherMember);
+                    notNull(anotherAssignee);
+                    notNull(anotherIssue);
 
-                            return NotificationMessage.from(notification, anotherAccount, anotherMember, anotherAssignee, anotherIssue);
-                        })
-                        .toList();
+                    return NotificationMessage.from(notification, anotherAccount, anotherMember,
+                            anotherAssignee, anotherIssue);
+                })
+                .toList();
 
         notify(
                 accountId,
                 notificationMessages
         );
-
 
         return emitter;
     }
@@ -83,7 +81,8 @@ public class NotificationService {
     }
 
     public Long updateNotificationState(Long accountId, Long notificationId) {
-        Notification notification = notificationRepository.findByIdAndMemberAccountId(notificationId, accountId)
+        Notification notification = notificationRepository.findByIdAndMemberAccountId(
+                        notificationId, accountId)
                 .orElseThrow(() -> new RuntimeException("해당하는 알림이 없습니다."));
 
         notification.readNotification();

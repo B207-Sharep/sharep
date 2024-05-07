@@ -50,7 +50,7 @@ public class Notification {
         this.member = member;
     }
 
-    public void readNotification(){
+    public void readNotification() {
         isRead = true;
     }
 }

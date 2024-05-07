@@ -1,4 +1,4 @@
-package com.sharep.be.modules.notification.repository;
+package com.sharep.be.modules.notification.service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

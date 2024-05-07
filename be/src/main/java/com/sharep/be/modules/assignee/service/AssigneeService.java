@@ -14,12 +14,9 @@ import com.sharep.be.modules.member.repository.MemberRepository;
 
 import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
-import com.sharep.be.modules.notification.repository.NotificationRepository;
+import com.sharep.be.modules.notification.service.NotificationRepository;
 import com.sharep.be.modules.notification.service.NotificationService;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

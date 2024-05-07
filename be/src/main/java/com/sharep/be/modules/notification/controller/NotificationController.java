@@ -35,9 +35,10 @@ public class NotificationController {
     public ResponseEntity<NotificationIdResponse> updateNotificationState(
             @AuthenticationPrincipal JwtAuthentication authentication,
             @PathVariable @Min(1) Long notificationId
-    ){
+    ) {
 
-        Long result = notificationService.updateNotificationState(authentication.id, notificationId);
+        Long result = notificationService.updateNotificationState(authentication.id,
+                notificationId);
 
         return ResponseEntity.ok(
                 NotificationIdResponse.builder()

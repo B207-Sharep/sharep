@@ -7,6 +7,7 @@ import static com.sharep.be.modules.issue.QIssue.issue;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.member.QRole.role1;
 import static com.sharep.be.modules.notification.domain.QNotification.notification;
+import static com.sharep.be.modules.project.QProject.project;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharep.be.modules.notification.domain.Notification;
@@ -27,10 +28,13 @@ public class NotificationRepositoryCustomImpl implements NotificationRepositoryC
                 .from(notification)
                 .innerJoin(notification.assignee, assignee).fetchJoin()
                 .innerJoin(notification.member, member).fetchJoin()
+                .innerJoin(member.project, project).fetchJoin()
                 .innerJoin(member.roles, role1).fetchJoin()
                 .innerJoin(member.account, account).fetchJoin()
                 .innerJoin(assignee.issue, issue).fetchJoin()
                 .innerJoin(issue.api, api).fetchJoin()
+                .where(project.id.eq(projectId))
+                .where(account.id.eq(accountId))
                 .fetch();
     }
 }
