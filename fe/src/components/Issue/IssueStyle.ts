@@ -12,6 +12,7 @@ export const RelativeWrapper = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: default;
   }
 
   *::after {

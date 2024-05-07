@@ -25,7 +25,7 @@ import { NotiProps } from './components/SideBar';
 
 /** ================= Pages ================= */
 import { TeamDashboardProps, TeamMemberProps, GanttChartProps } from './pages/TeamDashboard';
-import { CananProps } from './pages/TeamMember';
+import { KanbanProps, ContributionsChartProps } from './pages/TeamMember';
 import { CommitHistoryProps, FilterProps } from './pages/CommitHistory';
 /** ================= Pages ================= */
 export type {
@@ -56,7 +56,8 @@ export type {
   TeamDashboardProps,
   TeamMemberProps,
   GanttChartProps,
-  CananProps,
+  KanbanProps,
+  ContributionsChartProps,
   CommitHistoryProps,
   FilterProps,
 };
