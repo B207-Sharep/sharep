@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 
-export const CardWrapper = styled.div`
+export const CardWrapper = styled.form`
   width: 400px;
   height: fit-content;
   background-color: white;
