@@ -1,13 +1,14 @@
 package com.sharep.be.modules.account;
 
-import com.sharep.be.modules.account.dto.AccountDto;
+import static com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
+import static com.sharep.be.modules.account.dto.AccountDto.toDto;
+
+import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
 import com.sharep.be.modules.account.validator.AccountValidator;
 import com.sharep.be.modules.gpt.GptService;
-import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.MemberRepository;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -28,9 +37,6 @@ public class AccountController {
     private final AccountRepository accountRepository;
     private final AccountValidator accountValidator;
 
-    private final GptService gptService;
-    private final MemberRepository memberRepository;
-
     @InitBinder("accountRequestDto")
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(accountValidator);
@@ -38,7 +44,7 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(
-            @RequestBody @Valid AccountDto.AccountCreateDto accountCreateDto) {
+            @RequestBody @Valid AccountCreateDto accountCreateDto) {
         accountService.signUp(accountCreateDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED).build();
@@ -63,14 +69,20 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/gpt")
-    public ResponseEntity<Void> checkCPT(){
-//        log.info("gpt controller : {}", gptService.queryGPT("[Refactor] Route 이름 변경\n" +
-//                "[Home] GanttChart 생성 전 \n" +
-//                "[Refactor] 글로벌 스타일 수정 \n" +
-//                "[Add] dayjs package 추가"));
-        List<Member> allWithIssueAndJob = memberRepository.findAllWithIssueAndJob();
-        log.info("member size  {}", allWithIssueAndJob.size());
-        return ResponseEntity.ok().build();
+//    @GetMapping("/gpt")
+//    public ResponseEntity<Void> checkCPT(){
+////        log.info("gpt controller : {}", gptService.queryGPT("[Refactor] Route 이름 변경\n" +
+////                "[Home] GanttChart 생성 전 \n" +
+////                "[Refactor] 글로벌 스타일 수정 \n" +
+////                "[Add] dayjs package 추가"));
+//        List<Member> allWithIssueAndJob = memberRepository.findAllWithIssueAndJob();
+//        log.info("member size  {}", allWithIssueAndJob.size());
+//        return ResponseEntity.ok().build();
+//    }
+
+    @GetMapping
+    public ResponseEntity<AccountResponseDto> readAccount(
+            @AuthenticationPrincipal JwtAuthentication authentication){
+        return ResponseEntity.ok(toDto(accountService.readAccount(authentication.id)));
     }
 }

@@ -43,6 +43,10 @@ public class AccountService implements UserDetailsService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new UsernameNotFoundException("no user"));
         account.updateImage(imageUrl);
+    }
 
+    public Account readAccount(Long accountId){
+        return accountRepository.findById(accountId).
+                orElseThrow(() -> new UsernameNotFoundException("no user"));
     }
 }
