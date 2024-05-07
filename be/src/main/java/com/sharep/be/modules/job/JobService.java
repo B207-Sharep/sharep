@@ -1,7 +1,7 @@
 package com.sharep.be.modules.job;
 
 import com.sharep.be.modules.account.Account;
-import com.sharep.be.modules.account.AccountRepository;
+import com.sharep.be.modules.account.repository.AccountRepository;
 import com.sharep.be.modules.assignee.Assignee;
 import com.sharep.be.modules.assignee.repository.AssigneeRepository;
 import com.sharep.be.modules.common.service.port.S3Repository;
@@ -13,7 +13,7 @@ import com.sharep.be.modules.job.request.JobReadRequest;
 import com.sharep.be.modules.job.response.JobGrass;
 import com.sharep.be.modules.job.response.JobGrassResponse;
 import com.sharep.be.modules.member.Member;
-import com.sharep.be.modules.member.MemberRepository;
+import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.member.Role.RoleType;
 import com.sharep.be.modules.project.dto.GitlabHook;
 import com.sharep.be.modules.project.dto.GitlabHook.Commit;

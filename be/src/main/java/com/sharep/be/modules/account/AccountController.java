@@ -4,9 +4,9 @@ import static com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
 import static com.sharep.be.modules.account.dto.AccountDto.toDto;
 
 import com.sharep.be.modules.account.dto.AccountDto.AccountResponseDto;
+import com.sharep.be.modules.account.repository.AccountRepository;
+import com.sharep.be.modules.account.service.AccountService;
 import com.sharep.be.modules.account.validator.AccountValidator;
-import com.sharep.be.modules.gpt.GptService;
-import com.sharep.be.modules.member.MemberRepository;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -3,7 +3,7 @@ package com.sharep.be.modules.security;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.sharep.be.modules.project.Project;
-import com.sharep.be.modules.project.ProjectRepository;
+import com.sharep.be.modules.project.repository.ProjectRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.function.Function;

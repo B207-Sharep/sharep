@@ -1,10 +1,7 @@
-package com.sharep.be.modules.project;
+package com.sharep.be.modules.project.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sharep.be.modules.account.QAccount;
-import com.sharep.be.modules.member.Member;
-import com.sharep.be.modules.member.QMember;
-import com.sharep.be.modules.member.QRole;
+import com.sharep.be.modules.project.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

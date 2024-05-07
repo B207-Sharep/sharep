@@ -1,22 +1,17 @@
-package com.sharep.be.modules.member;
+package com.sharep.be.modules.member.repository;
 
 import static com.sharep.be.modules.account.QAccount.*;
-import static com.sharep.be.modules.assignee.QAssignee.*;
-import static com.sharep.be.modules.issue.QIssue.*;
 import static com.sharep.be.modules.job.QJob.*;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.member.QRole.*;
 import static com.sharep.be.modules.project.QProject.project;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sharep.be.modules.account.QAccount;
 
+import com.sharep.be.modules.member.Member;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.sharep.be.modules.assignee.QAssignee;
-import com.sharep.be.modules.issue.QIssue;
-import com.sharep.be.modules.job.QJob;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

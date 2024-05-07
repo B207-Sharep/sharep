@@ -1,7 +1,9 @@
-package com.sharep.be.modules.member;
+package com.sharep.be.modules.member.service;
 
 import com.sharep.be.modules.gpt.GptService;
 import com.sharep.be.modules.job.Job;
+import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;

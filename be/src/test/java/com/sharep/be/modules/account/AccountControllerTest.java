@@ -3,7 +3,7 @@ package com.sharep.be.modules.account;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharep.be.infra.MockMvcTest;
 import com.sharep.be.modules.account.dto.AccountDto.AccountCreateDto;
-import org.junit.jupiter.api.AfterEach;
+import com.sharep.be.modules.account.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

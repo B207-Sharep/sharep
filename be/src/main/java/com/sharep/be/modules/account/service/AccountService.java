@@ -1,6 +1,8 @@
-package com.sharep.be.modules.account;
+package com.sharep.be.modules.account.service;
 
+import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.account.dto.AccountDto;
+import com.sharep.be.modules.account.repository.AccountRepository;
 import com.sharep.be.modules.auth.CustomAccountInfo;
 import com.sharep.be.modules.common.service.port.S3Repository;
 import lombok.RequiredArgsConstructor;

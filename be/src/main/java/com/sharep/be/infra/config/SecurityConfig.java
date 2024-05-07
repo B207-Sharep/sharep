@@ -2,7 +2,7 @@ package com.sharep.be.infra.config;
 
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
-import com.sharep.be.modules.project.ProjectRepository;
+import com.sharep.be.modules.project.repository.ProjectRepository;
 import com.sharep.be.modules.security.JwtAuthenticationTokenFilter;
 import com.sharep.be.modules.security.ProjectBasedVoter;
 import java.util.Arrays;
