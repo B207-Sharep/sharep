@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 @Service
 @Slf4j
 public class GptService {
+
     private final String model;
     private final String prompt;
     private final Integer maxToken;
@@ -26,9 +27,11 @@ public class GptService {
 
     private final ObjectMapper objectMapper;
 
-    public GptService(@Value("${openai.model}") String model, @Value("${openai.prompt}") String prompt,
-                      @Value("${openai.max_token}") Integer maxToken, @Value("${openai.secret_key}") String secretKey,
-                      @Value("${openai.url}") String url, ObjectMapper objectMapper) {
+    public GptService(@Value("${openai.model}") String model,
+            @Value("${openai.prompt}") String prompt,
+            @Value("${openai.max_token}") Integer maxToken,
+            @Value("${openai.secret_key}") String secretKey,
+            @Value("${openai.url}") String url, ObjectMapper objectMapper) {
         this.model = model;
         this.prompt = prompt;
         this.maxToken = maxToken;
@@ -37,7 +40,7 @@ public class GptService {
         this.objectMapper = objectMapper;
     }
 
-    public String queryGpt(String input){
+    public String queryGpt(String input) {
         String query = makeQuery(input);
 
         RestClient restClient = RestClient.create();
@@ -48,7 +51,8 @@ public class GptService {
                 .body(query)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-                    String responseBody = new String(response.getBody().readAllBytes(), StandardCharsets.UTF_8);
+                    String responseBody = new String(response.getBody().readAllBytes(),
+                            StandardCharsets.UTF_8);
                     throw new RuntimeException(responseBody);
                 })
                 .toEntity(GptResponse.class);
@@ -59,9 +63,9 @@ public class GptService {
     private String extractResult(ResponseEntity<GptResponse> responseQuery) {
         String content = responseQuery.getBody().choices().get(0).message().content();
 
-        try{
+        try {
             return objectMapper.readTree(content).path("result").asText();
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             log.warn("JSON processing error: {}", e.getMessage());
             return "";
         }
