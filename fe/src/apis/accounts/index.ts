@@ -20,3 +20,7 @@ export async function login(email: string, password: string) {
     password: `${password}`,
   });
 }
+
+export async function account() {
+  return await instance.get(`/accounts`);
+}

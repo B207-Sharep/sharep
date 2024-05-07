@@ -26,4 +26,5 @@ export const Tooltip = styled.div`
   display: flex;
   flex-direction: row;
   width: 30px;
+  z-index: 2;
 `;
