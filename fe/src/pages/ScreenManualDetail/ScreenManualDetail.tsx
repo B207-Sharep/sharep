@@ -8,7 +8,7 @@ import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
 
 export default function ScreenManualDetail() {
-  const { 'project-id': projectId } = useParams();
+  const { projectId } = useParams();
   const navigate = useNavigate();
   const jobModal = useModal('job');
 
@@ -29,6 +29,7 @@ export default function ScreenManualDetail() {
               {/* TODO: 화면 이슈 이름 */}
               페이지 이름
             </S.StyledText>
+
             <S.IssueAssigneeContainer>
               <S.AssigneeBadge>
                 <S.StyledText color={PALETTE.MAIN_WHITE} fontWeight={600}>

@@ -56,7 +56,7 @@ export default function TeamDashboard() {
             <Icon.GantChart />
             <span>화면 갤러리</span>
           </S.Title>
-          <Comp.GalleryGridWrapper issueList={DUMMY_SCREEN_LIST} />
+          <Comp.GalleryGridWrapper issueList={DUMMY_SCREEN_LIST} type="SCREEN" />
         </S.WhiteBoxWrapper>
       </S.Container>
     </L.SideBarLayout>
@@ -79,7 +79,7 @@ const DUMMY_YESTERDAY_WORK = `달이 떴다고 전화를 주시다니요. 이 �
 
 const DUMMY_SCREEN_LIST = [
   ...Array.from({ length: 7 }, (_, index) => ({
-    issueId: index + 1,
+    id: index + 1,
     issueName: `화면 이슈 ${index + 1}`,
     createdAt: '2024.04.27',
     type: 'SCREEN' as 'SCREEN',

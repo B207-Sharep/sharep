@@ -3,9 +3,8 @@ import { useRecoilValue } from 'recoil';
 import { PALETTE } from '@/styles';
 import * as S from './ProjectCreationFormStyle';
 import * as T from '@/types';
-import * as Icon from '@/assets';
 import * as Comp from '@/components';
-import { Info, MinusCircle, Search } from 'lucide-react';
+import { MinusCircle, Search } from 'lucide-react';
 import { modalDataState } from '@/stores/atoms/modal';
 import { useModal } from '@/customhooks';
 
@@ -111,34 +110,6 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
           value={contents.bio}
           onChange={event => updateContentByKey('bio', event.target.value)}
         />
-      </S.FormItem>
-      {/* 프로젝트 token */}
-      <S.FormItem>
-        <Comp.InputWithLabel.Label labelFor="secretKey">
-          <S.StyledLabel>
-            Token
-            <S.TokenInfo>
-              <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $strokeColor={PALETTE.MAIN_WHITE}>
-                <Info size={12} />
-              </S.Icon>
-              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
-                repository의 read 권한이 있는 token을 등록해주세요.
-              </S.StyledText>
-            </S.TokenInfo>
-          </S.StyledLabel>
-        </Comp.InputWithLabel.Label>
-        <S.InputContainer>
-          <S.StyledInput
-            $icon={true}
-            id="secretKey"
-            type="text"
-            value={contents.secretKey}
-            onChange={event => updateContentByKey('secretKey', event.target.value)}
-          />
-          <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $position="absolute">
-            <Icon.GitIcon />
-          </S.Icon>
-        </S.InputContainer>
       </S.FormItem>
       {/* 팀원 */}
       <S.FormItem>
