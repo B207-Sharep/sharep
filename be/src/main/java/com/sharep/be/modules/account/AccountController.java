@@ -9,6 +9,7 @@ import com.sharep.be.modules.account.service.AccountService;
 import com.sharep.be.modules.account.validator.AccountValidator;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,7 @@ public class AccountController {
                 .status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/email")
+    @GetMapping("/email-check")
     public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
         return ResponseEntity
                 .ok(accountRepository.existsByEmail(email));
@@ -84,5 +85,11 @@ public class AccountController {
     public ResponseEntity<AccountResponse> readAccount(
             @AuthenticationPrincipal JwtAuthentication authentication){
         return ResponseEntity.ok(toDto(accountService.readAccount(authentication.id)));
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<List<AccountResponse>> readAccount(@RequestParam String email){
+        return ResponseEntity.ok(accountService.readAccounts(email).stream()
+                .map(AccountDto::toDto).toList());
     }
 }

@@ -5,6 +5,7 @@ import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.account.repository.AccountRepository;
 import com.sharep.be.modules.auth.CustomAccountInfo;
 import com.sharep.be.modules.common.service.port.S3Repository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -52,5 +53,9 @@ public class AccountService implements UserDetailsService {
     public Account readAccount(Long accountId){
         return accountRepository.findById(accountId).
                 orElseThrow(() -> new UsernameNotFoundException("no user"));
+    }
+
+    public List<Account> readAccounts(String email){
+        return accountRepository.findByEmailContaining(email);
     }
 }
