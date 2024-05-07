@@ -6,8 +6,7 @@ const instance = ({ contentType }: { contentType: 'application/json' | 'multipar
 
     headers: {
       'Content-Type': contentType,
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-      // Origin: 'http://localhost:5173',
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
     },
   });
 };

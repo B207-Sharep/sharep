@@ -59,6 +59,7 @@ export const SideBarContents = styled.button`
   padding: 12px 12px;
   column-gap: 10px;
   align-items: center;
+  border-radius: 12px;
 `;
 
 export const SideBarBtnGroup = styled.div`
