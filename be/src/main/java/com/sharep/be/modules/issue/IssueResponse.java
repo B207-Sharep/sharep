@@ -46,13 +46,13 @@ public record IssueResponse(Long id, String issueName, String description, Issue
     }
 
     @Builder
-    public record PrivateIssueResponse(Long id, String issueName, String description,
-                                       IssueType type, String epic, State state,
-                                       LocalDateTime createdAt, PriorityType priority,
-                                       List<AssigneeResponse> assignees, List<JobResponse> jobs) {
+    public record KanbanIssueResponse(Long id, String issueName, String description,
+                                      IssueType type, String epic, State state,
+                                      LocalDateTime createdAt, PriorityType priority,
+                                      List<AssigneeResponse> assignees, List<JobResponse> jobs) {
 
-        public static PrivateIssueResponse from(Issue issue) {
-            return PrivateIssueResponse.builder()
+        public static KanbanIssueResponse from(Issue issue) {
+            return KanbanIssueResponse.builder()
                     .id(issue.getId())
                     .issueName(issue.getIssueName())
                     .description(issue.getDescription())

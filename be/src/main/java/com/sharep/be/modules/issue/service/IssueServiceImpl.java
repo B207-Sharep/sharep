@@ -68,15 +68,15 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public List<Issue> getIssues(Long projectId) {
 
-        return issueRepository.findByProjectId(projectId);
+        return issueRepository.findIssuesByProjectId(projectId);
     }
 
     @Override
-    public List<Issue> getPrivateIssues(Long projectId, Long accountId) {
+    public List<Issue> getKanbanIssues(Long projectId, Long accountId) {
         Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
                 .orElseThrow(MemberNotFoundException::new);
 
-        return issueRepository.findIssuesByMemberIdAndIssueType(member.getId(), IssueType.PRIVATE);
+        return issueRepository.findIssuesByMemberId(member.getId());
     }
 
     @Override

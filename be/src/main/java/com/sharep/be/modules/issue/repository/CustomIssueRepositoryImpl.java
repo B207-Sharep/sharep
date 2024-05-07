@@ -24,7 +24,7 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Issue> findIssuesByMemberIdAndIssueType(Long memberId, IssueType issueType) {
+    public List<Issue> findIssuesByMemberId(Long memberId) {
         return queryFactory
                 .select(issue)
                 .from(issue)
@@ -33,7 +33,7 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
                 .innerJoin(assignee.member, member).fetchJoin()
                 .innerJoin(member.account, account).fetchJoin()
                 .leftJoin(issue.jobs, job).fetchJoin()
-                .where(issue.type.eq(issueType).and(member.id.eq(memberId)))
+                .where(issue.assignees.any().member.id.eq(memberId))
                 .fetch();
     }
 
@@ -55,7 +55,7 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
     }
 
     @Override
-    public List<Issue> findByProjectId(Long projectId) {
+    public List<Issue> findIssuesByProjectId(Long projectId) {
         return queryFactory
                 .select(issue)
                 .from(issue)

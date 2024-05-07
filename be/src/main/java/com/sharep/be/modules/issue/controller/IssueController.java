@@ -5,13 +5,14 @@ import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.FeatureIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
-import com.sharep.be.modules.issue.IssueResponse.PrivateIssueResponse;
+import com.sharep.be.modules.issue.IssueResponse.KanbanIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.ScreenIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.SimpleIssueResponse;
 import com.sharep.be.modules.issue.service.IssueService;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,13 +34,14 @@ public class IssueController {
 
     private final IssueService issueService;
 
-    @GetMapping("/private")
-    public ResponseEntity<List<PrivateIssueResponse>> getPrivateIssues(@PathVariable Long projectId,
+    @GetMapping("/kanban")
+    public ResponseEntity<List<KanbanIssueResponse>> getKanbanIssues(@PathVariable Long projectId,
+            @RequestParam Optional<Long> accountId,
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
 
         return ResponseEntity.ok(
-                issueService.getPrivateIssues(projectId, jwtAuthentication.id).stream()
-                        .map(PrivateIssueResponse::from).toList());
+                issueService.getKanbanIssues(projectId, accountId.orElse(jwtAuthentication.id))
+                        .stream().map(KanbanIssueResponse::from).toList());
     }
 
     @GetMapping("/feature")
