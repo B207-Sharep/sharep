@@ -1,13 +1,14 @@
 package com.sharep.be.modules.member.repository;
 
 import static com.sharep.be.modules.account.QAccount.*;
-import static com.sharep.be.modules.job.QJob.*;
+import static com.sharep.be.modules.job.domain.QJob.job;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.member.QRole.*;
 import static com.sharep.be.modules.project.QProject.project;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import com.sharep.be.modules.job.domain.QJob;
 import com.sharep.be.modules.member.Member;
 import java.time.LocalDateTime;
 import java.util.List;

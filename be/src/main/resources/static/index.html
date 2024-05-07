@@ -26,7 +26,7 @@
     import * as StompJs from '@stomp/stompjs';
 
     const stompClient = new StompJs.Client({
-      brokerURL: 'ws://192.168.31.153:8080/api/gs-guide-websocket'
+      brokerURL: 'ws://192.168.31.153:8081/api/gs-guide-websocket'
     });
 
     stompClient.onConnect = (frame) => {

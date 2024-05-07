@@ -1,22 +1,24 @@
 package com.sharep.be.modules.assignee.repository;
 
 import static com.sharep.be.modules.account.QAccount.account;
-import static com.sharep.be.modules.assignee.QAssignee.*;
-import static com.sharep.be.modules.assignee.QAssignee.assignee;
+
+import static com.sharep.be.modules.api.QApi.api;
+import static com.sharep.be.modules.assignee.domain.QAssignee.assignee;
+
 import static com.sharep.be.modules.issue.QIssue.issue;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.project.QProject.project;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sharep.be.modules.assignee.Assignee;
-import com.sharep.be.modules.assignee.QAssignee;
-import com.sharep.be.modules.assignee.State;
+
+import com.sharep.be.modules.assignee.domain.Assignee;
+import com.sharep.be.modules.assignee.domain.State;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -27,27 +29,33 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom{
     @Override
     public List<Tuple> findAllProjectNowIssueByProjectId(Long projectId) {
 
-        return queryFactory.select(issue, assignee, account)
+        return queryFactory.select(issue, account)
                 .from(assignee)
                 .leftJoin(assignee.issue, issue)
                 .innerJoin(assignee.member, member)
                 .innerJoin(member.account, account)
                 .innerJoin(issue.project, project)
+                .innerJoin(issue.api, api).fetchJoin()
                 .where(project.id.eq(projectId))
+                .where(assignee.state.eq(State.NOW))
+                .orderBy(assignee.startedAt.desc())
                 .fetch();
     }
 
     @Override
     public List<Tuple> findAllProjectNowIssueByProjectIdAndAccountID(Long projectId,
             Long accountId) {
-        return queryFactory.select(issue, assignee, account)
+        return queryFactory.select(issue, account)
                 .from(assignee)
                 .leftJoin(assignee.issue, issue)
                 .innerJoin(assignee.member, member)
                 .innerJoin(member.account, account)
                 .innerJoin(issue.project, project)
+                .innerJoin(issue.api, api).fetchJoin()
                 .where(project.id.eq(projectId))
                 .where(account.id.eq(accountId))
+                .where(assignee.state.eq(State.NOW))
+                .orderBy(assignee.startedAt.desc())
                 .fetch();
     }
 

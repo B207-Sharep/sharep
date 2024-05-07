@@ -11,11 +11,15 @@ public interface IssueService {
 
     Issue getIssue(Long id);
 
+    List<Issue> getIssues(Long projectId);
+
     void updateIssue(Long id, Long accountId, Long projectId, IssueUpdate issueUpdate);
 
     void deleteIssue(Long id, Long accountId, Long projectId);
 
-    List<Issue> getPrivateIssues(Long projectId, Long accountId);
+    List<Issue> getKanbanIssues(Long projectId, Long accountId);
 
     List<Issue> getFeatureIssues(Long projectId);
+
+    List<Issue> getScreenIssues(Long projectId);
 }

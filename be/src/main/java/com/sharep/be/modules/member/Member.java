@@ -1,13 +1,12 @@
 package com.sharep.be.modules.member;
 
 import com.sharep.be.modules.account.Account;
-import com.sharep.be.modules.job.Job;
+import com.sharep.be.modules.job.domain.Job;
 import com.sharep.be.modules.project.Project;
 import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Set;
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,15 +1,20 @@
-package com.sharep.be.modules.job;
+package com.sharep.be.modules.job.controller;
 
-import com.sharep.be.modules.job.request.JobCreateRequest;
-import com.sharep.be.modules.job.request.JobReadRequest;
-import com.sharep.be.modules.job.response.JobGrassResponse;
-import com.sharep.be.modules.job.response.JobIdResponse;
-import com.sharep.be.modules.job.response.JobReadResponse;
 import com.sharep.be.modules.project.dto.GitlabHook;
+import com.sharep.be.modules.job.domain.Job;
+import com.sharep.be.modules.job.service.JobService;
+import com.sharep.be.modules.job.controller.request.JobCreateRequest;
+import com.sharep.be.modules.job.controller.request.JobReadRequest;
+import com.sharep.be.modules.job.controller.response.JobContributionResponse;
+import com.sharep.be.modules.job.controller.response.JobGrassResponse;
+import com.sharep.be.modules.job.controller.response.JobIdResponse;
+import com.sharep.be.modules.job.controller.response.JobReadResponse;
+
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-//@RequestMapping("/jobs")
 @RequiredArgsConstructor
 public class JobController {
 
@@ -63,11 +67,28 @@ public class JobController {
         );
     }
 
+    // 기여도 조회
+    @GetMapping("/projects/{projectId}/accounts/{accountId}/contributions")
+    public ResponseEntity<Map<String, Integer>> readContribution(
+            @PathVariable @Min(1) Long projectId,
+            @PathVariable @Min(1) Long accountId
+    ){
+
+        List<Job> jobs = jobService.readContribution(projectId, accountId);
+
+        return ResponseEntity.ok(
+                JobContributionResponse.from(jobs)
+        );
+    }
+
     @GetMapping("/jobs")
     public ResponseEntity<JobGrassResponse> grassRead(
+
+
             @AuthenticationPrincipal JwtAuthentication authentication){
         return ResponseEntity.ok(jobService.readGrass(authentication.id));
     }
+
 
     @PostMapping("/projects/{projectId}/hook")
     public ResponseEntity<Void> readHook(@RequestBody GitlabHook hook,
@@ -76,4 +97,6 @@ public class JobController {
         jobService.commitCreated(hook, projectId);
         return ResponseEntity.ok().build();
     }
+
+
 }

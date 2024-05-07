@@ -4,9 +4,9 @@ import static org.springframework.util.Assert.isTrue;
 
 import com.sharep.be.modules.api.Api;
 import com.sharep.be.modules.api.repository.ApiRepository;
-import com.sharep.be.modules.assignee.Assignee;
-import com.sharep.be.modules.assignee.State;
-import com.sharep.be.modules.assignee.repository.AssigneeRepository;
+import com.sharep.be.modules.assignee.domain.Assignee;
+import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.assignee.service.AssigneeRepository;
 import com.sharep.be.modules.exception.IssueNotFoundException;
 import com.sharep.be.modules.exception.MemberNotFoundException;
 import com.sharep.be.modules.exception.ProjectNotFoundException;
@@ -66,17 +66,29 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public List<Issue> getPrivateIssues(Long projectId, Long accountId) {
+    public List<Issue> getIssues(Long projectId) {
+
+        return issueRepository.findIssuesByProjectId(projectId);
+    }
+
+    @Override
+    public List<Issue> getKanbanIssues(Long projectId, Long accountId) {
         Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
                 .orElseThrow(MemberNotFoundException::new);
 
-        return issueRepository.findIssuesByMemberIdAndIssueType(member.getId(), IssueType.PRIVATE);
+        return issueRepository.findIssuesByMemberId(member.getId());
     }
 
     @Override
     public List<Issue> getFeatureIssues(Long projectId) {
 
         return issueRepository.findIssuesByProjectIdAndIssueType(projectId, IssueType.FEATURE);
+    }
+
+    @Override
+    public List<Issue> getScreenIssues(Long projectId) {
+
+        return issueRepository.findIssuesByProjectIdAndIssueType(projectId, IssueType.SCREEN);
     }
 
     @Override

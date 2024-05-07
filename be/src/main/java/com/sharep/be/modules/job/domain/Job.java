@@ -1,7 +1,7 @@
-package com.sharep.be.modules.job;
+package com.sharep.be.modules.job.domain;
 
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.job.request.JobCreateRequest;
+import com.sharep.be.modules.job.controller.request.JobCreateRequest;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.project.dto.GitlabHook.Commit;
 import jakarta.persistence.Column;
@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -50,6 +51,7 @@ public class Job {
     @JoinColumn
     private Member member;
 
+
     @Column(length = 100)
     private String commitId;
 
@@ -61,6 +63,18 @@ public class Job {
         jobEntity.member = member;
         jobEntity.issue = issue;
         return jobEntity;
+    }
+
+    @Builder
+    public Job(String name, String description, LocalDateTime createdAt, String imageUrl,
+            Issue issue,
+            Member member) {
+        this.name = name;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.imageUrl = imageUrl;
+        this.issue = issue;
+        this.member = member;
     }
 
     public static Job from(Member member, Issue issue, Commit commit){

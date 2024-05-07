@@ -1,4 +1,4 @@
-package com.sharep.be.modules.assignee;
+package com.sharep.be.modules.assignee.domain;
 
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.member.Member;
@@ -34,7 +34,7 @@ public class Assignee {
     @JoinColumn(name = "issue_id")
     private Issue issue;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 

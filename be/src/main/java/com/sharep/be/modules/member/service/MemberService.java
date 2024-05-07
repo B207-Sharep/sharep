@@ -1,7 +1,7 @@
 package com.sharep.be.modules.member.service;
 
 import com.sharep.be.modules.gpt.GptService;
-import com.sharep.be.modules.job.Job;
+import com.sharep.be.modules.job.domain.Job;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +35,10 @@ public class MemberService {
 
     @Transactional // 멤버 별 트랜잭션 분리, 특정 멤버 예외 시 전체 멤버 rollback 막기
     public void summary(Member member) {
-        StringBuffer sendGPT = new StringBuffer();
+        StringBuilder sendGPT = new StringBuilder();
 
         // 어제 작업 없을 경우
-        if(member.getJobs().size() == 0){
+        if(member.getJobs().isEmpty()){
             member.updateSummary(null);
             return;
         }
