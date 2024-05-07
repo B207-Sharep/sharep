@@ -18,11 +18,29 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
 
   const handleCreateButtonClick = useRecoilCallback(({ snapshot, set }) => async () => {
     const modalData = await snapshot.getPromise(modalDataState(modalId));
-    console.log(modalData.contents);
-    console.log(set);
     try {
       // api call
+      const { contents } = modalData;
+      if (contents) {
+        if (modalId === 'project') {
+          const processedData = {
+            title: contents.title,
+            bio: contents.bio,
+            members: contents.members.map((member: T.ProjectCreationFormProps['members'][number]) => {
+              return {
+                id: member.accountId,
+                roles: Object.entries(member.roles)
+                  .filter(([_, hasRole]) => hasRole)
+                  .map(([role, _]) => role),
+              };
+            }),
+          };
+          // console.log(processedData);
+        }
+      }
 
+      console.log(modalData.contents);
+      console.log(set);
       closeModal();
     } catch (error) {
       console.error(error);

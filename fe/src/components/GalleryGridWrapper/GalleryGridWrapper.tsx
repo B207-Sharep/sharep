@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as S from './GalleryGridWrapperStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
 import { PALETTE } from '@/styles';
 import { Plus } from 'lucide-react';
 
-export default function GalleryGridWrapper({ issueList }: T.GalleryGridWrapperProps) {
+export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWrapperProps) {
   const handleAddBtn = () => {
     console.log('add');
   };
@@ -13,14 +13,14 @@ export default function GalleryGridWrapper({ issueList }: T.GalleryGridWrapperPr
   return (
     <S.Grid>
       <S.CardList>
-        {issueList.map((issue, index) => (
+        {issueList.map(issue => (
           <Comp.GalleryCard
-            key={index}
-            issueId={issue.issueId}
+            key={issue.id}
+            id={issue.id}
             issueName={issue.issueName}
             createdAt={issue.createdAt}
-            type={issue.type as 'SCREEN' | 'PRIVATE'}
-            imageUrl={issue.type === 'SCREEN' ? `https://picsum.photos/id/${index}/300/200` : undefined}
+            type={type as 'SCREEN' | 'PRIVATE'}
+            imageUrl={type === 'SCREEN' ? issue.imageUrl && issue.imageUrl : undefined}
           />
         ))}
         <S.CardAddBtn className="hover-moving" onClick={handleAddBtn}>

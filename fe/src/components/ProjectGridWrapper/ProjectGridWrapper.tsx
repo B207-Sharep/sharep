@@ -14,6 +14,7 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
       title: '',
       bio: '',
       members: [
+        // TODO: 팀장 정보
         {
           accountId: 9,
           email: 'jack@ssafy.com',

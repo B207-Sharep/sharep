@@ -1,4 +1,4 @@
-import { instanceOfJson } from '../instance';
+import { instanceOfFormData, instanceOfJson } from '../instance';
 import * as T from '@types';
 
 // export async function getGrass(email: string) {
@@ -36,6 +36,22 @@ export async function getNowIssueAboutTeamMembers({ projectId }: { projectId: nu
   return instanceOfJson.get(`/projects/${projectId}/now/issues`);
 }
 
-// export async function createNewProject() {
-//   return await instance.post;
-// }
+export async function getScreenIssueList({ projectId }: { projectId: number }) {
+  return instanceOfJson.get(`/projects/${projectId}/issues/screen`);
+}
+
+export async function createNewProject(newProject: T.ProjectCreationFormProps) {
+  return await instanceOfJson.post(`/projects`, newProject);
+}
+
+export async function createNewJob({
+  projectId,
+  issueId,
+  newJob,
+}: {
+  issueId: number;
+  projectId: number;
+  newJob: T.JobCreationFormProps;
+}) {
+  return await instanceOfFormData.post(`/projects/${projectId}/issues/${issueId}/jobs`, newJob);
+}
