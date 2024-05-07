@@ -16,11 +16,14 @@ import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 import UserImg from '../UserImg/UserImg';
 import { useModal } from '@/customhooks';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/stores/atoms/loadUser';
 
 export default function SideBar() {
   const navigate = useNavigate();
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
+  const user = useRecoilValue(userState);
 
   const handleHistoryClick = () => {
     navigate('/projects/1/commit-history');
@@ -61,13 +64,13 @@ export default function SideBar() {
     <>
       <S.SideBarWrapper>
         <S.SideBarProfile onClick={handleMyDashClick}>
-          <UserImg size="md" path={'/youjack.png'} />
+          <UserImg size="md" path={user?.imageUrl} />
           <S.SideBarProfileName>
-            <S.SideBarFont $size="24px" $weight={700}>
-              유잭건
+            <S.SideBarFont $size="20px" $weight={700}>
+              {user?.nickname}
             </S.SideBarFont>
-            <S.SideBarFont $size="16px" $weight={400}>
-              @jackU
+            <S.SideBarFont $size="12px" $weight={400}>
+              {user?.email}
             </S.SideBarFont>
           </S.SideBarProfileName>
         </S.SideBarProfile>
