@@ -7,7 +7,7 @@ import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
 
-export default function Modal({ modalId, title, subTitle, children }: T.ModalProps) {
+export default function Modal({ modalId, title, subTitle, children, btnText }: T.ModalProps) {
   const { closeModal } = useModal(modalId);
 
   const { isOpen } = useRecoilValue(modalDataState(modalId));
@@ -56,7 +56,7 @@ export default function Modal({ modalId, title, subTitle, children }: T.ModalPro
             </S.BtnWrapper>
             <S.BtnWrapper onClick={handleCreateButtonClick}>
               <Comp.MainColorBtn bgc={true} disabled={false}>
-                생성
+                {btnText ? btnText : '생성'}
               </Comp.MainColorBtn>
             </S.BtnWrapper>
           </S.ModalFooter>

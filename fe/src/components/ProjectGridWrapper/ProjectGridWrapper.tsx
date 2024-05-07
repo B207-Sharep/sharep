@@ -13,7 +13,6 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
     projectModal.openModal({
       title: '',
       bio: '',
-      secretKey: '',
       members: [
         {
           accountId: 9,

@@ -35,3 +35,7 @@ export async function getKanvanList({ projectId, accountId }: { projectId: numbe
 export async function getNowIssueAboutTeamMembers({ projectId }: { projectId: number }) {
   return instanceOfJson.get(`/projects/${projectId}/now/issues`);
 }
+
+// export async function createNewProject() {
+//   return await instance.post;
+// }

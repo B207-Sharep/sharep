@@ -56,7 +56,6 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
 
   // 화면의 크기에 따라서 dropdown의 위치 동적으로 조정
   useEffect(() => {
-    console.log('resize');
     handleDropdownPosition();
 
     window.addEventListener('resize', handleDropdownPosition);

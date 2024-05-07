@@ -65,11 +65,6 @@ export const StyledText = styled.span<{ color?: string; fontSize?: number; fontW
   text-overflow: ellipsis;
 `;
 
-export const StyledLabel = styled(StyledText)`
-  display: flex;
-  gap: 12px;
-  font-weight: 500;
-`;
 export const SearchResultsDropdown = styled.div`
   position: absolute;
   top: 100%;
@@ -172,10 +167,4 @@ export const RoleBadgeBtn = styled.div<{ $state: boolean }>`
   :hover {
     opacity: 0.6;
   }
-`;
-
-export const TokenInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
 `;
