@@ -3,7 +3,7 @@ import * as S from './KanbanStyle';
 import * as T from '@types';
 import * as Comp from '@components';
 
-export default function Kanban({ state, issues, setIssues, dragEnterdState, setDragEnterdState }: T.CananProps) {
+export default function Kanban({ state, issues, setIssues, dragEnterdState, setDragEnterdState }: T.KanbanProps) {
   const issuesContainerRef = useRef<HTMLElement>(null);
   const issuesWrapperRef = useRef<HTMLDivElement>(null);
   const [holdingIssueId, setHoldingIssueId] = useState<null | number>(null);
