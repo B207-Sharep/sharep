@@ -3,14 +3,13 @@ package com.sharep.be.modules.assignee.controller;
 import static org.springframework.util.Assert.notNull;
 
 import com.sharep.be.modules.account.Account;
-import com.sharep.be.modules.account.dto.AccountDto;
 import com.sharep.be.modules.assignee.controller.response.AssigneeIdResponse;
 import com.sharep.be.modules.assignee.controller.response.AssigneeProjectNowIssueResponse;
 import com.sharep.be.modules.assignee.domain.State;
-import com.sharep.be.modules.assignee.repository.projection.AccountAndIssueProjection;
+import com.sharep.be.modules.assignee.repository.projection.MemberAndIssueProjection;
 import com.sharep.be.modules.assignee.service.AssigneeService;
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.issue.IssueNowResponse;
+import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.constraints.Min;
 import java.util.List;
@@ -96,12 +95,12 @@ public class AssigneeController {
                 assigneeService.readProjectNowIssue(projectId)
                         .stream()
                         .map(accountAndIssueProjection -> {
-                            Account account = accountAndIssueProjection.account();
+                            Member member = accountAndIssueProjection.member();
                             Issue issue = accountAndIssueProjection.issue();
 
-                            notNull(account, "해당하는 계정이 없습니다.");
+                            notNull(member, "해당하는 계정이 없습니다.");
 
-                            return new AssigneeProjectNowIssueResponse(account, issue);
+                            return new AssigneeProjectNowIssueResponse(member, issue);
                         })
                         .toList()
         );
@@ -115,16 +114,16 @@ public class AssigneeController {
             @PathVariable @Min(1) Long projectId
     ) {
 
-        AccountAndIssueProjection result = assigneeService.readProjectNowOwnIssue(projectId,
+        MemberAndIssueProjection result = assigneeService.readProjectNowOwnIssue(projectId,
                 authentication.id);
 
-        Account account = result.account();
+        Member member = result.member();
         Issue issue = result.issue();
 
-        notNull(account, "해당하는 구성원이 존재하지 않습니다.");
+        notNull(member, "해당하는 계정이 없습니다.");
 
         return ResponseEntity.ok(
-                new AssigneeProjectNowIssueResponse(account, issue)
+                new AssigneeProjectNowIssueResponse(member, issue)
         );
     }
 

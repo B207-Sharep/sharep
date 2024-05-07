@@ -14,7 +14,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.domain.State;
-import com.sharep.be.modules.assignee.repository.projection.AccountAndIssueProjection;
+import com.sharep.be.modules.assignee.repository.projection.MemberAndIssueProjection;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +28,12 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<AccountAndIssueProjection> findAllProjectNowIssueByProjectId(Long projectId) {
+    public List<MemberAndIssueProjection> findAllProjectNowIssueByProjectId(Long projectId) {
 
         return queryFactory.select(
                         Projections.constructor(
-                                AccountAndIssueProjection.class,
-                                account,
+                                MemberAndIssueProjection.class,
+                                member,
                                 issue
                         )
                 )
@@ -41,7 +41,7 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
                 .innerJoin(assignee.issue, issue)
                 .rightJoin(assignee.member, member)
                 .on(assignee.state.eq(State.NOW))
-                .leftJoin(member.account, account)
+                .leftJoin(member.roles, role1)
                 .leftJoin(member.project, project)
                 .where(project.id.eq(projectId))
                 .orderBy(assignee.startedAt.desc())
@@ -49,12 +49,12 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
     }
 
     @Override
-    public List<AccountAndIssueProjection> findAllProjectNowIssueByProjectIdAndAccountId(Long projectId,
+    public List<MemberAndIssueProjection> findAllProjectNowIssueByProjectIdAndAccountId(Long projectId,
             Long accountId) {
         return queryFactory.select(
                         Projections.constructor(
-                                AccountAndIssueProjection.class,
-                                account,
+                                MemberAndIssueProjection.class,
+                                member,
                                 issue
                         )
                 )
