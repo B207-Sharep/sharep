@@ -6,15 +6,15 @@ import lombok.Builder;
 
 @Builder
 public record MemberResponse(
-        Long memberId,
+        Long accountId,
         String nickname,
         List<RoleType> roles,
         String userImageUrl
 ) {
 
-    public static MemberResponse from(Member member){
+    public static MemberResponse from(Member member) {
         return MemberResponse.builder()
-                .memberId(member.getId())
+                .accountId(member.getAccount().getId())
                 .nickname(member.getAccount().getNickname())
                 .roles(
                         member.getRoles()
