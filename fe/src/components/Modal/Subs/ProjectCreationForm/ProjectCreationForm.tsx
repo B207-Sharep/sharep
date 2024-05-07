@@ -11,8 +11,7 @@ import { useModal } from '@/customhooks';
 
 export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
   const { updateContentByKey } = useModal<T.ProjectCreationFormProps>(modalId);
-  const modalData = useRecoilValue(modalDataState(modalId));
-  const { contents } = modalData;
+  const { contents } = useRecoilValue(modalDataState(modalId));
   const [searchValue, setSearchValue] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Omit<T.ProjectCreationFormProps['members'][number], 'roles'>[]>(
     [],

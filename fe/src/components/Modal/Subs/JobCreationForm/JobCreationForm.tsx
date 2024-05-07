@@ -11,8 +11,7 @@ import { modalDataState } from '@/stores/atoms/modal';
 
 export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
   const { updateContentByKey } = useModal<T.JobCreationFormProps>(modalId);
-  const modalData = useRecoilValue(modalDataState(modalId));
-  const { contents } = modalData;
+  const { contents } = useRecoilValue(modalDataState(modalId));
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 

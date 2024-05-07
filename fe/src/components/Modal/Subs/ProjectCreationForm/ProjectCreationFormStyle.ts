@@ -48,18 +48,18 @@ export const Icon = styled.div<{ $position?: string; $fillColor?: string; $strok
   height: 12px;
   display: flex;
   align-items: center;
-  position: ${props => (props.$position ? props.$position : 'static')};
+  position: ${({ $position }) => ($position ? $position : 'static')};
   left: 10px;
   & > svg {
-    fill: ${props => (props.$fillColor ? props.$fillColor : 'none')};
-    stroke: ${props => (props.$strokeColor ? props.$strokeColor : 'none')};
+    fill: ${({ $fillColor }) => ($fillColor ? $fillColor : 'none')};
+    stroke: ${({ $strokeColor }) => ($strokeColor ? $strokeColor : 'none')};
   }
 `;
 
 export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
-  color: ${props => props.color};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
-  font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : '400')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -158,7 +158,7 @@ export const DeleteBtn = styled.div<{ $cursor: boolean }>`
   align-items: center;
   width: 40px;
   height: 32px;
-  cursor: ${props => (props.$cursor ? 'pointer' : 'default')};
+  cursor: ${({ $cursor }) => ($cursor ? 'pointer' : 'default')};
 `;
 
 export const LeaderBadge = styled.div`

@@ -19,8 +19,8 @@ export default function GalleryGridWrapper({ issueList }: T.GalleryGridWrapperPr
             issueId={issue.issueId}
             issueName={issue.issueName}
             createdAt={issue.createdAt}
-            issueType={issue.issueType as 'SCREEN' | 'PRIVATE'}
-            imageUrl={issue.issueType === 'SCREEN' ? `https://picsum.photos/id/${index}/300/200` : undefined}
+            type={issue.type as 'SCREEN' | 'PRIVATE'}
+            imageUrl={issue.type === 'SCREEN' ? `https://picsum.photos/id/${index}/300/200` : undefined}
           />
         ))}
         <S.CardAddBtn className="hover-moving" onClick={handleAddBtn}>

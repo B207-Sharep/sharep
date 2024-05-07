@@ -80,7 +80,7 @@ const DUMMY_SCREEN_LIST = [
     issueId: index + 1,
     issueName: `화면 이슈 ${index + 1}`,
     createdAt: '2024.04.27',
-    issueType: 'SCREEN' as 'SCREEN',
+    type: 'SCREEN' as 'SCREEN',
   })),
 ];
 

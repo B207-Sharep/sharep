@@ -10,8 +10,7 @@ import { Plus, X } from 'lucide-react';
 
 export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
   const { updateContentByKey } = useModal<T.InfraJobCreationFormProps>(modalId);
-  const modalData = useRecoilValue(modalDataState(modalId));
-  const { contents } = modalData;
+  const { contents } = useRecoilValue(modalDataState(modalId));
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState('left');
   const addbBtnRef = useRef<HTMLDivElement | null>(null);
