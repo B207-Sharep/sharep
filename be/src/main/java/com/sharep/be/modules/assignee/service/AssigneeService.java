@@ -2,10 +2,10 @@ package com.sharep.be.modules.assignee.service;
 
 import static io.jsonwebtoken.lang.Assert.notNull;
 
-import com.querydsl.core.Tuple;
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.assignee.repository.projection.AccountAndIssueProjection;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.member.Member;
@@ -116,12 +116,16 @@ public class AssigneeService {
         return assignee.getId();
     }
 
-    public List<Tuple> readProjectNowIssue(Long projectId) {
+    public List<AccountAndIssueProjection> readProjectNowIssue(Long projectId) {
         return assigneeRepository.findAllProjectNowIssueByProjectId(projectId);
     }
 
-    public List<Tuple> readProjectNowOwnIssue(Long projectId, Long accountId) {
-        return assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(projectId,
+    public AccountAndIssueProjection readProjectNowOwnIssue(Long projectId, Long accountId) {
+        List<AccountAndIssueProjection> result = assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(projectId,
                 accountId);
+
+        if(result.size() != 1) throw new RuntimeException("해당하는 구성원이 존재하지 않습니다.");
+
+        return result.get(0);
     }
 }
