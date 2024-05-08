@@ -34,6 +34,6 @@ public class StoryboardController {
             @PathVariable Long connectionId) {
 
         storyboardService.disconnectIssue(connectionId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

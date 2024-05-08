@@ -94,7 +94,7 @@ public class IssueController {
             @PathVariable Long issueId, @RequestBody IssueUpdate issueUpdate,
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
         issueService.updateIssue(issueId, jwtAuthentication.id, projectId, issueUpdate);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{issueId}")
@@ -103,7 +103,7 @@ public class IssueController {
             @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
 
         issueService.deleteIssue(issueId, jwtAuthentication.id, projectId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }
