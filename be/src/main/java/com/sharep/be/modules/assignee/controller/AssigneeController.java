@@ -94,14 +94,8 @@ public class AssigneeController {
         return ResponseEntity.ok(
                 assigneeService.readProjectNowIssue(projectId)
                         .stream()
-                        .map(accountAndIssueProjection -> {
-                            Member member = accountAndIssueProjection.member();
-                            Issue issue = accountAndIssueProjection.issue();
-
-                            notNull(member, "해당하는 계정이 없습니다.");
-
-                            return new AssigneeProjectNowIssueResponse(member, issue);
-                        })
+                        .map(MemberAndIssueProjection::toAssigneeProjectNowIssueResponse)
+                        .sorted()
                         .toList()
         );
     }
@@ -114,16 +108,9 @@ public class AssigneeController {
             @PathVariable @Min(1) Long projectId
     ) {
 
-        MemberAndIssueProjection result = assigneeService.readProjectNowOwnIssue(projectId,
-                authentication.id);
-
-        Member member = result.member();
-        Issue issue = result.issue();
-
-        notNull(member, "해당하는 계정이 없습니다.");
-
         return ResponseEntity.ok(
-                new AssigneeProjectNowIssueResponse(member, issue)
+                assigneeService.readProjectNowOwnIssue(projectId, authentication.id)
+                        .toAssigneeProjectNowIssueResponse()
         );
     }
 

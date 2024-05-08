@@ -2,6 +2,7 @@ package com.sharep.be.modules.member.service;
 
 import com.sharep.be.modules.gpt.GptService;
 import com.sharep.be.modules.job.domain.Job;
+import com.sharep.be.modules.mattermost.NotificationManager;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     private final GptService gptService;
+    private final NotificationManager notificationManager;
 
     @Scheduled(cron = "${schedule.crone}") // application.yml crone tab
     public void summaryDailyJob(){
@@ -31,6 +33,7 @@ public class MemberService {
         for(Member member : members){
             summary(member);
         }
+        notificationManager.sendScheduleNotification();
     }
 
     @Transactional // 멤버 별 트랜잭션 분리, 특정 멤버 예외 시 전체 멤버 rollback 막기

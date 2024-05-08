@@ -2,7 +2,9 @@ package com.sharep.be.infra.config;
 
 import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
+import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.project.repository.ProjectRepository;
+import com.sharep.be.modules.security.IssueBasedVoter;
 import com.sharep.be.modules.security.JwtAuthenticationTokenFilter;
 import com.sharep.be.modules.security.ProjectBasedVoter;
 import java.util.Arrays;
@@ -59,7 +61,7 @@ public class SecurityConfig {
     private long maxAge;
 
     private final ProjectRepository projectRepository;
-
+    private final IssueRepository issueRepository;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -82,7 +84,11 @@ public class SecurityConfig {
                                                 "/auth/login", "/jobs/**", "/gs-guide-websocket/**",
                                                 "/index.html", "/swagger-ui/**",
                                                 "/swagger-resources/**", "/v3/api-docs/**", "/projects/*/hook").permitAll()
-                                        .requestMatchers("/projects/*/**").access(customBasedVoter())
+                                        .requestMatchers("/projects/*/issues/*").access(
+                                                customIssueBasedVoter())
+                                        .requestMatchers("/projects/*/**").access(
+                                                customProjectBasedVoter())
+
                                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                         .anyRequest().authenticated()
 
@@ -93,7 +99,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    public AuthorizationManager<RequestAuthorizationContext> customBasedVoter(){
+    public AuthorizationManager<RequestAuthorizationContext> customProjectBasedVoter(){
         final String regex = "^/api/projects/([^/]+)(/.*)?$";
         final Pattern pattern = Pattern.compile(regex);
 
@@ -104,6 +110,26 @@ public class SecurityConfig {
             Matcher matcher = pattern.matcher(url);
             return matcher.matches() ? toLong(matcher.group(1), -1) : -1;
         });
+    }
+
+    public AuthorizationManager<RequestAuthorizationContext> customIssueBasedVoter(){
+        final String projectRegex = "^/api/projects/([^/]+)(/.*)?$";
+        final Pattern projectPattern = Pattern.compile(projectRegex);
+
+        final String issueRegex = "^/api/projects/[^/]+/issues/([^/]+).*$";
+        final Pattern issuePattern = Pattern.compile(issueRegex);
+
+        return new IssueBasedVoter(
+                issueRepository, (String url) -> {
+            /* url에서 targetId를 추출하기 위해 정규식 처리 */
+            Matcher matcher = projectPattern.matcher(url);
+            return matcher.matches() ? toLong(matcher.group(1), -1) : -1;
+        },
+                (String url) -> {
+                    /* url에서 targetId를 추출하기 위해 정규식 처리 */
+                    Matcher matcher = issuePattern.matcher(url);
+                    return matcher.matches() ? toLong(matcher.group(1), -1) : -1;
+                });
     }
 
     @Bean
