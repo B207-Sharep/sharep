@@ -8,16 +8,21 @@ import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
 import * as API from '@/apis/projects';
 import { useParams } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function Modal({ modalId, title, subTitle, children, btnText }: T.ModalProps) {
+  const queryClient = useQueryClient();
   const { closeModal } = useModal(modalId);
   const { projectId } = useParams();
-
   const { isOpen, isValid } = useRecoilValue(modalDataState(modalId));
 
-  const handleModalClose = () => {
-    closeModal();
-  };
+  const createProjectMutation = useMutation({
+    mutationKey: [{ func: `createProject` }],
+    mutationFn: API.createNewProject,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [{ projectList: `projectList` }] });
+    },
+  });
 
   const handleCreateButtonClick = useRecoilCallback(({ snapshot, set }) => async () => {
     const contents = (await snapshot.getPromise(modalDataState(modalId))).contents;
@@ -29,7 +34,7 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
             {
               const result = processProjectData(contents as T.ProjectCreationFormProps);
               if (result) {
-                API.createNewProject(result);
+                await createProjectMutation.mutateAsync(result);
               } else throw Error;
             }
             break;
@@ -54,6 +59,10 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
       console.error(error);
     }
   });
+
+  const handleModalClose = () => {
+    closeModal();
+  };
 
   return isOpen ? (
     <S.ModalBackdrop onClick={handleModalClose}>
