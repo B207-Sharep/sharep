@@ -29,6 +29,11 @@ import { TeamDashboardProps, TeamMemberProps, GanttChartProps, CurrentWorkProps 
 import { KanbanProps, ContributionsChartProps, YesterdayWorkProps, MemberListResponse } from './pages/TeamMember';
 import { CommitHistoryProps, FilterProps } from './pages/CommitHistory';
 /** ================= Pages ================= */
+
+/** ================= API ================= */
+import * as API from './apis';
+/** ================= API ================= */
+
 export type {
   BaseInputProps,
   BaseLabelProps,
@@ -65,4 +70,5 @@ export type {
   FilterProps,
   CurrentWorkProps,
   MemberListResponse,
+  API,
 };
