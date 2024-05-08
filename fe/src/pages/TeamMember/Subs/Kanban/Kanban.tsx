@@ -32,8 +32,10 @@ export default function Kanban({
   });
 
   const filteringResponse = useCallback(
-    ({ state }: { state: 'YET' | 'NOW' | 'DONE' }): Omit<T.IssueProps, 'dragAble'>[] => {
-      return issues?.map(issue => issue.state === state && issue).filter(el => el) as Omit<T.IssueProps, 'dragAble'>[];
+    ({ state }: { state: 'YET' | 'NOW' | 'DONE' }): T.API.GetKanvanListResponse[] => {
+      return issues
+        .map(issue => issue.state === state && issue)
+        .filter((el: T.API.GetKanvanListResponse | false) => el) as T.API.GetKanvanListResponse[];
     },
     [issues],
   );
@@ -47,7 +49,7 @@ export default function Kanban({
     const filteredIssues = filteringResponse({ state });
 
     return filteredIssues.reduce(
-      (closest: { gapBetweenCursor: number; element: null | Omit<T.IssueProps, 'dragAble'> }, element, idx) => {
+      (closest: { gapBetweenCursor: number; element: null | T.API.GetKanvanListResponse }, element, idx) => {
         const wrapperPositionY = (issuesWrapperRef.current?.getBoundingClientRect() as DOMRect).top;
 
         const { ISSUE_HEIGHT, GAP } = { ISSUE_HEIGHT: 116, GAP: 10 };

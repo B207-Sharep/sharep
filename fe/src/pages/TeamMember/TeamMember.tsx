@@ -13,7 +13,6 @@ import { userState } from '@/stores/atoms/loadUser';
 export default function TeamMember() {
   const { projectId, accountId } = useParams();
   const clientUser = useRecoilValue(userState);
-  console.log(`clientUser :`, clientUser);
   const [dragEnterdState, setDragEnterdState] = useState<null | 'YET' | 'NOW' | 'DONE'>(null);
 
   const [
@@ -34,11 +33,11 @@ export default function TeamMember() {
           }),
       },
       {
-        queryKey: [{ func: `get-contributions`, projectId, accountId: Number(accountId) }],
+        queryKey: [{ func: `get-contributions`, projectId, accountId: accountId }],
         queryFn: () => API.project.getContributions({ projectId: Number(projectId), accountId: Number(accountId) }),
       },
       {
-        queryKey: [{ func: `get-kanvan`, projectId, accountId: Number(accountId) }],
+        queryKey: [{ func: `get-kanvan`, projectId, accountId: accountId }],
         queryFn: () => API.project.getKanvanList({ projectId: Number(projectId), accountId: Number(accountId) }),
       },
       {
@@ -48,10 +47,10 @@ export default function TeamMember() {
     ],
   });
 
-  const findMember = useMemo((): T.MemberListResponse => {
+  const findMember = useMemo((): T.API.GetProjectMemberListResponse => {
     return membersResponse?.data
-      .map((member: T.MemberListResponse) => member.account.id === Number(accountId) && member)
-      .filter((el: T.MemberListResponse | false) => el)[0];
+      .map((member: T.API.GetProjectMemberListResponse) => member.account.id === Number(accountId) && member)
+      .filter((el: T.API.GetProjectMemberListResponse | false) => el)[0] as T.API.GetProjectMemberListResponse;
   }, [membersResponse?.data, accountId]);
 
   return (
@@ -79,7 +78,7 @@ export default function TeamMember() {
                 <span>최근 작업들</span>
               </S.Title>
               <S.RecentlyCommitsScrollContainer>
-                {jobsResponse?.data.map((job: T.CommitProps) => (
+                {jobsResponse?.data.map((job: T.API.GetJobListResponse) => (
                   <Comp.Commit {...job} key={`job-in-team-member-page-${job.id}`} disabled={true} />
                 ))}
               </S.RecentlyCommitsScrollContainer>
@@ -90,7 +89,7 @@ export default function TeamMember() {
           <S.Title>
             <span>{findMember && findMember.account.nickname}님의 기여도</span>
           </S.Title>
-          <Sub.ContributionsChart dataList={contributionsResponse?.data} />
+          <Sub.ContributionsChart dataList={contributionsResponse?.data || null} />
         </S.WhiteBoxWrapper>
       </S.RowWrapper>
       <S.KanbansWrapper>
@@ -101,7 +100,7 @@ export default function TeamMember() {
             refetchKanvansResponse={refetchKanvansResponse}
             dragEnterdState={dragEnterdState}
             setDragEnterdState={setDragEnterdState}
-            issues={kanvansResponse?.data}
+            issues={kanvansResponse?.data || []}
             dragAble={findMember && clientUser !== null && findMember.account.id === Number(clientUser.id)}
             deleteAble={findMember && clientUser !== null && findMember.account.id === Number(clientUser.id)}
           />

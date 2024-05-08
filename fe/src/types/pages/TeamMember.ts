@@ -3,7 +3,7 @@ import React from 'react';
 
 export interface KanbanProps {
   state: 'YET' | 'NOW' | 'DONE';
-  issues: Omit<Omit<T.IssueProps, 'dragAble'>, 'deleteAble'>[];
+  issues: T.API.GetKanvanListResponse[];
   dragEnterdState: null | 'YET' | 'NOW' | 'DONE';
   setDragEnterdState: React.Dispatch<React.SetStateAction<null | 'YET' | 'NOW' | 'DONE'>>;
   refetchKanvansResponse: () => any;
@@ -13,7 +13,7 @@ export interface KanbanProps {
 }
 
 export interface ContributionsChartProps {
-  dataList: { [date: string]: number };
+  dataList: { [date: string]: number } | null;
 }
 
 export interface YesterdayWorkProps {
