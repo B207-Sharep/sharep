@@ -47,7 +47,7 @@ public class IssueBasedVoter implements AuthorizationManager<RequestAuthorizatio
         Long projectId = obtainProjectTargetId(context.getRequest());
         Long issueId = obtainIssueTargetId(context.getRequest());
 
-        List<Issue> issues = issueRepository.findIssuesByProjectId(projectId);
+        List<Issue> issues = issueRepository.findAllByProjectId(projectId);
 
         if (issues.stream().map(issue -> issue.getProject().getId()).anyMatch(p -> p.equals(issueId))) {
             log.info("======== granted voter out ========");
