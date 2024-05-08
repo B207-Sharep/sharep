@@ -76,13 +76,17 @@ public class Issue {
     private Project project;
 
     @OneToMany(mappedBy = "featureIssue")
-    private Set<Storyboard> storyboards;
+    private Set<Storyboard> featureStoryboards;
+
+    @OneToMany(mappedBy = "screenIssue")
+    private Set<Storyboard> screenStoryboards;
 
 
     @Builder
     public Issue(Long id, String issueName, String description, IssueType type, String epic,
             LocalDateTime createdAt, PriorityType priority, Api api, Set<Assignee> assignees,
-            Set<Job> jobs, Project project, Set<Storyboard> storyboards) {
+            Set<Job> jobs, Project project, Set<Storyboard> featureStoryboards,
+            Set<Storyboard> screenStoryboards) {
         this.id = id;
         this.issueName = issueName;
         this.description = description;
@@ -94,7 +98,8 @@ public class Issue {
         this.assignees = assignees;
         this.jobs = jobs;
         this.project = project;
-        this.storyboards = storyboards;
+        this.featureStoryboards = featureStoryboards;
+        this.screenStoryboards = screenStoryboards;
     }
 
     public void updateApi(Api api) {
