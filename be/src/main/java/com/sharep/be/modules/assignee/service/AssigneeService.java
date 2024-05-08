@@ -17,6 +17,7 @@ import com.sharep.be.modules.notification.domain.NotificationMessage;
 import com.sharep.be.modules.notification.service.NotificationRepository;
 import com.sharep.be.modules.notification.service.NotificationService;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,12 +124,12 @@ public class AssigneeService {
         return assignee.getId();
     }
 
-    public List<MemberAndIssueProjection> readProjectNowIssue(Long projectId) {
+    public Set<MemberAndIssueProjection> readProjectNowIssue(Long projectId) {
         return assigneeRepository.findAllProjectNowIssueByProjectId(projectId);
     }
 
     public MemberAndIssueProjection readProjectNowOwnIssue(Long projectId, Long accountId) {
-        List<MemberAndIssueProjection> result = assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(
+        Set<MemberAndIssueProjection> result = assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(
                 projectId,
                 accountId);
 
@@ -136,6 +137,6 @@ public class AssigneeService {
             throw new RuntimeException("해당하는 구성원이 존재하지 않습니다.");
         }
 
-        return result.get(0);
+        return result.iterator().next();
     }
 }
