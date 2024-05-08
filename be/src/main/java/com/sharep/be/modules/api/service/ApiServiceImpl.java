@@ -34,11 +34,11 @@ public class ApiServiceImpl implements ApiService {
         Issue issue = issueRepository.findById(apiCreate.issueId())
                 .orElseThrow(IssueNotFoundException::new);
 
-        isNull(issue.getApi(), "Api가 이미 존재합니다.");
+        isNull(issue.getApi(), "API가 이미 존재합니다.");
 
         Api api = apiCreate.toEntityWith(issue);
         issue.updateApi(api);
-        
+
         return api;
     }
 
@@ -54,7 +54,7 @@ public class ApiServiceImpl implements ApiService {
         Issue issue = issueRepository.findById(apiId).orElseThrow(IssueNotFoundException::new);
         Api api = issue.getApi();
 
-        notNull(api, "api가 이미 없습니다.");
+        notNull(api, "API가 이미 없습니다.");
 
         issue.updateApi(null);
     }

@@ -3,6 +3,8 @@ package com.sharep.be.modules.issue.service;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
+import com.sharep.be.modules.issue.type.DataType;
+import com.sharep.be.modules.issue.type.IssueType;
 import java.util.List;
 
 public interface IssueService {
@@ -11,15 +13,9 @@ public interface IssueService {
 
     Issue getIssue(Long id);
 
-    List<Issue> getIssues(Long projectId);
+    List<Issue> getIssues(Long projectId, Long accountId, IssueType issueType, DataType dataType);
 
     void updateIssue(Long id, Long accountId, Long projectId, IssueUpdate issueUpdate);
 
     void deleteIssue(Long id, Long accountId, Long projectId);
-
-    List<Issue> getKanbanIssues(Long projectId, Long accountId);
-
-    List<Issue> getFeatureIssues(Long projectId);
-
-    List<Issue> getScreenIssues(Long projectId);
 }

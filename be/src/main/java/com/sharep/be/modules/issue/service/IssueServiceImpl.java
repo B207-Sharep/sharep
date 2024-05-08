@@ -14,6 +14,7 @@ import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.repository.IssueRepository;
+import com.sharep.be.modules.issue.type.DataType;
 import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.repository.MemberRepository;
@@ -37,6 +38,20 @@ public class IssueServiceImpl implements IssueService {
     private final AssigneeRepository assigneeRepository;
 
     @Override
+    public Issue getIssue(Long id) {
+
+        return issueRepository.findById(id).orElseThrow(IssueNotFoundException::new);
+    }
+
+    @Override
+    public List<Issue> getIssues(Long projectId, Long accountId, IssueType issueType,
+            DataType dataType) {
+
+        return issueRepository.findAllByProjectIdAndAccountIdAndIssueType(
+                projectId, accountId, issueType, dataType);
+    }
+
+    @Override
     public Issue createIssue(Long projectId, Long accountId, IssueCreate issueCreate) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
@@ -57,38 +72,6 @@ public class IssueServiceImpl implements IssueService {
         }
 
         return issue;
-    }
-
-    @Override
-    public Issue getIssue(Long id) {
-
-        return issueRepository.findById(id).orElseThrow(IssueNotFoundException::new);
-    }
-
-    @Override
-    public List<Issue> getIssues(Long projectId) {
-
-        return issueRepository.findAllByProjectId(projectId);
-    }
-
-    @Override
-    public List<Issue> getKanbanIssues(Long projectId, Long accountId) {
-        Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
-                .orElseThrow(MemberNotFoundException::new);
-
-        return issueRepository.findAllByMemberId(member.getId());
-    }
-
-    @Override
-    public List<Issue> getFeatureIssues(Long projectId) {
-
-        return issueRepository.findAllByProjectIdAndIssueType(projectId, IssueType.FEATURE);
-    }
-
-    @Override
-    public List<Issue> getScreenIssues(Long projectId) {
-
-        return issueRepository.findAllByProjectIdAndIssueType(projectId, IssueType.SCREEN);
     }
 
     @Override
