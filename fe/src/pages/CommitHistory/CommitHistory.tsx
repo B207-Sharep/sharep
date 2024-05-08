@@ -12,31 +12,31 @@ import { useQueries } from '@tanstack/react-query';
 
 export default function CommitHistory() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { projectId, accountId, issueId, roleType } = useParams();
+  const { projectId } = useParams();
   const navigate = useNavigate();
   const jobModal = useModal('job');
 
   const [openFilter, setOpenFilter] = useState<keyof T.FilterProps['type'] | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<T.FilterProps['type']>({
-    member: null,
-    role: null,
-    issue: null,
+    accountId: null,
+    roleType: null,
+    issueId: null,
   });
 
   const [
-    { data: jobListResponse, isSuccess: jobListSuccess, isFetching: jobListeFetching },
+    { data: jobListResponse, isSuccess: jobListSuccess, isFetching: jobListeFetching, refetch: jobListRefetch },
     { data: memberListResponse, isSuccess: memberListSuccess, isFetching: memberListFetching },
     { data: issueListResponse, isSuccess: issueListSuccess, isFetching: issueListFetching },
   ] = useQueries({
     queries: [
       {
-        queryKey: [{ func: `get-job-list`, projectId }],
+        queryKey: [{ func: `get-job-list`, projectId, searchParams }],
         queryFn: () =>
           API.project.getJobList({
             projectId: Number(projectId),
-            accountId: Number(accountId),
-            issueId: Number(issueId),
-            roleType: roleType as Extract<T.RoleBadgeProps, 'role'>,
+            accountId: Number(searchParams.get('accountId')),
+            issueId: Number(searchParams.get('issueId')),
+            roleType: searchParams.get('roleType') as Extract<T.RoleBadgeProps, 'role'>,
           }),
       },
       {
@@ -75,15 +75,17 @@ export default function CommitHistory() {
   };
 
   useEffect(() => {
-    const member = searchParams.get('member');
-    const role = searchParams.get('role');
-    const issue = searchParams.get('issue');
+    const member = searchParams.get('accountId');
+    const role = searchParams.get('roleType');
+    const issue = searchParams.get('issueId');
 
     // setSelectedFilter({
     //   member,
     //   role,
     //   issue,
     // });
+    console.log('search params changed');
+    jobListRefetch();
   }, [searchParams]);
 
   return (
@@ -95,8 +97,8 @@ export default function CommitHistory() {
           </S.StyledText>
           <div>
             <S.FilterWrapper>
-              {filters.map(filter => (
-                <S.Filter key={filter.type} onClick={() => toggleDropdown(filter.type)}>
+              {filters.map((filter, index) => (
+                <S.Filter key={index} onClick={() => toggleDropdown(filter.type)}>
                   <UsersRound color={PALETTE.LIGHT_BLACK} size={14} />
                   <S.StyledText color={PALETTE.SUB_BLACK} fontSize={14}>
                     {filter.label}
@@ -109,7 +111,7 @@ export default function CommitHistory() {
                   </S.AccordionIconButton>
                   {openFilter === filter.type && (
                     <S.Dropdown>
-                      {/* {openFilter === 'role' ? (
+                      {openFilter === 'roleType' ? (
                         <>
                           {roleList.map(role => (
                             <S.DropdowntItem key={role} onClick={() => selectValue(openFilter, role)}>
@@ -117,69 +119,31 @@ export default function CommitHistory() {
                             </S.DropdowntItem>
                           ))}
                         </>
-                      ) : openFilter === 'member' && isMemberSuccess ? (
+                      ) : openFilter === 'accountId' && memberListSuccess ? (
                         <>
-                          {memberData.map(member => (
-                            <S.DropdowntItem key={member.id} onClick={() => selectValue(openFilter, member.name)}>
+                          {memberListResponse?.data.map((member: T.API.GetProjectMemberListResponse) => (
+                            <S.DropdowntItem
+                              key={member.id}
+                              onClick={() => selectValue(openFilter, member.account.id.toString())}
+                            >
                               <S.UserProfile>
                                 <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
                                 <S.UserInfo>
-                                  <S.StyledText>{member.name}</S.StyledText>
+                                  <S.StyledText>{member.account.nickname}</S.StyledText>
                                 </S.UserInfo>
                               </S.UserProfile>
                             </S.DropdowntItem>
                           ))}
                         </>
-                      ) : openFilter === 'issue' && isIssueSuccess ? (
+                      ) : openFilter === 'issueId' && issueListSuccess ? (
                         <>
-                          {issueData.map(issue => (
-                            <S.DropdowntItem key={issue.id} onClick={() => selectValue(openFilter, issue.issueName)}>
+                          {issueListResponse.data.map(issue => (
+                            <S.DropdowntItem key={issue.id} onClick={() => selectValue(openFilter, issue.id)}>
                               <S.StyledText>{issue.issueName}</S.StyledText>
                             </S.DropdowntItem>
                           ))}
                         </>
-                      ) : null} */}
-                      {openFilter === 'role' ? (
-                        <>
-                          {roleList.map(role => (
-                            <S.DropdowntItem key={role} onClick={() => selectValue(openFilter, role)}>
-                              <Comp.RoleBadge role={role} selectAble={false} />
-                            </S.DropdowntItem>
-                          ))}
-                        </>
-                      ) : openFilter === 'member' && memberListSuccess ? (
-                        <>
-                          {memberListResponse?.data.map((member: T.API.GetProjectMemberListResponse) => (
-                            <S.UserProfile
-                              key={member.id}
-                              onClick={() =>
-                                selectValue(openFilter, { id: member.account.id, nickname: member.account.nickname })
-                              }
-                            >
-                              <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
-                              <S.UserInfo>
-                                <S.StyledText>{member.account.nickname}</S.StyledText>
-                              </S.UserInfo>
-                            </S.UserProfile>
-                          ))}
-                        </>
-                      ) : openFilter === 'issue' && issueListSuccess ? (
-                        <>{/* <S.StyledText>{value}</S.StyledText> */}</>
                       ) : null}
-
-                      {/* {dropdownDummy[openFilter].map(value => (
-                            <S.DropdowntItem key={value} onClick={() => selectValue(openFilter, value)}>
-                              {filter.type === 'member' && (
-                                <S.UserProfile>
-                                  <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
-                                  <S.UserInfo>
-                                    <S.StyledText>{value}</S.StyledText>
-                                  </S.UserInfo>
-                                </S.UserProfile>
-                              )}
-                              {filter.type === 'issue' && <S.StyledText>{value}</S.StyledText>}
-                            </S.DropdowntItem>
-                          ))} */}
                     </S.Dropdown>
                   )}
                 </S.Filter>
@@ -228,17 +192,16 @@ export default function CommitHistory() {
   );
 }
 
-// const dropdownDummy = {
-//   member: ['팀원1', '팀원2', '팀원3'], // /api/projects/{projectId}/members
-//   issue: ['이슈1', '이슈2', '이슈3'],
-// };
-
 const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
 
-const filters: T.FilterProps['type'][] = [
-  { type: 'member', icon: <UsersRound color={PALETTE.LIGHT_BLACK} size={14} />, label: '팀원' },
-  { type: 'role', icon: <BriefcaseBusiness color={PALETTE.LIGHT_BLACK} size={14} />, label: '직무' },
-  { type: 'issue', icon: <CircleDotDashed color={PALETTE.LIGHT_BLACK} size={14} />, label: '이슈' },
+const filters: {
+  type: keyof T.FilterProps['type'];
+  icon: React.JSX.Element;
+  label: string;
+}[] = [
+  { type: 'accountId', icon: <UsersRound color={PALETTE.LIGHT_BLACK} size={14} />, label: '팀원' },
+  { type: 'roleType', icon: <BriefcaseBusiness color={PALETTE.LIGHT_BLACK} size={14} />, label: '직무' },
+  { type: 'issueId', icon: <CircleDotDashed color={PALETTE.LIGHT_BLACK} size={14} />, label: '이슈' },
 ];
 
 function groupCommitsByDate(commits: T.CommitHistoryProps[]): Record<string, T.CommitHistoryProps[]> {
