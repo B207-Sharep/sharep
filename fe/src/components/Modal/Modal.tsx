@@ -46,12 +46,16 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
             }
             break;
           case 'job':
-            await createNewJobMutation.mutateAsync({
-              projectId: Number(projectId),
-              newJob: contents as T.JobCreationFormProps,
-            });
-
-            // TODO: isseuId가 없는 경우 예외
+            if (contents.issueId)
+              await createNewJobMutation.mutateAsync({
+                projectId: Number(projectId),
+                newJob: contents as T.JobCreationFormProps,
+              });
+            else {
+              // TODO: isseuId가 없는 경우
+              alert('진행 중인 이슈가 없습니다');
+              throw Error;
+            }
 
             break;
           case 'infra-job':

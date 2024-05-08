@@ -23,7 +23,7 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   const {
     data: myNowIssueResponse,
     isSuccess: myNowIssueSuccess,
-    isLoading: myNowIssueLoading,
+    isFetching: myNowIssueFetching,
   } = useQuery({
     queryKey: [{ func: `get-now-issue-about-me`, projectId }],
     queryFn: () => API.getNowIssueAboutMe({ projectId: Number(projectId) }),
@@ -90,9 +90,8 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
               Issue
             </S.StyledText>
           </S.IssueBadge>
-          {/* TODO: IssueName */}
           <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
-            {myNowIssueResponse?.issue.issueName}
+            {(myNowIssueResponse && myNowIssueResponse.issue?.issueName) || '진행 중인 이슈가 없습니다'}
           </S.StyledText>
         </S.IssueTitle>
       </S.TitleContainer>

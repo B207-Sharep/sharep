@@ -13,7 +13,7 @@ export default function ScreenManual() {
   const {
     data: screenIssueListResponse,
     isSuccess: screenIssueListSuccess,
-    isLoading: screenIssueListLoading,
+    isFetching: screenIssueListLoading,
   } = useQuery({
     queryKey: [{ func: `screen-issue-list`, projectId }],
     queryFn: () =>

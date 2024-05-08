@@ -21,6 +21,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
   const {
     data: searchEmailResponse,
     isSuccess: searchEmailSuccess,
+    isFetching: searchEmailFetching,
     refetch: searchEmailRefetch,
   } = useQuery({
     queryKey: [{ func: `searchByEmail`, searchValue }],

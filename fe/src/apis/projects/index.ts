@@ -21,6 +21,7 @@ export async function getJobList({
   roleType: Extract<T.RoleBadgeProps, 'role'> | null;
   issueId: number | null;
 }): Promise<AxiosResponse<T.API.GetJobListResponse[], any>> {
+  console.log(projectId, accountId, roleType, issueId);
   return await instanceOfJson.get(
     `/projects/${projectId}/jobs?accountId=${accountId || ''}&roleType=${roleType || ''}&issueId=${issueId || ''}`,
   );
@@ -55,6 +56,15 @@ export async function getNowIssueAboutTeamMembers({
   projectId: number;
 }): Promise<AxiosResponse<T.API.GetNowIssueListResponse[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/now/issues`);
+}
+
+/** 본인의 진행중인 리스트 조회 */
+export async function getNowIssueAboutMe({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.GetNowIssueListResponse, any>> {
+  return instanceOfJson.get(`/projects/${projectId}/own/now/issues`);
 }
 
 /** 모든 이슈 리스트 조회 */
@@ -107,7 +117,9 @@ export async function createNewJob({
   };
 }) {
   const formData = new FormData();
-  formData.append('request', JSON.stringify({ name: newJob.name, description: newJob.description }));
+  const request = JSON.stringify({ name: newJob.name, description: newJob.description });
+  const blob = new Blob([request], { type: 'application/json' });
+  formData.append('request', blob);
   if (newJob.imageFile) formData.append('image', newJob.imageFile);
 
   return await instanceOfFormData.post(`/projects/${projectId}/issues/${newJob.issueId}/jobs`, formData);
