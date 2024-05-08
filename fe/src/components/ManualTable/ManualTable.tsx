@@ -31,7 +31,7 @@ export default function ManualTable({ columnTitles, dataList, usingFor }: T.Manu
         <S.RowWrapper key={`${usingFor}-table-row-${dataIdx}`}>
           {Object.keys(data).map((dataObjKey, dataObjKeyIdx) =>
             columnTitles[dataObjKeyIdx].celType === 'TEXT' ? (
-              <Sub.TextCel
+              <Sub.TextAreaCel
                 fixedWidth={columnTitles[dataObjKeyIdx].fixedWidth}
                 initialState={dataList[dataIdx][dataObjKey]}
                 key={`${usingFor}-table-cell-${dataObjKey}-${dataIdx}`}
