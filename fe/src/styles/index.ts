@@ -22,6 +22,8 @@ export const PALETTE: {
   MAIN_COLOR: '#2eb872';
   SUB_COLOR: '#83cc61';
   LIGHT_COLOR: '#a3de83';
+  GANTT_CHART: '#cdcdcd';
+  MAIN_RED: '#E42A2A';
   [key: string]: string;
 } = {
   MAIN_BACKGROUND: '#f7f7f7',
@@ -46,6 +48,7 @@ export const PALETTE: {
   SUB_COLOR: '#83cc61',
   LIGHT_COLOR: '#a3de83',
   GANTT_CHART: '#cdcdcd',
+  MAIN_RED: '#E42A2A',
 };
 
 export const GlobalStyle = createGlobalStyle`

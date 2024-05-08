@@ -74,7 +74,7 @@ export async function createNewJob({
 }
 
 /** 이슈 상태 변경 */
-export async function patchIssueState({
+export async function patchIssueAssigneesState({
   projectId,
   issueId,
   accountId,
@@ -85,9 +85,21 @@ export async function patchIssueState({
   accountId: number;
   state: 'YET' | 'NOW' | 'DONE';
 }) {
-  return await instanceOfJson.patch(`/projects/${projectId}/issues/${issueId}/accounts/${accountId}/assignee`, {
+  return await instanceOfJson.patch(`/projects/${projectId}/issues/${issueId}/accounts/${accountId}/assignees`, {
     state: state,
   });
+}
+
+export async function deleteIssueAssignees({
+  projectId,
+  issueId,
+  accountId,
+}: {
+  projectId: number;
+  issueId: number;
+  accountId: number;
+}) {
+  return instanceOfJson.delete(`/projects/${projectId}/issues/${issueId}/accounts/${accountId}/assignees`);
 }
 
 /** 프로젝트의 맴버 리스트 조회 */
