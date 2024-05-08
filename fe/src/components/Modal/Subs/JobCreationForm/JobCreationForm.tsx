@@ -3,17 +3,32 @@ import * as S from './JobCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
 import * as Icon from '@/assets';
+import * as API from '@/apis/projects';
 import { PALETTE } from '@/styles';
 import { Image as UploadImageIcon } from 'lucide-react';
 import { useModal } from '@/customhooks';
 import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
   const { updateContentByKey, updateIsValid } = useModal<T.JobCreationFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
+  const { projectId } = useParams();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
+  const {
+    data: myNowIssueResponse,
+    isSuccess: myNowIssueSuccess,
+    isLoading: myNowIssueLoading,
+  } = useQuery({
+    queryKey: [{ func: `get-now-issue-about-me`, projectId }],
+    queryFn: () => API.getNowIssueAboutMe({ projectId: Number(projectId) }),
+    select: data => data.data,
+  });
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -60,9 +75,11 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
 
   useEffect(() => {
     // TODO : 진행 중인 이슈 조회
-    // const issueId = '';
-    // updateContentByKey('issueId', issueId);
-  }, []);
+    if (myNowIssueSuccess && myNowIssueResponse.issue) {
+      console.log(myNowIssueResponse);
+      updateContentByKey('issueId', myNowIssueResponse.issue.id);
+    }
+  }, [myNowIssueSuccess, myNowIssueResponse]);
 
   return (
     <S.Wrapper>
@@ -75,7 +92,7 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
           </S.IssueBadge>
           {/* TODO: IssueName */}
           <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
-            진행 중인 이슈 이름
+            {myNowIssueResponse?.issue.issueName}
           </S.StyledText>
         </S.IssueTitle>
       </S.TitleContainer>

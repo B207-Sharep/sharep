@@ -14,9 +14,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
   const { updateContentByKey, updateIsValid } = useModal<T.ProjectCreationFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
   const [searchValue, setSearchValue] = useState<string>('');
-  // const [searchResults, setSearchResults] = useState<Omit<T.ProjectCreationFormProps['members'][number], 'roles'>[]>(
-  //   [],
-  // );
+
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 

@@ -35,9 +35,14 @@ export async function getKanvanList({ projectId, accountId }: { projectId: numbe
   return await instanceOfJson.get(`/projects/${projectId}/issues/kanban?accountId=${accountId || ''}`);
 }
 
-/** 팀원들의 진행중인 리스트 조회 */
+/** 팀원들의 진행중인 이슈 리스트 조회 */
 export async function getNowIssueAboutTeamMembers({ projectId }: { projectId: number }) {
   return instanceOfJson.get(`/projects/${projectId}/now/issues`);
+}
+
+/** 본인의 진행중인 이슈 조회 */
+export async function getNowIssueAboutMe({ projectId }: { projectId: number }) {
+  return instanceOfJson.get(`/projects/${projectId}/own/now/issues`);
 }
 
 /** 모든 이슈 리스트 조회 */
@@ -70,14 +75,21 @@ export async function createNewProject(newProject: {
 /** 새 작업 생성 */
 export async function createNewJob({
   projectId,
-  issueId,
   newJob,
 }: {
-  issueId: number;
   projectId: number;
-  newJob: T.JobCreationFormProps;
+  newJob: {
+    issueId: number;
+    name: string;
+    description: string;
+    imageFile: File | null;
+  };
 }) {
-  return await instanceOfFormData.post(`/projects/${projectId}/issues/${issueId}/jobs`, newJob);
+  const formData = new FormData();
+  formData.append('request', JSON.stringify({ name: newJob.name, description: newJob.description }));
+  if (newJob.imageFile) formData.append('image', newJob.imageFile);
+
+  return await instanceOfFormData.post(`/projects/${projectId}/issues/${newJob.issueId}/jobs`, formData);
 }
 
 /** 이메일 계정 조회 */

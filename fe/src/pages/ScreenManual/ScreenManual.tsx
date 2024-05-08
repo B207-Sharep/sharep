@@ -15,7 +15,7 @@ export default function ScreenManual() {
     isSuccess: screenIssueListSuccess,
     isLoading: screenIssueListLoading,
   } = useQuery({
-    queryKey: [{ func: `screenIssueList` }],
+    queryKey: [{ func: `screen-issue-list`, projectId }],
     queryFn: () =>
       API.getScreenIssueList({ projectId: Number(projectId) }).then(res => {
         console.log(res);

@@ -16,32 +16,43 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
   const { projectId } = useParams();
   const { isOpen, isValid } = useRecoilValue(modalDataState(modalId));
 
-  const createProjectMutation = useMutation({
-    mutationKey: [{ func: `createProject` }],
+  const createNewProjectMutation = useMutation({
+    mutationKey: [{ func: `createNewProject` }],
     mutationFn: API.createNewProject,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [{ projectList: `projectList` }] });
     },
   });
 
+  const createNewJobMutation = useMutation({
+    mutationKey: [{ func: `createNewJob`, projectId }],
+    mutationFn: API.createNewJob,
+    onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: [] });
+    },
+  });
+
   const handleCreateButtonClick = useRecoilCallback(({ snapshot, set }) => async () => {
     const contents = (await snapshot.getPromise(modalDataState(modalId))).contents;
     try {
-      // api call
       if (contents) {
         switch (modalId) {
           case 'project':
             {
               const result = processProjectData(contents as T.ProjectCreationFormProps);
               if (result) {
-                await createProjectMutation.mutateAsync(result);
+                await createNewProjectMutation.mutateAsync(result);
               } else throw Error;
             }
             break;
           case 'job':
-            console.log('projectId', projectId);
-            // TODO: issueId 어떻게 가지고 오나? props에 추가?
-            // createNewJob(projectId,);
+            await createNewJobMutation.mutateAsync({
+              projectId: Number(projectId),
+              newJob: contents as T.JobCreationFormProps,
+            });
+
+            // TODO: isseuId가 없는 경우 예외
+
             break;
           case 'infra-job':
             break;
