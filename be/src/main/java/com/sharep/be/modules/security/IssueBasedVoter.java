@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.repository.IssueRepository;
-import com.sharep.be.modules.project.Project;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.function.Function;
@@ -17,6 +16,7 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
 
 @Slf4j
 public class IssueBasedVoter implements AuthorizationManager<RequestAuthorizationContext> {
+    private final AuthorizationManager<RequestAuthorizationContext> projectVoterManager;
 
     private final IssueRepository issueRepository;
     private final Function<String, Long> projectIdExtractor;
@@ -24,13 +24,14 @@ public class IssueBasedVoter implements AuthorizationManager<RequestAuthorizatio
 
     public IssueBasedVoter(IssueRepository issueRepository,
             Function<String, Long> projectIdExtractor,
-            Function<String, Long> issueIdExtractor) {
+            Function<String, Long> issueIdExtractor, AuthorizationManager authorizationManager) {
         checkArgument(projectIdExtractor != null, "idExtractor must be provided.");
         checkArgument(issueIdExtractor != null, "idExtractor must be provided.");
 
         this.projectIdExtractor = projectIdExtractor;
         this.issueIdExtractor = issueIdExtractor;
         this.issueRepository = issueRepository;
+        this.projectVoterManager = authorizationManager;
     }
 
     @Override
@@ -42,19 +43,30 @@ public class IssueBasedVoter implements AuthorizationManager<RequestAuthorizatio
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication,
             RequestAuthorizationContext context) {
+        projectVoterManager.check(authentication, context);
+
         log.info("======== security issue based voter in ========");
 
         Long projectId = obtainProjectTargetId(context.getRequest());
         Long issueId = obtainIssueTargetId(context.getRequest());
 
-        List<Issue> issues = issueRepository.findAllByProjectId(projectId);
+        if (needCheck(issueId)) {
+            List<Issue> issues = issueRepository.findAllByProjectId(projectId);
 
-        if (issues.stream().map(issue -> issue.getProject().getId()).anyMatch(p -> p.equals(issueId))) {
-            log.info("======== granted voter out ========");
+            if (issues.stream().map(Issue::getId).anyMatch(p -> p.equals(issueId))) {
+                log.info("======== granted voter out ========");
+                return new AuthorizationDecision(true);
+            }
+            log.info("======== not granted voter out ========");
+            return new AuthorizationDecision(false);
+        } else {
             return new AuthorizationDecision(true);
         }
-        log.info("======== not granted voter out ========");
-        return new AuthorizationDecision(false);
+
+    }
+
+    private boolean needCheck(Long issueId) {
+        return !issueId.equals(-1L);
     }
 
     private Long obtainProjectTargetId(HttpServletRequest request) {
