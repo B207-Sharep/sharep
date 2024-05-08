@@ -129,7 +129,7 @@ public class SecurityConfig {
                     /* url에서 targetId를 추출하기 위해 정규식 처리 */
                     Matcher matcher = issuePattern.matcher(url);
                     return matcher.matches() ? toLong(matcher.group(1), -1) : -1;
-                });
+                }, customProjectBasedVoter());
     }
 
     @Bean
