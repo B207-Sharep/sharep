@@ -6,18 +6,29 @@ import * as Comp from '@components';
 import { useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 
-export default function Kanban({ state, issues, dragEnterdState, setDragEnterdState }: T.KanbanProps) {
+export default function Kanban({
+  state,
+  issues,
+  deleteAble,
+  dragAble,
+  dragEnterdState,
+  setDragEnterdState,
+  refetchKanvansResponse,
+}: T.KanbanProps) {
   const issuesWrapperRef = useRef<HTMLDivElement>(null);
   const { projectId, accountId } = useParams();
   const [holdingIssueId, setHoldingIssueId] = useState<null | number>(null);
   const { mutate: changeIssueState } = useMutation({
     mutationFn: ({ issueId }: { issueId: number }) =>
-      API.project.patchIssueState({
+      API.project.patchIssueAssigneesState({
         issueId: issueId,
         projectId: Number(projectId),
         accountId: Number(accountId),
         state: dragEnterdState as 'YET' | 'NOW' | 'DONE',
       }),
+    onSuccess: res => {
+      if (res.status === 200) refetchKanvansResponse();
+    },
   });
 
   const filteringResponse = useCallback(
@@ -55,20 +66,19 @@ export default function Kanban({ state, issues, dragEnterdState, setDragEnterdSt
   };
 
   const handleOnMouseEnter = (e: React.DragEvent) => {
+    if (!deleteAble) return;
+
     e.preventDefault();
     getDragAfterElement({ y: e.clientY });
     // const draggingElement = getDragAfterElement({ y: e.clientY });
   };
 
   const handleOnDrop = (e: React.DragEvent) => {
-    /** TODO: params의 accountId와 client에서 관리되고 있는 accountId를 확인해 이슈를 옮길 수 있는 권한이 있는지 확인하기 */
-    e.preventDefault();
+    if (!deleteAble) return;
 
+    e.preventDefault();
     changeIssueState({ issueId: Number(holdingIssueId) });
     setHoldingIssueId(() => null);
-    // const newIssues = issues.map(issue =>
-    //   issue.id === holdingIssueId ? { ...issue, state: dragEnterdState as 'YET' | 'NOW' | 'DONE' } : issue,
-    // );
   };
 
   return (
@@ -85,9 +95,10 @@ export default function Kanban({ state, issues, dragEnterdState, setDragEnterdSt
       >
         {filteringResponse({ state })?.map((issue, idx) => (
           <Comp.Issue
-            key={`${state}-${issue.name}-${idx}`}
+            key={`${state}-${issue.id}-${idx}`}
             {...issue}
-            dragAble={{ setter: setHoldingIssueId, onDrop: handleOnDrop }}
+            dragAble={dragAble ? { setter: setHoldingIssueId, onDrop: handleOnDrop } : false}
+            deleteAble={deleteAble}
           />
         ))}
       </S.IssuesContainer>

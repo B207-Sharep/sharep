@@ -3,10 +3,10 @@ import * as T from '@types';
 import * as Sub from '..';
 import * as S from './YesterdayWorkStyle';
 
-export default function YesterdayWork({ id, imageUrl, nickname, roles }: T.YesterdayWorkProps) {
+export default function YesterdayWork({ accountId, userImageUrl, nickname, roles }: T.YesterdayWorkProps) {
   return (
     <S.YesterdayWork>
-      <Sub.TeamMember id={id} imageUrl={imageUrl} nickname={nickname} roles={roles} />
+      <Sub.TeamMember accountId={accountId} userImageUrl={userImageUrl} nickname={nickname} roles={roles} />
       <p aria-label={DUMMY_YESTERDAY_WORK}>{DUMMY_YESTERDAY_WORK}</p>
     </S.YesterdayWork>
   );
