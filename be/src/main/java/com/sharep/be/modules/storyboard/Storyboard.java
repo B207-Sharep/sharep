@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,11 @@ public class Storyboard {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feature_issue_id")
     private Issue featureIssue;
+
+    @Builder
+    public Storyboard(Long id, Issue screenIssue, Issue featureIssue) {
+        this.id = id;
+        this.screenIssue = screenIssue;
+        this.featureIssue = featureIssue;
+    }
 }

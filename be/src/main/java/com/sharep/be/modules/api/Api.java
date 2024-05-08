@@ -47,3 +47,10 @@ public class Api {
         this.issue = issue;
     }
 }
+
+/*
+    NOTE:
+      API가 관계의 주인이 되면 Issue를 조회할 때 API가 즉시 로딩되지 않음
+      API에서만 Issue를 참조할 수 있게 하면(Issue에서 api의 참조를 삭제)
+      API가 필요한 Issue는 API로 쿼리하고 API가 필요없는 Issue는 Issue 테이블에서 쿼리하면 된다.
+ */

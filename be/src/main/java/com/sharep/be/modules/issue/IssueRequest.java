@@ -41,7 +41,8 @@ public record IssueRequest() {
                     .assignees(issue.getAssignees())
                     .jobs(issue.getJobs())
                     .project(issue.getProject())
-                    .storyboards(issue.getStoryboards())
+                    .featureStoryboards(issue.getFeatureStoryboards())
+                    .screenStoryboards(issue.getScreenStoryboards())
                     .build();
         }
     }

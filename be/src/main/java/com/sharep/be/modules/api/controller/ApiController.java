@@ -47,14 +47,14 @@ public class ApiController {
             @RequestBody @Valid ApiUpdate apiUpdate) {
 
         apiService.updateApi(apiId, apiUpdate);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{apiId}")
     public ResponseEntity<Void> deleteApi(@PathVariable Long projectId, @PathVariable Long apiId) {
 
         apiService.deleteApi(apiId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 
