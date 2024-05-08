@@ -11,6 +11,7 @@ import Mypage from './Mypage/Mypage';
 
 import FeatureManual from './FeatureManual/FeatureManual';
 import ScreenManual from './ScreenManual/ScreenManual';
+import ScreenManualDetail from './ScreenManualDetail/ScreenManualDetail';
 import InfraManual from './InfraManual/InfraManual';
 import Grass from '@/components/Grass/Grass';
 
@@ -27,6 +28,7 @@ export {
   Register,
   FeatureManual,
   ScreenManual,
+  ScreenManualDetail,
   InfraManual,
   Mypage,
   TeamDashboard,

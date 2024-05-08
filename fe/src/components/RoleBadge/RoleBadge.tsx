@@ -1,8 +1,8 @@
 import React from 'react';
-import * as S from './JobBadgeStyle';
+import * as S from './RoleBadgeStyle';
 import * as T from '@types';
 
-const JOB_COLOR_PALETTE: {
+const ROLE_COLOR_PALETTE: {
   [key: string]: { BG_COLOR: string; FONT_COLOR: string; TEXT: string };
 } = {
   FRONT_END: { BG_COLOR: '#FFEFF1', FONT_COLOR: '#FD5B71', TEXT: 'FE' },
@@ -11,14 +11,14 @@ const JOB_COLOR_PALETTE: {
   DESIGNER: { BG_COLOR: '#F5EEFC', FONT_COLOR: '#9B51E0', TEXT: 'Design' },
 };
 
-export default function JobBadge({ job, selectAble }: T.JobBadgeProps) {
+export default function RoleBadge({ role, selectAble }: T.RoleBadgeProps) {
   return (
     <S.Wrapper
-      $bgColor={JOB_COLOR_PALETTE[job].BG_COLOR}
-      $fontColor={JOB_COLOR_PALETTE[job].FONT_COLOR}
+      $bgColor={ROLE_COLOR_PALETTE[role].BG_COLOR}
+      $fontColor={ROLE_COLOR_PALETTE[role].FONT_COLOR}
       $selected={selectAble && selectAble}
     >
-      {JOB_COLOR_PALETTE[job].TEXT}
+      {ROLE_COLOR_PALETTE[role].TEXT}
     </S.Wrapper>
   );
 }

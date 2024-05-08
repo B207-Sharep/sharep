@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as S from './ProjectCardStyle';
 import * as T from '@/types';
 import { PALETTE } from '@/styles';
 import { UserImg } from '..';
 import { Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-export default function ProjectCard({ title, bio, imgs, add }: T.ProjectCardProps) {
+interface TooltipData {
+  nickname: string;
+  email: string;
+}
+
+export default function ProjectCard({ title, bio, accounts, add, id }: T.ProjectCardProps) {
+  const navigate = useNavigate();
+  const [tooltipData, setTooltipData] = useState<TooltipData | null>(null);
+
+  const handleMouseEnter = (nickname: any, email: any) => {
+    setTooltipData({ nickname, email });
+  };
+
+  const handleMouseLeave = () => {
+    setTooltipData(null);
+  };
+
+  const handleCardClick = () => {
+    if (id !== '0') {
+      navigate(`/projects/${id}`);
+    }
+  };
+
   return (
-    <S.Card className="hover-moving">
+    <S.Card className="hover-moving" onClick={handleCardClick}>
       <S.CardTextWrapper>
         <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={700} fontSize={20} $add={add}>
           {title}
@@ -27,8 +50,21 @@ export default function ProjectCard({ title, bio, imgs, add }: T.ProjectCardProp
       </S.CardTextWrapper>
       {!add ? (
         <S.ImgWrapper>
-          {imgs?.map((img, idx) => (
-            <UserImg size="sm" path={img} key={idx} />
+          {accounts?.map((img: any, idx) => (
+            <div
+              key={idx}
+              onMouseEnter={() => handleMouseEnter(img.nickname, img.email)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <UserImg size="sm" path={img.imageUrl} />
+              {tooltipData && (
+                <S.Tooltip>
+                  {tooltipData.nickname}
+                  <br />
+                  {tooltipData.email}
+                </S.Tooltip>
+              )}
+            </div>
           ))}
         </S.ImgWrapper>
       ) : (

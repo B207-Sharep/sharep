@@ -18,9 +18,9 @@ export const CommitList = styled.div`
   overflow-x: scroll;
 `;
 export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
-  color: ${props => props.color};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
-  font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? `${fontWeight}` : '400')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -132,3 +132,32 @@ export const UserInfo = styled.div`
 `;
 
 export const CommitAddBtn = styled.div``;
+
+export const CommitDateWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 0px 0px 15px;
+`;
+
+export const CommitIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${PALETTE.MAIN_WHITE};
+  border-radius: 16px;
+  padding: 8px;
+  position: relative;
+  &::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    height: 100%;
+    width: 2px;
+    z-index: -1;
+    content: '';
+    background-color: rgba(208, 215, 222, 0.7);
+  }
+`;

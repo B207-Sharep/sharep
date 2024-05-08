@@ -22,9 +22,9 @@ from {
 `;
 
 export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
-  color: ${props => props.color};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
-  font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? `${fontWeight}` : '400')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -34,6 +34,7 @@ export const ModalWrapper = styled.div`
   width: 50%;
   height: fit-content;
   max-height: 90%;
+  max-width: 90%;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -98,7 +99,7 @@ export const ModalTitle = styled(StyledText)`
 
 export const ModalSubTitle = styled(StyledText)`
   color: ${PALETTE.LIGHT_BLACK};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
   font-weight: 400;
 `;
 
@@ -124,7 +125,7 @@ export const ModalBody = styled.div`
 `;
 export const ModalFooter = styled.div`
   display: flex;
-  padding: 0px 24px 24px 24px;
+  padding: 24px;
   align-items: flex-start;
   gap: 12px;
   align-self: stretch;

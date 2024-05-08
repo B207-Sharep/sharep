@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from './SideBarStyle';
 import { History as CommitHistory, Plus } from 'lucide-react';
 import * as G from '@/styles';
-
+import * as Comp from '@/components';
+import * as T from '@/types';
 import API from '@/assets/svgs/api-docs-icon.svg?react';
 // import ETC from '../../../public/svgs/etc-docs-icon.svg?react';
 import INFRA from '@/assets/svgs/infra-docs-icon.svg?react';
@@ -15,12 +16,14 @@ import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 import UserImg from '../UserImg/UserImg';
 import { useModal } from '@/customhooks';
-import { Modal } from '..';
-import { TaskCreationForm } from '../Modal/Subs';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/stores/atoms/loadUser';
 
 export default function SideBar() {
   const navigate = useNavigate();
-  const taskModal = useModal('task');
+  const jobModal = useModal('job');
+  const [showNoti, setShowNoti] = useState(false);
+  const user = useRecoilValue(userState);
 
   const handleHistoryClick = () => {
     navigate('/projects/1/commit-history');
@@ -46,23 +49,28 @@ export default function SideBar() {
   };
 
   const handleModalOpen = () => {
-    taskModal.openModal({
+    jobModal.openModal({
       name: '',
-      imageUrl: '',
+      imageFile: null,
       description: '',
     });
   };
+
+  const handleNotiClick = (noti: T.NotiProps) => () => {
+    console.log(noti);
+  };
+
   return (
     <>
       <S.SideBarWrapper>
-        <S.SideBarProfile>
-          <UserImg size="md" path={'/youjack.png'} />
+        <S.SideBarProfile onClick={handleMyDashClick}>
+          <UserImg size="md" path={user?.imageUrl} />
           <S.SideBarProfileName>
-            <S.SideBarFont $size="24px" $weight={700}>
-              유잭건
+            <S.SideBarFont $size="20px" $weight={700}>
+              {user?.nickname}
             </S.SideBarFont>
-            <S.SideBarFont $size="16px" $weight={400}>
-              @jackU
+            <S.SideBarFont $size="12px" $weight={400}>
+              {user?.email}
             </S.SideBarFont>
           </S.SideBarProfileName>
         </S.SideBarProfile>
@@ -81,9 +89,9 @@ export default function SideBar() {
                   <S.SideBarBtn onClick={handleModalOpen}>
                     <Plus color={G.PALETTE.MAIN_COLOR} size={14}></Plus>
                   </S.SideBarBtn>
-                  <Modal modalId="task" title="새 작업 작성">
-                    <TaskCreationForm modalId="task" />
-                  </Modal>
+                  <Comp.Modal modalId="job" title="새 작업 작성">
+                    <Comp.JobCreationForm modalId="job" />
+                  </Comp.Modal>
                 </S.SideBarBtnGroup>
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleTeamDashClick}>
@@ -133,14 +141,94 @@ export default function SideBar() {
               </S.SideBarContents>
             </S.SideBarMyProject>
           </S.SideBarNavMain>
-          <S.SideBarContents className="hover-bg-dark">
-            <NOTI></NOTI>
-            <S.SideBarFont $size="12px" $weight={200}>
-              알림
-            </S.SideBarFont>
+          <S.SideBarContents className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
+            <S.NotiDropdownContainer>
+              <NOTI></NOTI>
+              <S.SideBarFont $size="12px" $weight={200}>
+                알림
+              </S.SideBarFont>
+              <S.NotiDropdownContent $show={showNoti}>
+                <S.NotiDropdownHeader>
+                  <S.StyledText color={G.PALETTE.SUB_BLACK} fontSize={16} fontWeight={700}>
+                    알림 목록
+                  </S.StyledText>
+                </S.NotiDropdownHeader>
+                {dummyNoti.map(noti => (
+                  <S.NotiItem key={noti.id} $unread={noti.unread} onClick={handleNotiClick(noti)}>
+                    <S.NotiMessage>
+                      <S.NotiIcon>
+                        {noti.type === 'FEATURE' ? <PLAN /> : noti.type === 'SCREEN' ? <SCREEN /> : <INFRA />}
+                        {noti.unread && <S.UnReadMark />}
+                      </S.NotiIcon>
+                      <S.NotiMessageContent>
+                        <S.StyledText color={noti.unread ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK}>
+                          {noti.message}
+                        </S.StyledText>
+                        <S.StyledText color={noti.unread ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={10}>
+                          {noti.createdAt}
+                        </S.StyledText>
+                      </S.NotiMessageContent>
+                    </S.NotiMessage>
+                    <S.NotiUserInfo>
+                      <S.StyledText color={noti.unread ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={12}>
+                        {noti.member.nickname}
+                      </S.StyledText>
+                      <S.RoleBadgeList>
+                        {noti.member.roles.map((role, index) => (
+                          <Comp.RoleBadge key={index} role={role} selectAble={false} />
+                        ))}
+                      </S.RoleBadgeList>
+                    </S.NotiUserInfo>
+                  </S.NotiItem>
+                ))}
+              </S.NotiDropdownContent>
+            </S.NotiDropdownContainer>
           </S.SideBarContents>
         </S.SideBarNavList>
       </S.SideBarWrapper>
     </>
   );
 }
+
+const dummyNoti: T.NotiProps[] = [
+  {
+    id: 1,
+    issueId: 1,
+    type: 'FEATURE',
+    message: '기능 명세 #1 수정',
+    unread: true,
+    createdAt: '2024-05-05',
+    member: {
+      memberId: 1,
+      nickname: '이승민',
+      roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
+    },
+  },
+  {
+    id: 2,
+    issueId: 2,
+    type: 'SCREEN',
+    message: '화면 정의 #메인 페이지 수정',
+    unread: false,
+    createdAt: '2024-05-04',
+    member: {
+      memberId: 1,
+      nickname: '김성제',
+      roles: ['FRONT_END'] as Extract<T.RoleBadgeProps, 'role'>[],
+    },
+  },
+
+  {
+    id: 3,
+    issueId: 3,
+    type: 'PRIVATE',
+    message: '인프라 명세 #1 수정',
+    unread: true,
+    createdAt: '2024-05-03',
+    member: {
+      memberId: 1,
+      nickname: '오상훈',
+      roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
+    },
+  },
+];

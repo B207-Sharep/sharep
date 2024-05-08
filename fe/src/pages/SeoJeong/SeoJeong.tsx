@@ -1,38 +1,24 @@
 import React from 'react';
 import * as L from '@/layouts';
-import { Modal } from '@/components';
+import * as Comp from '@/components';
 import { useModal } from '@/customhooks';
-import ProjectCreationForm from '../../components/Modal/Subs/ProjectCreationForm/ProjectCreationForm';
-import { InfraTaskCreationForm } from '@/components/Modal/Subs';
 
 export default function SeoJeong() {
-  const projectModal = useModal('project');
-  const infraTaskModal = useModal('infra-task');
+  const infraJobModal = useModal('infra-job');
+  const secretKeyModal = useModal('project-secretKey');
 
   const handleModalOpen = (modalId: string) => {
-    if (modalId === 'project') {
-      projectModal.openModal({
-        title: '',
-        bio: '',
-        secretKey: '',
-        members: [
-          {
-            accountId: 9,
-            email: 'jack@ssafy.com',
-            nickname: '유재건',
-            jobs: {
-              FRONT_END: false,
-              BACK_END: false,
-              INFRA: false,
-              DESIGNER: false,
-            },
-          },
-        ],
-      });
-    } else if (modalId === 'infra-task') {
-      infraTaskModal.openModal({
+    if (modalId === 'infra-job') {
+      infraJobModal.openModal({
         name: '',
         description: '',
+        notiUsers: [],
+      });
+    }
+
+    if (modalId === 'project-secretKey') {
+      secretKeyModal.openModal({
+        secretKey: '',
       });
     }
   };
@@ -47,24 +33,23 @@ export default function SeoJeong() {
           padding: '25px',
         }}
       >
-        {/* 새 프로젝트 생성 모달 */}
-        <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('project')}>
-          새 프로젝트 생성 모달
-        </button>
-        <Modal
-          modalId="project"
-          title="새 프로젝트 생성"
-          subTitle="함께할 팀원들을 추가하고 새로운 프로젝트를 생성해보세요."
-        >
-          <ProjectCreationForm modalId="project" />
-        </Modal>
         {/* 새 인프라 작업 생성 모달 */}
-        <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('infra-task')}>
+        <button style={{ border: '1px solid black', cursor: 'pointer' }} onClick={() => handleModalOpen('infra-job')}>
           새 인프라 작업 생성 모달
         </button>
-        <Modal modalId="infra-task" title="인프라 명세서 > 이슈 제목">
-          <InfraTaskCreationForm modalId="infra-task" />
-        </Modal>
+        <Comp.Modal modalId="infra-job" title="인프라 명세서 > 이슈 제목">
+          <Comp.InfraJobCreationForm modalId="infra-job" />
+        </Comp.Modal>
+        {/* 프로젝트 토큰 등록 모달 */}
+        <button
+          style={{ border: '1px solid black', cursor: 'pointer' }}
+          onClick={() => handleModalOpen('project-secretKey')}
+        >
+          프로젝트 토큰 등록 모달
+        </button>
+        <Comp.Modal modalId="project-secretKey" title="프로젝트 토큰 등록" btnText="등록">
+          <Comp.SecretKeyForm modalId="project-secretKey" />
+        </Comp.Modal>
       </div>
     </L.SideBarLayout>
   );

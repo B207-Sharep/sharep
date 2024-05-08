@@ -8,7 +8,7 @@ export const CommitWrapper = styled.div`
   border: 1px solid rgba(208, 215, 222, 0.7);
 `;
 
-export const CommitInfo = styled.div<{ $isClickable?: boolean }>`
+export const CommitInfo = styled.div`
   width: 100%;
   height: 84px;
   padding: 24px 16px;
@@ -17,7 +17,7 @@ export const CommitInfo = styled.div<{ $isClickable?: boolean }>`
   gap: 24px;
   align-items: center;
   border-radius: 6px;
-  cursor: ${({ $isClickable }) => ($isClickable ? 'pointer' : 'default')};
+  cursor: pointer;
 `;
 
 export const AccordionIconButton = styled.button`
@@ -64,22 +64,26 @@ export const CommitUserInfo = styled.div`
   gap: 8px;
 `;
 
-export const Img = styled.img<{ width: number; height: number; radius: number }>`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
-  border-radius: ${props => props.radius}px;
+export const Img = styled.img<{ width?: number; height?: number; radius?: number }>`
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
+  height: ${({ height }) => (height ? `${height}px` : '100%')};
+  border-radius: ${({ radius }) => radius}px;
   box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
+  object-fit: ${({ width, height }) => (width && height ? 'cover' : 'contain')};
 `;
 
-export const JobBadgeList = styled.div`
+export const RoleBadgeList = styled.div`
   display: flex;
   gap: 4px;
 `;
 
-export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
-  color: ${props => props.color};
-  font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '14px')};
-  font-weight: ${props => (props.fontWeight ? `${props.fontWeight}` : '400')};
+export const CommitText = styled.div<{ color?: string; fontSize?: number; fontWeight?: number }>`
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? `${fontWeight}` : '400')};
+`;
+
+export const StyledText = styled(CommitText)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -90,4 +94,13 @@ export const CommitImageDetail = styled.div`
   justify-content: center;
   align-items: center;
   padding: 16px 64px;
+`;
+
+export const CommitDetailContainer = styled.div``;
+
+export const CommitContentDetail = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 64px;
+  gap: 10px;
 `;

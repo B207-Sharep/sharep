@@ -1,47 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as S from './IssueStyle';
 import * as T from '@types';
+import * as API from '@apis';
 import * as Comp from '@components';
-import { MoreVertical, GitCommit } from 'lucide-react';
+import { MoreVertical, GitCommit, Trash2Icon } from 'lucide-react';
 import { PALETTE } from '@/styles';
+import { useMutation } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
-export default function Issue({ name, commit, assignees, priority, dragAble }: T.IssueProps) {
-  const [isHolding, setIsHolding] = useState(false);
-  const [cursorPosition, setCursorPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+export default function Issue({ id, issueName, jobs, assignees, priority, dragAble, deleteAble }: T.IssueProps) {
+  const { projectId, accountId } = useParams();
+  const { mutate: deleteIssue } = useMutation({
+    mutationFn: ({ issueId }: { issueId: number }) =>
+      API.project.deleteIssueAssignees({
+        issueId: issueId,
+        projectId: Number(projectId),
+        accountId: Number(accountId),
+      }),
+    onSuccess: response => {
+      console.log(`response :`, response);
+    },
+  });
 
-  const handleIsHolding = (toggleValue: boolean) => {
-    setIsHolding(toggleValue);
+  const handleDelete = () => {
+    if (!deleteAble) return;
+    deleteIssue({ issueId: id });
   };
-
-  const handleCursorPosition = (e: React.MouseEvent) => {
-    console.log(`e.X :`, e.clientX, `| e.Y :`, e.clientY);
-    if (isHolding) setCursorPosition(prev => ({ ...prev, x: e.clientX, y: e.clientY }));
-  };
-
-  useEffect(() => {
-    console.log(`isHolding :`, isHolding);
-    console.log(dragAble);
-  }, [isHolding, dragAble]);
 
   return (
-    <S.RelativeWrapper>
-      <S.DragAbleContainer
-        // onMouseUp={() => handleIsHolding(false)}
-        // onMouseDown={() => handleIsHolding(true)}
-        onMouseOver={handleCursorPosition}
-        $isHolding={isHolding}
-        $position={{ x: cursorPosition.x, y: cursorPosition.y }}
-      >
+    <S.RelativeWrapper
+      onDragStart={() => (dragAble !== false ? dragAble.setter(() => id) : undefined)}
+      draggable={dragAble !== false ? true : false}
+    >
+      <S.DragAbleContainer>
         <S.TitleWrapper>
-          <span aria-label={name}>{name}</span>
-          <MoreVertical size={24} color={PALETTE.LIGHT_BLACK} />
+          <span aria-label={issueName}>{issueName}</span>
+          {deleteAble && (
+            <>
+              <S.MoreButton>
+                <MoreVertical size={24} color={PALETTE.LIGHT_BLACK} />
+              </S.MoreButton>
+              <S.DeleteDropBox onClick={handleDelete}>
+                <Trash2Icon size={16} color={PALETTE.MAIN_RED} />
+                삭제하기
+              </S.DeleteDropBox>
+            </>
+          )}
         </S.TitleWrapper>
         <S.RecentlyCommit>
-          {commit !== null && (
+          {jobs?.length && (
             <>
-              <GitCommit size={16} color={PALETTE.LIGHT_BLACK} />
-              <span aria-label={commit.title}>{commit.title}</span>
-              <span>{commit.createAt}</span>
+              <p>
+                <GitCommit size={16} color={PALETTE.LIGHT_BLACK} />
+                <span aria-label={jobs[0].name}>{jobs[0].name}</span>
+              </p>
+              <span>{jobs[0].createdAt}</span>
             </>
           )}
         </S.RecentlyCommit>
@@ -50,13 +63,15 @@ export default function Issue({ name, commit, assignees, priority, dragAble }: T
             <span>우선 순위</span>
             <Comp.PriorityBadge priority={priority} />
           </S.PriorityWrapper>
-          <S.AssignessWrapper $assigneesNumber={assignees.length}>
-            {assignees.map((user, idx) => (
-              <S.UserImgWrapper key={`assignees-${user.name}-${idx}`} $idx={idx} aria-label={user.name}>
-                <Comp.UserImg size="24px" path={user.url} />
-              </S.UserImgWrapper>
-            ))}
-          </S.AssignessWrapper>
+          {assignees !== null && (
+            <S.AssignessWrapper $assigneesNumber={assignees.length}>
+              {assignees.map((user, idx) => (
+                <S.UserImgWrapper key={`assignees-${user.name}-${idx}`} $idx={idx} aria-label={user.name}>
+                  <Comp.UserImg size="24px" path={user.imageUrl} />
+                </S.UserImgWrapper>
+              ))}
+            </S.AssignessWrapper>
+          )}
         </S.AboutEtcWrapper>
       </S.DragAbleContainer>
     </S.RelativeWrapper>

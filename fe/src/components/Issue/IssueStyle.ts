@@ -1,26 +1,29 @@
 import styled from 'styled-components';
 import { PALETTE } from '@/styles';
 
-export const RelativeWrapper = styled.button`
+export const RelativeWrapper = styled.div`
   width: 100%;
   height: 116px;
   border-radius: 12px;
   background-color: white;
   box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.05);
-  position: relative;
 
   span {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: default;
   }
 
   *::after {
+    width: 100%;
+    font-size: 10px;
+    white-space: pre-wrap;
     z-index: 1;
   }
 `;
 
-export const DragAbleContainer = styled.div<{ $isHolding: boolean; $position: { x: number; y: number } }>`
+export const DragAbleContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -29,9 +32,6 @@ export const DragAbleContainer = styled.div<{ $isHolding: boolean; $position: { 
   height: 116px;
   background-color: white;
   border-radius: 12px;
-  position: ${({ $isHolding }) => ($isHolding ? 'fixed' : 'relative')};
-  top: ${({ $isHolding, $position }) => $isHolding && $position.y}%;
-  left: ${({ $isHolding, $position }) => $isHolding && $position.x}%;
 `;
 
 export const TitleWrapper = styled.div`
@@ -41,10 +41,16 @@ export const TitleWrapper = styled.div`
   width: 100%;
   position: relative;
 
+  &:focus-within div:nth-last-of-type(1) {
+    visibility: visible;
+  }
+
   span {
-    max-width: 218px;
+    max-width: calc(100% - 32px);
+    width: 100%;
     padding-top: 4px;
     vertical-align: bottom;
+    text-align: left;
     font-size: 14px;
     font-weight: 700;
   }
@@ -59,9 +65,15 @@ export const TitleWrapper = styled.div`
     border-radius: 4px;
     background-color: ${PALETTE.LIGHT_BLACK};
   }
+`;
+
+export const MoreButton = styled.button`
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+  cursor: pointer;
 
   svg {
-    cursor: pointer;
     padding: 4px;
 
     &:hover {
@@ -71,10 +83,31 @@ export const TitleWrapper = styled.div`
   }
 `;
 
-export const RecentlyCommit = styled.p`
+export const DeleteDropBox = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: space-between;
+  visibility: hidden;
+  position: absolute;
+  top: -36px;
+  right: -96px;
+  width: 96px;
+  height: 36px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  z-index: 1;
+  font-size: 14px;
+  color: ${PALETTE.MAIN_RED};
+  background-color: white;
+  box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
+  cursor: pointer;
+`;
+
+export const RecentlyCommit = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   height: 18px;
   position: relative;
 
@@ -82,12 +115,20 @@ export const RecentlyCommit = styled.p`
     color: ${PALETTE.LIGHT_BLACK};
   }
 
-  span:nth-of-type(1) {
-    max-width: 200px;
+  p {
+    display: flex;
+    gap: 4px;
+    width: calc(100% - (42px + 8px + 24px));
+  }
+
+  p > span {
+    width: calc(100% - 16px);
+    height: 100%;
+    text-align: left;
     font-size: 12px;
   }
 
-  span:nth-of-type(1):hover::after {
+  p > span:hover::after {
     content: attr(aria-label);
     position: absolute;
     top: 20px;
@@ -98,9 +139,11 @@ export const RecentlyCommit = styled.p`
     background-color: ${PALETTE.LIGHT_BLACK};
   }
 
-  span:nth-of-type(2) {
+  & > span {
+    line-height: 16px;
     font-size: 10px;
     padding-left: 4px;
+    align-self: flex-end;
   }
 `;
 

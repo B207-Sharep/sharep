@@ -22,12 +22,13 @@ export const WhiteBoxWrapper = styled.article<{ $flex: string; $height: string }
 export const Title = styled.h2`
   display: flex;
   gap: 10px;
-  padding-bottom: 20px;
   width: 100%;
-  height: calc(24px + 20px);
+  height: 30px;
+  padding-bottom: 6px;
 
   span {
     font-size: 20px;
+    font-weight: 700;
   }
 `;
 
@@ -35,6 +36,7 @@ export const RootScrollContainer = styled.div`
   width: 100%;
   height: calc(100% - (24px + 20px));
   overflow: auto;
+  padding-top: 20px;
 `;
 
 export const YesterdayWorksScrollContainer = styled(RootScrollContainer)``;
@@ -60,8 +62,9 @@ export const YesterdayWork = styled.div`
 
 export const CurrentWorksScrollContainer = styled(RootScrollContainer)`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, calc((554px - 10px - 8px) / 2));
   grid-gap: 10px;
+  z-index: 1;
 `;
 
 export const CurrentWork = styled.div`

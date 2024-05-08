@@ -1,6 +1,31 @@
 import { createGlobalStyle } from 'styled-components';
 
-export const PALETTE = {
+export const PALETTE: {
+  MAIN_BACKGROUND: '#f7f7f7';
+  MAIN_WHITE: '#ffffff';
+  GRASS_1: '#9be9a8';
+  GRASS_2: '#2eb872';
+  GRASS_3: '#30a14e';
+  GRASS_4: '#216e39';
+  GRASS_BORDER_1: '#1b1f23';
+  GRASS_BORDER_2: '#1b1f23';
+  GRASS_BORDER_3: '#1b1f23';
+  GRASS_BORDER_4: '#1b1f23';
+  NO_GRASS_BORDER: '#1b1f23';
+  NO_GRASS: '#ebedf0';
+  MAIN_BLACK: '#1f2328';
+  SUB_BLACK: '#24292f';
+  LIGHT_BLACK: '#636c76';
+  TABLE_TITLE: '#534D59';
+  TABLE_CONTENT: '#1B2128';
+  TABLE_BORDER: '#37352f73';
+  MAIN_COLOR: '#2eb872';
+  SUB_COLOR: '#83cc61';
+  LIGHT_COLOR: '#a3de83';
+  GANTT_CHART: '#cdcdcd';
+  MAIN_RED: '#E42A2A';
+  [key: string]: string;
+} = {
   MAIN_BACKGROUND: '#f7f7f7',
   MAIN_WHITE: '#ffffff',
   GRASS_1: '#9be9a8',
@@ -22,6 +47,8 @@ export const PALETTE = {
   MAIN_COLOR: '#2eb872',
   SUB_COLOR: '#83cc61',
   LIGHT_COLOR: '#a3de83',
+  GANTT_CHART: '#cdcdcd',
+  MAIN_RED: '#E42A2A',
 };
 
 export const GlobalStyle = createGlobalStyle`

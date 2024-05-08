@@ -7,11 +7,10 @@ import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
 
-export default function Modal({ modalId, title, subTitle, children }: T.ModalProps) {
+export default function Modal({ modalId, title, subTitle, children, btnText }: T.ModalProps) {
   const { closeModal } = useModal(modalId);
 
-  const modalData = useRecoilValue(modalDataState(modalId));
-  const { isOpen } = modalData;
+  const { isOpen } = useRecoilValue(modalDataState(modalId));
 
   const handleModalClose = () => {
     closeModal();
@@ -19,11 +18,29 @@ export default function Modal({ modalId, title, subTitle, children }: T.ModalPro
 
   const handleCreateButtonClick = useRecoilCallback(({ snapshot, set }) => async () => {
     const modalData = await snapshot.getPromise(modalDataState(modalId));
-    console.log(modalData.formData);
-    console.log(set);
     try {
       // api call
+      const { contents } = modalData;
+      if (contents) {
+        if (modalId === 'project') {
+          const processedData = {
+            title: contents.title,
+            bio: contents.bio,
+            members: contents.members.map((member: T.ProjectCreationFormProps['members'][number]) => {
+              return {
+                id: member.accountId,
+                roles: Object.entries(member.roles)
+                  .filter(([_, hasRole]) => hasRole)
+                  .map(([role, _]) => role),
+              };
+            }),
+          };
+          // console.log(processedData);
+        }
+      }
 
+      console.log(modalData.contents);
+      console.log(set);
       closeModal();
     } catch (error) {
       console.error(error);
@@ -57,7 +74,7 @@ export default function Modal({ modalId, title, subTitle, children }: T.ModalPro
             </S.BtnWrapper>
             <S.BtnWrapper onClick={handleCreateButtonClick}>
               <Comp.MainColorBtn bgc={true} disabled={false}>
-                생성
+                {btnText ? btnText : '생성'}
               </Comp.MainColorBtn>
             </S.BtnWrapper>
           </S.ModalFooter>
