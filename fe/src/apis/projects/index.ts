@@ -1,9 +1,11 @@
+import { AxiosResponse } from 'axios';
 import { instanceOfFormData, instanceOfJson } from '../instance';
 import * as T from '@types';
 
 export async function getGrass() {
   return await instanceOfJson.get(`/jobs`);
 }
+
 export async function getProjectList() {
   return await instanceOfJson.get(`/projects`);
 }
@@ -36,13 +38,12 @@ export async function getKanvanList({ projectId, accountId }: { projectId: numbe
 }
 
 /** 팀원들의 진행중인 이슈 리스트 조회 */
-export async function getNowIssueAboutTeamMembers({ projectId }: { projectId: number }) {
+export async function getNowIssueAboutTeamMembers({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.GetNowIssueListResponse[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/now/issues`);
-}
-
-/** 본인의 진행중인 이슈 조회 */
-export async function getNowIssueAboutMe({ projectId }: { projectId: number }) {
-  return instanceOfJson.get(`/projects/${projectId}/own/now/issues`);
 }
 
 /** 모든 이슈 리스트 조회 */
@@ -95,4 +96,43 @@ export async function createNewJob({
 /** 이메일 계정 조회 */
 export async function searchByEmail({ email }: { email: string }) {
   return await instanceOfJson.get(`/accounts/email?email=${email}`);
+}
+
+/** 이슈 상태 변경 */
+export async function patchIssueAssigneesState({
+  projectId,
+  issueId,
+  accountId,
+  state,
+}: {
+  projectId: number;
+  issueId: number;
+  accountId: number;
+  state: 'YET' | 'NOW' | 'DONE';
+}) {
+  return await instanceOfJson.patch(`/projects/${projectId}/issues/${issueId}/accounts/${accountId}/assignees`, {
+    state: state,
+  });
+}
+
+/** 이슈 담당자 삭제 - 칸반 보드에서 내 이슈 삭제  */
+export async function deleteIssueAssignees({
+  projectId,
+  issueId,
+  accountId,
+}: {
+  projectId: number;
+  issueId: number;
+  accountId: number;
+}) {
+  return instanceOfJson.delete(`/projects/${projectId}/issues/${issueId}/accounts/${accountId}/assignees`);
+}
+
+/** 프로젝트의 맴버 리스트 조회 */
+export async function getProjectMemberList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.GetProjectMemberListResponse[], any>> {
+  return await instanceOfJson.get(`/projects/${projectId}/members`);
 }

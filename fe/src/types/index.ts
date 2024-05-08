@@ -25,10 +25,15 @@ import { NotiProps } from './components/SideBar';
 /** ================= Components ================= */
 
 /** ================= Pages ================= */
-import { TeamDashboardProps, TeamMemberProps, GanttChartProps } from './pages/TeamDashboard';
-import { KanbanProps, ContributionsChartProps } from './pages/TeamMember';
+import { TeamDashboardProps, TeamMemberProps, GanttChartProps, CurrentWorkProps } from './pages/TeamDashboard';
+import { KanbanProps, ContributionsChartProps, YesterdayWorkProps, MemberListResponse } from './pages/TeamMember';
 import { CommitHistoryProps, FilterProps } from './pages/CommitHistory';
 /** ================= Pages ================= */
+
+/** ================= API ================= */
+import * as API from './apis';
+/** ================= API ================= */
+
 export type {
   BaseInputProps,
   BaseLabelProps,
@@ -61,5 +66,9 @@ export type {
   KanbanProps,
   ContributionsChartProps,
   CommitHistoryProps,
+  YesterdayWorkProps,
   FilterProps,
+  CurrentWorkProps,
+  MemberListResponse,
+  API,
 };
