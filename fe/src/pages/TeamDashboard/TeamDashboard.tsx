@@ -13,20 +13,24 @@ export default function TeamDashboard() {
   const { projectId, accountId } = useParams();
   const [
     { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
-    // { data: featureIssuesResponse, isFetching: isFeatureIssuesResponseFetching },
+    { data: featureIssuesResponse, isFetching: isFeatureIssuesResponseFetching },
+    { data: screenIssuesResponse, isFetching: isScreenIssuesResponseFetching },
   ] = useQueries({
     queries: [
       {
         queryKey: [{ func: `get-now-issues`, projectId }],
         queryFn: () => API.project.getNowIssueAboutTeamMembers({ projectId: Number(projectId) }),
       },
-      // {
-      //   queryKey: [{ func: `get-now-issues`, projectId }],
-      // queryFn: () => API.project.getFeatureIssuesList({ projectId: Number(projectId) }),
-      // },
+      {
+        queryKey: [{ func: `get-feature-issues`, projectId }],
+        queryFn: () => API.project.getFeatureIssuesList({ projectId: Number(projectId) }),
+      },
+      {
+        queryKey: [{ func: `get-screen-issues`, projectId }],
+        queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId) }),
+      },
     ],
   });
-  // console.log(`featureIssuesResponse :`, featureIssuesResponse?.data);
 
   return (
     <L.SideBarLayout>
@@ -49,7 +53,7 @@ export default function TeamDashboard() {
               <span>가장 최근 작업 중인 이슈</span>
             </S.Title>
             <S.CurrentWorksScrollContainer>
-              {nowIssuesResponse?.data.map((res: T.CurrentWorkProps, i: number) => (
+              {nowIssuesResponse?.data.map((res: T.API.GetNowIssueListResponse, i: number) => (
                 <S.CurrentWork key={`current-work-${i}`}>
                   <Sub.TeamMember {...res.member} />
                   {res.issue !== null && (
@@ -81,18 +85,9 @@ export default function TeamDashboard() {
             <Icon.GantChart />
             <span>화면 갤러리</span>
           </S.Title>
-          <Comp.GalleryGridWrapper issueList={DUMMY_SCREEN_LIST} type="SCREEN" />
+          <Comp.GalleryGridWrapper issueList={screenIssuesResponse?.data || []} type="SCREEN" />
         </S.WhiteBoxWrapper>
       </S.Container>
     </L.SideBarLayout>
   );
 }
-
-const DUMMY_SCREEN_LIST = [
-  ...Array.from({ length: 7 }, (_, index) => ({
-    id: index + 1,
-    issueName: `화면 이슈 ${index + 1}`,
-    createdAt: '2024.04.27',
-    type: 'SCREEN' as 'SCREEN',
-  })),
-];

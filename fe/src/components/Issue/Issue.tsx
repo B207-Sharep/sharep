@@ -48,13 +48,13 @@ export default function Issue({ id, issueName, jobs, assignees, priority, dragAb
           )}
         </S.TitleWrapper>
         <S.RecentlyCommit>
-          {jobs !== null && (
+          {jobs?.length && (
             <>
               <p>
                 <GitCommit size={16} color={PALETTE.LIGHT_BLACK} />
-                <span aria-label={jobs.name}>{jobs.name}</span>
+                <span aria-label={jobs[0].name}>{jobs[0].name}</span>
               </p>
-              <span>{jobs.createAt}</span>
+              <span>{jobs[0].createdAt}</span>
             </>
           )}
         </S.RecentlyCommit>
