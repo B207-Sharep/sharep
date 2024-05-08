@@ -56,7 +56,6 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
                 .leftJoin(member.project, project).fetchJoin()
                 .leftJoin(member.roles, role1).fetchJoin()
                 .where(project.id.eq(projectId))
-                .where((BooleanExpression) null)
                 .where(eqAccountId(accountId))
                 .orderBy(assignee.startedAt.desc())
                 .fetch());
