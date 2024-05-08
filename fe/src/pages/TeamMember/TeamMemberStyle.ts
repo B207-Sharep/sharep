@@ -6,8 +6,9 @@ export const RowWrapper = styled.section`
   gap: 24px;
 `;
 
-export const WhiteBoxWrapper = styled.article<{ $direction: 'row' | 'column' }>`
+export const WhiteBoxWrapper = styled.article<{ $flex: string; $direction: 'row' | 'column' }>`
   display: flex;
+  flex: ${({ $flex }) => $flex};
   flex-direction: ${({ $direction }) => $direction};
   width: calc(50% - 12px);
   height: 344px;
@@ -22,7 +23,7 @@ export const Title = styled.h2`
   display: flex;
   gap: 10px;
   width: 100%;
-  padding: 12px 0px 6px 0px;
+  padding: 12px 0px;
 
   span {
     font-size: 20px;
@@ -56,14 +57,18 @@ export const MemberWrapper = styled.div`
 `;
 
 export const WorksWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
   width: calc(100% - 126px);
+  height: 100%;
   padding-left: 24px;
 `;
 
 export const YesterdayWork = styled.div`
   width: 100%;
-  height: calc(56px + 10px + 14px);
-  height: fit-content;
+  height: calc(48px + 14px);
 
   & > p {
     width: 100%;
@@ -72,19 +77,21 @@ export const YesterdayWork = styled.div`
   }
 `;
 
-export const RecentlyCommitsScrollWrapper = styled.div`
-  width: 100%;
-  height: calc(100% - (42px * 2 + 16px));
-  overflow: auto;
-  border: 1px solid black;
+export const RecentlyCommitsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 200px;
 `;
 
-// export const ChartWrapper = styled.div`
-//   width: 100%;
-//   height: calc(100% - 42px);
-//   padding-top: 10px;
-//   border: 1px solid black;
-// `;
+export const RecentlyCommitsScrollContainer = styled.div`
+  width: 100%;
+  height: calc(100% - 36px);
+  overflow: auto;
+
+  & > div {
+    margin-bottom: 12px;
+  }
+`;
 
 export const KanbansWrapper = styled.section`
   display: flex;

@@ -1,16 +1,39 @@
 import React, { useCallback, useRef, useState } from 'react';
 import * as S from './KanbanStyle';
 import * as T from '@types';
+import * as API from '@apis';
 import * as Comp from '@components';
+import { useMutation } from '@tanstack/react-query';
+import { useParams } from 'react-router';
 
-export default function Kanban({ state, issues, setIssues, dragEnterdState, setDragEnterdState }: T.KanbanProps) {
-  const issuesContainerRef = useRef<HTMLElement>(null);
+export default function Kanban({
+  state,
+  issues,
+  deleteAble,
+  dragAble,
+  dragEnterdState,
+  setDragEnterdState,
+  refetchKanvansResponse,
+}: T.KanbanProps) {
   const issuesWrapperRef = useRef<HTMLDivElement>(null);
+  const { projectId, accountId } = useParams();
   const [holdingIssueId, setHoldingIssueId] = useState<null | number>(null);
+  const { mutate: changeIssueState } = useMutation({
+    mutationFn: ({ issueId }: { issueId: number }) =>
+      API.project.patchIssueAssigneesState({
+        issueId: issueId,
+        projectId: Number(projectId),
+        accountId: Number(accountId),
+        state: dragEnterdState as 'YET' | 'NOW' | 'DONE',
+      }),
+    onSuccess: res => {
+      if (res.status === 200) refetchKanvansResponse();
+    },
+  });
 
   const filteringResponse = useCallback(
     ({ state }: { state: 'YET' | 'NOW' | 'DONE' }): Omit<T.IssueProps, 'dragAble'>[] => {
-      return issues.map(issue => issue.state === state && issue).filter(el => el) as Omit<T.IssueProps, 'dragAble'>[];
+      return issues?.map(issue => issue.state === state && issue).filter(el => el) as Omit<T.IssueProps, 'dragAble'>[];
     },
     [issues],
   );
@@ -43,24 +66,23 @@ export default function Kanban({ state, issues, setIssues, dragEnterdState, setD
   };
 
   const handleOnMouseEnter = (e: React.DragEvent) => {
+    if (!deleteAble) return;
+
     e.preventDefault();
     getDragAfterElement({ y: e.clientY });
     // const draggingElement = getDragAfterElement({ y: e.clientY });
   };
 
   const handleOnDrop = (e: React.DragEvent) => {
+    if (!deleteAble) return;
+
     e.preventDefault();
-
-    const newIssues = issues.map(issue =>
-      issue.id === holdingIssueId ? { ...issue, state: dragEnterdState as 'YET' | 'NOW' | 'DONE' } : issue,
-    );
-
-    setIssues(newIssues);
+    changeIssueState({ issueId: Number(holdingIssueId) });
     setHoldingIssueId(() => null);
   };
 
   return (
-    <S.IssuesWrapper ref={issuesContainerRef}>
+    <S.IssuesWrapper>
       <S.KanbanTitle>
         <Comp.StatusBadge status={state} />
       </S.KanbanTitle>
@@ -71,11 +93,12 @@ export default function Kanban({ state, issues, setIssues, dragEnterdState, setD
         onDragEnter={handleDragEnter}
         onDragEnd={handleOnDrop}
       >
-        {filteringResponse({ state }).map((issue, idx) => (
+        {filteringResponse({ state })?.map((issue, idx) => (
           <Comp.Issue
-            key={`${state}-${issue.name}-${idx}`}
+            key={`${state}-${issue.id}-${idx}`}
             {...issue}
-            dragAble={{ setter: setHoldingIssueId, onDrop: handleOnDrop }}
+            dragAble={dragAble ? { setter: setHoldingIssueId, onDrop: handleOnDrop } : false}
+            deleteAble={deleteAble}
           />
         ))}
       </S.IssuesContainer>

@@ -21,7 +21,7 @@ function App() {
         {/* 나중에 사용자 이름으로 바꿔 */}
 
         <Route path="/projects/:projectId" element={<Page.TeamDashboard />} />
-        <Route path="/projects/:projectId/members/:memberId" element={<Page.TeamMember />} />
+        <Route path="/projects/:projectId/members/:accountId" element={<Page.TeamMember />} />
 
         <Route path="/projects/:projectId/commit-history" element={<Page.CommitHistory />} />
 
