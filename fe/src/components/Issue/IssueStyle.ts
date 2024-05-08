@@ -41,6 +41,10 @@ export const TitleWrapper = styled.div`
   width: 100%;
   position: relative;
 
+  &:focus-within div:nth-last-of-type(1) {
+    visibility: visible;
+  }
+
   span {
     max-width: calc(100% - 32px);
     width: 100%;
@@ -61,9 +65,15 @@ export const TitleWrapper = styled.div`
     border-radius: 4px;
     background-color: ${PALETTE.LIGHT_BLACK};
   }
+`;
+
+export const MoreButton = styled.button`
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+  cursor: pointer;
 
   svg {
-    cursor: pointer;
     padding: 4px;
 
     &:hover {
@@ -71,6 +81,26 @@ export const TitleWrapper = styled.div`
       border-radius: 50%;
     }
   }
+`;
+
+export const DeleteDropBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  visibility: hidden;
+  position: absolute;
+  top: -36px;
+  right: -96px;
+  width: 96px;
+  height: 36px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  z-index: 1;
+  font-size: 14px;
+  color: ${PALETTE.MAIN_RED};
+  background-color: white;
+  box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
+  cursor: pointer;
 `;
 
 export const RecentlyCommit = styled.div`
