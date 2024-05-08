@@ -38,13 +38,13 @@ export async function getContributions({
 }
 
 /** 칸반 리스트 조회 */
-export async function getKanvanList({
+export async function getKanbanList({
   projectId,
   accountId,
 }: {
   projectId: number;
   accountId: number | null;
-}): Promise<AxiosResponse<T.API.GetKanvanListResponse[], any>> {
+}): Promise<AxiosResponse<T.API.GetKanbanListResponse[], any>> {
   return await instanceOfJson.get(`/projects/${projectId}/issues/kanban?accountId=${accountId || ''}`);
 }
 
