@@ -108,3 +108,14 @@ export const ManualWrapper = styled.main`
   overflow-x: scroll;
   overflow-y: hidden;
 `;
+
+export const BtnWrapper = styled.div`
+  div {
+    border: 1px solid ${PALETTE.MAIN_COLOR};
+    background-color: ${PALETTE.MAIN_WHITE};
+    color: ${PALETTE.MAIN_COLOR};
+  }
+  svg {
+    stroke: ${PALETTE.MAIN_COLOR};
+  }
+`;
