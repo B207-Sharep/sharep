@@ -68,7 +68,7 @@ export default function SideBar() {
   return (
     <>
       <S.SideBarWrapper>
-        <S.SideBarProfile onClick={handleMyProfileClick}>
+        <S.SideBarProfile className="hover-bg-dark" onClick={handleMyProfileClick}>
           <UserImg size="md" path={user?.imageUrl} />
           <S.SideBarProfileName>
             <S.SideBarFont $size="20px" $weight={700}>

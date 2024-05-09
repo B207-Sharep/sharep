@@ -27,7 +27,7 @@ export const LogoWrapper = styled.div`
 export const BtnWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  width: fit-content;
+  width: 150px;
   height: fit-content;
   column-gap: 12px;
   margin-right: 20px;

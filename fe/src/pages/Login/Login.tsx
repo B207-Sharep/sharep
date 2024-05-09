@@ -17,7 +17,9 @@ export default function Login() {
     navigate('/register');
   };
 
-  const loginClick = async () => {
+  const loginClick = async (e: { preventDefault: () => void }) => {
+    console.log('LOGIN CLICKED');
+    e.preventDefault();
     if (uid === '' || pw === '') {
       return false;
     }

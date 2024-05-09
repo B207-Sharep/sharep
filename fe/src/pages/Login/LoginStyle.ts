@@ -81,7 +81,7 @@ export const InputWrapper = styled(InputWithLabel.Label)`
   column-gap: 8px;
 `;
 export const Register = styled.div`
-  /* width: 100%; */
+  width: 100%;
   /* padding-top: 32px; */
   /* padding: 0px 24px; */
   display: flex;

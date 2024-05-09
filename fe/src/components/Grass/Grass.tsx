@@ -37,7 +37,7 @@ const GitHubGrid = ({ data }: any) => {
                 if (isActive.step !== 0) {
                   setTooltipContent(prevState => {
                     const newState = [...prevState];
-                    newState[rowIndex * row.length + colIndex] = isActive.step;
+                    newState[rowIndex * row.length + colIndex] = isActive.count;
                     return newState;
                   });
                 }
