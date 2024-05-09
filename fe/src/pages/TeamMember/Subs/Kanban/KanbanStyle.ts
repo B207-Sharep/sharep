@@ -18,6 +18,7 @@ export const IssuesContainer = styled.div`
   width: 100%;
   height: calc(100% - 36px);
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 12px 16px 0px 16px;
 `;
 

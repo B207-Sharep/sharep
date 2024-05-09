@@ -89,8 +89,8 @@ export const DeleteDropBox = styled.div`
   justify-content: space-between;
   visibility: hidden;
   position: absolute;
-  top: -36px;
-  right: -96px;
+  bottom: -36px;
+  right: 0px;
   width: 96px;
   height: 36px;
   padding: 8px 12px;
@@ -101,6 +101,10 @@ export const DeleteDropBox = styled.div`
   background-color: white;
   box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
   cursor: pointer;
+
+  &:hover {
+    visibility: visible;
+  }
 `;
 
 export const RecentlyCommit = styled.div`
