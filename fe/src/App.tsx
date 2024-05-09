@@ -30,7 +30,7 @@ function App() {
         <Route path="/projects/:projectId/commit-history" element={<Page.CommitHistory />} />
 
         <Route path="/projects/:projectId/feature-manual" element={<Page.FeatureManual />} />
-        <Route path="/projects/:projectId/api-manual" element={<Page.FeatureManual />} />
+        <Route path="/projects/:projectId/api-manual" element={<Page.ApiManual />} />
         <Route path="/projects/:projectId/screen-manual" element={<Page.ScreenManual />} />
         <Route path="/projects/:project-id/screen-manual/:manual-id" element={<Page.ScreenManualDetail />} />
         <Route path="/projects/:projectId/infra-manual" element={<Page.InfraManual />} />

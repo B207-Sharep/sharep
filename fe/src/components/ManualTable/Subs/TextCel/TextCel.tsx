@@ -14,23 +14,15 @@ export default function TextCel({ initialState, fixedWidth }: T.CelProps) {
   }, [isEditingMode]);
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (toggledValue) {
-      quillRef.current?.focus();
-    } else {
-      quillRef.current?.blur();
-    }
+    if (toggledValue) quillRef.current?.focus();
+    else quillRef.current?.blur();
 
     setIsEditingMode(() => toggledValue);
   };
 
   const handleKeyboardEventOnEditor = (e: any, toggledValue: boolean) => {
-    if ((!isPressingShiftKey && e.keyCode === 13) || e.keyCode === 27) {
-      handleCelClick(false);
-    }
-
-    if (e.keyCode === 16) {
-      setIsPressingShiftKey(() => toggledValue);
-    }
+    if ((!isPressingShiftKey && e.keyCode === 13) || e.keyCode === 27) handleCelClick(false);
+    if (e.keyCode === 16) setIsPressingShiftKey(() => toggledValue);
   };
 
   return (

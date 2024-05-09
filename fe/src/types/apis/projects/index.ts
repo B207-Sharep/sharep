@@ -32,8 +32,8 @@ export interface GetFeatureIssuesListResponse {
 }
 /** GetFeatureIssuesList - 기능 이슈 리스트 조회 */
 
-/** GetKanvanList - 칸반 리스트 조회 */
-export interface GetKanvanListResponse {
+/** GetKanbanList - 칸반 리스트 조회 */
+export interface GetKanbanListResponse {
   assignees: {
     accountId: number;
     id: number;
@@ -59,7 +59,7 @@ export interface GetKanvanListResponse {
     name: string;
   }[];
 }
-/** GetKanvanList - 칸반 리스트 조회 */
+/** GetKanbanList - 칸반 리스트 조회 */
 
 /** GetNowIssueList - 팀원들의 진행중인 이슈 리스트 조회 */
 export interface GetNowIssueListResponse {

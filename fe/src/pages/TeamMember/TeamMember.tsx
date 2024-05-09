@@ -18,7 +18,7 @@ export default function TeamMember() {
   const [
     { data: jobsResponse, isFetching: isJobsResponseFeting },
     { data: contributionsResponse, isFetching: isContributionsResponseFeting },
-    { data: kanvansResponse, isFetching: isKanvansResponseFeting, refetch: refetchKanvansResponse },
+    { data: kanbansResponse, isFetching: isKanbansResponseFeting, refetch: refetchKanbansResponse },
     { data: membersResponse, isFetching: isMembersResponseFeting },
   ] = useQueries({
     queries: [
@@ -37,8 +37,8 @@ export default function TeamMember() {
         queryFn: () => API.project.getContributions({ projectId: Number(projectId), accountId: Number(accountId) }),
       },
       {
-        queryKey: [{ func: `get-kanvan`, projectId, accountId: accountId }],
-        queryFn: () => API.project.getKanvanList({ projectId: Number(projectId), accountId: Number(accountId) }),
+        queryKey: [{ func: `get-kanban`, projectId, accountId: accountId }],
+        queryFn: () => API.project.getKanbanList({ projectId: Number(projectId), accountId: Number(accountId) }),
       },
       {
         queryKey: [{ func: `get-member-list`, projectId }],
@@ -97,10 +97,10 @@ export default function TeamMember() {
           <Sub.Kanban
             key={`kanban-${state}`}
             state={state as 'YET' | 'NOW' | 'DONE'}
-            refetchKanvansResponse={refetchKanvansResponse}
+            refetchKanbansResponse={refetchKanbansResponse}
             dragEnterdState={dragEnterdState}
             setDragEnterdState={setDragEnterdState}
-            issues={kanvansResponse?.data || []}
+            issues={kanbansResponse?.data || []}
             dragAble={findMember && clientUser !== null && findMember.account.id === Number(clientUser.id)}
             deleteAble={findMember && clientUser !== null && findMember.account.id === Number(clientUser.id)}
           />
