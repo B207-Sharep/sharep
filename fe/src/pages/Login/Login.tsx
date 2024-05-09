@@ -17,7 +17,9 @@ export default function Login() {
     navigate('/register');
   };
 
-  const loginClick = async () => {
+  const loginClick = async (e: { preventDefault: () => void }) => {
+    console.log('LOGIN CLICKED');
+    e.preventDefault();
     if (uid === '' || pw === '') {
       return false;
     }
@@ -26,15 +28,16 @@ export default function Login() {
       const res = await login(uid, pw);
       if (res) {
         console.log(res.data.apiToken);
+        console.log(res, 'HERE');
         setloginError('');
         localStorage.setItem('token', res.data.apiToken);
         navigate('/projects');
       } else {
         console.log('ERROR');
       }
-    } catch (error) {
-      console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEE');
-      setloginError('정보가 일치하지 않습니다.');
+    } catch (error: any) {
+      console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEE', error);
+      setloginError(error.response.data);
     }
   };
 

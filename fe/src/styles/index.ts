@@ -109,9 +109,9 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   button:focus {
-    background-color: inherit;
+    /* background-color: inherit;
     outline: none;
-    border: none;
+    border: none; */
   }
 
   a {

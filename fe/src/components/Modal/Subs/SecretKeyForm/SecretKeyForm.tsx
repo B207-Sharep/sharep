@@ -8,11 +8,12 @@ import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
 import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
+import { useParams } from 'react-router-dom';
 
 export default function SecretKeyForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
   const { updateContentByKey } = useModal<T.SecretKeyFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
-
+  const { projectId } = useParams();
   return (
     <S.Wrapper>
       <S.FormItem>
@@ -20,7 +21,7 @@ export default function SecretKeyForm({ modalId }: Pick<T.ModalProps, 'modalId'>
           <S.StyledLabel>URL</S.StyledLabel>
         </Comp.InputWithLabel.Label>
         <S.InputContainer>
-          <S.UrlInput id="url" value="ddd" disabled />
+          <S.UrlInput id="url" value={`https://share-p.com/api/projects/${projectId}/hook`} disabled />
         </S.InputContainer>
       </S.FormItem>
       {/* 프로젝트 token */}

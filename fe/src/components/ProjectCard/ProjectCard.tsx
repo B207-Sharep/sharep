@@ -51,20 +51,14 @@ export default function ProjectCard({ title, bio, accounts, add, id }: T.Project
       {!add ? (
         <S.ImgWrapper>
           {accounts?.map((img: any, idx) => (
-            <div
-              key={idx}
-              onMouseEnter={() => handleMouseEnter(img.nickname, img.email)}
-              onMouseLeave={handleMouseLeave}
-            >
+            <S.UserWrapper key={idx}>
               <UserImg size="sm" path={img.imageUrl} />
-              {tooltipData && (
-                <S.Tooltip>
-                  {tooltipData.nickname}
-                  <br />
-                  {tooltipData.email}
-                </S.Tooltip>
-              )}
-            </div>
+              <S.Tooltip aria-label={`${img.nickname} - ${img.email}`}>
+                {img.nickname}
+                <br />
+                {img.email}
+              </S.Tooltip>
+            </S.UserWrapper>
           ))}
         </S.ImgWrapper>
       ) : (

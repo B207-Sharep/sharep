@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import * as Comp from '@components';
 import * as L from '@layouts';
 import * as S from './ScreenManualStyle';
-import * as API from '@/apis/projects';
+import * as API from '@/apis';
 import { PALETTE } from '@/styles';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
@@ -15,9 +15,9 @@ export default function ScreenManual() {
     isSuccess: screenIssueListSuccess,
     isFetching: screenIssueListLoading,
   } = useQuery({
-    queryKey: [{ func: `screen-issue-list`, projectId }],
+    queryKey: [{ func: `get-screen-issues`, projectId }],
     queryFn: () =>
-      API.getScreenIssueList({ projectId: Number(projectId) }).then(res => {
+      API.project.getScreenIssueList({ projectId: Number(projectId) }).then(res => {
         console.log(res);
         if (res.status === 200) {
           return res.data;

@@ -4,7 +4,7 @@ import { PALETTE } from '@/styles';
 import * as S from './ProjectCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
-import * as API from '@/apis/projects';
+import * as API from '@/apis';
 import { MinusCircle, Search } from 'lucide-react';
 import { modalDataState } from '@/stores/atoms/modal';
 import { useModal } from '@/customhooks';
@@ -24,8 +24,8 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
     isFetching: searchEmailFetching,
     refetch: searchEmailRefetch,
   } = useQuery({
-    queryKey: [{ func: `searchByEmail`, searchValue }],
-    queryFn: () => API.searchByEmail({ email: searchValue }),
+    queryKey: [{ func: `search-by-email`, searchValue }],
+    queryFn: () => API.project.searchByEmail({ email: searchValue }),
     enabled: !!searchValue,
     select: data => data.data,
   });

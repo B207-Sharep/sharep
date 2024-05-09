@@ -21,20 +21,24 @@ import { userState } from '@/stores/atoms/loadUser';
 
 export default function SideBar() {
   const navigate = useNavigate();
-  const { projectId } = useParams();
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
   const user = useRecoilValue(userState);
+  const { projectId, accountId } = useParams();
+  console.log(user, '======');
 
   const handleHistoryClick = () => {
     navigate(`/projects/${projectId}/commit-history`);
+  };
+  const handleMyProfileClick = () => {
+    navigate('/projects');
   };
 
   const handleTeamDashClick = () => {
     navigate(`/projects/${projectId}`);
   };
   const handleMyDashClick = () => {
-    navigate(`/projects`);
+    navigate(`/projects/${projectId}/members/${user?.id}`);
   };
   const handleFeatureManualClick = () => {
     navigate(`/projects/${projectId}/feature-manual`);
@@ -64,7 +68,7 @@ export default function SideBar() {
   return (
     <>
       <S.SideBarWrapper>
-        <S.SideBarProfile onClick={handleMyDashClick}>
+        <S.SideBarProfile className="hover-bg-dark" onClick={handleMyProfileClick}>
           <UserImg size="md" path={user?.imageUrl} />
           <S.SideBarProfileName>
             <S.SideBarFont $size="20px" $weight={700}>
@@ -97,13 +101,13 @@ export default function SideBar() {
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleTeamDashClick}>
                 <TEAM />
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   팀 대시보드
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleMyDashClick}>
                 <MY></MY>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   나의 대시보드
                 </S.SideBarFont>
               </S.SideBarContents>
@@ -118,25 +122,25 @@ export default function SideBar() {
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleFeatureManualClick}>
                 <PLAN></PLAN>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   기능 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleAPIClick}>
                 <API></API>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   API 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleScreenClick}>
                 <SCREEN></SCREEN>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   화면 정의서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleInfraClick}>
                 <INFRA></INFRA>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   인프라 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
@@ -145,7 +149,7 @@ export default function SideBar() {
           <S.SideBarContents className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
             <S.NotiDropdownContainer>
               <NOTI></NOTI>
-              <S.SideBarFont $size="12px" $weight={200}>
+              <S.SideBarFont $size="12px" $weight={400}>
                 알림
               </S.SideBarFont>
               <S.NotiDropdownContent $show={showNoti}>
@@ -222,7 +226,7 @@ const dummyNoti: T.NotiProps[] = [
   {
     id: 3,
     issueId: 3,
-    type: 'PRIVATE',
+    type: 'INFRA',
     message: '인프라 명세 #1 수정',
     unread: true,
     createdAt: '2024-05-03',
