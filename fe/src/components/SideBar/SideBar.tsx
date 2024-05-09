@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import * as S from './SideBarStyle';
 import { History as CommitHistory, Plus } from 'lucide-react';
@@ -24,28 +24,33 @@ export default function SideBar() {
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
   const user = useRecoilValue(userState);
+  const { projectId, accountId } = useParams();
+  console.log(user, '======');
 
   const handleHistoryClick = () => {
-    navigate('/projects/1/commit-history');
+    navigate(`/projects/${projectId}/commit-history`);
+  };
+  const handleMyProfileClick = () => {
+    navigate('/projects');
   };
 
   const handleTeamDashClick = () => {
-    navigate('/projects/1');
+    navigate(`/projects/${projectId}`);
   };
   const handleMyDashClick = () => {
-    navigate('/projects');
+    navigate(`/projects/${projectId}/members/${user?.id}`);
   };
   const handleFeatureManualClick = () => {
-    navigate('/projects/1/feature-manual');
+    navigate(`/projects/${projectId}/feature-manual`);
   };
   const handleAPIClick = () => {
-    navigate('/projects/1/api-manual');
+    navigate(`/projects/${projectId}/api-manual`);
   };
   const handleScreenClick = () => {
-    navigate('/projects/1/screen-manual');
+    navigate(`/projects/${projectId}/screen-manual`);
   };
   const handleInfraClick = () => {
-    navigate('/projects/1/infra-manual');
+    navigate(`/projects/${projectId}/infra-manual`);
   };
 
   const handleModalOpen = () => {
@@ -63,7 +68,7 @@ export default function SideBar() {
   return (
     <>
       <S.SideBarWrapper>
-        <S.SideBarProfile onClick={handleMyDashClick}>
+        <S.SideBarProfile onClick={handleMyProfileClick}>
           <UserImg size="md" path={user?.imageUrl} />
           <S.SideBarProfileName>
             <S.SideBarFont $size="20px" $weight={700}>

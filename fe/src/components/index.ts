@@ -19,6 +19,7 @@ import Issue from './Issue/Issue';
 import Add from './Button/Add/Add';
 import HistoryBtn from './Button/History/HistoryBtn';
 import MainColorBtn from './Button/MainColorBtn/MainColorBtn';
+import Slogan from './Slogan/Slogan';
 export {
   InputWithLabel,
   StatusBadge,
@@ -44,4 +45,5 @@ export {
   Add,
   HistoryBtn,
   MainColorBtn,
+  Slogan,
 };
