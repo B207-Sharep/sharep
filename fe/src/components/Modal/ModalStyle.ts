@@ -134,13 +134,11 @@ export const ModalFooter = styled.div`
 export const BtnWrapper = styled.div<{ $isValid: boolean }>`
   width: 100%;
   cursor: ${({ $isValid }) => ($isValid ? 'pointer' : 'not-allowed')};
-  div {
+  button {
     ${({ $isValid }) =>
-      !$isValid
-        ? `background-color: #e7e7e7;
-        color:${PALETTE.LIGHT_BLACK};
-        cursor: not-allowed;
-      `
-        : `cursor: pointer;`}
+      !$isValid &&
+      `background-color: #e7e7e7 ;
+        color:${PALETTE.LIGHT_BLACK} ;
+      `}
   }
 `;

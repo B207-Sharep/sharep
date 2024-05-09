@@ -58,13 +58,17 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
   //  팀원 이메일 검색 시 input change
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
+    console.log(contents, modalDataState);
     if (id === 'members') {
       setSearchValue(event.target.value);
     } else {
       updateContentByKey(id as keyof T.ProjectCreationFormProps, value);
 
       if (id == 'title') {
-        updateIsValid(value.length > 0);
+        updateIsValid(value.length > 0 && contents.bio.length > 0);
+      }
+      if (id == 'bio') {
+        updateIsValid(value.length > 0 && contents.title.length > 0);
       }
     }
   };
