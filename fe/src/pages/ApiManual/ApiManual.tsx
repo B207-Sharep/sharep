@@ -8,9 +8,10 @@ export default function ApiManual() {
   return (
     <SocketProvider>
       <L.SideBarLayout>
-        <S.ManualWrapper>
+        {/* <S.ManualWrapper>
           <Comp.ManualTable columnTitles={API_MANUAL_COLUMN_TITLES} dataList={API_MANUAL_DUMMY} usingFor="API" />
-        </S.ManualWrapper>
+        </S.ManualWrapper> */}
+        <div>준비중...</div>
       </L.SideBarLayout>
     </SocketProvider>
   );
@@ -23,14 +24,14 @@ const API_MANUAL_COLUMN_TITLES: {
   fixedWidth: string;
 }[] = [
   { name: '분류', celType: 'TEXT', iconName: 'main-title-icon', fixedWidth: '200px' },
-  { name: '진행 상태', celType: 'SELECT', iconName: 'current-state-title', fixedWidth: '120x' },
+  { name: '진행 상태', celType: 'SELECT', iconName: 'current-state-title', fixedWidth: '120px' },
   { name: '메소드', celType: 'SELECT', iconName: 'main-title-icon', fixedWidth: '120px' },
   { name: '요청 경로', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '200px' },
   { name: '상세 설명', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '312px' },
-  { name: 'Request Body', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '160px' },
-  { name: 'Response Body', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '160px' },
-  { name: 'BE 구현 상태', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '120px' },
-  { name: 'FE 구현 상태', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '120px' },
+  { name: 'Request Body', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '172px' },
+  { name: 'Response Body', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '172px' },
+  { name: 'BE 구현 상태', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '136px' },
+  { name: 'FE 구현 상태', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '136px' },
   { name: '담당자', celType: 'SELECT', iconName: 'text-content-title', fixedWidth: '160px' },
 ];
 const API_MANUAL_DUMMY = [

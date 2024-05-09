@@ -2,9 +2,12 @@ import React, { useCallback, useRef, useState } from 'react';
 import * as S from './KanbanStyle';
 import * as T from '@types';
 import * as API from '@apis';
+import * as NewIssue from '../CreateIssue/CreateIssue';
 import * as Comp from '@components';
 import { useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/stores/atoms/loadUser';
 
 export default function Kanban({
   state,
@@ -15,8 +18,11 @@ export default function Kanban({
   setDragEnterdState,
   refetchKanbansResponse,
 }: T.KanbanProps) {
+  const user = useRecoilValue(userState);
   const { projectId, accountId } = useParams();
+
   const issuesWrapperRef = useRef<HTMLDivElement>(null);
+  const [isCreatingNewIssue, setIsCreatingNewIssue] = useState(false);
   const [holdingIssueId, setHoldingIssueId] = useState<null | number>(null);
   const { mutate: changeIssueState } = useMutation({
     mutationFn: ({ issueId }: { issueId: number }) =>
@@ -87,6 +93,9 @@ export default function Kanban({
     <S.IssuesWrapper>
       <S.KanbanTitle>
         <Comp.StatusBadge status={state} />
+        {state === 'YET' && user?.id === Number(accountId) && (
+          <NewIssue.PlusButton onClick={() => setIsCreatingNewIssue(true)} />
+        )}
       </S.KanbanTitle>
       <S.IssuesContainer
         id={state}
@@ -95,6 +104,9 @@ export default function Kanban({
         onDragEnter={handleDragEnter}
         onDragEnd={handleOnDrop}
       >
+        {isCreatingNewIssue && (
+          <NewIssue.InputForm setVisible={setIsCreatingNewIssue} refetchKanbansResponse={refetchKanbansResponse} />
+        )}
         {filteringResponse({ state })?.map((issue, idx) => (
           <Comp.Issue
             key={`${state}-${issue.id}-${idx}`}

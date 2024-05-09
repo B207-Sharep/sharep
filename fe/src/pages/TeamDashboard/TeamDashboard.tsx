@@ -28,7 +28,7 @@ export default function TeamDashboard() {
       },
       {
         queryKey: [{ func: `get-screen-issues`, projectId }],
-        queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId), dataType: 'SIMPLE' }),
+        queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId) }),
       },
       {
         queryKey: [{ func: `get-member-list`, projectId }],
@@ -37,8 +37,6 @@ export default function TeamDashboard() {
     ],
   });
 
-  console.log(`membersResponse :`, membersResponse?.data);
-
   return (
     <L.SideBarLayout>
       <S.Container>
@@ -46,12 +44,12 @@ export default function TeamDashboard() {
           <S.WhiteBoxWrapper $flex="1.5" $height="302px">
             <S.Title>
               <Icon.YesterdayWork />
-              <span>어제 업무 요약</span>
+              <span>어제 작업 요약</span>
             </S.Title>
             <S.YesterdayWorksScrollContainer>
-              {/* {Array.from({ length: 6 }).map((res, i) => (
-                <Sub.YesterdayWork key={`yesterday-work-${i}`} {...DUMMY_USER[0]} />
-              ))} */}
+              {membersResponse?.data.map((member, i) => (
+                <Sub.YesterdayWork key={`yesterday-work-${i}`} {...member} />
+              ))}
             </S.YesterdayWorksScrollContainer>
           </S.WhiteBoxWrapper>
           <S.WhiteBoxWrapper $flex="2" $height="302px">

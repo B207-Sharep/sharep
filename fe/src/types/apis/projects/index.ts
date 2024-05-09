@@ -1,6 +1,6 @@
 import * as T from '@types';
 
-interface Api {
+export interface Api {
   id: number;
   method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
   request: string | null;
@@ -8,7 +8,7 @@ interface Api {
   url: string | null;
 }
 
-interface Job {
+export interface Job {
   createdAt: string;
   description: string;
   id: number;
@@ -16,13 +16,13 @@ interface Job {
   name: string;
 }
 
-interface Assignee {
+export interface Assignee {
   accountId: number;
   id: number;
   imageUrl: string;
   name: string;
   state: 'YET' | 'NOW' | 'DONE';
-  roles: 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER';
+  roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
 }
 
 /** GetFeatureIssuesList - 기능 이슈 리스트 조회,  GetKanbanList - 칸반 리스트 조회  */
@@ -108,6 +108,7 @@ export interface GetProjectMemberListResponse {
   };
   id: number;
   roles: Extract<T.RoleBadgeProps, 'role'>[];
+  summary: string | null;
 }
 /** GetMemberList - 프로젝트의 멤버 리스트 조회 */
 

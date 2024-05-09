@@ -98,7 +98,7 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
           {contents.notiUsers.map((user: T.InfraJobCreationFormProps['notiUsers'][number]) => (
             <S.NotiUser key={`accountId-${user.accountId}`}>
               <S.UserInfo>
-                <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
+                <Comp.UserImg size="sm" path={user.userImageUrl} />
                 <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                   {user.nickname}
                 </S.StyledText>
@@ -126,7 +126,7 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
                   >
                     <S.UserInfo>
                       <S.UserProfile>
-                        <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
+                        <Comp.UserImg size="sm" path={user.userImageUrl} />
                         <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                           {user.nickname}
                         </S.StyledText>
