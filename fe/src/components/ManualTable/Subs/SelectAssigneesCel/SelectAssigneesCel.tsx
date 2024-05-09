@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as S from './SelectCelStyle';
+import * as S from './SelectAssigneesCelStyle';
 import * as T from '@types';
 import * as Comp from '@components';
 
-export default function SelectCel({ initialState, fixedWidth, usingFor }: T.SelectCelProps) {
+export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor }: T.SelectCelProps) {
   const celRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(initialState || '');
   const [isEditingMode, setIsEditingMode] = useState(false);
