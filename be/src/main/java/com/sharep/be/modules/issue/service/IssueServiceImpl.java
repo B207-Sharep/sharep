@@ -40,7 +40,7 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public Issue getIssue(Long id) {
 
-        return issueRepository.findById(id).orElseThrow(IssueNotFoundException::new);
+        return issueRepository.findByIssueId(id).orElseThrow(IssueNotFoundException::new);
     }
 
     @Override
