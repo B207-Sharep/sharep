@@ -17,7 +17,7 @@ export interface GetFeatureIssuesListResponse {
   issueName: string;
   priority: Extract<T.PriorityBadgeProps, 'priority'>;
   state: Extract<T.StatusBadgeProps, 'status'>;
-  type: 'FEATURE' | 'SCREEN' | 'PRIVATE';
+  type: T.IssueProps['type'];
 
   startedAt: string | null;
   finishedAt: string | null;
@@ -49,7 +49,7 @@ export interface GetKanbanListResponse {
   issueName: string;
   priority: Extract<T.PriorityBadgeProps, 'priority'>;
   state: Extract<T.StatusBadgeProps, 'status'>;
-  type: 'FEATURE' | 'SCREEN' | 'PRIVATE';
+  type: T.IssueProps['type'];
 
   jobs: {
     createdAt: string;
@@ -70,7 +70,7 @@ export interface GetNowIssueListResponse {
     issueName: string;
     priority: Extract<T.PriorityBadgeProps, 'priority'>;
     state: Extract<T.StatusBadgeProps, 'status'>;
-    type: 'FEATURE' | 'SCREEN' | 'PRIVATE';
+    type: T.IssueProps['type'];
   };
   member: {
     accountId: number;

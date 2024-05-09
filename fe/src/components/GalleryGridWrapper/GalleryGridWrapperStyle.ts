@@ -50,3 +50,52 @@ export const TextContainer = styled.div`
   gap: 10px;
   align-items: center;
 `;
+
+export const Card = styled.div`
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 3px;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
+  cursor: pointer;
+`;
+
+export const CardContent = styled.div`
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+`;
+
+export const PreviewContent = styled.div`
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid #e3e3e3;
+  border-radius: 3px 3px 0px 0px;
+  padding: 10px;
+  white-space: nowrap;
+`;
+
+export const CardText = styled.div`
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+`;
+
+export const NewCardInput = styled.input`
+  width: 100%;
+  height: 100%;
+  border: 0;
+  color: ${PALETTE.SUB_BLACK};
+  font-weight: 700;
+`;
+
+export const DefaultImage = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: ${PALETTE.MAIN_BACKGROUND};
+`;

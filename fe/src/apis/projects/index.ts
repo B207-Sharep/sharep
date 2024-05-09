@@ -172,3 +172,21 @@ export async function getProjectMemberList({
 export async function searchByEmail({ email }: { email: string }) {
   return await instanceOfJson.get(`/accounts/email?email=${email}`);
 }
+
+/** 이슈 생성 */
+export async function createNewIssue({
+  projectId,
+  newIssue,
+}: {
+  projectId: number;
+  newIssue: {
+    issueName: string;
+    description?: string;
+    type: T.IssueProps['type'];
+    epic?: string;
+    priority?: T.PriorityBadgeProps['priority'];
+  };
+}) {
+  console.log(newIssue);
+  return await instanceOfJson.post(`/projects/${projectId}/issues`, newIssue);
+}
