@@ -119,3 +119,98 @@ export const BtnWrapper = styled.div`
     stroke: ${PALETTE.MAIN_COLOR};
   }
 `;
+
+export const AssigneeContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const AssigneeUser = styled.div`
+  display: inline-flex;
+  border-radius: 4px;
+  background-color: ${PALETTE.MAIN_BACKGROUND};
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px 8px;
+  gap: 12px;
+`;
+
+export const DeleteBtn = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 3px;
+  cursor: pointer;
+`;
+export const AddUserBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
+
+export const Dropdown = styled.div<{ $dropdownPosition: string }>`
+  display: flex;
+  position: absolute;
+  top: -100%;
+  ${({ $dropdownPosition }) => `${$dropdownPosition} : 150%;`}
+  margin-top: 4px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: ${PALETTE.MAIN_WHITE};
+  box-shadow: 0px 30px 150px rgba(139, 139, 139, 0.1);
+  border: 1px solid rgba(139, 139, 139, 0.1);
+  border-radius: 8px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  z-index: 1;
+  overflow-y: auto;
+  max-height: 30vh;
+`;
+
+export const DropdowntItem = styled.div`
+  align-self: stretch;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const UserInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+`;
+
+export const UserProfile = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+`;
+export const Icon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${PALETTE.MAIN_BACKGROUND};
+  border-radius: 45px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
+  }
+`;

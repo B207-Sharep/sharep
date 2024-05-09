@@ -22,7 +22,7 @@ export interface Assignee {
   imageUrl: string;
   name: string;
   state: 'YET' | 'NOW' | 'DONE';
-  roles: 'FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER';
+  roles: ('FRONT_END' | 'BACK_END' | 'INFRA' | 'DESIGNER')[];
 }
 
 /** GetFeatureIssuesList - 기능 이슈 리스트 조회,  GetKanbanList - 칸반 리스트 조회  */
