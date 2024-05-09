@@ -3,8 +3,8 @@ package com.sharep.be.modules.issue.controller;
 import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
-import com.sharep.be.modules.issue.IssueResponse.ConnectedIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
+import com.sharep.be.modules.issue.IssueResponse.SimpleIssueResponse;
 import com.sharep.be.modules.issue.service.IssueService;
 import com.sharep.be.modules.issue.type.DataType;
 import com.sharep.be.modules.issue.type.IssueType;
@@ -50,7 +50,7 @@ public class IssueController {
         return ResponseEntity.ok(
                 issueService.getIssues(projectId, accountId, issueType, dataType).stream()
                         .map(dataType.equals(DataType.DETAIL) ? IssueResponse::from
-                                : ConnectedIssueResponse::from).toList());
+                                : SimpleIssueResponse::from).toList());
     }
 
     @PostMapping

@@ -20,7 +20,7 @@ public record IssueResponse(Long id, String issueName, String description, Issue
                             LocalDateTime startedAt, LocalDateTime finishedAt,
                             ApiResponse api,
                             List<AssigneeResponse> assignees, List<JobResponse> jobs,
-                            List<ConnectedIssueResponse> connectedIssues
+                            List<SimpleIssueResponse> connectedIssues
 
 ) {
 
@@ -46,26 +46,55 @@ public record IssueResponse(Long id, String issueName, String description, Issue
                 .api(ApiResponse.from(issue.getApi()))
                 .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
                 .jobs(issue.getJobs().stream().map(JobResponse::from).toList())
-                .connectedIssues(Stream.concat(issue.getFeatureStoryboards().stream()
-                        .map(storyboard -> ConnectedIssueResponse.from(
-                                storyboard.getScreenIssue())), issue.getScreenStoryboards().stream()
-                        .map(storyboard -> ConnectedIssueResponse.from(
-                                storyboard.getFeatureIssue()))).toList())
+                .connectedIssues(Stream.concat(
+                        issue.getFeatureStoryboards().stream()
+                                .map(storyboard -> SimpleIssueResponse.from(
+                                        storyboard.getScreenIssue(), storyboard.getId())),
+                        issue.getScreenStoryboards().stream()
+                                .map(storyboard -> SimpleIssueResponse.from(
+                                        storyboard.getFeatureIssue(), storyboard.getId()))
+                ).toList())
                 .build();
     }
 
     @Builder
-    public record ConnectedIssueResponse(Long id, String issueName, String description,
-                                         IssueType type,
-                                         String epic, State state, LocalDateTime createdAt,
-                                         PriorityType priority,
-                                         LocalDateTime startedAt, LocalDateTime finishedAt,
-                                         ApiResponse api,
-                                         List<AssigneeResponse> assignees, List<JobResponse> jobs) {
+    public record SimpleIssueResponse(Long id, Long connectionId, String issueName,
+                                      String description,
+                                      IssueType type,
+                                      String epic, State state, LocalDateTime createdAt,
+                                      PriorityType priority,
+                                      LocalDateTime startedAt, LocalDateTime finishedAt,
+                                      ApiResponse api,
+                                      List<AssigneeResponse> assignees, List<JobResponse> jobs) {
 
-        public static ConnectedIssueResponse from(Issue issue) {
-            return ConnectedIssueResponse.builder()
+        public static SimpleIssueResponse from(Issue issue) {
+            return SimpleIssueResponse.builder()
                     .id(issue.getId())
+                    .issueName(issue.getIssueName())
+                    .description(issue.getDescription())
+                    .type(issue.getType())
+                    .epic(issue.getEpic())
+                    .state(issue.calculateState())
+                    .createdAt(issue.getCreatedAt())
+                    .priority(issue.getPriority())
+                    .startedAt(issue.getAssignees().stream()
+                            .filter(assignee -> assignee.getStartedAt() != null)
+                            .min(Comparator.comparing(Assignee::getStartedAt))
+                            .map(Assignee::getStartedAt).orElse(null))
+                    .finishedAt(issue.getAssignees().stream()
+                            .filter(assignee -> assignee.getFinishedAt() != null)
+                            .max(Comparator.comparing(Assignee::getFinishedAt))
+                            .map(Assignee::getStartedAt).orElse(null))
+                    .api(ApiResponse.from(issue.getApi()))
+                    .assignees(issue.getAssignees().stream().map(AssigneeResponse::from).toList())
+                    .jobs(issue.getJobs().stream().map(JobResponse::from).toList())
+                    .build();
+        }
+
+        public static SimpleIssueResponse from(Issue issue, Long connectionId) {
+            return SimpleIssueResponse.builder()
+                    .id(issue.getId())
+                    .connectionId(connectionId)
                     .issueName(issue.getIssueName())
                     .description(issue.getDescription())
                     .type(issue.getType())
