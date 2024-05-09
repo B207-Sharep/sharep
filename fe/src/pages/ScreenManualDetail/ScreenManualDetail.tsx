@@ -1,16 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import * as L from '@/layouts';
 import * as Comp from '@/components';
 import * as T from '@/types';
 import * as S from './ScreenManualDetailStyle';
+import * as API from '@/apis';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
+import { useQuery } from '@tanstack/react-query';
 
 export default function ScreenManualDetail() {
-  const { projectId } = useParams();
+  const { projectId, manualId } = useParams();
   const navigate = useNavigate();
   const jobModal = useModal('job');
+
+  // const {
+  //   data: screenIssueListResponse,
+  //   isSuccess: screenIssueListSuccess,
+  //   isFetching: screenIssueListLoading,
+  // } = useQuery({
+  //   queryKey: [{ func: `get-screen-issues`, projectId, manualId }],
+  //   queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId) }),
+  //   select: data => data.data,
+  // });
 
   const handleModalOpen = () => {
     jobModal.openModal({
@@ -25,11 +37,8 @@ export default function ScreenManualDetail() {
       <S.Wrapper>
         <S.HeaderContainer>
           <S.Header>
-            <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
-              {/* TODO: 화면 이슈 이름 */}
-              페이지 이름
-            </S.StyledText>
-
+            <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}></S.StyledText>
+            {/* TODO: {screenIssueListSuccess && screenIssueListResponse.issueName} */}
             <S.IssueAssigneeContainer>
               <S.AssigneeBadge>
                 <S.StyledText color={PALETTE.MAIN_WHITE} fontWeight={600}>
@@ -43,7 +52,7 @@ export default function ScreenManualDetail() {
                 </S.StyledText>
                 <S.RoleBadgeList>
                   {dummyAssignee.roles.map((role, index) => (
-                    <Comp.RoleBadge key={index} role={role} selectAble={false} />
+                    <Comp.RoleBadge key={`assignee-role-${index}`} role={role} selectAble={false} />
                   ))}
                 </S.RoleBadgeList>
               </S.CommitUserInfo>
@@ -113,7 +122,7 @@ export default function ScreenManualDetail() {
 }
 
 const dummyAssignee = {
-  memberId: 2,
+  accountId: 2,
   nickname: '김성제',
   roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
   userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
@@ -146,7 +155,6 @@ const FEATURE_MANUAL_COLUMN_TITLES: {
   { name: '시작 날짜', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '160px' },
   { name: '종료 날짜', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '160px' },
 ];
-
 const FEATURE_MANUAL_DUMMY = [
   {
     requestName: '요구사항명 - 0',

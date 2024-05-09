@@ -2,14 +2,16 @@ import React from 'react';
 import * as S from './GalleryCardStyle';
 import * as T from '@/types';
 import { PALETTE } from '@/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function GalleryCard({ id, issueName, createdAt, type, imageUrl }: T.GalleryCardProps) {
+  const { projectId } = useParams();
   const navigate = useNavigate();
   const handleCardClick = () => {
     if (type === 'SCREEN') {
-      // TODO: projectId
-      navigate(`/projects/1/screen-manual/${id}`);
+      navigate(`/projects/${projectId}/screen-manual/${id}`);
     }
   };
 
@@ -17,23 +19,11 @@ export default function GalleryCard({ id, issueName, createdAt, type, imageUrl }
     <S.Card className="hover-moving" onClick={handleCardClick}>
       <S.CardContent>
         {type === 'SCREEN' ? (
-          <>
-            {imageUrl ? (
-              <S.Img src={imageUrl}></S.Img>
-            ) : (
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  backgroundColor: PALETTE.MAIN_BACKGROUND,
-                }}
-              ></div>
-            )}
-          </>
+          <>{imageUrl ? <S.Img src={imageUrl}></S.Img> : <S.DefaultImage />}</>
         ) : (
           <S.PreviewContent>
             <div>임시 컴포넌트ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ??</div>
-            <div>임시 컴포넌트</div>
+            <div>미리보기 임시 컴포넌트</div>
           </S.PreviewContent>
         )}
       </S.CardContent>
@@ -46,7 +36,7 @@ export default function GalleryCard({ id, issueName, createdAt, type, imageUrl }
             수정된 날짜
           </S.StyledText>
           <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-            {createdAt}
+            {dayjs(createdAt).locale('ko').fromNow()}
           </S.StyledText>
         </S.CardDate>
       </S.CardText>

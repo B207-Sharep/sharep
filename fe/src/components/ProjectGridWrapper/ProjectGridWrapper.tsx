@@ -5,29 +5,34 @@ import ProjectCard from '../ProjectCard/ProjectCard';
 import UIMG from '@/assets/imgs/youjack.png';
 import * as Comp from '@/components';
 import { useModal } from '@/customhooks';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/stores/atoms/loadUser';
 
 export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProps) {
+  console.log(issueList, 'PSDFIOPSJDOFIJK');
   const projectModal = useModal('project');
+  const user = useRecoilValue(userState);
 
   const handleModalOpen = () => {
-    projectModal.openModal({
-      title: '',
-      bio: '',
-      members: [
-        // TODO: 팀장 정보
-        {
-          accountId: 9,
-          email: 'jack@ssafy.com',
-          nickname: '유재건',
-          roles: {
-            FRONT_END: false,
-            BACK_END: false,
-            INFRA: false,
-            DESIGNER: false,
+    if (user) {
+      projectModal.openModal({
+        title: '',
+        bio: '',
+        members: [
+          {
+            id: user.id,
+            email: user.email,
+            nickname: user.nickname,
+            roles: {
+              FRONT_END: false,
+              BACK_END: false,
+              INFRA: false,
+              DESIGNER: false,
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
+    }
   };
 
   return (

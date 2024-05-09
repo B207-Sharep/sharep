@@ -17,7 +17,7 @@ export interface GetFeatureIssuesListResponse {
   issueName: string;
   priority: Extract<T.PriorityBadgeProps, 'priority'>;
   state: Extract<T.StatusBadgeProps, 'status'>;
-  type: 'FEATURE' | 'SCREEN' | 'PRIVATE';
+  type: T.IssueProps['type'];
 
   startedAt: string | null;
   finishedAt: string | null;
@@ -32,8 +32,8 @@ export interface GetFeatureIssuesListResponse {
 }
 /** GetFeatureIssuesList - 기능 이슈 리스트 조회 */
 
-/** GetKanvanList - 칸반 리스트 조회 */
-export interface GetKanvanListResponse {
+/** GetKanbanList - 칸반 리스트 조회 */
+export interface GetKanbanListResponse {
   assignees: {
     accountId: number;
     id: number;
@@ -49,7 +49,7 @@ export interface GetKanvanListResponse {
   issueName: string;
   priority: Extract<T.PriorityBadgeProps, 'priority'>;
   state: Extract<T.StatusBadgeProps, 'status'>;
-  type: 'FEATURE' | 'SCREEN' | 'PRIVATE';
+  type: T.IssueProps['type'];
 
   jobs: {
     createdAt: string;
@@ -59,7 +59,7 @@ export interface GetKanvanListResponse {
     name: string;
   }[];
 }
-/** GetKanvanList - 칸반 리스트 조회 */
+/** GetKanbanList - 칸반 리스트 조회 */
 
 /** GetNowIssueList - 팀원들의 진행중인 이슈 리스트 조회 */
 export interface GetNowIssueListResponse {
@@ -70,7 +70,7 @@ export interface GetNowIssueListResponse {
     issueName: string;
     priority: Extract<T.PriorityBadgeProps, 'priority'>;
     state: Extract<T.StatusBadgeProps, 'status'>;
-    type: 'FEATURE' | 'SCREEN' | 'PRIVATE';
+    type: T.IssueProps['type'];
   };
   member: {
     accountId: number;
@@ -143,3 +143,11 @@ export interface GetContributionsResponse {
 //   }[];
 // }
 /** GetScreenIssueList - 화면 이슈 조회 */
+
+/** GetProjectIssueList - 모든 이슈 리스트 조회 */
+export interface GetProjectIssueListResponse {
+  id: number;
+  issueName: string;
+  description: string;
+}
+/** GetProjectIssueList - 모든 이슈 리스트 조회 */
