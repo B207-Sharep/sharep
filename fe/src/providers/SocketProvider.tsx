@@ -1,39 +1,44 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import * as Y from 'yjs';
-import { WebsocketProvider } from 'y-websocket';
-import { Client } from '@stomp/stompjs';
 
-// const WebSocketContext = createContext<WebsocketProvider | undefined>(undefined);
-// export function useWebSocket(): WebsocketProvider | undefined {
-//   return useContext(WebSocketContext);
-// }
+const WebSocketContext = createContext<WebSocket | null>(null);
 
-const WebSocketContext = createContext<Client | undefined>(undefined);
-export function useWebSocket(): Client | undefined {
+export function useWebSocket(): WebSocket | null {
   return useContext(WebSocketContext);
 }
 
-export default function SocketProvider({ children }: { children: React.ReactNode }) {
-  // const [stompClient, setStompClient] = useState<WebsocketProvider | undefined>(undefined);
-  // useEffect(() => {
-  //   const doc = new Y.Doc();
-  //   const wsProvider = new WebsocketProvider('wss://share-p.com/api/gs-guide-websocket', '', doc);
+export function SocketProvider({ children }: { children: React.ReactNode }) {
+  const [socket, setSocket] = useState<WebSocket | null>(null);
 
-  //   wsProvider.on('status', (event: any) => {
-  //     console.log(event.status); // logs "connected" or "disconnected"
-  //   });
-  // }, []);
+  useEffect(() => {
+    const chatWebSocket = new WebSocket(import.meta.env.VITE_DEV_SOKET_SERVER);
+    setSocket(chatWebSocket);
+  }, []);
 
-  const [stompClient, setStompClient] = useState<Client | undefined>(undefined);
-  const client = new Client({
-    brokerURL: 'wss://share-p.com/api/gs-guide-websocket',
-    onConnect: frame => {
-      console.log(`test :`, frame.body);
-      client.subscribe('/topic/greetings', message => console.log(`Received: ${message.body}`));
-      client.publish({ destination: '/app/hello', body: 'First Message' });
-    },
-  });
-  client.activate();
-
-  return <WebSocketContext.Provider value={stompClient}>{children}</WebSocketContext.Provider>;
+  return <WebSocketContext.Provider value={socket}>{children}</WebSocketContext.Provider>;
 }
+
+// const WebSocketContext = createContext<Client | null>(null);
+
+// export function useWebSocket(): Client | null {
+//   return useContext(WebSocketContext);
+// }
+
+// export function SocketProvider({ children }: { children: React.ReactNode }) {
+//   const [stompClient, setStompClient] = useState<Client | null>(null);
+
+//   useEffect(() => {
+//     const client = new Client({
+//       brokerURL: 'ws://192.168.31.153:8080/ws-chat',
+//       onConnect: frame => {
+//         client.subscribe('/topic/greetings', message => console.log(`Received: ${message.body}`));
+//         client.publish({ destination: '/app/hello', body: 'First Message' });
+//       },
+//     });
+
+//     setStompClient(client);
+//     client.activate();
+//   }, []);
+
+//   return <WebSocketContext.Provider value={stompClient}>{children}</WebSocketContext.Provider>;
+// }

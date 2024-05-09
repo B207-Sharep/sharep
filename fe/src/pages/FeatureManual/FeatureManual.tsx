@@ -4,7 +4,7 @@ import * as T from '@types';
 import * as API from '@apis';
 import * as Comp from '@components';
 import * as L from '@layouts';
-import SocketProvider from '@/providers/SocketProvider';
+import { SocketProvider } from '@/providers/SocketProvider';
 
 export default function FeatureManual() {
   return (

@@ -1,13 +1,61 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as S from './TextAreaCelStyle';
 import * as T from '@types';
+import YjsCRDT from '@/service/crdt';
+import { useWebSocket } from '@/providers/SocketProvider';
 
 export default function TextAreaCel({ initialState, fixedWidth }: T.CelProps) {
-  const textContent = useRef<HTMLSpanElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [value, setValue] = useState(initialState || '');
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [isPressingShiftKey, setIsPressingShiftKey] = useState(false);
+
+  /** ====================================== */
+  const socket = useWebSocket();
+  const [cursorPosition, setCursorPosition] = useState<number>(0);
+  const crdt = new YjsCRDT();
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = event.target.value;
+    const newCursor = event.target.selectionStart; // 연산 이후의 최종 위치
+
+    setValue(newText);
+    setCursorPosition(newCursor);
+
+    const changedLength = value.length - newText.length;
+    const isAdded = changedLength < 0;
+
+    if (isAdded) {
+      const addedText = newText.slice(newCursor - Math.abs(changedLength), newCursor);
+      const isOneLetter = addedText.length === 1;
+      const isKorean = addedText.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/);
+
+      if (isOneLetter && isKorean) return;
+
+      crdt.insert(newCursor - Math.abs(changedLength), addedText);
+    } else {
+      const removedLength = Math.abs(changedLength);
+      crdt.delete(newCursor, removedLength);
+    }
+
+    // sendMessageDataChannels(codeDataChannel, crdt.encodeData());
+  };
+
+  // useEffect(() => {
+  //   console.log(`socket :`, socket);
+  //   if (socket) {
+  //     socket.subscribe('/topic/greetings', message => console.log(`Received: ${message.body}`));
+  //   }
+  // }, [socket]);
+
+  // useEffect(() => {
+  //   console.log(`socket :`, socket);
+  //   if (socket) {
+  //     socket.publish({ destination: '/app/hello', body: value });
+  //   }
+  // }, [value]);
+  /** ====================================== */
 
   useEffect(() => {
     if (isEditingMode && textareaRef.current) textareaRef.current.focus();

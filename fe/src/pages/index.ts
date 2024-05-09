@@ -10,6 +10,7 @@ import Register from './Register/Register';
 import Mypage from './Mypage/Mypage';
 
 import FeatureManual from './FeatureManual/FeatureManual';
+import ApiManual from './ApiManual/ApiManual';
 import ScreenManual from './ScreenManual/ScreenManual';
 import ScreenManualDetail from './ScreenManualDetail/ScreenManualDetail';
 import InfraManual from './InfraManual/InfraManual';
@@ -34,4 +35,5 @@ export {
   TeamDashboard,
   TeamMember,
   Grass,
+  ApiManual,
 };

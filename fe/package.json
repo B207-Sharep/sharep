@@ -27,6 +27,7 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.0",
     "recoil": "^0.7.7",
+    "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.8",
     "vite-plugin-svgr": "^4.2.0",
     "y-quill": "^1.0.0",

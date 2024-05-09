@@ -2,7 +2,7 @@ import React from 'react';
 import * as S from './ApiManualStyle';
 import * as Comp from '@components';
 import * as L from '@layouts';
-import SocketProvider from '@/providers/SocketProvider';
+import { SocketProvider } from '@/providers/SocketProvider';
 
 export default function ApiManual() {
   return (
