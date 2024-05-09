@@ -68,22 +68,33 @@ export async function getNowIssueAboutMe({
   return instanceOfJson.get(`/projects/${projectId}/own/now/issues`);
 }
 
-/** 모든 이슈 리스트 조회 */
-export async function getProjectIssueList({
+/** 모든 이슈 리스트 상세 조회 */
+export async function getProjectDetailIssueList({
   projectId,
-  dataType,
   issueType,
   accountId,
 }: {
   projectId: number;
-  dataType: 'SIMPLE' | 'DETAIL' | null;
   issueType: 'FEATURE' | 'SCREEN' | 'PRIVATE' | null;
   accountId: number | null;
-}): Promise<AxiosResponse<T.API.GetProjectIssueListResponse[], any>> {
+}): Promise<AxiosResponse<T.API.DetailIssue[], any>> {
   return instanceOfJson.get(
-    `/projects/${projectId}/issues?dataType=${dataType || 'SIMPLE'}&issueType=${issueType || ''}&accountId=${
-      accountId || ''
-    }`,
+    `/projects/${projectId}/issues?dataType=${'DETAIL'}&issueType=${issueType || ''}&accountId=${accountId || ''}`,
+  );
+}
+
+/** 모든 이슈 리스트 간단 조회 */
+export async function getProjectSimpleIssueList({
+  projectId,
+  issueType,
+  accountId,
+}: {
+  projectId: number;
+  issueType: 'FEATURE' | 'SCREEN' | 'PRIVATE' | null;
+  accountId: number | null;
+}): Promise<AxiosResponse<T.API.SimpleIssue[], any>> {
+  return instanceOfJson.get(
+    `/projects/${projectId}/issues?dataType=${'SIMPLE'}&issueType=${issueType || ''}&accountId=${accountId || ''}`,
   );
 }
 

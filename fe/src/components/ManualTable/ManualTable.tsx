@@ -4,6 +4,8 @@ import * as T from '@types';
 import * as Sub from './Subs';
 import * as Icon from '@assets';
 import { useWebSocket } from '@/providers/SocketProvider';
+import { Plus } from 'lucide-react';
+import { PALETTE } from '@/styles';
 
 const READY_STATE = {
   CONNECTING: 0,
@@ -46,34 +48,45 @@ export default function ManualTable({ columnTitles, dataList, usingFor }: T.Manu
 
   return (
     <S.TableWrapper>
-      <S.TitleRowWrapper>
-        {columnTitles.map((title, titleIdx) => (
-          <S.Title $fixedWidth={columnTitles[titleIdx].fixedWidth} key={`title-${title.name}-${titleIdx}`}>
-            {createIconUsingIconName({ idx: titleIdx })}
-            <p>{title.name}</p>
-          </S.Title>
+      <S.TableContainer>
+        <S.TitleRowWrapper>
+          {columnTitles.map((title, titleIdx) => (
+            <S.Title $fixedWidth={columnTitles[titleIdx].fixedWidth} key={`title-${title.name}-${titleIdx}`}>
+              {createIconUsingIconName({ idx: titleIdx })}
+              <span>{title.name}</span>
+            </S.Title>
+          ))}
+        </S.TitleRowWrapper>
+        {dataList.map((data, dataIdx) => (
+          <S.RowWrapper key={`${usingFor}-table-row-${dataIdx}`}>
+            {Object.keys(data).map((dataObjKey, dataObjKeyIdx) =>
+              columnTitles[dataObjKeyIdx].celType === 'TEXT' ? (
+                <Sub.TextAreaCel
+                  fixedWidth={columnTitles[dataObjKeyIdx].fixedWidth}
+                  initialState={dataList[dataIdx][dataObjKey]}
+                  key={`${usingFor}-table-cell-${dataObjKey}-${dataIdx}`}
+                />
+              ) : (
+                <Sub.SelectCel
+                  fixedWidth={columnTitles[dataObjKeyIdx].fixedWidth}
+                  initialState={dataList[dataIdx][dataObjKey]}
+                  usingFor={dataObjKey.toUpperCase() as 'PRIORITY' | 'STATE' | 'ASSIGNEES' | 'METHOD'}
+                  key={`${usingFor}-table-cell-${dataObjKey}-${dataIdx}`}
+                />
+              ),
+            )}
+          </S.RowWrapper>
         ))}
-      </S.TitleRowWrapper>
-      {dataList.map((data, dataIdx) => (
-        <S.RowWrapper key={`${usingFor}-table-row-${dataIdx}`}>
-          {Object.keys(data).map((dataObjKey, dataObjKeyIdx) =>
-            columnTitles[dataObjKeyIdx].celType === 'TEXT' ? (
-              <Sub.TextAreaCel
-                fixedWidth={columnTitles[dataObjKeyIdx].fixedWidth}
-                initialState={dataList[dataIdx][dataObjKey]}
-                key={`${usingFor}-table-cell-${dataObjKey}-${dataIdx}`}
-              />
-            ) : (
-              <Sub.SelectCel
-                fixedWidth={columnTitles[dataObjKeyIdx].fixedWidth}
-                initialState={dataList[dataIdx][dataObjKey]}
-                usingFor={dataObjKey.toUpperCase() as 'PRIORITY' | 'STATE' | 'ASSIGNEES' | 'METHOD'}
-                key={`${usingFor}-table-cell-${dataObjKey}-${dataIdx}`}
-              />
-            ),
-          )}
-        </S.RowWrapper>
-      ))}
+      </S.TableContainer>
+      <S.CreateNewRowButton>
+        <Plus color={PALETTE.LIGHT_BLACK} size={14}></Plus>
+        <span>작업 추가</span>
+      </S.CreateNewRowButton>
     </S.TableWrapper>
   );
 }
+
+const FIXED_WIDTH = {
+  API: ['200px', '120px', '120px', '200px', '312px', '172px', '172px', '136px', '136px', '160px'],
+  FEATURE: ['200px', '200px', '120px', '200px', '312px', '120px', '160px', '160px', '160px'],
+};
