@@ -91,17 +91,18 @@ public class ProjectService {
 
     }
 
-    private void addMember(Project project, MemberCreate member) {
-        Account account = accountRepository.findById(member.id()).orElseThrow(() ->
+    public void addMember(Project project, MemberCreate member) {
+        Account joinAccount = accountRepository.findById(member.id()).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         List<Account> accounts = project.getMembers().stream().map(Member::getAccount).toList();
         for(Account findAccount : accounts){
-            if(findAccount.equals(accounts))throw new RuntimeException("이미 멤버인 사용자입니다.");
+            System.out.println(findAccount.getId() + " " + member.id());
+            if(findAccount.equals(joinAccount))throw new RuntimeException("이미 멤버인 사용자입니다.");
         }
 
         // member 생성
-        Member createMember = createMember(project, account);
+        Member createMember = createMember(project, joinAccount);
         // roles 추가
         createRoles(createMember, member.roles());
     }
