@@ -156,7 +156,7 @@ export default function CommitHistory() {
                               onClick={() => selectValue(openFilter, member.account.id.toString())}
                             >
                               <S.UserProfile>
-                                <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
+                                <Comp.UserImg size="sm" path={member.account.imageUrl} />
                                 <S.UserInfo>
                                   <S.StyledText>{member.account.nickname}</S.StyledText>
                                 </S.UserInfo>

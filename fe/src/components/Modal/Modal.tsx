@@ -32,7 +32,7 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
     },
   });
 
-  const handleCreateButtonClick = useRecoilCallback(({ snapshot, set }) => async () => {
+  const handleCreateButtonClick = useRecoilCallback(({ snapshot }) => async () => {
     const contents = (await snapshot.getPromise(modalDataState(modalId))).contents;
     try {
       if (contents) {
@@ -64,8 +64,6 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
             break;
         }
       }
-      console.log(contents);
-      console.log(set);
 
       closeModal();
     } catch (error) {
@@ -97,13 +95,13 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
 
           {/* footer */}
           <S.ModalFooter>
-            <S.BtnWrapper onClick={handleModalClose} $isValid={true}>
-              <Comp.MainColorBtn bgc={false} disabled={false}>
+            <S.BtnWrapper $isValid={true}>
+              <Comp.MainColorBtn bgc={false} disabled={false} onClick={handleModalClose}>
                 취소
               </Comp.MainColorBtn>
             </S.BtnWrapper>
-            <S.BtnWrapper onClick={() => isValid && handleCreateButtonClick()} $isValid={isValid}>
-              <Comp.MainColorBtn bgc={isValid} disabled={isValid}>
+            <S.BtnWrapper $isValid={isValid}>
+              <Comp.MainColorBtn bgc={isValid} disabled={!isValid} onClick={() => isValid && handleCreateButtonClick()}>
                 {btnText ? btnText : '생성'}
               </Comp.MainColorBtn>
             </S.BtnWrapper>

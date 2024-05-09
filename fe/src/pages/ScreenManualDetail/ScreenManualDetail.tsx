@@ -46,7 +46,7 @@ export default function ScreenManualDetail() {
                 </S.StyledText>
               </S.AssigneeBadge>
               <S.CommitUserInfo>
-                <Comp.UserImg size="sm" path={dummyAssignee.userImageUrl || 'https://via.placeholder.com/16x16'} />
+                <Comp.UserImg size="sm" path={dummyAssignee.userImageUrl} />
                 <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                   {dummyAssignee.nickname}
                 </S.StyledText>
@@ -59,10 +59,9 @@ export default function ScreenManualDetail() {
             </S.IssueAssigneeContainer>
           </S.Header>
           <S.CommitWrapper>
-            {/* TODO: histroy btn color 수정 필요 */}
-            <div onClick={() => navigate(`/projects/${projectId}/commit-history`)}>
+            <S.BtnWrapper onClick={() => navigate(`/projects/${projectId}/commit-history`)}>
               <Comp.HistoryBtn />
-            </div>
+            </S.BtnWrapper>
             <div onClick={handleModalOpen}>
               <Comp.Add />
             </div>

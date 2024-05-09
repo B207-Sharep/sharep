@@ -59,8 +59,8 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
             id={issue.id}
             issueName={issue.issueName}
             createdAt={issue.createdAt}
-            type={type as 'SCREEN' | 'INFRA'}
-            imageUrl={type === 'SCREEN' ? issue.imageUrl && issue.imageUrl : undefined}
+            type={type}
+            imageUrl={type === 'SCREEN' && issue.jobs.length > 0 ? issue.jobs[0].imageUrl : undefined}
           />
         ))}
 

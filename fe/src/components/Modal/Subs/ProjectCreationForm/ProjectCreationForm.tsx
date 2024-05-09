@@ -58,13 +58,17 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
   //  팀원 이메일 검색 시 input change
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
+    console.log(contents, modalDataState);
     if (id === 'members') {
       setSearchValue(event.target.value);
     } else {
       updateContentByKey(id as keyof T.ProjectCreationFormProps, value);
 
       if (id == 'title') {
-        updateIsValid(value.length > 0);
+        updateIsValid(value.length > 0 && contents.bio.length > 0);
+      }
+      if (id == 'bio') {
+        updateIsValid(value.length > 0 && contents.title.length > 0);
       }
     }
   };
@@ -149,7 +153,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
               {searchEmailResponse.map(user => (
                 <S.SearchResultItem key={`search-user-${user.id}`} onClick={handleResultClick(user)}>
                   <S.UserProfile>
-                    <Comp.UserImg size="sm" path={`${user.imageUrl}` || 'https://via.placeholder.com/32x32'} />
+                    <Comp.UserImg size="sm" path={user.imageUrl} />
                     <S.UserInfo>
                       <S.StyledText fontSize={12}>{user.email}</S.StyledText>
                       <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
@@ -186,7 +190,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
 
             <S.RowContent>
               <S.UserProfile>
-                <Comp.UserImg size="xs" path={contents.members[0].imageUrl} />
+                <Comp.UserImg size="sm" path={contents.members[0].imageUrl} />
                 <S.UserInfo>
                   <S.StyledText fontSize={12}>{contents.members[0].email}</S.StyledText>
                   <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
@@ -223,7 +227,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
 
               <S.RowContent>
                 <S.UserProfile>
-                  <Comp.UserImg size="sm" path={`${member.imageUrl} || 'https://via.placeholder.com/32x32'`} />
+                  <Comp.UserImg size="sm" path={member.imageUrl} />
                   <S.UserInfo>
                     <S.StyledText fontSize={12}>{member.email}</S.StyledText>
                     <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
