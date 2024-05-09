@@ -24,6 +24,7 @@ export interface ProjectCreationFormProps {
     email: string;
     nickname: string;
     roles: Record<T.RoleBadgeProps['role'], boolean>;
+    imageUrl: string | null;
   }[];
 }
 
