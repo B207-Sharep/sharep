@@ -14,6 +14,7 @@ export const MainWrapper = styled.div`
   background-color: ${G.PALETTE.MAIN_BACKGROUND};
   justify-content: space-between;
   align-items: center;
+  padding: 0px 150px;
 `;
 
 export const LogoWrapper = styled.div`

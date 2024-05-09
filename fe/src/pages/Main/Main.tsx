@@ -23,6 +23,20 @@ export default function Main() {
               <Comp.Slogan></Comp.Slogan>
               <p>Lorem ipsum</p>
             </S.Slogan>
+            {/* <motion.div
+              initial={{ opacity: 0, y: -90 }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                transition: { delay: 0.7 },
+              }}
+            > */}
+            <S.MonitorWrapper>
+              <S.Monitor>
+                <S.MonitorScreen />
+              </S.Monitor>
+            </S.MonitorWrapper>
+            {/* </motion.div> */}
           </S.SloganWrapper>
 
           <S.SubSlogan>
