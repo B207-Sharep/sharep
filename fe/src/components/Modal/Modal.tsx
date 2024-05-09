@@ -28,7 +28,7 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
     mutationKey: [{ func: `createNewJob`, projectId }],
     mutationFn: API.createNewJob,
     onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: [] });
+      queryClient.invalidateQueries({ queryKey: [{ func: `get-job-list`, projectId }] });
     },
   });
 

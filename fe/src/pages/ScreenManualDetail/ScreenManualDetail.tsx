@@ -43,7 +43,7 @@ export default function ScreenManualDetail() {
                 </S.StyledText>
                 <S.RoleBadgeList>
                   {dummyAssignee.roles.map((role, index) => (
-                    <Comp.RoleBadge key={index} role={role} selectAble={false} />
+                    <Comp.RoleBadge key={`assignee-role-${index}`} role={role} selectAble={false} />
                   ))}
                 </S.RoleBadgeList>
               </S.CommitUserInfo>
@@ -113,7 +113,7 @@ export default function ScreenManualDetail() {
 }
 
 const dummyAssignee = {
-  memberId: 2,
+  accountId: 2,
   nickname: '김성제',
   roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
   userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',

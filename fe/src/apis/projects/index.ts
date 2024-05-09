@@ -68,7 +68,11 @@ export async function getNowIssueAboutMe({
 }
 
 /** 모든 이슈 리스트 조회 */
-export async function getProjectIssueList({ projectId }: { projectId: number }) {
+export async function getProjectIssueList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.GetProjectIssueListResponse[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/issues`);
 }
 

@@ -4,20 +4,15 @@ import * as T from '@/types';
 import * as Comp from '@/components';
 import { PALETTE } from '@/styles';
 import { ChevronDown } from 'lucide-react';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function Commit({
-  // id,
   name,
   description,
   createdAt,
   imageUrl,
-  // issueId,
-  member: {
-    // memberId,
-    nickname,
-    roles,
-    userImageUrl,
-  },
+  member: { accountId, nickname, roles, userImageUrl },
   disabled,
 }: T.CommitProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,14 +43,14 @@ export default function Commit({
               </S.StyledText>
               <S.RoleBadgeList>
                 {roles.map((role, index) => (
-                  <Comp.RoleBadge key={index} role={role} selectAble={false} />
+                  <Comp.RoleBadge key={`${accountId}-role-${index}`} role={role} selectAble={false} />
                 ))}
               </S.RoleBadgeList>
               <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
                 작업 완료
               </S.StyledText>
               <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
-                {createdAt}
+                {dayjs(createdAt).locale('ko').fromNow()}
               </S.StyledText>
             </S.CommitUserInfo>
           </S.CommitMessage>
@@ -72,9 +67,7 @@ export default function Commit({
               {description}
             </S.CommitText>
           </S.CommitContentDetail>
-          <S.CommitImageDetail>
-            {imageUrl && <S.Img src={imageUrl} />}
-          </S.CommitImageDetail>
+          <S.CommitImageDetail>{imageUrl && <S.Img src={imageUrl} />}</S.CommitImageDetail>
         </S.CommitDetailContainer>
       )}
     </S.CommitWrapper>

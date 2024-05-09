@@ -147,7 +147,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
           {isDropdownVisible && searchEmailSuccess && (
             <S.SearchResultsDropdown>
               {searchEmailResponse.map((user: Omit<T.ProjectCreationFormProps['members'][number], 'roles'>) => (
-                <S.SearchResultItem key={user.id} onClick={handleResultClick(user)}>
+                <S.SearchResultItem key={`search-user-${user.id}`} onClick={handleResultClick(user)}>
                   <S.UserProfile>
                     <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
                     <S.UserInfo>
@@ -190,7 +190,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
               <S.RoleBadgeList>
                 {roleList.map(role => (
                   <S.RoleBadgeBtn
-                    key={role}
+                    key={`leader-role-${contents.members[0].id}-${role}`}
                     onClick={() => toggleRoleState(contents.members[0].id, role)}
                     $state={contents.members[0].roles[role]}
                   >
@@ -208,7 +208,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
           </S.Row>
 
           {contents.members.slice(1).map((member: T.ProjectCreationFormProps['members'][number]) => (
-            <S.Row key={member.id}>
+            <S.Row key={`member-${member.id}`}>
               <S.DeleteBtn $cursor={true} onClick={handleRemoveClick(member)}>
                 <MinusCircle color={PALETTE.LIGHT_BLACK} size={16} />
               </S.DeleteBtn>
@@ -226,7 +226,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
                 <S.RoleBadgeList>
                   {roleList.map(role => (
                     <S.RoleBadgeBtn
-                      key={role}
+                      key={`member-role-${member.id}-${role}`}
                       onClick={() => toggleRoleState(member.id, role)}
                       $state={member.roles[role]}
                     >
@@ -248,20 +248,5 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
     </S.Wrapper>
   );
 }
-
-const dummyResults: Omit<T.ProjectCreationFormProps['members'][number], 'roles'>[] = [
-  {
-    id: 2,
-    email: 'ssafy1234@ssafy.com',
-    nickname: '사용자1',
-  },
-  { id: 3, email: 'ssafy5678@ssafy.com', nickname: '사용자2' },
-  { id: 4, email: 'oh4@ssafy.com', nickname: '오상훈' },
-  { id: 5, email: 'sj@ssafy.com', nickname: '임서정' },
-  { id: 6, email: 'jo@ssafy.com', nickname: '조성규' },
-  { id: 7, email: 'princess@ssafy.com', nickname: '김성제' },
-  { id: 8, email: 'mehot@ssafy.com', nickname: '이승민' },
-  // { id: 9, email: 'jack@ssafy.com', nickname: '유재건' },
-];
 
 const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];

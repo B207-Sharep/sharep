@@ -18,9 +18,9 @@ export default function CommitHistory() {
 
   const [openFilter, setOpenFilter] = useState<keyof T.FilterProps['type'] | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<T.FilterProps['type']>({
-    accountId: null,
-    roleType: null,
-    issueId: null,
+    accountId: { id: null, data: null },
+    roleType: { id: null, data: null },
+    issueId: { id: null, data: null },
   });
 
   const [
@@ -75,15 +75,36 @@ export default function CommitHistory() {
   };
 
   useEffect(() => {
-    const member = searchParams.get('accountId');
-    const role = searchParams.get('roleType');
-    const issue = searchParams.get('issueId');
+    const accountId = searchParams.get('accountId');
+    const roleType = searchParams.get('roleType');
+    const issueId = searchParams.get('issueId');
 
-    // setSelectedFilter({
-    //   member,
-    //   role,
-    //   issue,
-    // });
+    const newFilter: T.FilterProps['type'] = {
+      accountId: { id: null, data: null },
+      roleType: { id: null, data: null },
+      issueId: { id: null, data: null },
+    };
+
+    if (accountId) {
+      const member = memberListResponse?.data.find(member => member.account.id.toString() === accountId);
+      if (member) {
+        newFilter.accountId = { id: Number(accountId), data: member.account.nickname };
+      }
+    }
+
+    if (roleType) {
+      newFilter.roleType = { id: null, data: roleType as Extract<T.RoleBadgeProps, 'role'> };
+    }
+
+    if (issueId) {
+      const issue = issueListResponse?.data.find(issue => issue.id.toString() === issueId);
+      if (issue) {
+        newFilter.issueId = { id: Number(issueId), data: issue.issueName };
+      }
+    }
+
+    console.log(newFilter);
+    setSelectedFilter(newFilter);
     console.log('search params changed');
     jobListRefetch();
   }, [searchParams]);
@@ -97,12 +118,12 @@ export default function CommitHistory() {
           </S.StyledText>
           <div>
             <S.FilterWrapper>
-              {filters.map((filter, index) => (
-                <S.Filter key={index} onClick={() => toggleDropdown(filter.type)}>
+              {filters.map(filter => (
+                <S.Filter key={`filter-${filter.type}`} onClick={() => toggleDropdown(filter.type)}>
                   <UsersRound color={PALETTE.LIGHT_BLACK} size={14} />
                   <S.StyledText color={PALETTE.SUB_BLACK} fontSize={14}>
                     {filter.label}
-                    {selectedFilter[filter.type] ? `: ${selectedFilter[filter.type]}` : ''}
+                    {selectedFilter[filter.type].data ? `: ${selectedFilter[filter.type].data}` : ''}
                   </S.StyledText>
                   <S.AccordionIconButton>
                     <S.AccordionIcon $isOpen={openFilter === filter.type}>
@@ -114,7 +135,10 @@ export default function CommitHistory() {
                       {openFilter === 'roleType' ? (
                         <>
                           {roleList.map(role => (
-                            <S.DropdowntItem key={role} onClick={() => selectValue(openFilter, role)}>
+                            <S.DropdowntItem
+                              key={`filter-${openFilter}-${role}`}
+                              onClick={() => selectValue(openFilter, role)}
+                            >
                               <Comp.RoleBadge role={role} selectAble={false} />
                             </S.DropdowntItem>
                           ))}
@@ -123,7 +147,7 @@ export default function CommitHistory() {
                         <>
                           {memberListResponse?.data.map((member: T.API.GetProjectMemberListResponse) => (
                             <S.DropdowntItem
-                              key={member.id}
+                              key={`filter-${openFilter}-${member.id}`}
                               onClick={() => selectValue(openFilter, member.account.id.toString())}
                             >
                               <S.UserProfile>
@@ -137,8 +161,11 @@ export default function CommitHistory() {
                         </>
                       ) : openFilter === 'issueId' && issueListSuccess ? (
                         <>
-                          {issueListResponse.data.map(issue => (
-                            <S.DropdowntItem key={issue.id} onClick={() => selectValue(openFilter, issue.id)}>
+                          {issueListResponse?.data.map((issue: T.API.GetProjectIssueListResponse) => (
+                            <S.DropdowntItem
+                              key={`filter-${openFilter}-${issue.id}`}
+                              onClick={() => selectValue(openFilter, issue.id.toString())}
+                            >
                               <S.StyledText>{issue.issueName}</S.StyledText>
                             </S.DropdowntItem>
                           ))}
@@ -160,7 +187,7 @@ export default function CommitHistory() {
         <S.Divider />
         {groupedCommits &&
           Object.entries(groupedCommits).map(([date, commits]) => (
-            <div key={date}>
+            <div key={`commits-date-${date}`}>
               <S.CommitDateWrapper>
                 <S.CommitIconContainer>
                   <GitCommitHorizontal size={16} />
@@ -169,20 +196,7 @@ export default function CommitHistory() {
               </S.CommitDateWrapper>
               <S.CommitList>
                 {commits.map(commit => (
-                  <Comp.Commit
-                    key={commit.id}
-                    id={commit.id}
-                    name={commit.name}
-                    description={commit.description}
-                    createdAt={commit.createdAt}
-                    member={{
-                      nickname: commit.member.nickname,
-                      roles: commit.member.roles,
-                      userImageUrl: commit.member.userImageUrl,
-                    }}
-                    {...(commit.imageUrl ? { imageUrl: commit.imageUrl } : {})}
-                    disabled={false}
-                  />
+                  <Comp.Commit key={`commit-${commit.id}`} {...commit} disabled={false} />
                 ))}
               </S.CommitList>
             </div>
