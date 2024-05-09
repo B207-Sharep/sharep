@@ -1,6 +1,6 @@
 import * as T from '@types';
 
-interface Api {
+export interface Api {
   id: number;
   method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
   request: string | null;
@@ -8,7 +8,7 @@ interface Api {
   url: string | null;
 }
 
-interface Job {
+export interface Job {
   createdAt: string;
   description: string;
   id: number;
@@ -16,7 +16,7 @@ interface Job {
   name: string;
 }
 
-interface Assignee {
+export interface Assignee {
   accountId: number;
   id: number;
   imageUrl: string;
@@ -108,6 +108,7 @@ export interface GetProjectMemberListResponse {
   };
   id: number;
   roles: Extract<T.RoleBadgeProps, 'role'>[];
+  summary: string | null;
 }
 /** GetMemberList - 프로젝트의 멤버 리스트 조회 */
 

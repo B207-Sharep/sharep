@@ -1,12 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as S from './SelectAssigneesCelStyle';
 import * as T from '@types';
+import * as API from '@apis';
 import * as Comp from '@components';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
-export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor }: T.SelectCelProps) {
+export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor }: T.SelectAssigneesCelProps) {
+  const { projectId } = useParams();
   const celRef = useRef<HTMLDivElement>(null);
-  const [value, setValue] = useState(initialState || '');
+  const [value, setValue] = useState(initialState || []);
   const [isEditingMode, setIsEditingMode] = useState(false);
+
+  const { data: membersResponse, isFetching: isMembersResponseFeting } = useQuery({
+    queryKey: [{ func: `get-member-list`, projectId }],
+    queryFn: () => API.project.getProjectMemberList({ projectId: Number(projectId) }),
+  });
 
   useEffect(() => {
     if (isEditingMode && celRef.current) celRef.current.focus();
@@ -23,13 +32,15 @@ export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor 
   };
 
   const handleListOptionClick = (e: React.MouseEvent) => {
-    setValue(String(e.currentTarget.ariaValueText));
-
+    // setValue(String(e.currentTarget.ariaValueText));
+    console.log(`${usingFor} :`, e);
     if (celRef.current) {
       celRef.current?.blur();
       handleCelClick(false);
     }
   };
+
+  console.log(`membersResponse.data :`, membersResponse?.data);
 
   return (
     <S.Wrapper
@@ -40,44 +51,24 @@ export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor 
       $fixedWidth={fixedWidth}
       $isEditingMode={isEditingMode}
     >
-      <S.Palceholder>{OPTIONS[usingFor][value]}</S.Palceholder>
+      <S.Palceholder>
+        {value.map((el, i) => (
+          <Comp.UserImg key={`assignees-${el.accountId}-${i}`} size="32px" path={el.imageUrl} />
+        ))}
+      </S.Palceholder>
       <S.OptionUlWrapper $isEditingMode={isEditingMode}>
-        {Object.keys(OPTIONS[usingFor]).map((key, idx) => (
+        {membersResponse?.data.map((res, idx) => (
           <S.OptionLi
             className="hover-bg-dark"
-            aria-valuetext={key}
-            key={`${usingFor}-${idx}`}
+            aria-valuetext={res.account.nickname}
+            key={`assignees-li-${res.account.id}-${res.id}-${idx}`}
             onClick={handleListOptionClick}
           >
-            {OPTIONS[usingFor][key]}
+            <Comp.UserImg size="32px" path={res.account.imageUrl} />
+            <span>{res.account.nickname}</span>
           </S.OptionLi>
         ))}
       </S.OptionUlWrapper>
     </S.Wrapper>
   );
 }
-
-const OPTIONS: { [usingFor: string]: { [res: string]: React.ReactNode } } = {
-  PRIORITY: {
-    HIGH: <Comp.PriorityBadge priority="HIGH" />,
-    MEDIUM: <Comp.PriorityBadge priority="MEDIUM" />,
-    LOW: <Comp.PriorityBadge priority="LOW" />,
-  },
-  STATE: {
-    YET: <Comp.StatusBadge status="YET" />,
-    NOW: <Comp.StatusBadge status="NOW" />,
-    DONE: <Comp.StatusBadge status="DONE" />,
-  },
-  METHOD: {
-    GET: <Comp.MethodBadge name="GET" />,
-    POST: <Comp.MethodBadge name="POST" />,
-    PUT: <Comp.MethodBadge name="PUT" />,
-    PATCH: <Comp.MethodBadge name="PATCH" />,
-    DELETE: <Comp.MethodBadge name="DELETE" />,
-  },
-  ASSIGNEES: {
-    HIGH: <Comp.PriorityBadge priority="HIGH" />,
-    MEDIUM: <Comp.PriorityBadge priority="MEDIUM" />,
-    LOW: <Comp.PriorityBadge priority="LOW" />,
-  },
-};
