@@ -46,9 +46,8 @@ export default function CommitHistory() {
       {
         queryKey: [{ func: `get-issue-list`, projectId }],
         queryFn: () =>
-          API.project.getProjectIssueList({
+          API.project.getProjectSimpleIssueList({
             projectId: Number(projectId),
-            dataType: 'SIMPLE',
             issueType: null,
             accountId: null,
           }),
@@ -167,7 +166,7 @@ export default function CommitHistory() {
                         </>
                       ) : openFilter === 'issueId' && issueListSuccess ? (
                         <>
-                          {issueListResponse?.data.map((issue: T.API.GetProjectIssueListResponse) => (
+                          {issueListResponse?.data.map((issue: T.API.SimpleIssue) => (
                             <S.DropdowntItem
                               key={`filter-${openFilter}-${issue.id}`}
                               onClick={() => selectValue(openFilter, issue.id.toString())}
