@@ -3,7 +3,7 @@ import React from 'react';
 
 export interface KanbanProps {
   state: 'YET' | 'NOW' | 'DONE';
-  issues: T.API.GetKanbanListResponse[];
+  issues: T.API.SimpleIssue[];
   dragEnterdState: null | 'YET' | 'NOW' | 'DONE';
   setDragEnterdState: React.Dispatch<React.SetStateAction<null | 'YET' | 'NOW' | 'DONE'>>;
   refetchKanbansResponse: () => any;

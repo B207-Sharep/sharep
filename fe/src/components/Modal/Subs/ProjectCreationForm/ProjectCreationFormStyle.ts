@@ -168,3 +168,12 @@ export const RoleBadgeBtn = styled.div<{ $state: boolean }>`
     opacity: 0.6;
   }
 `;
+
+export const RoleInfo = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 4px;
+  margin-bottom: 6px;
+`;

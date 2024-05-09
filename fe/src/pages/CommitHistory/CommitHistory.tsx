@@ -45,7 +45,13 @@ export default function CommitHistory() {
       },
       {
         queryKey: [{ func: `get-issue-list`, projectId }],
-        queryFn: () => API.project.getProjectIssueList({ projectId: Number(projectId) }),
+        queryFn: () =>
+          API.project.getProjectIssueList({
+            projectId: Number(projectId),
+            dataType: 'SIMPLE',
+            issueType: null,
+            accountId: null,
+          }),
       },
     ],
   });

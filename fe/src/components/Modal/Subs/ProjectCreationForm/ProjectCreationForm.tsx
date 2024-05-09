@@ -5,7 +5,7 @@ import * as S from './ProjectCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
 import * as API from '@/apis';
-import { MinusCircle, Search } from 'lucide-react';
+import { Info, MinusCircle, Search } from 'lucide-react';
 import { modalDataState } from '@/stores/atoms/modal';
 import { useModal } from '@/customhooks';
 import { useQuery } from '@tanstack/react-query';
@@ -25,7 +25,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
     refetch: searchEmailRefetch,
   } = useQuery({
     queryKey: [{ func: `search-by-email`, searchValue }],
-    queryFn: () => API.project.searchByEmail({ email: searchValue }),
+    queryFn: () => API.project.searchUserByEmail({ email: searchValue }),
     enabled: !!searchValue,
     select: data => data.data,
   });
@@ -146,10 +146,10 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
           {/* 팀원 이메일 검색 결과 */}
           {isDropdownVisible && searchEmailSuccess && (
             <S.SearchResultsDropdown>
-              {searchEmailResponse.map((user: Omit<T.ProjectCreationFormProps['members'][number], 'roles'>) => (
+              {searchEmailResponse.map(user => (
                 <S.SearchResultItem key={`search-user-${user.id}`} onClick={handleResultClick(user)}>
                   <S.UserProfile>
-                    <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
+                    <Comp.UserImg size="sm" path={`${user.imageUrl}` || 'https://via.placeholder.com/32x32'} />
                     <S.UserInfo>
                       <S.StyledText fontSize={12}>{user.email}</S.StyledText>
                       <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
@@ -165,6 +165,14 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
       </S.FormItem>
       {/* 추가된 팀원 목록*/}
       <S.Content>
+        <S.RoleInfo>
+          <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $strokeColor={PALETTE.MAIN_WHITE}>
+            <Info size={12} />
+          </S.Icon>
+          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+            4개의 직무 중 각 팀원의 역할을 선택해주세요.
+          </S.StyledText>
+        </S.RoleInfo>
         <S.MemberList>
           {/* 팀장은 기본으로 등록, 삭제 불가 */}
           <S.Row>
@@ -215,7 +223,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
 
               <S.RowContent>
                 <S.UserProfile>
-                  <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
+                  <Comp.UserImg size="sm" path={`${member.imageUrl} || 'https://via.placeholder.com/32x32'`} />
                   <S.UserInfo>
                     <S.StyledText fontSize={12}>{member.email}</S.StyledText>
                     <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>

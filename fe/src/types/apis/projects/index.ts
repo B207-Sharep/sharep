@@ -124,3 +124,11 @@ export interface GetProjectIssueListResponse {
   description: string;
 }
 /** GetProjectIssueList - 모든 이슈 리스트 조회 */
+
+/** SearchUserByEmail - 이메일 계정 조회 */
+export interface SearchUserByEmailResponse {
+  id: number;
+  nickname: string;
+  email: string;
+  imageUrl: string | null;
+}

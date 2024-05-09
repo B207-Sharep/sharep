@@ -188,7 +188,11 @@ export async function getProjectMemberList({
 }
 
 /** 이메일 계정 조회 */
-export async function searchByEmail({ email }: { email: string }) {
+export async function searchUserByEmail({
+  email,
+}: {
+  email: string;
+}): Promise<AxiosResponse<T.API.SearchUserByEmailResponse[], any>> {
   return await instanceOfJson.get(`/accounts/email?email=${email}`);
 }
 
