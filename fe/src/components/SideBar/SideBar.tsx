@@ -21,20 +21,24 @@ import { userState } from '@/stores/atoms/loadUser';
 
 export default function SideBar() {
   const navigate = useNavigate();
-  const { projectId } = useParams();
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
   const user = useRecoilValue(userState);
+  const { projectId, accountId } = useParams();
+  console.log(user, '======');
 
   const handleHistoryClick = () => {
     navigate(`/projects/${projectId}/commit-history`);
+  };
+  const handleMyProfileClick = () => {
+    navigate('/projects');
   };
 
   const handleTeamDashClick = () => {
     navigate(`/projects/${projectId}`);
   };
   const handleMyDashClick = () => {
-    navigate(`/projects`);
+    navigate(`/projects/${projectId}/members/${user?.id}`);
   };
   const handleFeatureManualClick = () => {
     navigate(`/projects/${projectId}/feature-manual`);
@@ -64,7 +68,7 @@ export default function SideBar() {
   return (
     <>
       <S.SideBarWrapper>
-        <S.SideBarProfile onClick={handleMyDashClick}>
+        <S.SideBarProfile className="hover-bg-dark" onClick={handleMyProfileClick}>
           <UserImg size="md" path={user?.imageUrl} />
           <S.SideBarProfileName>
             <S.SideBarFont $size="20px" $weight={700}>
