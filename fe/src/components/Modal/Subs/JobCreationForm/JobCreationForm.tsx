@@ -3,7 +3,7 @@ import * as S from './JobCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
 import * as Icon from '@/assets';
-import * as API from '@/apis/projects';
+import * as API from '@/apis';
 import { PALETTE } from '@/styles';
 import { Image as UploadImageIcon } from 'lucide-react';
 import { useModal } from '@/customhooks';
@@ -26,8 +26,8 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
     isFetching: myNowIssueFetching,
   } = useQuery({
     queryKey: [{ func: `get-now-issue-about-me`, projectId }],
-    queryFn: () => API.getNowIssueAboutMe({ projectId: Number(projectId) }),
-    // select: data => data.data,
+    queryFn: () => API.project.getNowIssueAboutMe({ projectId: Number(projectId) }),
+    select: data => data.data,
   });
 
   const handleButtonClick = () => {
@@ -74,10 +74,9 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   };
 
   useEffect(() => {
-    // TODO : 진행 중인 이슈 조회
-    if (myNowIssueSuccess && myNowIssueResponse.data.issue) {
-      console.log(myNowIssueResponse.data);
-      updateContentByKey('issueId', myNowIssueResponse.data.issue.id);
+    if (myNowIssueSuccess && myNowIssueResponse.issue) {
+      console.log(myNowIssueResponse);
+      updateContentByKey('issueId', myNowIssueResponse.issue.id);
     }
   }, [myNowIssueSuccess, myNowIssueResponse]);
 
@@ -91,7 +90,8 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
             </S.StyledText>
           </S.IssueBadge>
           <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
-            {(myNowIssueResponse?.data && myNowIssueResponse?.data.issue?.issueName) || '진행 중인 이슈가 없습니다'}
+            {(myNowIssueSuccess && myNowIssueResponse.issue && myNowIssueResponse.issue?.issueName) ||
+              '진행 중인 이슈가 없습니다'}
           </S.StyledText>
         </S.IssueTitle>
       </S.TitleContainer>

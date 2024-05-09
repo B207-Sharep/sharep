@@ -159,8 +159,8 @@ export default function Register() {
   };
 
   //파라미터 삭제할것
-  const signupHandler = async () => {
-    // e.preventDefault();
+  const signupHandler = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
 
     const emailCheckresult = await emailCheckHandler(email);
     if (emailCheckresult) setEmailError('');
@@ -258,7 +258,7 @@ export default function Register() {
         </S.InputContentWrapper>
         {/* <button disabled={false}>fdfd</button> */}
         <S.BtnWrapper onClick={signupHandler}>
-          <MainColorBtn disabled={false} bgc={allChecked}>
+          <MainColorBtn disabled={!allChecked} bgc={allChecked}>
             회원가입
           </MainColorBtn>
         </S.BtnWrapper>

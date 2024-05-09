@@ -13,10 +13,10 @@ export default function Kanban({
   dragAble,
   dragEnterdState,
   setDragEnterdState,
-  refetchKanvansResponse,
+  refetchKanbansResponse,
 }: T.KanbanProps) {
-  const issuesWrapperRef = useRef<HTMLDivElement>(null);
   const { projectId, accountId } = useParams();
+  const issuesWrapperRef = useRef<HTMLDivElement>(null);
   const [holdingIssueId, setHoldingIssueId] = useState<null | number>(null);
   const { mutate: changeIssueState } = useMutation({
     mutationFn: ({ issueId }: { issueId: number }) =>
@@ -27,15 +27,15 @@ export default function Kanban({
         state: dragEnterdState as 'YET' | 'NOW' | 'DONE',
       }),
     onSuccess: res => {
-      if (res.status === 200) refetchKanvansResponse();
+      if (res.status === 200) refetchKanbansResponse();
     },
   });
 
   const filteringResponse = useCallback(
-    ({ state }: { state: 'YET' | 'NOW' | 'DONE' }): T.API.GetKanvanListResponse[] => {
+    ({ state }: { state: 'YET' | 'NOW' | 'DONE' }): T.API.SimpleIssue[] => {
       return issues
         .map(issue => issue.state === state && issue)
-        .filter((el: T.API.GetKanvanListResponse | false) => el) as T.API.GetKanvanListResponse[];
+        .filter((el: T.API.SimpleIssue | false) => el) as T.API.SimpleIssue[];
     },
     [issues],
   );
@@ -49,7 +49,7 @@ export default function Kanban({
     const filteredIssues = filteringResponse({ state });
 
     return filteredIssues.reduce(
-      (closest: { gapBetweenCursor: number; element: null | T.API.GetKanvanListResponse }, element, idx) => {
+      (closest: { gapBetweenCursor: number; element: null | T.API.SimpleIssue }, element, idx) => {
         const wrapperPositionY = (issuesWrapperRef.current?.getBoundingClientRect() as DOMRect).top;
 
         const { ISSUE_HEIGHT, GAP } = { ISSUE_HEIGHT: 116, GAP: 10 };

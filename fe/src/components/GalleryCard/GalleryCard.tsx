@@ -19,23 +19,11 @@ export default function GalleryCard({ id, issueName, createdAt, type, imageUrl }
     <S.Card className="hover-moving" onClick={handleCardClick}>
       <S.CardContent>
         {type === 'SCREEN' ? (
-          <>
-            {imageUrl ? (
-              <S.Img src={imageUrl}></S.Img>
-            ) : (
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  backgroundColor: PALETTE.MAIN_BACKGROUND,
-                }}
-              ></div>
-            )}
-          </>
+          <>{imageUrl ? <S.Img src={imageUrl}></S.Img> : <S.DefaultImage />}</>
         ) : (
           <S.PreviewContent>
             <div>임시 컴포넌트ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ??</div>
-            <div>임시 컴포넌트</div>
+            <div>미리보기 임시 컴포넌트</div>
           </S.PreviewContent>
         )}
       </S.CardContent>

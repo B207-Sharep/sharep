@@ -26,7 +26,7 @@ export const Title = styled.div<{ $fixedWidth: string }>`
   min-width: fit-content;
   border-top: 1px solid ${PALETTE.TABLE_BORDER};
   border-bottom: 1px solid ${PALETTE.TABLE_BORDER};
-  padding: 16px 16px;
+  padding: 16px 4px;
   font-weight: 700;
   cursor: default;
 

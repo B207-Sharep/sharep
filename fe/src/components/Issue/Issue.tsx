@@ -61,7 +61,7 @@ export default function Issue({ id, issueName, jobs, assignees, priority, dragAb
         <S.AboutEtcWrapper>
           <S.PriorityWrapper>
             <span>우선 순위</span>
-            <Comp.PriorityBadge priority={priority} />
+            {priority !== null && <Comp.PriorityBadge priority={priority} />}
           </S.PriorityWrapper>
           {assignees !== null && (
             <S.AssignessWrapper $assigneesNumber={assignees.length}>
