@@ -12,10 +12,10 @@ export default function ScreenManual() {
 
   const {
     data: screenIssueListResponse,
-    isFetched: screenIssueListFetched,
-    isPending: screenIssueListPending,
+    isSuccess: screenIssueListSuccess,
+    isFetching: screenIssueListLoading,
   } = useQuery({
-    queryKey: [{ screenIssueList: `screenIssueList` }],
+    queryKey: [{ func: `screen-issue-list`, projectId }],
     queryFn: () =>
       API.getScreenIssueList({ projectId: Number(projectId) }).then(res => {
         console.log(res);
@@ -27,10 +27,6 @@ export default function ScreenManual() {
       }),
   });
 
-  useEffect(() => {
-    console.log(screenIssueListPending, screenIssueListFetched);
-  }, [screenIssueListFetched, screenIssueListPending]);
-
   return (
     <L.SideBarLayout>
       <S.Wrapper>
@@ -39,7 +35,7 @@ export default function ScreenManual() {
             화면 정의서
           </S.StyledText>
         </S.Header>
-        {screenIssueListFetched && <Comp.GalleryGridWrapper issueList={screenIssueListResponse} type="SCREEN" />}
+        {screenIssueListSuccess && <Comp.GalleryGridWrapper issueList={screenIssueListResponse} type="SCREEN" />}
       </S.Wrapper>
     </L.SideBarLayout>
   );

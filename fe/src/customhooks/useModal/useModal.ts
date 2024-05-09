@@ -8,6 +8,7 @@ export const useModal = <Contents extends { [key: string]: any }>(modalId: strin
     setModalData({
       isOpen: true,
       contents: { ...initialContents },
+      isValid: false,
     });
   };
 
@@ -15,6 +16,7 @@ export const useModal = <Contents extends { [key: string]: any }>(modalId: strin
     setModalData(oldModalData => ({
       ...oldModalData,
       isOpen: false,
+      isValid: false,
     }));
   };
 
@@ -24,10 +26,17 @@ export const useModal = <Contents extends { [key: string]: any }>(modalId: strin
       contents: { ...oldModalData.contents, [key]: value },
     }));
   };
+  const updateIsValid = (value: boolean) => {
+    setModalData(oldModalData => ({
+      ...oldModalData,
+      isValid: value,
+    }));
+  };
 
   return {
     openModal,
     closeModal,
     updateContentByKey,
+    updateIsValid,
   };
 };

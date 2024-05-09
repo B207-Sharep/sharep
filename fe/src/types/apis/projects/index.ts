@@ -143,3 +143,11 @@ export interface GetContributionsResponse {
 //   }[];
 // }
 /** GetScreenIssueList - 화면 이슈 조회 */
+
+/** GetProjectIssueList - 모든 이슈 리스트 조회 */
+export interface GetProjectIssueListResponse {
+  id: number;
+  issueName: string;
+  description: string;
+}
+/** GetProjectIssueList - 모든 이슈 리스트 조회 */

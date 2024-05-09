@@ -3,6 +3,10 @@ import { GlobalStyle } from './styles';
 import { Route, Routes } from 'react-router-dom';
 import * as Page from './pages';
 import { useLoadUser } from './customhooks';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 function App() {
   const user = useLoadUser();

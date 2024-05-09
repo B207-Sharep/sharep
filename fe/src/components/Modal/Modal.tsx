@@ -6,46 +6,78 @@ import { modalDataState } from '@/stores/atoms/modal';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
+import * as API from '@/apis/projects';
+import { useParams } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function Modal({ modalId, title, subTitle, children, btnText }: T.ModalProps) {
+  const queryClient = useQueryClient();
   const { closeModal } = useModal(modalId);
+  const { projectId } = useParams();
+  const { isOpen, isValid } = useRecoilValue(modalDataState(modalId));
 
-  const { isOpen } = useRecoilValue(modalDataState(modalId));
+  const createNewProjectMutation = useMutation({
+    mutationKey: [{ func: `createNewProject` }],
+    mutationFn: API.createNewProject,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [{ projectList: `projectList` }] });
+    },
+  });
 
-  const handleModalClose = () => {
-    closeModal();
-  };
+  const createNewJobMutation = useMutation({
+    mutationKey: [{ func: `createNewJob`, projectId }],
+    mutationFn: API.createNewJob,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [{ func: `get-job-list`, projectId }] });
+    },
+  });
 
   const handleCreateButtonClick = useRecoilCallback(({ snapshot, set }) => async () => {
-    const modalData = await snapshot.getPromise(modalDataState(modalId));
+    const contents = (await snapshot.getPromise(modalDataState(modalId))).contents;
     try {
-      // api call
-      const { contents } = modalData;
       if (contents) {
-        if (modalId === 'project') {
-          const processedData = {
-            title: contents.title,
-            bio: contents.bio,
-            members: contents.members.map((member: T.ProjectCreationFormProps['members'][number]) => {
-              return {
-                id: member.accountId,
-                roles: Object.entries(member.roles)
-                  .filter(([_, hasRole]) => hasRole)
-                  .map(([role, _]) => role),
-              };
-            }),
-          };
-          // console.log(processedData);
+        switch (modalId) {
+          case 'project':
+            {
+              const result = processProjectData(contents as T.ProjectCreationFormProps);
+              if (result) {
+                await createNewProjectMutation.mutateAsync(result);
+              } else throw Error;
+            }
+            break;
+          case 'job':
+            if (contents.issueId)
+              await createNewJobMutation.mutateAsync({
+                projectId: Number(projectId),
+                newJob: contents as T.JobCreationFormProps,
+              });
+            else {
+              // TODO: isseuId가 없는 경우
+              alert('진행 중인 이슈가 없습니다');
+              throw Error;
+            }
+
+            break;
+          case 'infra-job':
+            break;
+          case 'project-secretKey':
+            break;
+          default:
+            break;
         }
       }
-
-      console.log(modalData.contents);
+      console.log(contents);
       console.log(set);
+
       closeModal();
     } catch (error) {
       console.error(error);
     }
   });
+
+  const handleModalClose = () => {
+    closeModal();
+  };
 
   return isOpen ? (
     <S.ModalBackdrop onClick={handleModalClose}>
@@ -67,13 +99,13 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
 
           {/* footer */}
           <S.ModalFooter>
-            <S.BtnWrapper onClick={handleModalClose}>
+            <S.BtnWrapper onClick={handleModalClose} $isValid={true}>
               <Comp.MainColorBtn bgc={false} disabled={false}>
                 취소
               </Comp.MainColorBtn>
             </S.BtnWrapper>
-            <S.BtnWrapper onClick={handleCreateButtonClick}>
-              <Comp.MainColorBtn bgc={true} disabled={false}>
+            <S.BtnWrapper onClick={() => isValid && handleCreateButtonClick()} $isValid={isValid}>
+              <Comp.MainColorBtn bgc={isValid} disabled={isValid}>
                 {btnText ? btnText : '생성'}
               </Comp.MainColorBtn>
             </S.BtnWrapper>
@@ -82,4 +114,24 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
       </S.ModalWrapper>
     </S.ModalBackdrop>
   ) : null;
+}
+
+function processProjectData(contents: T.ProjectCreationFormProps) {
+  const hasMemberWithoutRole = contents.members.some(member => Object.values(member.roles).every(hasRole => !hasRole));
+
+  if (hasMemberWithoutRole) {
+    alert('담당 역할이 선택되지 않은 팀원이 있습니다.');
+    return null;
+  }
+
+  return {
+    title: contents.title,
+    bio: contents.bio,
+    members: contents.members.map(member => ({
+      id: member.id,
+      roles: Object.entries(member.roles)
+        .filter(([_, hasRole]) => hasRole)
+        .map(([role, _]) => role) as T.RoleBadgeProps['role'][],
+    })),
+  };
 }
