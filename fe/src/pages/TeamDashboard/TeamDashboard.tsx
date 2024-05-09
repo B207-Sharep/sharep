@@ -15,6 +15,7 @@ export default function TeamDashboard() {
     { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
     { data: featureIssuesResponse, isFetching: isFeatureIssuesResponseFetching },
     { data: screenIssuesResponse, isFetching: isScreenIssuesResponseFetching },
+    { data: membersResponse, isFetching: isMembersResponseFeting },
   ] = useQueries({
     queries: [
       {
@@ -23,14 +24,20 @@ export default function TeamDashboard() {
       },
       {
         queryKey: [{ func: `get-feature-issues`, projectId }],
-        queryFn: () => API.project.getFeatureIssuesList({ projectId: Number(projectId) }),
+        queryFn: () => API.project.getFeatureIssuesList({ projectId: Number(projectId), dataType: 'SIMPLE' }),
       },
       {
         queryKey: [{ func: `get-screen-issues`, projectId }],
-        queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId) }),
+        queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId), dataType: 'SIMPLE' }),
+      },
+      {
+        queryKey: [{ func: `get-member-list`, projectId }],
+        queryFn: () => API.project.getProjectMemberList({ projectId: Number(projectId) }),
       },
     ],
   });
+
+  console.log(`membersResponse :`, membersResponse?.data);
 
   return (
     <L.SideBarLayout>
@@ -57,14 +64,7 @@ export default function TeamDashboard() {
                 <S.CurrentWork key={`current-work-${i}`}>
                   <Sub.TeamMember {...res.member} />
                   {res.issue !== null && (
-                    <Comp.Issue
-                      {...res.issue}
-                      assignees={null}
-                      jobs={null}
-                      state={null}
-                      dragAble={false}
-                      deleteAble={false}
-                    />
+                    <Comp.Issue {...res.issue} assignees={null} jobs={null} dragAble={false} deleteAble={false} />
                   )}
                 </S.CurrentWork>
               ))}
