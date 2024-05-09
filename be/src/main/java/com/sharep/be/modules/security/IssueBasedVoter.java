@@ -16,6 +16,7 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
 
 @Slf4j
 public class IssueBasedVoter implements AuthorizationManager<RequestAuthorizationContext> {
+
     private final AuthorizationManager<RequestAuthorizationContext> projectVoterManager;
 
     private final IssueRepository issueRepository;
@@ -51,7 +52,8 @@ public class IssueBasedVoter implements AuthorizationManager<RequestAuthorizatio
         Long issueId = obtainIssueTargetId(context.getRequest());
 
         if (needCheck(issueId)) {
-            List<Issue> issues = issueRepository.findAllByProjectId(projectId);
+            List<Issue> issues = issueRepository.findAllByProjectIdAndAccountIdAndIssueType(
+                    projectId, null, null, null);
 
             if (issues.stream().map(Issue::getId).anyMatch(p -> p.equals(issueId))) {
                 log.info("======== granted voter out ========");
