@@ -116,7 +116,7 @@ export async function getScreenIssueList({
 }: {
   projectId: number;
   dataType: 'SIMPLE' | 'DETAIL' | null;
-}) {
+}): Promise<AxiosResponse<T.API.SimpleIssue[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${dataType}&issueType=${'SCREEN'}&accountId=`);
 }
 
@@ -221,6 +221,5 @@ export async function createNewIssue({
     priority?: T.PriorityBadgeProps['priority'];
   };
 }) {
-  console.log(newIssue);
   return await instanceOfJson.post(`/projects/${projectId}/issues`, newIssue);
 }
