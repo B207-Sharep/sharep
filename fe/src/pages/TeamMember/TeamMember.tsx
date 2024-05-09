@@ -69,7 +69,7 @@ export default function TeamMember() {
           <S.WorksWrapper>
             <S.YesterdayWork>
               <S.Title>
-                <span>어제 한 일</span>
+                <span>어제 한 작업</span>
               </S.Title>
               <p aria-label={DUMMY_YESTERDAY_WORK}>{DUMMY_YESTERDAY_WORK}</p>
             </S.YesterdayWork>

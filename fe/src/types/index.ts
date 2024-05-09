@@ -17,7 +17,13 @@ import {
   InfraJobCreationFormProps,
   SecretKeyFormProps,
 } from './components/Modal';
-import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualTable';
+import {
+  ManualTableProps,
+  FeatureManualTableProps,
+  CelProps,
+  SelectCelProps,
+  SelectAssigneesCelProps,
+} from './components/ManualTable';
 import { ProjectGridWrapperProps } from './components/ProjectGridWrapper';
 import { ProjectCardProps } from './components/ProjectCard';
 import { IssueProps } from './components/Issue';
@@ -54,6 +60,8 @@ export type {
   InfraJobCreationFormProps,
   SecretKeyFormProps,
   ManualTableProps,
+  FeatureManualTableProps,
+  SelectAssigneesCelProps,
   CelProps,
   SelectCelProps,
   ProjectGridWrapperProps,

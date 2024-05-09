@@ -46,7 +46,7 @@ export default function TeamDashboard() {
           <S.WhiteBoxWrapper $flex="1.5" $height="302px">
             <S.Title>
               <Icon.YesterdayWork />
-              <span>어제 업무 요약</span>
+              <span>어제 작업 요약</span>
             </S.Title>
             <S.YesterdayWorksScrollContainer>
               {/* {Array.from({ length: 6 }).map((res, i) => (
