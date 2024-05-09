@@ -46,7 +46,7 @@ export default function ScreenManualDetail() {
                 </S.StyledText>
               </S.AssigneeBadge>
               <S.CommitUserInfo>
-                <Comp.UserImg size="sm" path={dummyAssignee.userImageUrl || 'https://via.placeholder.com/16x16'} />
+                <Comp.UserImg size="sm" path={dummyAssignee.userImageUrl} />
                 <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                   {dummyAssignee.nickname}
                 </S.StyledText>
