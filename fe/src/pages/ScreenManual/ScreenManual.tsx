@@ -16,7 +16,7 @@ export default function ScreenManual() {
     isFetching: screenIssueListLoading,
   } = useQuery({
     queryKey: [{ func: `get-screen-issues`, projectId }],
-    queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId), dataType: 'SIMPLE' }),
+    queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId) }),
     select: data => data.data,
   });
 

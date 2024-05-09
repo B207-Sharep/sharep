@@ -112,12 +112,19 @@ export async function getFeatureIssuesList({
 /** 화면 이슈 리스트 조회 */
 export async function getScreenIssueList({
   projectId,
-  dataType,
 }: {
   projectId: number;
-  dataType: 'SIMPLE' | 'DETAIL' | null;
 }): Promise<AxiosResponse<T.API.SimpleIssue[], any>> {
-  return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${dataType}&issueType=${'SCREEN'}&accountId=`);
+  return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${'SIMPLE'}&issueType=${'SCREEN'}&accountId=`);
+}
+
+/** 화면 이슈 상세 조회 */
+export async function getScreenIssueDetail({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.DetailIssue[], any>> {
+  return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${'DETAIL'}&issueType=${'SCREEN'}&accountId=`);
 }
 
 /** API 이슈 리스트 조회 */
@@ -222,4 +229,20 @@ export async function createNewIssue({
   };
 }) {
   return await instanceOfJson.post(`/projects/${projectId}/issues`, newIssue);
+}
+
+/** 이슈 담당자 생성 */
+export async function createIssueAssignee({
+  projectId,
+  issueId,
+  accountId,
+}: {
+  projectId: number;
+  issueId: number;
+  accountId: number;
+}) {
+  return await instanceOfJson.post(
+    `/projects/${projectId}/issues/${issueId}/accounts/${accountId}/assignees`,
+    accountId,
+  );
 }

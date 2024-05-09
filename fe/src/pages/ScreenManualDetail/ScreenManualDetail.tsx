@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as L from '@/layouts';
 import * as Comp from '@/components';
 import * as T from '@/types';
@@ -7,22 +7,84 @@ import * as API from '@/apis';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
+import { Plus, X } from 'lucide-react';
 
 export default function ScreenManualDetail() {
+  const queryClient = useQueryClient();
   const { projectId, manualId } = useParams();
   const navigate = useNavigate();
   const jobModal = useModal('job');
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState('left');
+  const addbBtnRef = useRef<HTMLDivElement | null>(null);
 
-  // const {
-  //   data: screenIssueListResponse,
-  //   isSuccess: screenIssueListSuccess,
-  //   isFetching: screenIssueListLoading,
-  // } = useQuery({
-  //   queryKey: [{ func: `get-screen-issues`, projectId, manualId }],
-  //   queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId) }),
-  //   select: data => data.data,
+  const [
+    {
+      data: screenIssueDetailResponse,
+      isSuccess: screenIssueDetailSuccess,
+      isFetching: screenIssueDetailLoading,
+      refetch: screenIssueDetailRefetch,
+    },
+    { data: memberListResponse, isSuccess: memberListSuccess, isFetching: memberListFetching },
+    { data: jobListResponse, isSuccess: jobListSuccess, isFetching: jobListeFetching, refetch: jobListRefetch },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: [{ func: `get-screen-issue-detail`, projectId, manualId }],
+        queryFn: () => API.project.getScreenIssueDetail({ projectId: Number(projectId) }),
+      },
+      {
+        queryKey: [{ func: `get-member-list`, projectId }],
+        queryFn: () => API.project.getProjectMemberList({ projectId: Number(projectId) }),
+      },
+      {
+        queryKey: [{ func: `get-job-list`, projectId, manualId }],
+        queryFn: () =>
+          API.project.getJobList({
+            projectId: Number(projectId),
+            accountId: null,
+            issueId: null,
+            roleType: null,
+          }),
+      },
+    ],
+  });
+
+  const createIssueAssigneeMutation = useMutation({
+    mutationKey: [{ func: `create-issue-assignee`, projectId, manualId }],
+    mutationFn: API.project.createIssueAssignee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issue-detail`, projectId, manualId }] });
+    },
+  });
+
+  //  TODO : 이슈 담당자 삭제
+  // const { mutate: deleteIssueAssignee } = useMutation({
+  //   mutationFn: ({ issueId }: { issueId: number }) =>
+  //     API.project.deleteIssueAssignees({
+  //       issueId: issueId,
+  //       projectId: Number(projectId),
+  //       accountId: Number(accountId),
+  //     }),
+  //   onSuccess: response => {
+  //     console.log(`response :`, response);
+  //   },
   // });
+
+  const selectedIssueDetail = useMemo(
+    () => screenIssueDetailResponse && screenIssueDetailResponse.data.find(issue => issue.id === Number(manualId)),
+    [screenIssueDetailResponse, manualId],
+  );
+
+  const recentJob = useMemo(
+    () =>
+      selectedIssueDetail &&
+      jobListResponse &&
+      jobListResponse.data.filter(job => job.issueId === selectedIssueDetail.id)[0],
+    [selectedIssueDetail, jobListResponse],
+  );
 
   const handleModalOpen = () => {
     jobModal.openModal({
@@ -32,111 +94,184 @@ export default function ScreenManualDetail() {
     });
   };
 
+  // 이슈 담당자 생성
+  const handleAddAssignee = (newAccountId: number) => {
+    if (newAccountId) {
+      if (!selectedIssueDetail?.assignees.find(assignee => assignee.accountId === newAccountId)) {
+        createIssueAssigneeMutation.mutate(
+          {
+            projectId: Number(projectId),
+            accountId: newAccountId,
+            issueId: Number(manualId),
+          },
+          {
+            onSuccess: () => {
+              setIsDropdownVisible(false);
+            },
+          },
+        );
+      }
+    }
+  };
+
+  // 이슈 담당자 삭제
+  const handleRemoveAssignee = (oldAccountId: number) => () => {
+    setIsDropdownVisible(false);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
+
+  // dropdown 외 다른 컴포넌트 클릭시 dropdown 안 보이게 설정
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (addbBtnRef.current && !addbBtnRef.current.contains(event.target as Node)) {
+        setIsDropdownVisible(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [addbBtnRef]);
+
   return (
     <L.SideBarLayout>
       <S.Wrapper>
-        <S.HeaderContainer>
-          <S.Header>
-            <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}></S.StyledText>
-            {/* TODO: {screenIssueListSuccess && screenIssueListResponse.issueName} */}
-            <S.IssueAssigneeContainer>
-              <S.AssigneeBadge>
-                <S.StyledText color={PALETTE.MAIN_WHITE} fontWeight={600}>
-                  담당자
+        {screenIssueDetailSuccess && (
+          <>
+            <S.HeaderContainer>
+              <S.Header>
+                <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
+                  {selectedIssueDetail?.issueName}
                 </S.StyledText>
-              </S.AssigneeBadge>
-              <S.CommitUserInfo>
-                <Comp.UserImg size="sm" path={dummyAssignee.userImageUrl} />
-                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-                  {dummyAssignee.nickname}
-                </S.StyledText>
-                <S.RoleBadgeList>
-                  {dummyAssignee.roles.map((role, index) => (
-                    <Comp.RoleBadge key={`assignee-role-${index}`} role={role} selectAble={false} />
-                  ))}
-                </S.RoleBadgeList>
-              </S.CommitUserInfo>
-            </S.IssueAssigneeContainer>
-          </S.Header>
-          <S.CommitWrapper>
-            <S.BtnWrapper onClick={() => navigate(`/projects/${projectId}/commit-history`)}>
-              <Comp.HistoryBtn />
-            </S.BtnWrapper>
-            <div onClick={handleModalOpen}>
-              <Comp.Add />
-            </div>
-            <Comp.Modal modalId="job" title="새 작업 작성">
-              <Comp.JobCreationForm modalId="job" />
-            </Comp.Modal>
-          </S.CommitWrapper>
-        </S.HeaderContainer>
-        <S.Divider />
 
-        <S.ContentContainer>
-          <Comp.Commit
-            name={dummyRecentCommit.name}
-            description={dummyRecentCommit.description}
-            createdAt={dummyRecentCommit.createdAt}
-            member={dummyRecentCommit.member}
-            disabled={false}
-          />
-          {dummyRecentCommit.imageUrl && (
-            <S.ContentItem>
-              <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
-                화면
-              </S.StyledText>
-              <S.CommitImageDetail>
-                <S.Img src={dummyRecentCommit.imageUrl} />
-              </S.CommitImageDetail>
-            </S.ContentItem>
-          )}
-          <S.ContentItem>
-            <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
-              기능 명세서
-            </S.StyledText>
-            <S.ManualWrapper>
-              <Comp.ManualTable
-                columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
-                dataList={FEATURE_MANUAL_DUMMY}
-                usingFor="FEATURE"
-              />
-            </S.ManualWrapper>
-          </S.ContentItem>
-          <S.ContentItem>
-            <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
-              API 명세서
-            </S.StyledText>
-            <S.ManualWrapper>
-              <Comp.ManualTable
-                columnTitles={API_MANUAL_COLUMN_TITLES}
-                dataList={API_MANUAL_DUMMY}
-                usingFor="FEATURE"
-              />
-            </S.ManualWrapper>
-          </S.ContentItem>
-        </S.ContentContainer>
+                <S.IssueAssigneeContainer>
+                  <S.AssigneeBadge>
+                    <S.StyledText color={PALETTE.MAIN_WHITE} fontWeight={600}>
+                      담당자
+                    </S.StyledText>
+                  </S.AssigneeBadge>
+                  {selectedIssueDetail?.assignees.map(assignee => (
+                    <S.CommitUserInfo key={`assignee-${assignee.id}`}>
+                      <Comp.UserImg size="sm" path={assignee.imageUrl} />
+                      <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                        {assignee.name}
+                      </S.StyledText>
+                      <S.RoleBadgeList>
+                        {assignee.roles.map(role => (
+                          <Comp.RoleBadge key={`assignee-role-${role}`} role={role} selectAble={false} />
+                        ))}
+                      </S.RoleBadgeList>
+                    </S.CommitUserInfo>
+                  ))}
+                  <S.AddUserBtn ref={addbBtnRef}>
+                    <S.Icon onClick={toggleDropdown}>
+                      <Plus size={10} color={PALETTE.SUB_BLACK} />
+                    </S.Icon>
+                    {isDropdownVisible && (
+                      <S.Dropdown $dropdownPosition={dropdownPosition}>
+                        {memberListResponse?.data.map(member => (
+                          <S.DropdowntItem
+                            key={`member-accountId-${member.account.id}`}
+                            onClick={() => handleAddAssignee(member.account.id)}
+                          >
+                            <S.UserInfo>
+                              <S.UserProfile>
+                                <Comp.UserImg size="sm" path={member.account.imageUrl} />
+                                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                                  {member.account.nickname}
+                                </S.StyledText>
+                              </S.UserProfile>
+                              <S.RoleBadgeList>
+                                {member.roles.map(role => (
+                                  <Comp.RoleBadge
+                                    key={`assignee-role-${member.account.id}-${role}`}
+                                    role={role}
+                                    selectAble={false}
+                                  />
+                                ))}
+                              </S.RoleBadgeList>
+                            </S.UserInfo>
+                          </S.DropdowntItem>
+                        ))}
+                      </S.Dropdown>
+                    )}
+                  </S.AddUserBtn>
+                </S.IssueAssigneeContainer>
+              </S.Header>
+              <S.CommitWrapper>
+                <S.BtnWrapper onClick={() => navigate(`/projects/${projectId}/commit-history`)}>
+                  <Comp.HistoryBtn />
+                </S.BtnWrapper>
+                <div onClick={handleModalOpen}>
+                  <Comp.Add />
+                </div>
+                <Comp.Modal modalId="job" title="새 작업 작성">
+                  <Comp.JobCreationForm modalId="job" />
+                </Comp.Modal>
+              </S.CommitWrapper>
+            </S.HeaderContainer>
+            <S.Divider />
+
+            <S.ContentContainer>
+              {recentJob && (
+                <>
+                  <Comp.Commit
+                    name={recentJob.name}
+                    description={recentJob.description}
+                    createdAt={recentJob.createdAt}
+                    member={recentJob.member}
+                    disabled={false}
+                  />
+
+                  <S.ContentItem>
+                    <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
+                      화면
+                    </S.StyledText>
+                    <S.CommitImageDetail>
+                      <S.Img src={recentJob.imageUrl} />
+                    </S.CommitImageDetail>
+                  </S.ContentItem>
+                </>
+              )}
+              {selectedIssueDetail?.connectedIssues && (
+                <S.ContentItem>
+                  <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
+                    기능 명세서
+                  </S.StyledText>
+                  <S.ManualWrapper>
+                    <Comp.ManualTable
+                      columnTitles={FEATURE_MANUAL_COLUMN_TITLES}
+                      dataList={FEATURE_MANUAL_DUMMY}
+                      usingFor="FEATURE"
+                    />
+                  </S.ManualWrapper>
+                </S.ContentItem>
+              )}
+              {selectedIssueDetail?.api && (
+                <S.ContentItem>
+                  <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
+                    API 명세서
+                  </S.StyledText>
+                  <S.ManualWrapper>
+                    <Comp.ManualTable
+                      columnTitles={API_MANUAL_COLUMN_TITLES}
+                      dataList={API_MANUAL_DUMMY}
+                      usingFor="FEATURE"
+                    />
+                  </S.ManualWrapper>
+                </S.ContentItem>
+              )}
+            </S.ContentContainer>
+          </>
+        )}
       </S.Wrapper>
     </L.SideBarLayout>
   );
 }
-
-const dummyAssignee = {
-  accountId: 2,
-  nickname: '김성제',
-  roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
-  userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
-};
-
-const dummyRecentCommit: Omit<T.CommitProps, 'disabled'> = {
-  id: 1,
-  name: '화면 이슈 작업명',
-  description: '화면 이슈 작업 설명',
-  createdAt: '2024-05-05',
-  imageUrl:
-    'https://images.unsplash.com/photo-1510777554755-dd3dad5980ab?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDN8Ym84alFLVGFFMFl8fGVufDB8fHx8fA%3D%3D',
-  issueId: 1,
-  member: dummyAssignee,
-};
 
 const FEATURE_MANUAL_COLUMN_TITLES: {
   name: string;
@@ -154,6 +289,7 @@ const FEATURE_MANUAL_COLUMN_TITLES: {
   { name: '시작 날짜', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '160px' },
   { name: '종료 날짜', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '160px' },
 ];
+
 const FEATURE_MANUAL_DUMMY = [
   {
     requestName: '요구사항명 - 0',
@@ -218,6 +354,7 @@ const API_MANUAL_COLUMN_TITLES: {
   { name: 'FE 구현 상태', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '120px' },
   { name: '담당자', celType: 'SELECT', iconName: 'text-content-title', fixedWidth: '160px' },
 ];
+
 const API_MANUAL_DUMMY = [
   {
     category: '요구사항명 - 0',
