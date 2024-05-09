@@ -8,10 +8,16 @@ import static com.sharep.be.modules.job.domain.QJob.job;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.project.QProject.project;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharep.be.modules.issue.Issue;
+import com.sharep.be.modules.issue.QIssue;
+import com.sharep.be.modules.issue.type.DataType;
 import com.sharep.be.modules.issue.type.IssueType;
+import com.sharep.be.modules.storyboard.QStoryboard;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,48 +28,71 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Issue> findAllByMemberId(Long memberId) {
-        return queryFactory
-                .select(issue)
-                .from(issue)
-                .leftJoin(issue.api, api).fetchJoin()
-                .innerJoin(issue.assignees, assignee).fetchJoin()
-                .innerJoin(assignee.member, member).fetchJoin()
-                .innerJoin(member.account, account).fetchJoin()
-                .leftJoin(issue.jobs, job).fetchJoin()
-                .where(issue.assignees.any().member.id.eq(memberId))
-                .fetch();
+    public Optional<Issue> findByIssueId(Long id) {
+
+        BooleanBuilder condition = new BooleanBuilder();
+        condition.and(issue.id.eq(id));
+
+        JPAQuery<Issue> query = detailIssueQuery(condition);
+
+        return Optional.ofNullable(query.fetchOne());
     }
 
     @Override
-    public List<Issue> findAllByProjectIdAndIssueType(Long projectId,
-            IssueType issueType) {
+    public List<Issue> findAllByProjectIdAndAccountIdAndIssueType(
+            Long projectId, Long accountId, IssueType issueType, DataType dataType) {
 
-        boolean isFeature = IssueType.FEATURE.equals(issueType);
+        BooleanBuilder condition = new BooleanBuilder();
+        condition.and(project.id.eq(projectId));
+
+        if (issueType != null) {
+            condition.and(issue.type.eq(issueType));
+        }
+
+        if (accountId != null) {
+            condition.and(issue.assignees.any().member.account.id.eq(accountId));
+        }
+
+        JPAQuery<Issue> query = DataType.SIMPLE.equals(dataType) ?
+                simpleIssueQuery(condition) : detailIssueQuery(condition);
+
+        return query.fetch();
+    }
+
+    private JPAQuery<Issue> detailIssueQuery(BooleanBuilder condition) {
+        QStoryboard featureStoryboard = new QStoryboard("featureStoryboard");
+        QStoryboard screenStoryboard = new QStoryboard("screenStoryboard");
+        QIssue screenIssue = new QIssue("screenIssue");
+        QIssue featureIssue = new QIssue("featureIssue");
+
+        return simpleIssueQuery(null)
+                .leftJoin(issue.featureStoryboards, featureStoryboard).fetchJoin()
+                .leftJoin(issue.screenStoryboards, screenStoryboard).fetchJoin()
+                .leftJoin(featureStoryboard.screenIssue, screenIssue).fetchJoin()
+                .leftJoin(screenStoryboard.featureIssue, featureIssue).fetchJoin()
+                .leftJoin(screenIssue.api).fetchJoin()
+                .leftJoin(featureIssue.api).fetchJoin()
+                .leftJoin(screenIssue.assignees).fetchJoin()
+                .leftJoin(featureIssue.assignees).fetchJoin()
+                .leftJoin(screenIssue.jobs).fetchJoin()
+                .leftJoin(featureIssue.jobs).fetchJoin()
+                .where(condition);
+    }
+
+    private JPAQuery<Issue> simpleIssueQuery(BooleanBuilder condition) {
         return queryFactory
                 .select(issue)
                 .from(issue)
                 .leftJoin(issue.assignees, assignee).fetchJoin()
                 .leftJoin(assignee.member, member).fetchJoin()
                 .leftJoin(member.account, account).fetchJoin()
-                .innerJoin(issue.project, project)
-                .leftJoin(isFeature ? issue.featureStoryboards : issue.screenStoryboards)
-                .fetchJoin()
+                .leftJoin(member.roles).fetchJoin()
                 .leftJoin(issue.api, api).fetchJoin()
-                .where(issue.type.eq(issueType).and(project.id.eq(projectId)))
-                .fetch();
+                .leftJoin(issue.jobs, job).fetchJoin()
+                .innerJoin(issue.project, project)
+                .where(condition);
     }
 
-    @Override
-    public List<Issue> findAllByProjectId(Long projectId) {
-        return queryFactory
-                .select(issue)
-                .from(issue)
-                .leftJoin(issue.api, api).fetchJoin()
-                .innerJoin(issue.project, project)
-                .where(project.id.eq(projectId))
-                .fetch();
-    }
 
 }
 
