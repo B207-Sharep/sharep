@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Comp from '@components';
-import * as Icon from '@/assets';
+import * as Icon from '@assets';
 import * as L from '@layouts';
 
 export default function SungJe() {
   return (
     <L.SideBarLayout>
-      <div></div>
+      <div style={{ width: 400, height: 400 }}></div>
     </L.SideBarLayout>
   );
 }

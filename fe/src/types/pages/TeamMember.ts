@@ -3,10 +3,10 @@ import React from 'react';
 
 export interface KanbanProps {
   state: 'YET' | 'NOW' | 'DONE';
-  issues: T.API.GetKanvanListResponse[];
+  issues: T.API.GetKanbanListResponse[];
   dragEnterdState: null | 'YET' | 'NOW' | 'DONE';
   setDragEnterdState: React.Dispatch<React.SetStateAction<null | 'YET' | 'NOW' | 'DONE'>>;
-  refetchKanvansResponse: () => any;
+  refetchKanbansResponse: () => any;
   dragAble: boolean;
   deleteAble: boolean;
   // setIssues: React.Dispatch<React.SetStateAction<Omit<T.IssueProps, 'dragAble'>[]>>;
