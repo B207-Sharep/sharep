@@ -96,15 +96,15 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
         </S.StyledText>
         <S.NotiContainer ref={notiContainerRef}>
           {contents.notiUsers.map((user: T.InfraJobCreationFormProps['notiUsers'][number]) => (
-            <S.NotiUser key={user.accountId}>
+            <S.NotiUser key={`accountId-${user.accountId}`}>
               <S.UserInfo>
                 <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
                 <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                   {user.nickname}
                 </S.StyledText>
                 <S.RoleBadgeList>
-                  {user.roles.map((role, index) => (
-                    <Comp.RoleBadge key={index} role={role} selectAble={false} />
+                  {user.roles.map(role => (
+                    <Comp.RoleBadge key={`noti-user-role-${role}`} role={role} selectAble={false} />
                   ))}
                 </S.RoleBadgeList>
               </S.UserInfo>
@@ -120,7 +120,10 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
             {isDropdownVisible && (
               <S.Dropdown $dropdownPosition={dropdownPosition}>
                 {dummyUsers.map(user => (
-                  <S.DropdowntItem key={user.accountId} onClick={() => handleAddNotiUser(user)}>
+                  <S.DropdowntItem
+                    key={`infra-job-accountId-${user.accountId}`}
+                    onClick={() => handleAddNotiUser(user)}
+                  >
                     <S.UserInfo>
                       <S.UserProfile>
                         <Comp.UserImg size="sm" path={user.userImageUrl || 'https://via.placeholder.com/16x16'} />
@@ -129,8 +132,8 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
                         </S.StyledText>
                       </S.UserProfile>
                       <S.RoleBadgeList>
-                        {user.roles.map((role, index) => (
-                          <Comp.RoleBadge key={index} role={role} selectAble={false} />
+                        {user.roles.map(role => (
+                          <Comp.RoleBadge key={`infra-noti-${user.accountId}-${role}`} role={role} selectAble={false} />
                         ))}
                       </S.RoleBadgeList>
                     </S.UserInfo>

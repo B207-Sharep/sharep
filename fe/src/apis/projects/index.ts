@@ -21,6 +21,7 @@ export async function getJobList({
   roleType: Extract<T.RoleBadgeProps, 'role'> | null;
   issueId: number | null;
 }): Promise<AxiosResponse<T.API.GetJobListResponse[], any>> {
+  console.log(projectId, accountId, roleType, issueId);
   return await instanceOfJson.get(
     `/projects/${projectId}/jobs?accountId=${accountId || ''}&roleType=${roleType || ''}&issueId=${issueId || ''}`,
   );
@@ -57,8 +58,21 @@ export async function getNowIssueAboutTeamMembers({
   return instanceOfJson.get(`/projects/${projectId}/now/issues`);
 }
 
+/** 본인의 진행중인 리스트 조회 */
+export async function getNowIssueAboutMe({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.GetNowIssueListResponse, any>> {
+  return instanceOfJson.get(`/projects/${projectId}/own/now/issues`);
+}
+
 /** 모든 이슈 리스트 조회 */
-export async function getProjectIssueList({ projectId }: { projectId: number }) {
+export async function getProjectIssueList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.GetProjectIssueListResponse[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/issues`);
 }
 
@@ -82,21 +96,37 @@ export async function getApiIssueList({ projectId }: { projectId: number }) {
 }
 
 /** 새 프로젝트 생성 */
-export async function createNewProject(newProject: T.ProjectCreationFormProps) {
+export async function createNewProject(newProject: {
+  title: string;
+  bio: string;
+  members: {
+    id: number;
+    roles: T.RoleBadgeProps['role'][];
+  }[];
+}) {
   return await instanceOfJson.post(`/projects`, newProject);
 }
 
 /** 새 작업 생성 */
 export async function createNewJob({
   projectId,
-  issueId,
   newJob,
 }: {
-  issueId: number;
   projectId: number;
-  newJob: T.JobCreationFormProps;
+  newJob: {
+    issueId: number;
+    name: string;
+    description: string;
+    imageFile: File | null;
+  };
 }) {
-  return await instanceOfFormData.post(`/projects/${projectId}/issues/${issueId}/jobs`, newJob);
+  const formData = new FormData();
+  const request = JSON.stringify({ name: newJob.name, description: newJob.description });
+  const blob = new Blob([request], { type: 'application/json' });
+  formData.append('request', blob);
+  if (newJob.imageFile) formData.append('image', newJob.imageFile);
+
+  return await instanceOfFormData.post(`/projects/${projectId}/issues/${newJob.issueId}/jobs`, formData);
 }
 
 /** 이슈 상태 변경 */
@@ -136,4 +166,9 @@ export async function getProjectMemberList({
   projectId: number;
 }): Promise<AxiosResponse<T.API.GetProjectMemberListResponse[], any>> {
   return await instanceOfJson.get(`/projects/${projectId}/members`);
+}
+
+/** 이메일 계정 조회 */
+export async function searchByEmail({ email }: { email: string }) {
+  return await instanceOfJson.get(`/accounts/email?email=${email}`);
 }

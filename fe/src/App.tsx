@@ -3,6 +3,10 @@ import { GlobalStyle } from './styles';
 import { Route, Routes } from 'react-router-dom';
 import * as Page from './pages';
 import { useLoadUser } from './customhooks';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 function App() {
   const user = useLoadUser();
@@ -28,6 +32,7 @@ function App() {
         <Route path="/projects/:projectId/feature-manual" element={<Page.FeatureManual />} />
         <Route path="/projects/:projectId/api-manual" element={<Page.ApiManual />} />
         <Route path="/projects/:projectId/screen-manual" element={<Page.ScreenManual />} />
+        <Route path="/projects/:project-id/screen-manual/:manual-id" element={<Page.ScreenManualDetail />} />
         <Route path="/projects/:projectId/infra-manual" element={<Page.InfraManual />} />
       </Routes>
     </>

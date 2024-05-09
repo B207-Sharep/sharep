@@ -2,14 +2,16 @@ import React from 'react';
 import * as S from './GalleryCardStyle';
 import * as T from '@/types';
 import { PALETTE } from '@/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function GalleryCard({ id, issueName, createdAt, type, imageUrl }: T.GalleryCardProps) {
+  const { projectId } = useParams();
   const navigate = useNavigate();
   const handleCardClick = () => {
     if (type === 'SCREEN') {
-      // TODO: projectId
-      navigate(`/projects/1/screen-manual/${id}`);
+      navigate(`/projects/${projectId}/screen-manual/${id}`);
     }
   };
 
@@ -46,7 +48,7 @@ export default function GalleryCard({ id, issueName, createdAt, type, imageUrl }
             수정된 날짜
           </S.StyledText>
           <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-            {createdAt}
+            {dayjs(createdAt).locale('ko').fromNow()}
           </S.StyledText>
         </S.CardDate>
       </S.CardText>

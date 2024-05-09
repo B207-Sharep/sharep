@@ -15,7 +15,7 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
       <S.CardList>
         {issueList.map(issue => (
           <Comp.GalleryCard
-            key={issue.id}
+            key={`issue-${issue.id}`}
             id={issue.id}
             issueName={issue.issueName}
             createdAt={issue.createdAt}
