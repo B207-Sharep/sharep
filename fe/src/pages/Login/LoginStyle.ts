@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import * as G from '@/styles';
-import { InputWithLabel } from '@/components';
+import { InputWithLabel, MainColorBtn } from '@/components';
 
 interface Options {
   $flag: boolean;
@@ -59,7 +59,7 @@ export const Slogan = styled.div`
 
 export const BtnWrapper = styled.div`
   width: 100%;
-  /* padding-top: 32px; */
+  padding-top: 32px;
   padding: 24px 24px;
 `;
 export const InputContentWrapper = styled.div`

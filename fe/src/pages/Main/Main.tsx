@@ -14,7 +14,8 @@ export default function Main() {
 
   return (
     <>
-      <S.Header>Header TEMP</S.Header>
+      {/* <S.Header>Header TEMP</S.Header> */}
+      <Comp.Header></Comp.Header>
       <S.RootLayout>
         <S.MainWrapper>
           <S.SloganWrapper>
@@ -23,13 +24,21 @@ export default function Main() {
               <p>Lorem ipsum</p>
             </S.Slogan>
           </S.SloganWrapper>
-          <S.SubSlogan>dfd</S.SubSlogan>
+
+          <S.SubSlogan>
+            안녕하세요? ShareP와 함께 뭐시기뭐기시 가나다라
+            <br />
+            도레미파솔라시도
+            <br />
+            유재건유죄건유잼건
+          </S.SubSlogan>
         </S.MainWrapper>
-        {/* <S.tw>
-          <S.t>dfd</S.t>
-          <S.t>dfd</S.t>
-          <S.t>dfd</S.t>
-        </S.tw> */}
+        <S.tw>
+          <S.CardSection>fdfdfd</S.CardSection>
+          <S.CardSection>fdfdfd</S.CardSection>
+          <S.CardSection>fdfdfd</S.CardSection>
+          <S.CardSection>fdfdfd</S.CardSection>
+        </S.tw>
       </S.RootLayout>
     </>
   );

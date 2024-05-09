@@ -25,7 +25,7 @@ export const MainWrapper = styled.div`
   flex-direction: column;
   width: 100vw;
   /* height: 100%; */
-  background-color: blue;
+  /* background-color: blue; */
   margin-left: -200px;
   margin-right: -200px;
 `;
@@ -56,7 +56,7 @@ export const SubSlogan = styled.div`
   height: 190px;
   justify-content: center;
   align-items: center;
-  background-color: ${G.PALETTE.LIGHT_BLACK};
+  background-color: ${G.PALETTE.NO_GRASS};
 `;
 
 export const tw = styled.div`
@@ -66,4 +66,12 @@ export const tw = styled.div`
   height: 100%;
   justify-content: center;
   align-items: center;
+`;
+
+export const CardSection = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100px;
+  background-color: greenyellow;
 `;
