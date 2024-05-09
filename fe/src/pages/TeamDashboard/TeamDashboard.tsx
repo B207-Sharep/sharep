@@ -37,8 +37,6 @@ export default function TeamDashboard() {
     ],
   });
 
-  console.log(`membersResponse :`, membersResponse?.data);
-
   return (
     <L.SideBarLayout>
       <S.Container>
@@ -49,9 +47,9 @@ export default function TeamDashboard() {
               <span>어제 작업 요약</span>
             </S.Title>
             <S.YesterdayWorksScrollContainer>
-              {/* {Array.from({ length: 6 }).map((res, i) => (
-                <Sub.YesterdayWork key={`yesterday-work-${i}`} {...DUMMY_USER[0]} />
-              ))} */}
+              {membersResponse?.data.map((member, i) => (
+                <Sub.YesterdayWork key={`yesterday-work-${i}`} {...member} />
+              ))}
             </S.YesterdayWorksScrollContainer>
           </S.WhiteBoxWrapper>
           <S.WhiteBoxWrapper $flex="2" $height="302px">

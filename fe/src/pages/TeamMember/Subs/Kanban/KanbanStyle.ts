@@ -27,5 +27,6 @@ export const KanbanTitle = styled.h1`
   height: 36px;
   padding: 0px 8px 4px 8px;
   margin: 0px 16px;
+  position: relative;
   border-bottom: 1px solid ${PALETTE.MAIN_BACKGROUND};
 `;

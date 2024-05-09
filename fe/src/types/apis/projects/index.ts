@@ -108,6 +108,7 @@ export interface GetProjectMemberListResponse {
   };
   id: number;
   roles: Extract<T.RoleBadgeProps, 'role'>[];
+  summary: string | null;
 }
 /** GetMemberList - 프로젝트의 멤버 리스트 조회 */
 
