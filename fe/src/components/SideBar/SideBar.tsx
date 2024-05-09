@@ -222,7 +222,7 @@ const dummyNoti: T.NotiProps[] = [
   {
     id: 3,
     issueId: 3,
-    type: 'PRIVATE',
+    type: 'INFRA',
     message: '인프라 명세 #1 수정',
     unread: true,
     createdAt: '2024-05-03',

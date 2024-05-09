@@ -12,7 +12,7 @@ export interface IssueProps {
   jobs: { name: string; createdAt: string }[] | null;
   epic: string | null;
   state: 'YET' | 'NOW' | 'DONE' | null;
-  type: 'SCREEN' | 'PRIVATE' | 'FEATURE';
+  type: 'SCREEN' | 'PRIVATE' | 'FEATURE' | 'INFRA';
 
   deleteAble: boolean;
   dragAble:
