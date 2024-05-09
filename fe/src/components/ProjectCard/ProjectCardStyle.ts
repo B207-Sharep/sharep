@@ -36,17 +36,27 @@ export const AddWrapper = styled.div`
 
 export const Tooltip = styled.div`
   position: absolute;
-  top: -40px;
-  /* left: -10px; */
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: ${PALETTE.LIGHT_BLACK};
   color: white;
-  padding: 4px;
+  padding: 8px;
   border-radius: 4px;
-  font-size: 8px;
-  display: flex;
-  flex-direction: row;
-  width: fit-content;
-  z-index: 2;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+`;
+
+// 호버 시에 툴팁을 보여주도록 설정
+export const UserWrapper = styled.div`
+  position: relative;
+
+  &:hover ${Tooltip} {
+    opacity: 1;
+  }
 `;
 
 export const StyledText = styled.span<{
