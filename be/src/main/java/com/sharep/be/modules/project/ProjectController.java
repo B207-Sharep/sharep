@@ -2,6 +2,7 @@ package com.sharep.be.modules.project;
 
 import com.sharep.be.modules.project.dto.MemberDto.MemberResponse;
 import com.sharep.be.modules.project.dto.ProjectDto;
+import com.sharep.be.modules.project.dto.ProjectDto.ProjectCreate.MemberCreate;
 import com.sharep.be.modules.project.dto.ProjectDto.ProjectResponseDto;
 import com.sharep.be.modules.project.dto.TokenDto;
 import com.sharep.be.modules.project.service.ProjectService;
@@ -47,15 +48,15 @@ public class ProjectController {
     멤버 추가는 추후 구현
      */
 
-//    @PostMapping("/{projectId}/members")
-//    public ResponseEntity<Void> addMember(@RequestBody MemberRequestDto memberRequestDto,
-//            @AuthenticationPrincipal JwtAuthentication jwtAuthentication,
-//            @PathVariable Long projectId) {
-//        log.info("member 추가 controller jwt id : {}, projectId : {}, member  : {}",
-//                jwtAuthentication.id, projectId, memberRequestDto);
-//        projectService.addMember(projectId, jwtAuthentication.id, memberRequestDto);
-//        return ResponseEntity.status(HttpStatus.CREATED).build();
-//    }
+    @PostMapping("/{projectId}/members")
+    public ResponseEntity<Void> addMember(@RequestBody List<MemberCreate> memberCreate,
+            @AuthenticationPrincipal JwtAuthentication jwtAuthentication,
+            @PathVariable Long projectId) {
+        log.info("member 추가 controller jwt id : {}, projectId : {}, member  : {}",
+                jwtAuthentication.id, projectId, memberCreate);
+        projectService.addMembers(projectId, jwtAuthentication.id, memberCreate);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
     @GetMapping("/{projectId}/members")
     public ResponseEntity<List<MemberResponse>> readMember(
@@ -74,8 +75,6 @@ public class ProjectController {
         String token = projectService.createToken(projectId, jwtAuthentication.id);
         return ResponseEntity.ok(new TokenDto(projectId, token));
     }
-
-
 
 
 }

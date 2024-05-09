@@ -3,16 +3,14 @@ package com.sharep.be.modules.issue.controller;
 import com.sharep.be.modules.issue.IssueRequest.IssueCreate;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
-import com.sharep.be.modules.issue.IssueResponse.FeatureIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.IssueCreated;
-import com.sharep.be.modules.issue.IssueResponse.KanbanIssueResponse;
-import com.sharep.be.modules.issue.IssueResponse.ScreenIssueResponse;
 import com.sharep.be.modules.issue.IssueResponse.SimpleIssueResponse;
 import com.sharep.be.modules.issue.service.IssueService;
+import com.sharep.be.modules.issue.type.DataType;
+import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,37 +32,6 @@ public class IssueController {
 
     private final IssueService issueService;
 
-    @GetMapping("/kanban")
-    public ResponseEntity<List<KanbanIssueResponse>> getKanbanIssues(@PathVariable Long projectId,
-            @RequestParam Optional<Long> accountId,
-            @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
-
-        return ResponseEntity.ok(
-                issueService.getKanbanIssues(projectId, accountId.orElse(jwtAuthentication.id))
-                        .stream().map(KanbanIssueResponse::from).toList());
-    }
-
-    @GetMapping("/feature")
-    public ResponseEntity<List<FeatureIssueResponse>> getFeatureIssues(
-            @PathVariable Long projectId) {
-
-        return ResponseEntity.ok(
-                issueService.getFeatureIssues(projectId).stream().map(FeatureIssueResponse::from)
-                        .toList());
-    }
-
-    /* NOTE:
-        ScreenIssueResponse 데이터 변경될 수 있음
-     */
-
-    @GetMapping("/screen")
-    public ResponseEntity<?> getScreenIssues(@PathVariable Long projectId) {
-
-        return ResponseEntity.ok(
-                issueService.getScreenIssues(projectId).stream().map(ScreenIssueResponse::from)
-                        .toList());
-    }
-
     @GetMapping("/{issueId}")
     public ResponseEntity<IssueResponse> getIssue(@PathVariable Long issueId,
             @PathVariable Long projectId) {
@@ -73,10 +40,17 @@ public class IssueController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SimpleIssueResponse>> getIssues(@PathVariable Long projectId) {
+    public ResponseEntity<List<?>> getIssues(
+            @RequestParam(required = false) IssueType issueType,
+            @RequestParam(required = false) Long accountId,
+            @RequestParam(defaultValue = "SIMPLE") DataType dataType,
+            @PathVariable Long projectId,
+            @AuthenticationPrincipal JwtAuthentication jwtAuthentication) {
 
         return ResponseEntity.ok(
-                issueService.getIssues(projectId).stream().map(SimpleIssueResponse::from).toList());
+                issueService.getIssues(projectId, accountId, issueType, dataType).stream()
+                        .map(dataType.equals(DataType.DETAIL) ? IssueResponse::from
+                                : SimpleIssueResponse::from).toList());
     }
 
     @PostMapping

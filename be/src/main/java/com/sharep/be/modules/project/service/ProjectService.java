@@ -69,29 +69,43 @@ public class ProjectService {
         return project.createToken();
     }
 
+    @Transactional(readOnly = true)
     public void isLeader(Project project, Account account){
         // 접근자 프로젝트 리더인지 확인
         if(!project.ifLeader(account))throw new RuntimeException("권한이 없습니다."); // TODO exception
     }
 
-//    public void addMember(Long projectId, Long leaderId, MemberRequestDto memberRequestDto) {
-//        Project project = projectRepository.findWithLeaderById(projectId).orElseThrow(() ->
-//                new IllegalArgumentException("존재하지 않는 프로젝트입니다."));
-//
-//        Account leader = accountRepository.findById(leaderId).orElseThrow(() ->
-//                new IllegalArgumentException("존재하지 않는 사용자입니다."));
-//        isLeader(project, leader);
-//        // TODO 프로젝트 member에 account, role 중복 확인
-//
-//        Account account = accountRepository.findById(memberRequestDto.getId()).orElseThrow(() ->
-//                new IllegalArgumentException("존재하지 않는 사용자입니다."));
-//
-//        // member 생성
-//        Member member = createMember(project, account);
-//        // roles 추가
-//        createRoles(member, memberRequestDto.getRoles());
-//
-//    }
+    public void addMembers(Long projectId, Long leaderId, List<MemberCreate> memberCreate) {
+        Project project = projectRepository.findWithLeaderById(projectId).orElseThrow(() ->
+                new IllegalArgumentException("존재하지 않는 프로젝트입니다."));
+
+
+        Account leader = accountRepository.findById(leaderId).orElseThrow(() ->
+                new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        isLeader(project, leader);
+        // TODO 프로젝트 member에 account, role 중복 확인
+
+        for(MemberCreate member : memberCreate){
+            addMember(project, member);
+        }
+
+    }
+
+    public void addMember(Project project, MemberCreate member) {
+        Account joinAccount = accountRepository.findById(member.id()).orElseThrow(() ->
+                new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        List<Account> accounts = project.getMembers().stream().map(Member::getAccount).toList();
+        for(Account findAccount : accounts){
+            System.out.println(findAccount.getId() + " " + member.id());
+            if(findAccount.equals(joinAccount))throw new RuntimeException("이미 멤버인 사용자입니다.");
+        }
+
+        // member 생성
+        Member createMember = createMember(project, joinAccount);
+        // roles 추가
+        createRoles(createMember, member.roles());
+    }
 
     private void createRoles(Member member, List<RoleType> roles) {
         for(RoleType roleType : roles){
@@ -111,6 +125,7 @@ public class ProjectService {
         return memberRepository.save(member);
     }
 
+    @Transactional(readOnly = true)
     public void checkLeader(Long projectId, Long accountId) {
         Project project = projectRepository.findWithLeaderById(projectId).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 프로젝트입니다."));
