@@ -1,14 +1,22 @@
 import styled from 'styled-components';
 import { PALETTE } from '@/styles';
 
-export const TableWrapper = styled.ul`
-  width: 100%;
+export const TableWrapper = styled.div`
+  width: fit-content;
+  height: fit-content;
+  border-radius: 12px;
+`;
+
+export const TableContainer = styled.ul`
+  width: fit-content;
   min-width: fit-content;
   height: 100%;
   min-height: fit-content;
   padding: 20px;
-  overflow-x: scroll;
+  overflow: auto;
   background-color: white;
+  border-radius: 12px;
+  box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.05);
 `;
 
 export const TitleRowWrapper = styled.li`
@@ -21,16 +29,18 @@ export const TitleRowWrapper = styled.li`
 
 export const Title = styled.div<{ $fixedWidth: string }>`
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
   gap: 12px;
-  width: ${({ $fixedWidth }) => $fixedWidth};
-  min-width: fit-content;
+  min-width: ${({ $fixedWidth }) => $fixedWidth};
   border-top: 1px solid ${PALETTE.TABLE_BORDER};
   border-bottom: 1px solid ${PALETTE.TABLE_BORDER};
-  padding: 16px 4px;
+  padding: 16px;
   font-weight: 700;
   cursor: default;
 
-  & > p {
+  & > span {
+    font-size: 14px;
     color: ${PALETTE.TABLE_TITLE};
   }
 `;
@@ -45,5 +55,22 @@ export const RowWrapper = styled.li`
 
   & > div:nth-of-type(1) {
     font-weight: 700;
+  }
+`;
+
+export const CreateNewRowButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 42px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 12px;
+
+  & > span {
+    color: ${PALETTE.LIGHT_BLACK};
   }
 `;
