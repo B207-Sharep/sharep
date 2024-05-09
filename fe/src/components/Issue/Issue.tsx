@@ -1,11 +1,32 @@
 import React from 'react';
 import * as S from './IssueStyle';
 import * as T from '@types';
+import * as API from '@apis';
 import * as Comp from '@components';
-import { MoreVertical, GitCommit } from 'lucide-react';
+import { MoreVertical, GitCommit, Trash2Icon } from 'lucide-react';
 import { PALETTE } from '@/styles';
+import { useMutation } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
-export default function Issue({ id, name, commit, assignees, priority, dragAble }: T.IssueProps) {
+export default function Issue({ id, issueName, jobs, assignees, priority, dragAble, deleteAble }: T.IssueProps) {
+  const { projectId, accountId } = useParams();
+  const { mutate: deleteIssue } = useMutation({
+    mutationFn: ({ issueId }: { issueId: number }) =>
+      API.project.deleteIssueAssignees({
+        issueId: issueId,
+        projectId: Number(projectId),
+        accountId: Number(accountId),
+      }),
+    onSuccess: response => {
+      console.log(`response :`, response);
+    },
+  });
+
+  const handleDelete = () => {
+    if (!deleteAble) return;
+    deleteIssue({ issueId: id });
+  };
+
   return (
     <S.RelativeWrapper
       onDragStart={() => (dragAble !== false ? dragAble.setter(() => id) : undefined)}
@@ -13,17 +34,27 @@ export default function Issue({ id, name, commit, assignees, priority, dragAble 
     >
       <S.DragAbleContainer>
         <S.TitleWrapper>
-          <span aria-label={name}>{name}</span>
-          <MoreVertical size={24} color={PALETTE.LIGHT_BLACK} />
+          <span aria-label={issueName}>{issueName}</span>
+          {deleteAble && (
+            <>
+              <S.MoreButton>
+                <MoreVertical size={24} color={PALETTE.LIGHT_BLACK} />
+              </S.MoreButton>
+              <S.DeleteDropBox onClick={handleDelete}>
+                <Trash2Icon size={16} color={PALETTE.MAIN_RED} />
+                삭제하기
+              </S.DeleteDropBox>
+            </>
+          )}
         </S.TitleWrapper>
         <S.RecentlyCommit>
-          {commit !== null && (
+          {jobs?.length && (
             <>
               <p>
                 <GitCommit size={16} color={PALETTE.LIGHT_BLACK} />
-                <span aria-label={commit.title}>{commit.title}</span>
+                <span aria-label={jobs[0].name}>{jobs[0].name}</span>
               </p>
-              <span>{commit.createAt}</span>
+              <span>{jobs[0].createdAt}</span>
             </>
           )}
         </S.RecentlyCommit>
@@ -32,13 +63,15 @@ export default function Issue({ id, name, commit, assignees, priority, dragAble 
             <span>우선 순위</span>
             <Comp.PriorityBadge priority={priority} />
           </S.PriorityWrapper>
-          <S.AssignessWrapper $assigneesNumber={assignees.length}>
-            {assignees.map((user, idx) => (
-              <S.UserImgWrapper key={`assignees-${user.name}-${idx}`} $idx={idx} aria-label={user.name}>
-                <Comp.UserImg size="24px" path={user.imageUrl} />
-              </S.UserImgWrapper>
-            ))}
-          </S.AssignessWrapper>
+          {assignees !== null && (
+            <S.AssignessWrapper $assigneesNumber={assignees.length}>
+              {assignees.map((user, idx) => (
+                <S.UserImgWrapper key={`assignees-${user.name}-${idx}`} $idx={idx} aria-label={user.name}>
+                  <Comp.UserImg size="24px" path={user.imageUrl} />
+                </S.UserImgWrapper>
+              ))}
+            </S.AssignessWrapper>
+          )}
         </S.AboutEtcWrapper>
       </S.DragAbleContainer>
     </S.RelativeWrapper>
