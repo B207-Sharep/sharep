@@ -1,3 +1,4 @@
+import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
 export const Card = styled.div`
@@ -56,8 +57,14 @@ export const Img = styled.img`
 export const PreviewContent = styled.div`
   width: 100%;
   height: 100%;
-  border: 2px solid green;
+  border-bottom: 1px solid #e3e3e3;
   border-radius: 3px 3px 0px 0px;
   padding: 10px;
   white-space: nowrap;
+`;
+
+export const DefaultImage = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: ${PALETTE.MAIN_BACKGROUND};
 `;

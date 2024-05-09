@@ -97,13 +97,13 @@ export default function SideBar() {
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleTeamDashClick}>
                 <TEAM />
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   팀 대시보드
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleMyDashClick}>
                 <MY></MY>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   나의 대시보드
                 </S.SideBarFont>
               </S.SideBarContents>
@@ -118,25 +118,25 @@ export default function SideBar() {
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleFeatureManualClick}>
                 <PLAN></PLAN>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   기능 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleAPIClick}>
                 <API></API>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   API 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleScreenClick}>
                 <SCREEN></SCREEN>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   화면 정의서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleInfraClick}>
                 <INFRA></INFRA>
-                <S.SideBarFont $size="14px" $weight={200}>
+                <S.SideBarFont $size="14px" $weight={400}>
                   인프라 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
@@ -145,7 +145,7 @@ export default function SideBar() {
           <S.SideBarContents className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
             <S.NotiDropdownContainer>
               <NOTI></NOTI>
-              <S.SideBarFont $size="12px" $weight={200}>
+              <S.SideBarFont $size="12px" $weight={400}>
                 알림
               </S.SideBarFont>
               <S.NotiDropdownContent $show={showNoti}>

@@ -6,7 +6,7 @@ import { modalDataState } from '@/stores/atoms/modal';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
-import * as API from '@/apis/projects';
+import * as API from '@/apis';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -17,16 +17,16 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
   const { isOpen, isValid } = useRecoilValue(modalDataState(modalId));
 
   const createNewProjectMutation = useMutation({
-    mutationKey: [{ func: `createNewProject` }],
-    mutationFn: API.createNewProject,
+    mutationKey: [{ func: `create-new-project` }],
+    mutationFn: API.project.createNewProject,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [{ projectList: `projectList` }] });
     },
   });
 
   const createNewJobMutation = useMutation({
-    mutationKey: [{ func: `createNewJob`, projectId }],
-    mutationFn: API.createNewJob,
+    mutationKey: [{ func: `create-new-job`, projectId }],
+    mutationFn: API.project.createNewJob,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [{ func: `get-job-list`, projectId }] });
     },
@@ -52,7 +52,6 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
                 newJob: contents as T.JobCreationFormProps,
               });
             else {
-              // TODO: isseuId가 없는 경우
               alert('진행 중인 이슈가 없습니다');
               throw Error;
             }
