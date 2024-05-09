@@ -27,7 +27,7 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   } = useQuery({
     queryKey: [{ func: `get-now-issue-about-me`, projectId }],
     queryFn: () => API.getNowIssueAboutMe({ projectId: Number(projectId) }),
-    select: data => data.data,
+    // select: data => data.data,
   });
 
   const handleButtonClick = () => {
@@ -75,9 +75,9 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
 
   useEffect(() => {
     // TODO : 진행 중인 이슈 조회
-    if (myNowIssueSuccess && myNowIssueResponse.issue) {
-      console.log(myNowIssueResponse);
-      updateContentByKey('issueId', myNowIssueResponse.issue.id);
+    if (myNowIssueSuccess && myNowIssueResponse.data.issue) {
+      console.log(myNowIssueResponse.data);
+      updateContentByKey('issueId', myNowIssueResponse.data.issue.id);
     }
   }, [myNowIssueSuccess, myNowIssueResponse]);
 
@@ -91,7 +91,7 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
             </S.StyledText>
           </S.IssueBadge>
           <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
-            {(myNowIssueResponse && myNowIssueResponse.issue?.issueName) || '진행 중인 이슈가 없습니다'}
+            {(myNowIssueResponse?.data && myNowIssueResponse?.data.issue?.issueName) || '진행 중인 이슈가 없습니다'}
           </S.StyledText>
         </S.IssueTitle>
       </S.TitleContainer>

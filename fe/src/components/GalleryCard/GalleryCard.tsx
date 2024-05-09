@@ -11,7 +11,6 @@ export default function GalleryCard({ id, issueName, createdAt, type, imageUrl }
   const navigate = useNavigate();
   const handleCardClick = () => {
     if (type === 'SCREEN') {
-      // TODO: projectId
       navigate(`/projects/${projectId}/screen-manual/${id}`);
     }
   };
