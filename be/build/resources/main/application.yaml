@@ -1,0 +1,63 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://share-p.com:3306/sharep?&useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    username: test
+    password: WqGx7yeFe3vzo4rZ8VWkWMvXDrurX0Gimkq0vJnCh5h8dmPJzarpQBtpg68eFQQL
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: true
+
+jwt:
+  header: Authorization
+  expiration_time: 86400000
+  secret: dltmdalsWKdWKdasdfkj2349uwkbzkxoilefjlkfwfwfwefwfwef11
+
+cloud:
+  aws:
+    s3:
+      bucket: share-p
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: AKIAXYKJWQPALOR2ACD5
+      secretKey: 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
+
+cors:
+  allowedOrigins: http://localhost:5173
+  allowedMethods: GET,POST,PUT,DELETE,PATCH,OPTIONS,HEAD
+  allowedHeaders: '*'
+  exposedHeaders: '*'
+  allowCredentials: false
+  maxAge: 3600
+
+schedule:
+  crone: 0 0 8 * * 1-5 # 초 분 시 일 월 요일(월~금)
+
+openai:
+  url: https://api.openai.com/v1/chat/completions
+  model: gpt-3.5-turbo-0125
+  secret_key: sk-proj-1zVWvl4XbJEX9yoRXtaRT3BlbkFJVQiFd9qmnoniABEEr1Yb
+  max_token: 5
+  prompt: '당신은 작업을 빠르게 검토하고 요점을 추출하는 요약 전문가입니다. 작업들 중 핵심 사항을 추출하여 산문 형식의 30글자 이내의 한문장의 JSON 형태로 제공해주세요.
+
+[예시문]
+{
+  "result" : "라우트, 스타일 개편 및 Gantt 차트, dayjs 추가"
+}
+
+  [작업]'

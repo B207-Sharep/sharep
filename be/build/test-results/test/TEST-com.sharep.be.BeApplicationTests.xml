@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sharep.be.BeApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-05-06T23:43:55" hostname="DESKTOP-LL832F4" time="0.008">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.sharep.be.BeApplicationTests" time="0.008"/>
+  <system-out><![CDATA[2024-05-07T08:43:54.144+09:00  INFO 1796 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.sharep.be.BeApplicationTests]: BeApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-05-07T08:43:54.151+09:00  INFO 1796 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.sharep.be.BeApplication for test class com.sharep.be.BeApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2024-05-07T08:43:54.173+09:00  INFO 1796 --- [    Test worker] com.sharep.be.BeApplicationTests         : Starting BeApplicationTests using Java 17.0.10 with PID 1796 (started by SSAFY in C:\Users\SSAFY\mehot98\S10P31B207\be)
+2024-05-07T08:43:54.174+09:00  INFO 1796 --- [    Test worker] com.sharep.be.BeApplicationTests         : No active profile set, falling back to 1 default profile: "default"
+2024-05-07T08:43:54.352+09:00  INFO 1796 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-07T08:43:54.375+09:00  INFO 1796 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22 ms. Found 9 JPA repository interfaces.
+2024-05-07T08:43:54.428+09:00  INFO 1796 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-07T08:43:54.430+09:00  INFO 1796 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-05-07T08:43:54.435+09:00  INFO 1796 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-07T08:43:54.436+09:00  INFO 1796 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2024-05-07T08:43:54.555+09:00  INFO 1796 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@203f1447
+2024-05-07T08:43:54.555+09:00  INFO 1796 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2024-05-07T08:43:54.556+09:00  WARN 1796 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-07T08:43:54.556+09:00  WARN 1796 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-05-07T08:43:54.656+09:00  INFO 1796 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-07T08:43:55.141+09:00  INFO 1796 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-07T08:43:55.223+09:00  WARN 1796 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-07T08:43:55.232+09:00  INFO 1796 --- [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-05-07T08:43:55.254+09:00  INFO 1796 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2f0166d7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@42530cd6, org.springframework.security.web.context.SecurityContextHolderFilter@4315d110, org.springframework.security.web.header.HeaderWriterFilter@786c7cc9, org.springframework.web.filter.CorsFilter@337f76ff, org.springframework.security.web.authentication.logout.LogoutFilter@3f7a48a1, com.sharep.be.modules.security.JwtAuthenticationTokenFilter@5e3c3c3d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@728055bf, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6991f512, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7aafcef3, org.springframework.security.web.session.SessionManagementFilter@28d26e57, org.springframework.security.web.access.ExceptionTranslationFilter@d278065, org.springframework.security.web.access.intercept.AuthorizationFilter@29788adf]
+2024-05-07T08:43:55.318+09:00  INFO 1796 --- [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2024-05-07T08:43:55.318+09:00  INFO 1796 --- [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@69b66787]]
+2024-05-07T08:43:55.318+09:00  INFO 1796 --- [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2024-05-07T08:43:55.320+09:00  INFO 1796 --- [    Test worker] com.sharep.be.BeApplicationTests         : Started BeApplicationTests in 1.166 seconds (process running for 7.556)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
