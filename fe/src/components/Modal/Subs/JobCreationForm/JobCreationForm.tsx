@@ -1,19 +1,34 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from './JobCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
 import * as Icon from '@/assets';
+import * as API from '@/apis/projects';
 import { PALETTE } from '@/styles';
 import { Image as UploadImageIcon } from 'lucide-react';
 import { useModal } from '@/customhooks';
 import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
-  const { updateContentByKey } = useModal<T.JobCreationFormProps>(modalId);
+  const { updateContentByKey, updateIsValid } = useModal<T.JobCreationFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
+  const { projectId } = useParams();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
+  const {
+    data: myNowIssueResponse,
+    isSuccess: myNowIssueSuccess,
+    isFetching: myNowIssueFetching,
+  } = useQuery({
+    queryKey: [{ func: `get-now-issue-about-me`, projectId }],
+    queryFn: () => API.getNowIssueAboutMe({ projectId: Number(projectId) }),
+    select: data => data.data,
+  });
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -36,6 +51,12 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   const uploadImage = (files: FileList | null) => {
     if (files && files.length > 0) {
       const file = files[0];
+
+      if (!file.type.startsWith('image/')) {
+        alert('이미지 파일만 업로드 가능합니다.');
+        return;
+      }
+
       updateContentByKey('imageFile', file);
 
       const previewUrl = URL.createObjectURL(file);
@@ -45,8 +66,20 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    updateContentByKey(id as keyof T.JobCreationFormProps, value);
+    updateContentByKey(id as keyof Omit<T.JobCreationFormProps, 'issueId'>, value);
+
+    if (id == 'name') {
+      updateIsValid(value.length > 0);
+    }
   };
+
+  useEffect(() => {
+    // TODO : 진행 중인 이슈 조회
+    if (myNowIssueSuccess && myNowIssueResponse.issue) {
+      console.log(myNowIssueResponse);
+      updateContentByKey('issueId', myNowIssueResponse.issue.id);
+    }
+  }, [myNowIssueSuccess, myNowIssueResponse]);
 
   return (
     <S.Wrapper>
@@ -57,9 +90,8 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
               Issue
             </S.StyledText>
           </S.IssueBadge>
-          {/* TODO: IssueName */}
           <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
-            진행 중인 이슈 이름
+            {(myNowIssueResponse && myNowIssueResponse.issue?.issueName) || '진행 중인 이슈가 없습니다'}
           </S.StyledText>
         </S.IssueTitle>
       </S.TitleContainer>

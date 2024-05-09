@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import * as S from './SideBarStyle';
 import { History as CommitHistory, Plus } from 'lucide-react';
@@ -21,31 +21,32 @@ import { userState } from '@/stores/atoms/loadUser';
 
 export default function SideBar() {
   const navigate = useNavigate();
+  const { projectId } = useParams();
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
   const user = useRecoilValue(userState);
 
   const handleHistoryClick = () => {
-    navigate('/projects/1/commit-history');
+    navigate(`/projects/${projectId}/commit-history`);
   };
 
   const handleTeamDashClick = () => {
-    navigate('/projects/1');
+    navigate(`/projects/${projectId}`);
   };
   const handleMyDashClick = () => {
-    navigate('/projects');
+    navigate(`/projects`);
   };
   const handleFeatureManualClick = () => {
-    navigate('/projects/1/feature-manual');
+    navigate(`/projects/${projectId}/feature-manual`);
   };
   const handleAPIClick = () => {
-    navigate('/projects/1/api-manual');
+    navigate(`/projects/${projectId}/api-manual`);
   };
   const handleScreenClick = () => {
-    navigate('/projects/1/screen-manual');
+    navigate(`/projects/${projectId}/screen-manual`);
   };
   const handleInfraClick = () => {
-    navigate('/projects/1/infra-manual');
+    navigate(`/projects/${projectId}/infra-manual`);
   };
 
   const handleModalOpen = () => {
