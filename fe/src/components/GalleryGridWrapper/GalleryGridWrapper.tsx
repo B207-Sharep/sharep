@@ -33,16 +33,21 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
 
   const handleInputEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      const createIssue = async () => {
-        await createNewIssueMutation.mutateAsync({
+      createNewIssueMutation.mutate(
+        {
           projectId: Number(projectId),
           newIssue: { issueName: newIssueName, type },
-        });
-        setCreateNewCard(false);
-        setNewIssueName('');
-      };
-
-      createIssue();
+        },
+        {
+          onSuccess: () => {
+            setCreateNewCard(false);
+            setNewIssueName('');
+          },
+          onError: error => {
+            console.log(error);
+          },
+        },
+      );
     }
   };
   return (
