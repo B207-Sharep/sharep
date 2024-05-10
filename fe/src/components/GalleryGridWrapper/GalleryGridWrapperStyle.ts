@@ -19,8 +19,8 @@ export const CardList = styled.div`
 `;
 
 export const CardAddBtn = styled.div`
-  width: 100%;
-  height: 250px;
+  /* width: 100%; */
+  /* height: 250px; */
   aspect-ratio: 16/9;
   display: flex;
   flex-direction: column;
@@ -64,7 +64,7 @@ export const Card = styled.div`
 
 export const CardContent = styled.div`
   width: 100%;
-  height: 200px;
+  height: 80%;
   overflow: hidden;
 `;
 
@@ -78,7 +78,7 @@ export const PreviewContent = styled.div`
 `;
 
 export const CardText = styled.div`
-  height: 50px;
+  height: 20%;
   display: flex;
   align-items: center;
   justify-content: space-between;

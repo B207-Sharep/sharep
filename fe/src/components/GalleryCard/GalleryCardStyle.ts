@@ -14,12 +14,12 @@ export const Card = styled.div`
 
 export const CardContent = styled.div`
   width: 100%;
-  height: 200px;
+  height: 80%;
   overflow: hidden;
 `;
 
 export const CardText = styled.div`
-  height: 50px;
+  height: 20%;
   display: flex;
   align-items: center;
   justify-content: space-between;

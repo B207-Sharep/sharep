@@ -8,7 +8,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
 import { Plus, X } from 'lucide-react';
 
 export default function ScreenManualDetail() {
