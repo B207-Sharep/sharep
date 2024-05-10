@@ -25,6 +25,7 @@ const GitHubGrid = ({ data }: any) => {
         flexDirection: 'row',
         width: '100%',
         overflowX: 'auto',
+        padding: '20px 20px',
       }}
     >
       {data.map((row: any[], rowIndex: number) => (
