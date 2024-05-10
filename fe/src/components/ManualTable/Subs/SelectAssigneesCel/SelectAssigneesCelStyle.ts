@@ -19,9 +19,11 @@ export const OptionUlWrapper = styled.ul<{ $isEditingMode: boolean }>`
 `;
 
 export const OptionLi = styled.li`
-  width: calc(100%);
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 12px;
+  width: calc(100%);
   padding: 6px 0px;
 `;
 

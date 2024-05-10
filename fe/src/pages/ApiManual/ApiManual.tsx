@@ -8,9 +8,10 @@ export default function ApiManual() {
   return (
     <SocketProvider>
       <L.SideBarLayout>
-        <S.ManualWrapper>
+        {/* <S.ManualWrapper>
           <Comp.ManualTable columnTitles={API_MANUAL_COLUMN_TITLES} dataList={API_MANUAL_DUMMY} usingFor="API" />
-        </S.ManualWrapper>
+        </S.ManualWrapper> */}
+        <div>준비중...</div>
       </L.SideBarLayout>
     </SocketProvider>
   );

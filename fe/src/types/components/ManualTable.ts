@@ -1,4 +1,5 @@
 import React from 'react';
+import * as T from '@types';
 
 export interface ManualTableProps {
   usingFor: 'API' | 'FEATURE';
@@ -36,6 +37,11 @@ export interface ManualTableProps {
       }[];
 }
 
+export interface FeatureManualTableProps {
+  usingFor: 'API' | 'FEATURE';
+  dataList: Array<T.API.DetailIssue>;
+}
+
 export interface CelProps {
   initialState: string;
   fixedWidth: string;
@@ -44,5 +50,11 @@ export interface CelProps {
 export interface SelectCelProps {
   initialState: string;
   fixedWidth: string;
-  usingFor: 'PRIORITY' | 'STATE' | 'ASSIGNEES' | 'METHOD';
+  usingFor: 'PRIORITY' | 'STATE' | 'METHOD';
+}
+
+export interface SelectAssigneesCelProps {
+  initialState: T.API.Assignee[];
+  fixedWidth: string;
+  usingFor: 'ASSIGNEES';
 }

@@ -75,9 +75,4 @@ const OPTIONS: { [usingFor: string]: { [res: string]: React.ReactNode } } = {
     PATCH: <Comp.MethodBadge name="PATCH" />,
     DELETE: <Comp.MethodBadge name="DELETE" />,
   },
-  ASSIGNEES: {
-    HIGH: <Comp.PriorityBadge priority="HIGH" />,
-    MEDIUM: <Comp.PriorityBadge priority="MEDIUM" />,
-    LOW: <Comp.PriorityBadge priority="LOW" />,
-  },
 };

@@ -48,7 +48,7 @@ export default function Issue({ id, issueName, jobs, assignees, priority, dragAb
           )}
         </S.TitleWrapper>
         <S.RecentlyCommit>
-          {jobs?.length && (
+          {jobs !== null && jobs.length > 0 && (
             <>
               <p>
                 <GitCommit size={16} color={PALETTE.LIGHT_BLACK} />

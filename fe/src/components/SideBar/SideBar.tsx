@@ -25,7 +25,6 @@ export default function SideBar() {
   const [showNoti, setShowNoti] = useState(false);
   const user = useRecoilValue(userState);
   const { projectId, accountId } = useParams();
-  console.log(user, '======');
 
   const handleHistoryClick = () => {
     navigate(`/projects/${projectId}/commit-history`);
