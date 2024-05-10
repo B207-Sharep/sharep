@@ -43,7 +43,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
         LocalDateTime startOfYesterday = LocalDateTime.now().minusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime startOfToday = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         return queryFactory.selectFrom(member)
-                .join(member.jobs, job)
+                .leftJoin(member.jobs, job).fetchJoin()
                 .where(job.createdAt.between(startOfYesterday, startOfToday))
                 .fetch();
     }
