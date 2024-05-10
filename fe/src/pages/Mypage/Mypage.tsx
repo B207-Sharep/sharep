@@ -2,7 +2,8 @@ import { NoneSideBarLayout } from '@/layouts';
 import * as S from './MypageStyle';
 import * as GS from '@/components/Grass/GrassStyle';
 import * as G from '@/styles';
-import * as API from '@/apis/projects';
+// import * as API from '@/apis/projects';
+import * as API from '@/apis';
 import { GalleryGridWrapper, UserImg } from '@/components';
 import ProjectGridWrapper from '@/components/ProjectGridWrapper/ProjectGridWrapper';
 
@@ -10,8 +11,10 @@ import Grass from '@/components/Grass/Grass';
 import * as Comp from '@/components';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userState } from '@/stores/atoms/loadUser';
+import { Pencil } from 'lucide-react';
+import { useModal } from '@/customhooks';
 ////////////////////////DUMMY
 const issueList = [
   ...Array.from({ length: 7 }, (_, index) => ({
@@ -33,6 +36,9 @@ const modifiedIssueList = issueList.map(issue => ({
 
 export default function Mypage() {
   const [clickedYear, setClickedYear] = useState(2024);
+  const editModal = useModal('edit');
+  const setUserState = useSetRecoilState(userState);
+
   //   useEffect(() => console.log(clickedYear, 'CY'), [clickedYear]);
 
   const user = useRecoilValue(userState);
@@ -46,7 +52,7 @@ export default function Mypage() {
   } = useQuery({
     queryKey: [{ projectList: `projectList` }],
     queryFn: () =>
-      API.getProjectList().then(res => {
+      API.project.getProjectList().then(res => {
         let modires = [];
         if (res.status === 204) {
           // console.log('HI');
@@ -66,13 +72,33 @@ export default function Mypage() {
   });
 
   const {
+    data: userinfoResponse,
+    isFetched: userinfoFetched,
+    isPending: userinfoPending,
+  } = useQuery({
+    queryKey: [{ userinfo: `user-info` }],
+    queryFn: () =>
+      API.account.account().then(res => {
+        if (res) {
+          console.log(res.data, 'HIuser');
+          setUserState(res.data);
+        } else {
+          // console.log('grass? ', res.data);
+        }
+
+        return res.data;
+      }),
+    retry: false,
+  });
+
+  const {
     data: grassResponse,
     isFetched: grassFetched,
     isPending: grassPending,
   } = useQuery({
     queryKey: [{ grass: `grass` }],
     queryFn: () =>
-      API.getGrass().then(res => {
+      API.project.getGrass().then(res => {
         if (res.status === 204) {
           // console.log('HI');
           return { grassResponse: '' };
@@ -86,24 +112,37 @@ export default function Mypage() {
     // enabled: !!initalflag,
   });
 
+  const handleModalOpen = () => {
+    editModal.openModal({
+      imageFile: null,
+    });
+  };
+
   return (
     <>
       <NoneSideBarLayout>
         <S.Wrapper>
           <S.HeaderWrapper>
-            <S.ProfileWrapper>
-              <Comp.UserImg size="lg" path={user?.imageUrl} />
+            <S.Edit>
+              <S.ProfileWrapper>
+                <Comp.UserImg size="lg" path={user?.imageUrl} />
+                <S.ProfileTextWrapper>
+                  <S.Font $size="24px" $weight="600">
+                    {user?.nickname}
+                  </S.Font>
 
-              <S.ProfileTextWrapper>
-                <S.Font $size="24px" $weight="600">
-                  {user?.nickname}
-                </S.Font>
+                  <S.Font $size="16px" $weight="400" style={{ color: `${G.PALETTE.LIGHT_BLACK}` }}>
+                    {user?.email}
+                  </S.Font>
+                </S.ProfileTextWrapper>
+              </S.ProfileWrapper>
 
-                <S.Font $size="16px" $weight="400" style={{ color: `${G.PALETTE.LIGHT_BLACK}` }}>
-                  {user?.email}
-                </S.Font>
-              </S.ProfileTextWrapper>
-            </S.ProfileWrapper>
+              <Pencil size={18} onClick={handleModalOpen} />
+              <Comp.Modal modalId="edit" title="프로필 변경" subTitle="나를 나타내는 이미지를 선택해보세요.">
+                <Comp.EditForm modalId="edit" />
+              </Comp.Modal>
+            </S.Edit>
+
             <S.GrassWrapper>
               <S.GrassTextWrapper>
                 <S.Font $size="20px" $weight="700">

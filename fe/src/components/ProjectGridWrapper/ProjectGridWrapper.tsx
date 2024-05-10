@@ -9,7 +9,6 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/stores/atoms/loadUser';
 
 export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProps) {
-  console.log(issueList, 'PSDFIOPSJDOFIJK');
   const projectModal = useModal('project');
   const user = useRecoilValue(userState);
 

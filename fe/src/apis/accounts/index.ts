@@ -1,6 +1,6 @@
 // export async function name(params:type) {
 
-import { instanceOfJson } from '../instance';
+import { instanceOfFormData, instanceOfJson } from '../instance';
 
 // }
 export async function emailDuplicateCheck(email: string) {
@@ -23,4 +23,23 @@ export async function login(email: string, password: string) {
 
 export async function account() {
   return await instanceOfJson.get(`/accounts`);
+}
+
+export async function editImg({
+  newJob,
+}: {
+  newJob: {
+    // issueId: number;
+    // name: string;
+    // description: string;
+    imageFile: File | null;
+  };
+}) {
+  const formData = new FormData();
+  // const request = JSON.stringify({ name: newJob.name, description: newJob.description });
+  // const blob = new Blob([request], { type: 'application/json' });
+  // formData.append('request', blob);
+  if (newJob.imageFile) formData.append('image', newJob.imageFile);
+
+  return await instanceOfFormData.patch(`/accounts/image`, formData);
 }

@@ -16,6 +16,7 @@ import {
   JobCreationFormProps,
   InfraJobCreationFormProps,
   SecretKeyFormProps,
+  EditProps,
 } from './components/Modal';
 import { ManualTableProps, CelProps, SelectCelProps } from './components/ManualTable';
 import { ProjectGridWrapperProps } from './components/ProjectGridWrapper';
@@ -70,5 +71,6 @@ export type {
   FilterProps,
   CurrentWorkProps,
   MemberListResponse,
+  EditProps,
   API,
 };
