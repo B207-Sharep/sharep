@@ -14,6 +14,7 @@ export default function QuillEditor({
 }: T.QuillEditorProps) {
   return (
     <S.EditorWrapper width={width} height={height} $isNoneStyle={hiddenTooltip}>
+      {/* TBD readonly props 추가할것 */}
       <ReactQuill
         theme="snow"
         value={value}

@@ -127,6 +127,15 @@ export async function getScreenIssueDetail({
   return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${'DETAIL'}&issueType=${'SCREEN'}&accountId=`);
 }
 
+/** 인프라 이슈 리스트 조회 */
+export async function getInfraIssueList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.SimpleIssue[], any>> {
+  return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${'SIMPLE'}&issueType=${'INFRA'}&accountId=`);
+}
+
 /** API 이슈 리스트 조회 */
 export async function getApiIssueList({ projectId }: { projectId: number }) {
   return instanceOfJson.get(`/projects/${projectId}/apis`);

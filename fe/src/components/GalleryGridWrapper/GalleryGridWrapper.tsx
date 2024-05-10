@@ -44,7 +44,7 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
             setNewIssueName('');
           },
           onError: error => {
-            console.log(error);
+            console.log(error, 'EERR');
           },
         },
       );
