@@ -48,6 +48,9 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
           },
         },
       );
+    } else if (event.key === 'Escape') {
+      setCreateNewCard(false);
+      setNewIssueName('');
     }
   };
   return (
@@ -78,14 +81,16 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
             </S.CardText>
           </S.Card>
         ) : (
-          <S.CardAddBtn className="hover-moving" onClick={handleAddBtn}>
-            <S.TextContainer>
-              <Plus size={16} />
-              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={16}>
-                새로 만들기
-              </S.StyledText>
-            </S.TextContainer>
-          </S.CardAddBtn>
+          <S.Card className="hover-moving">
+            <S.CardAddBtn onClick={handleAddBtn}>
+              <S.TextContainer>
+                <Plus size={16} />
+                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={16}>
+                  새로 만들기
+                </S.StyledText>
+              </S.TextContainer>
+            </S.CardAddBtn>
+          </S.Card>
         )}
       </S.CardList>
     </S.Grid>
