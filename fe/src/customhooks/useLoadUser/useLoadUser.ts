@@ -3,6 +3,8 @@ import { useRecoilState } from 'recoil';
 import { account } from '@/apis/accounts';
 import { userState } from '@/stores/atoms/loadUser';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import * as API from '@/apis';
 
 interface User {
   // 사용자 정보에 대한 타입 정의
@@ -17,6 +19,7 @@ export const useLoadUser = (): User | null => {
   const [user, setUser] = useRecoilState<User | null>(userState);
   const navigate = useNavigate();
   const location = useLocation();
+  // const flag=false
 
   useEffect(() => {
     const loadUser = async () => {

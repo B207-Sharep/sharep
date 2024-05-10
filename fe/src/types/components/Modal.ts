@@ -16,6 +16,10 @@ export interface JobCreationFormProps {
   description: string;
 }
 
+export interface EditProps {
+  imageFile: File;
+}
+
 export interface ProjectCreationFormProps {
   title: string;
   bio: string;

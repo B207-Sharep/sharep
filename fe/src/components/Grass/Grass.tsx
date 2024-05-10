@@ -70,12 +70,10 @@ const convertToGrid = (data: any[]) => {
   for (let i = 0; i < rows; i++) {
     grid.push(data.slice(i * 7, (i + 1) * 7));
   }
-  console.log(grid, 'GRID');
 
   return grid;
 };
 
 export default function Grass({ grass }: any) {
-  console.log(grass, 'grass');
   return <GitHubGrid data={convertToGrid(grass.jobs)} />;
 }

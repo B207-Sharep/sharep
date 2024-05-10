@@ -47,12 +47,16 @@ export default function Main() {
             유재건유죄건유잼건
           </S.SubSlogan>
         </S.MainWrapper>
-        <S.tw>
-          <S.CardSection>fdfdfd</S.CardSection>
-          <S.CardSection>fdfdfd</S.CardSection>
-          <S.CardSection>fdfdfd</S.CardSection>
-          <S.CardSection>fdfdfd</S.CardSection>
-        </S.tw>
+        <S.ContentsWrapper>
+          <S.Contents>
+            <S.CardSection></S.CardSection>
+          </S.Contents>
+          <S.Contents>
+            <img src={'/work-status.png'} width="100%" alt="위원회들"></img>
+          </S.Contents>
+          <S.Contents>fdfdfd</S.Contents>
+          <S.Contents>fdfdfd</S.Contents>
+        </S.ContentsWrapper>
       </S.RootLayout>
     </>
   );
