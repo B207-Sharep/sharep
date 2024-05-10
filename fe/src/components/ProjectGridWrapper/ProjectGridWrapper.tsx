@@ -22,6 +22,7 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
             id: user.id,
             email: user.email,
             nickname: user.nickname,
+            imageUrl: user.imageUrl,
             roles: {
               FRONT_END: false,
               BACK_END: false,

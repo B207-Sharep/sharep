@@ -37,7 +37,7 @@ export default function Commit({
             </S.StyledText>
             {/* 유저 정보 + 작업 완료 시간 */}
             <S.CommitUserInfo>
-              <Comp.UserImg size="sm" path={userImageUrl || 'https://via.placeholder.com/16x16'} />
+              <Comp.UserImg size="sm" path={userImageUrl} />
               <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
                 {nickname}
               </S.StyledText>

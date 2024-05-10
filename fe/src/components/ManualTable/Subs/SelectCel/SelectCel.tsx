@@ -75,38 +75,4 @@ const OPTIONS: { [usingFor: string]: { [res: string]: React.ReactNode } } = {
     PATCH: <Comp.MethodBadge name="PATCH" />,
     DELETE: <Comp.MethodBadge name="DELETE" />,
   },
-  ASSIGNEES: {
-    HIGH: <Comp.PriorityBadge priority="HIGH" />,
-    MEDIUM: <Comp.PriorityBadge priority="MEDIUM" />,
-    LOW: <Comp.PriorityBadge priority="LOW" />,
-  },
 };
-// // 우선 순위
-// const PRIORITY_OPTIONS = {
-//   HIGH:<Comp.PriorityBadge priority="HIGH" />,
-//   MEDIUM: <Comp.PriorityBadge priority="MEDIUM" />,
-//   LOW:<Comp.PriorityBadge priority="LOW" />,
-// };
-
-// // 진행 상태
-// const STATE_OPTIONS = {
-//   YET:<Comp.StatusBadge status="YET" />,
-//   NOW:<Comp.StatusBadge status="NOW" />,
-//   DONE: <Comp.StatusBadge status="DONE" />,
-// };
-
-// // 담당자
-// const PERSON_OPTIONS = {
-//   HIGH:<Comp.PriorityBadge priority="HIGH" />,
-//   MEDIUM:<Comp.PriorityBadge priority="MEDIUM" />,
-//   LOW: <Comp.PriorityBadge priority="LOW" />,
-// };
-
-// // 메소드
-// const METHOD_OPTIONS = {
-//   GET:<Comp.MethodBadge name="GET" />,
-//   POST:<Comp.MethodBadge name="POST" />,
-//   PUT:<Comp.MethodBadge name="PUT" />,
-//   PATCH:<Comp.MethodBadge name="PATCH" />,
-//   DELETE:<Comp.MethodBadge name="DELETE" />,
-// };

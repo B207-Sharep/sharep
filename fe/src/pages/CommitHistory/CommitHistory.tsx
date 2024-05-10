@@ -46,9 +46,8 @@ export default function CommitHistory() {
       {
         queryKey: [{ func: `get-issue-list`, projectId }],
         queryFn: () =>
-          API.project.getProjectIssueList({
+          API.project.getProjectSimpleIssueList({
             projectId: Number(projectId),
-            dataType: 'SIMPLE',
             issueType: null,
             accountId: null,
           }),
@@ -157,7 +156,7 @@ export default function CommitHistory() {
                               onClick={() => selectValue(openFilter, member.account.id.toString())}
                             >
                               <S.UserProfile>
-                                <Comp.UserImg size="sm" path="https://via.placeholder.com/32x32" />
+                                <Comp.UserImg size="sm" path={member.account.imageUrl} />
                                 <S.UserInfo>
                                   <S.StyledText>{member.account.nickname}</S.StyledText>
                                 </S.UserInfo>
@@ -167,7 +166,7 @@ export default function CommitHistory() {
                         </>
                       ) : openFilter === 'issueId' && issueListSuccess ? (
                         <>
-                          {issueListResponse?.data.map((issue: T.API.GetProjectIssueListResponse) => (
+                          {issueListResponse?.data.map((issue: T.API.SimpleIssue) => (
                             <S.DropdowntItem
                               key={`filter-${openFilter}-${issue.id}`}
                               onClick={() => selectValue(openFilter, issue.id.toString())}
