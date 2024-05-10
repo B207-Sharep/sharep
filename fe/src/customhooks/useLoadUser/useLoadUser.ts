@@ -27,7 +27,6 @@ export const useLoadUser = (): User | null => {
           const response = await account();
           if (response) {
             setUser(response.data); // Recoil 상태 업데이트
-            // console.log(response.data, 'IMHERE AXIOS');
           }
         } catch (error) {
           console.error('사용자 정보를 불러오는데 실패했습니다.', error);

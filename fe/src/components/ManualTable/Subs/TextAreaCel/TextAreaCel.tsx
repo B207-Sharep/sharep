@@ -1,8 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as S from './TextAreaCelStyle';
 import * as T from '@types';
+import * as Y from 'yjs';
 import YjsCRDT from '@/service/crdt';
 import { useWebSocket } from '@/providers/SocketProvider';
+
+const READY_STATE = {
+  CONNECTING: 0,
+  OPEN: 1,
+  CLOSING: 2,
+  CLOSED: 3,
+};
 
 export default function TextAreaCel({ initialState, fixedWidth }: T.CelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -13,48 +21,35 @@ export default function TextAreaCel({ initialState, fixedWidth }: T.CelProps) {
 
   /** ====================================== */
   const socket = useWebSocket();
+
   const [cursorPosition, setCursorPosition] = useState<number>(0);
   const crdt = new YjsCRDT();
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newText = event.target.value;
-    const newCursor = event.target.selectionStart; // 연산 이후의 최종 위치
+  // const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   const newText = event.target.value;
+  //   const newCursor = event.target.selectionStart; // 연산 이후의 최종 위치
 
-    setValue(newText);
-    setCursorPosition(newCursor);
+  //   setValue(newText);
+  //   setCursorPosition(newCursor);
 
-    const changedLength = value.length - newText.length;
-    const isAdded = changedLength < 0;
+  //   const changedLength = value.length - newText.length;
+  //   const isAdded = changedLength < 0;
 
-    if (isAdded) {
-      const addedText = newText.slice(newCursor - Math.abs(changedLength), newCursor);
-      const isOneLetter = addedText.length === 1;
-      const isKorean = addedText.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/);
+  //   if (isAdded) {
+  //     const addedText = newText.slice(newCursor - Math.abs(changedLength), newCursor);
+  //     const isOneLetter = addedText.length === 1;
+  //     const isKorean = addedText.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/);
 
-      if (isOneLetter && isKorean) return;
+  //     if (isOneLetter && isKorean) return;
 
-      crdt.insert(newCursor - Math.abs(changedLength), addedText);
-    } else {
-      const removedLength = Math.abs(changedLength);
-      crdt.delete(newCursor, removedLength);
-    }
-
-    // sendMessageDataChannels(codeDataChannel, crdt.encodeData());
-  };
-
-  // useEffect(() => {
-  //   console.log(`socket :`, socket);
-  //   if (socket) {
-  //     socket.subscribe('/topic/greetings', message => console.log(`Received: ${message.body}`));
+  //     crdt.insert(newCursor - Math.abs(changedLength), addedText);
+  //   } else {
+  //     const removedLength = Math.abs(changedLength);
+  //     crdt.delete(newCursor, removedLength);
   //   }
-  // }, [socket]);
 
-  // useEffect(() => {
-  //   console.log(`socket :`, socket);
-  //   if (socket) {
-  //     socket.publish({ destination: '/app/hello', body: value });
-  //   }
-  // }, [value]);
+  //   // sendMessageDataChannels(codeDataChannel, crdt.encodeData());
+  // };
   /** ====================================== */
 
   useEffect(() => {
@@ -77,6 +72,12 @@ export default function TextAreaCel({ initialState, fixedWidth }: T.CelProps) {
     }
   };
 
+  const handleCompositionEnd = (event: React.CompositionEvent<HTMLTextAreaElement>) => {
+    crdt.insert(cursorPosition - 1, event.data);
+    console.log(`crdt :`, crdt.toString());
+    console.log(crdt.encodeData());
+  };
+
   const handleKeyboardEventOnEditor = (e: React.KeyboardEvent<HTMLTextAreaElement>, toggledValue: boolean) => {
     if (textareaRef.current) {
       const { scrollHeight, style } = textareaRef.current;
@@ -95,6 +96,7 @@ export default function TextAreaCel({ initialState, fixedWidth }: T.CelProps) {
       ref={textareaRef}
       value={value}
       onChange={handleOnChange}
+      onCompositionEnd={handleCompositionEnd}
       onKeyDown={e => handleKeyboardEventOnEditor(e, true)}
       onKeyUp={e => handleKeyboardEventOnEditor(e, false)}
       onFocus={() => handleCelClick(true)}
