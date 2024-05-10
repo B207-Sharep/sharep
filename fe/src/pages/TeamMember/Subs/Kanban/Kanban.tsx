@@ -40,10 +40,13 @@ export default function Kanban({
   const filteringResponse = useCallback(
     ({ state }: { state: 'YET' | 'NOW' | 'DONE' }): T.API.SimpleIssue[] => {
       return issues
-        .map(issue => issue.state === state && issue)
+        .map(
+          issue =>
+            issue.assignees.filter(assignee => assignee.accountId === Number(accountId))[0].state === state && issue,
+        )
         .filter((el: T.API.SimpleIssue | false) => el) as T.API.SimpleIssue[];
     },
-    [issues],
+    [issues, accountId],
   );
 
   const handleDragEnter = (e: React.DragEvent) => {
