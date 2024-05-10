@@ -3,7 +3,7 @@ import * as S from './ModalStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
 import { modalDataState } from '@/stores/atoms/modal';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
 import * as API from '@/apis';
@@ -15,6 +15,8 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
   const { closeModal } = useModal(modalId);
   const { projectId } = useParams();
   const { isOpen, isValid } = useRecoilValue(modalDataState(modalId));
+
+  // console.log(isValid, 'VAL');
 
   const createNewProjectMutation = useMutation({
     mutationKey: [{ func: `create-new-project` }],
@@ -32,7 +34,19 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
     },
   });
 
+  const editImg = useMutation({
+    mutationKey: [{ func: `edit-img` }],
+    mutationFn: API.account.editImg,
+    onSuccess: () => {
+      console.log('here');
+      queryClient.invalidateQueries({ queryKey: [{ userinfo: `user-info` }] });
+      queryClient.invalidateQueries({ queryKey: [{ projectList: `projectList` }] });
+    },
+  });
+
   const handleCreateButtonClick = useRecoilCallback(({ snapshot }) => async () => {
+    // console.log('click', isValid, isOpen);
+    // console.log(modalId);
     const contents = (await snapshot.getPromise(modalDataState(modalId))).contents;
     try {
       if (contents) {
@@ -60,6 +74,13 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
             break;
           case 'project-secretKey':
             break;
+          case 'edit':
+            await editImg.mutateAsync({
+              newJob: contents as T.EditProps,
+            });
+
+            break;
+
           default:
             break;
         }

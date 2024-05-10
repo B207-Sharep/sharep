@@ -102,7 +102,7 @@ export const MonitorScreen = styled.div`
   background: url('/sang-hun.png');
 `;
 
-export const tw = styled.div`
+export const ContentsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -111,10 +111,19 @@ export const tw = styled.div`
   align-items: center;
 `;
 
-export const CardSection = styled.div`
+export const Contents = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 100px;
-  background-color: greenyellow;
+  height: 350px;
+  /* background-color: greenyellow; */
+`;
+
+export const CardSection = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 40vw;
+  height: 100%;
+  background: no-repeat center/100% url('/work-status.png');
+  /* background-color: greenyellow; */
 `;
