@@ -52,7 +52,7 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
                 newJob: contents as T.JobCreationFormProps,
               });
             else {
-              alert('진행 중인 이슈가 없습니다');
+              alert('작업을 연결할 이슈를 선택해주세요.');
               throw Error;
             }
             break;

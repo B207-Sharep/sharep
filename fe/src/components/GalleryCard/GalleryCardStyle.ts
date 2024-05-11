@@ -1,6 +1,23 @@
 import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
+export const BtnConatiner = styled.div`
+  visibility: hidden;
+  right: 0;
+  position: absolute;
+  background-color: ${PALETTE.MAIN_WHITE};
+  margin: 4px 6px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
+`;
+
+export const EventBtn = styled.div`
+  cursor: pointer;
+  padding: 4px 6px;
+`;
+
 export const Card = styled.div`
   width: 100%;
   aspect-ratio: 16/9;
@@ -10,6 +27,10 @@ export const Card = styled.div`
   border-radius: 3px;
   box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
   cursor: pointer;
+  position: relative;
+  &:hover ${BtnConatiner} {
+    visibility: visible;
+  }
 `;
 
 export const CardContent = styled.div`
@@ -67,4 +88,12 @@ export const DefaultImage = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${PALETTE.MAIN_BACKGROUND};
+`;
+
+export const CardInput = styled.input`
+  width: 100%;
+  height: 100%;
+  border: 0;
+  color: ${PALETTE.SUB_BLACK};
+  font-weight: 700;
 `;

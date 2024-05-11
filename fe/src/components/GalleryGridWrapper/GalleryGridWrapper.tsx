@@ -53,20 +53,13 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
       setNewIssueName('');
     }
   };
+
   return (
     <S.Grid>
       <S.CardList>
         {issueList.map(issue => (
-          <Comp.GalleryCard
-            key={`issue-${issue.id}`}
-            id={issue.id}
-            issueName={issue.issueName}
-            createdAt={issue.createdAt}
-            type={type}
-            imageUrl={type === 'SCREEN' && issue.jobs.length > 0 ? issue.jobs[0].imageUrl : undefined}
-          />
+          <Comp.GalleryCard key={`issue-${issue.id}`} issue={issue} type={type} />
         ))}
-
         {createNewCard ? (
           <S.Card className="hover-moving" style={{ border: `1px solid ${PALETTE.MAIN_COLOR}` }}>
             <S.CardContent>{type === 'SCREEN' ? <S.DefaultImage /> : <S.PreviewContent />}</S.CardContent>
