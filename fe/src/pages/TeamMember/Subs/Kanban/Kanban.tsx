@@ -39,12 +39,27 @@ export default function Kanban({
 
   const filteringResponse = useCallback(
     ({ state }: { state: 'YET' | 'NOW' | 'DONE' }): T.API.SimpleIssue[] => {
-      return issues
-        .map(
-          issue =>
-            issue.assignees.filter(assignee => assignee.accountId === Number(accountId))[0].state === state && issue,
-        )
-        .filter((el: T.API.SimpleIssue | false) => el) as T.API.SimpleIssue[];
+      const filteredIssues = issues.filter(issue =>
+        issue.assignees.some(assignee => assignee.accountId === Number(accountId) && assignee.state === state),
+      );
+      switch (state) {
+        case 'YET':
+          return filteredIssues.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+        case 'NOW':
+          return filteredIssues.sort((a, b) => {
+            if (a.startedAt && b.startedAt) {
+              return b.startedAt.localeCompare(a.startedAt);
+            }
+            return 0;
+          });
+        case 'DONE':
+          return filteredIssues.sort((a, b) => {
+            if (a.finishedAt && b.finishedAt) {
+              return b.finishedAt.localeCompare(a.finishedAt);
+            }
+            return 0;
+          });
+      }
     },
     [issues, accountId],
   );
