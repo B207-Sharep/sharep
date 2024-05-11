@@ -246,3 +246,26 @@ export async function createIssueAssignee({
     accountId,
   );
 }
+
+/** 이슈 수정 */
+export async function updateIssue({
+  projectId,
+  issueId,
+  updatedIssue,
+}: {
+  projectId: number;
+  issueId: number;
+  updatedIssue: {
+    issueName: string;
+    description: string | null;
+    epic: string | null;
+    priority: T.PriorityBadgeProps['priority'] | null;
+  };
+}) {
+  return await instanceOfJson.put(`/projects/${projectId}/issues/${issueId}`, updatedIssue);
+}
+
+/** 이슈 삭제 */
+export async function deleteIssue({ projectId, issueId }: { projectId: number; issueId: number }) {
+  return instanceOfJson.delete(`/projects/${projectId}/issues/${issueId}`);
+}

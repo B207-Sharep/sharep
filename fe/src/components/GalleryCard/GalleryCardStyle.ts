@@ -1,7 +1,24 @@
 import { PALETTE } from '@/styles';
 import styled from 'styled-components';
 
-export const Card = styled.div`
+export const BtnConatiner = styled.div`
+  visibility: hidden;
+  right: 0;
+  position: absolute;
+  background-color: ${PALETTE.MAIN_WHITE};
+  margin: 4px 6px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
+`;
+
+export const EventBtn = styled.div`
+  cursor: pointer;
+  padding: 4px 6px;
+`;
+
+export const Card = styled.div<{ $isEdit: boolean }>`
   width: 100%;
   aspect-ratio: 16/9;
   display: flex;
@@ -9,17 +26,22 @@ export const Card = styled.div`
   justify-content: space-between;
   border-radius: 3px;
   box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
-  cursor: pointer;
+  border: ${({ $isEdit }) => $isEdit && `1px solid ${PALETTE.MAIN_COLOR}`};
+  cursor: ${({ $isEdit }) => ($isEdit ? `default` : `pointer`)};
+  position: relative;
+  &:hover ${BtnConatiner} {
+    visibility: visible;
+  }
 `;
 
 export const CardContent = styled.div`
   width: 100%;
-  height: 200px;
+  height: 80%;
   overflow: hidden;
 `;
 
 export const CardText = styled.div`
-  height: 50px;
+  height: 20%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -67,4 +89,12 @@ export const DefaultImage = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${PALETTE.MAIN_BACKGROUND};
+`;
+
+export const CardInput = styled.input`
+  width: 100%;
+  height: 100%;
+  border: 0;
+  color: ${PALETTE.SUB_BLACK};
+  font-weight: 700;
 `;

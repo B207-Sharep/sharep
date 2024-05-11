@@ -10,17 +10,17 @@ export const Wrapper = styled.div`
 `;
 
 export const Header = styled.div`
-  display: flex;
-  align-items: flex-end;
+  display: wrap;
+  align-items: flex-start;
+  flex: 1;
   gap: 20px;
 `;
 
 export const HeaderContainer = styled.div`
-  display: inline-flex;
+  display: flex;
   justify-content: space-between;
-  align-items: center;
-  /* padding-bottom: 12px;
-  border-bottom: 1px solid ${PALETTE.LIGHT_BLACK}; */
+  align-items: flex-start;
+  gap: 10px;
 `;
 
 export const StyledText = styled.span<{ color?: string; fontSize?: number; fontWeight?: number }>`
@@ -40,8 +40,9 @@ export const Divider = styled.div`
 
 export const CommitWrapper = styled.div`
   display: flex;
+  flex: 0 1 auto;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   align-self: stretch;
   gap: 12px;
 `;
@@ -49,15 +50,20 @@ export const CommitWrapper = styled.div`
 export const IssueAssigneeContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 10px;
+  /* background-color: ${PALETTE.MAIN_WHITE}; */
+  padding: 6px 8px;
+  border-radius: 6px;
 `;
 
 export const AssigneeBadge = styled.div`
   display: flex;
+  align-self: flex-start;
   background-color: ${PALETTE.MAIN_COLOR};
   border-radius: 6px;
   padding: 4px 6px;
+  margin-top: 4px;
 `;
 
 export const CommitUserInfo = styled.div`
@@ -128,35 +134,47 @@ export const AssigneeContainer = styled.div`
   gap: 12px;
 `;
 
-export const AssigneeUser = styled.div`
-  display: inline-flex;
-  border-radius: 4px;
-  background-color: ${PALETTE.MAIN_BACKGROUND};
-  align-items: center;
-  justify-content: flex-start;
-  padding: 4px 8px;
-  gap: 12px;
-`;
-
 export const DeleteBtn = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding: 3px;
   cursor: pointer;
+  position: absolute;
+  right: -5%;
+  top: -20%;
+  display: none;
 `;
+
+export const AssigneeUser = styled.div`
+  display: inline-flex;
+  border-radius: 4px;
+  background-color: ${PALETTE.MAIN_WHITE};
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px 6px;
+  gap: 12px;
+  position: relative;
+  &:hover {
+    ${DeleteBtn} {
+      display: block;
+    }
+  }
+`;
+
 export const AddUserBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  margin-top: 4px;
 `;
 
-export const Dropdown = styled.div<{ $dropdownPosition: string }>`
+export const Dropdown = styled.div`
   display: flex;
   position: absolute;
   top: -100%;
-  ${({ $dropdownPosition }) => `${$dropdownPosition} : 150%;`}
+  left: 100%;
   margin-top: 4px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -205,12 +223,13 @@ export const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${PALETTE.MAIN_BACKGROUND};
+  background-color: ${PALETTE.MAIN_WHITE};
   border-radius: 45px;
   width: 20px;
   height: 20px;
   cursor: pointer;
+  box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
   &:hover {
-    box-shadow: 0px 0px 0px 1px rgba(31, 35, 40, 0.15);
+    background-color: ${PALETTE.MAIN_BACKGROUND};
   }
 `;
