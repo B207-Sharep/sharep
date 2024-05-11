@@ -66,11 +66,18 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
             <S.CardText>
               <S.NewCardInput
                 type="text"
+                placeholder="이슈의 이름을 입력해주세요."
                 value={newIssueName}
                 onChange={handleInputChange}
                 onKeyDown={handleInputEnter}
                 autoFocus
               />
+              <S.CardDate>
+              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                취소하려면 Esc를 누르세요.
+              </S.StyledText>
+
+              </S.CardDate>
             </S.CardText>
           </S.Card>
         ) : (

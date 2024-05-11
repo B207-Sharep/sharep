@@ -96,3 +96,9 @@ export const DefaultImage = styled.div`
   height: 100%;
   background-color: ${PALETTE.MAIN_BACKGROUND};
 `;
+
+export const CardDate = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
