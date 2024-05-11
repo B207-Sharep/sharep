@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import * as L from '@layouts';
 import * as T from '@/types';
 import * as S from './CommitHistoryStyle';
@@ -55,11 +55,18 @@ export default function CommitHistory() {
     ],
   });
 
-  const groupedCommits = useMemo(
-    () => jobListResponse && jobListResponse && groupCommitsByDate(jobListResponse.data),
-    [jobListResponse],
-  );
+  const groupedCommits = useMemo(() => {
+    if (!jobListResponse) return [];
+    return jobListResponse && groupCommitsByDate(jobListResponse.data);
+  }, [jobListResponse]);
 
+  const groupedIssueList = useMemo(() => {
+    if (!issueListResponse) return [];
+    const sortedIssues = [...issueListResponse.data].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+    return groupIssuesByType(sortedIssues);
+  }, [issueListResponse]);
+
+  console.log(groupedIssueList);
   const handleModalOpen = () => {
     jobModal.openModal({
       name: '',
@@ -108,9 +115,7 @@ export default function CommitHistory() {
       }
     }
 
-    console.log(newFilter);
     setSelectedFilter(newFilter);
-    console.log('search params changed');
     jobListRefetch();
   }, [searchParams]);
 
@@ -166,13 +171,27 @@ export default function CommitHistory() {
                         </>
                       ) : openFilter === 'issueId' && issueListSuccess ? (
                         <>
-                          {issueListResponse?.data.map((issue: T.API.SimpleIssue) => (
-                            <S.DropdowntItem
-                              key={`filter-${openFilter}-${issue.id}`}
-                              onClick={() => selectValue(openFilter, issue.id.toString())}
-                            >
-                              <S.StyledText>{issue.issueName}</S.StyledText>
-                            </S.DropdowntItem>
+                          {Object.entries(groupedIssueList).map(([type, issues]) => (
+                            <div key={`${type}-issues`} style={{ width: '100%' }}>
+                              <S.FilterType>
+                                {type === 'FEATURE'
+                                  ? `기능 `
+                                  : type === 'SCREEN'
+                                  ? `화면 `
+                                  : type === 'INFRA'
+                                  ? `인프라 `
+                                  : `개인 `}
+                                이슈
+                              </S.FilterType>
+                              {issues.map(issue => (
+                                <S.DropdowntItem
+                                  key={`filter-${openFilter}-${type}-${issue.id}`}
+                                  onClick={() => selectValue(openFilter, issue.id.toString())}
+                                >
+                                  <S.StyledText>{issue.issueName}</S.StyledText>
+                                </S.DropdowntItem>
+                              ))}
+                            </div>
                           ))}
                         </>
                       ) : null}
@@ -190,22 +209,21 @@ export default function CommitHistory() {
           </div>
         </S.Header>
         <S.Divider />
-        {groupedCommits &&
-          Object.entries(groupedCommits).map(([date, commits]) => (
-            <div key={`commits-date-${date}`}>
-              <S.CommitDateWrapper>
-                <S.CommitIconContainer>
-                  <GitCommitHorizontal size={16} />
-                </S.CommitIconContainer>
-                <S.StyledText color={PALETTE.LIGHT_BLACK}>{date}</S.StyledText>
-              </S.CommitDateWrapper>
-              <S.CommitList>
-                {commits.map(commit => (
-                  <Comp.Commit key={`commit-${commit.id}`} {...commit} disabled={false} />
-                ))}
-              </S.CommitList>
-            </div>
-          ))}
+        {Object.entries(groupedCommits).map(([date, commits]) => (
+          <div key={`commits-date-${date}`}>
+            <S.CommitDateWrapper>
+              <S.CommitIconContainer>
+                <GitCommitHorizontal size={16} />
+              </S.CommitIconContainer>
+              <S.StyledText color={PALETTE.LIGHT_BLACK}>{date}</S.StyledText>
+            </S.CommitDateWrapper>
+            <S.CommitList>
+              {commits.map(commit => (
+                <Comp.Commit key={`commit-${commit.id}`} {...commit} disabled={false} />
+              ))}
+            </S.CommitList>
+          </div>
+        ))}
       </S.CommitHistoryWrapper>
     </L.SideBarLayout>
   );
@@ -232,4 +250,20 @@ function groupCommitsByDate(commits: T.CommitHistoryProps[]): Record<string, T.C
     acc[date].push(commit);
     return acc;
   }, {} as Record<string, T.CommitHistoryProps[]>);
+}
+
+function groupIssuesByType(issues: T.API.SimpleIssue[]): {
+  [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.SimpleIssue[];
+} {
+  return issues.reduce((acc, issue) => {
+    const { type } = issue;
+
+    if (!acc[type]) {
+      acc[type] = [];
+    }
+
+    acc[type].push(issue);
+
+    return acc;
+  }, {} as { [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.SimpleIssue[] });
 }
