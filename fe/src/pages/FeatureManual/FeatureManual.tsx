@@ -25,12 +25,12 @@ export default function FeatureManual() {
   });
 
   return (
-    // <SocketProvider>
-    <L.SideBarLayout>
-      <S.ManualWrapper>
-        <Comp.ManualTable dataList={featureIssuesResponse?.data || []} usingFor="FEATURE" />
-      </S.ManualWrapper>
-    </L.SideBarLayout>
-    // </SocketProvider>
+    <SocketProvider>
+      <L.SideBarLayout>
+        <S.ManualWrapper>
+          <Comp.ManualTable dataList={featureIssuesResponse?.data || []} usingFor="FEATURE" />
+        </S.ManualWrapper>
+      </L.SideBarLayout>
+    </SocketProvider>
   );
 }

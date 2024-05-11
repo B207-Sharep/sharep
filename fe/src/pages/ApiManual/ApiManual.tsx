@@ -6,14 +6,14 @@ import { SocketProvider } from '@/providers/SocketProvider';
 
 export default function ApiManual() {
   return (
-    <SocketProvider>
-      <L.SideBarLayout>
-        {/* <S.ManualWrapper>
+    // <SocketProvider>
+    <L.SideBarLayout>
+      {/* <S.ManualWrapper>
           <Comp.ManualTable columnTitles={API_MANUAL_COLUMN_TITLES} dataList={API_MANUAL_DUMMY} usingFor="API" />
         </S.ManualWrapper> */}
-        <div>준비중...</div>
-      </L.SideBarLayout>
-    </SocketProvider>
+      <div>준비중...</div>
+    </L.SideBarLayout>
+    // </SocketProvider>
   );
 }
 
