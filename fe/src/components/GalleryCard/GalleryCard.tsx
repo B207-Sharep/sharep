@@ -40,7 +40,6 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
   };
 
   const handleCardAction = (event: 'edit' | 'delete') => () => {
-    console.log(event);
     if (event === 'edit') {
       setEditCard(true);
       setNewIssueName(issue.issueName);
