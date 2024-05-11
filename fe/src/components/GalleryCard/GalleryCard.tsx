@@ -14,14 +14,11 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
   const { projectId } = useParams();
   const navigate = useNavigate();
   const [editCard, setEditCard] = useState<boolean>(false);
-  const [newIssueName, setNewIssueName] = useState<string>(issue.issueName);
+  const [newIssueName, setNewIssueName] = useState<string>('');
 
   const updateIssueMutation = useMutation({
     mutationKey: [{ func: `update-issue`, projectId }],
     mutationFn: API.project.updateIssue,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issues`, projectId }] });
-    },
   });
 
   const deleteIssueMutation = useMutation({
@@ -46,6 +43,7 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
     console.log(event);
     if (event === 'edit') {
       setEditCard(true);
+      setNewIssueName(issue.issueName);
     } else if (event === 'delete') {
       const answer = confirm(`${issue.issueName}를 삭제하시겠습니까?`);
       if (answer) {
@@ -58,7 +56,6 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
   };
 
   const handleInputEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    event.stopPropagation();
     if (event.key === 'Enter') {
       if (newIssueName.length > 32) {
         alert('이슈 이름은 최대 32자입니다.');
@@ -78,6 +75,7 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
             onSuccess: () => {
               setEditCard(false);
               setNewIssueName('');
+              queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issues`, projectId }] });
             },
             onError: error => {
               console.log(error);
@@ -92,7 +90,7 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
   };
 
   return (
-    <S.Card className="hover-moving" onClick={handleCardClick}>
+    <S.Card className="hover-moving" onClick={() => !editCard && handleCardClick()} $isEdit={editCard}>
       <S.CardContent>
         {type === 'SCREEN' ? (
           <>
@@ -113,6 +111,7 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
         {editCard ? (
           <S.CardInput
             type="text"
+            onClick={e => e.stopPropagation()}
             value={newIssueName}
             onChange={handleInputChange}
             onKeyDown={handleInputEnter}
@@ -136,15 +135,17 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
           </>
         )}
       </S.CardText>
-      <S.BtnConatiner onClick={e => e.stopPropagation()}>
-        <S.EventBtn onClick={handleCardAction('edit')}>
-          <Edit size={20} color={PALETTE.LIGHT_BLACK} />
-        </S.EventBtn>
-        <hr />
-        <S.EventBtn onClick={handleCardAction('delete')}>
-          <Trash2 size={20} color={PALETTE.LIGHT_BLACK} />
-        </S.EventBtn>
-      </S.BtnConatiner>
+      {!editCard && (
+        <S.BtnConatiner onClick={e => e.stopPropagation()}>
+          <S.EventBtn onClick={handleCardAction('edit')}>
+            <Edit size={20} color={PALETTE.LIGHT_BLACK} />
+          </S.EventBtn>
+          <hr />
+          <S.EventBtn onClick={handleCardAction('delete')}>
+            <Trash2 size={20} color={PALETTE.LIGHT_BLACK} />
+          </S.EventBtn>
+        </S.BtnConatiner>
+      )}
     </S.Card>
   );
 }

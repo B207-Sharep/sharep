@@ -18,7 +18,7 @@ export const EventBtn = styled.div`
   padding: 4px 6px;
 `;
 
-export const Card = styled.div`
+export const Card = styled.div<{ $isEdit: boolean }>`
   width: 100%;
   aspect-ratio: 16/9;
   display: flex;
@@ -26,7 +26,8 @@ export const Card = styled.div`
   justify-content: space-between;
   border-radius: 3px;
   box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
-  cursor: pointer;
+  border: ${({ $isEdit }) => $isEdit && `1px solid ${PALETTE.MAIN_COLOR}`};
+  cursor: ${({ $isEdit }) => ($isEdit ? `default` : `pointer`)};
   position: relative;
   &:hover ${BtnConatiner} {
     visibility: visible;
