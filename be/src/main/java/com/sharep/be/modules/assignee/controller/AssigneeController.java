@@ -1,15 +1,9 @@
 package com.sharep.be.modules.assignee.controller;
 
-import static org.springframework.util.Assert.notNull;
-
-import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.controller.response.AssigneeIdResponse;
 import com.sharep.be.modules.assignee.controller.response.AssigneeProjectNowIssueResponse;
 import com.sharep.be.modules.assignee.domain.State;
-import com.sharep.be.modules.assignee.repository.projection.MemberAndIssueProjection;
 import com.sharep.be.modules.assignee.service.AssigneeService;
-import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.constraints.Min;
 import java.util.List;
@@ -94,7 +88,7 @@ public class AssigneeController {
         return ResponseEntity.ok(
                 assigneeService.readProjectNowIssue(projectId)
                         .stream()
-                        .map(MemberAndIssueProjection::toAssigneeProjectNowIssueResponse)
+                        .map(assignee -> new AssigneeProjectNowIssueResponse(assignee.getMember(), assignee.getIssue()))
                         .sorted()
                         .toList()
         );
@@ -103,14 +97,17 @@ public class AssigneeController {
 
     // 본인 진행 이슈 조회
     @GetMapping("/projects/{projectId}/own/now/issues")
-    public ResponseEntity<AssigneeProjectNowIssueResponse> readProjectNowOwnIssue(
+    public ResponseEntity<List<AssigneeProjectNowIssueResponse>> readProjectNowOwnIssue(
             @AuthenticationPrincipal JwtAuthentication authentication,
             @PathVariable @Min(1) Long projectId
     ) {
 
         return ResponseEntity.ok(
                 assigneeService.readProjectNowOwnIssue(projectId, authentication.id)
-                        .toAssigneeProjectNowIssueResponse()
+                        .stream()
+                        .map(assignee -> new AssigneeProjectNowIssueResponse(assignee.getMember(), assignee.getIssue()))
+                        .sorted()
+                        .toList()
         );
     }
 

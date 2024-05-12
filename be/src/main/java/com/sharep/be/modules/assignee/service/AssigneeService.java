@@ -5,7 +5,6 @@ import static io.jsonwebtoken.lang.Assert.notNull;
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.domain.State;
-import com.sharep.be.modules.assignee.repository.projection.MemberAndIssueProjection;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.member.Member;
@@ -17,7 +16,6 @@ import com.sharep.be.modules.notification.domain.NotificationMessage;
 import com.sharep.be.modules.notification.service.NotificationRepository;
 import com.sharep.be.modules.notification.service.NotificationService;
 import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,10 +41,10 @@ public class AssigneeService {
                 .orElseThrow(() -> new RuntimeException("해당하는 담당자가 존재하지 않습니다."));
 
         // 이미 진행 중인 이슈가 있는지 확인하는 로직
-        if (state == State.NOW && assigneeRepository.existsByMemberIdAndState(member.getId(),
-                State.NOW)) {
-            throw new RuntimeException("이미 진행중인 이슈가 있습니다.");
-        }
+//        if (state == State.NOW && assigneeRepository.existsByMemberIdAndState(member.getId(),
+//                State.NOW)) {
+//            throw new RuntimeException("이미 진행중인 이슈가 있습니다.");
+//        }
 
         assignee.updateState(state);
 
@@ -124,19 +122,14 @@ public class AssigneeService {
         return assignee.getId();
     }
 
-    public Set<MemberAndIssueProjection> readProjectNowIssue(Long projectId) {
+    public List<Assignee> readProjectNowIssue(Long projectId) {
         return assigneeRepository.findAllProjectNowIssueByProjectId(projectId);
     }
 
-    public MemberAndIssueProjection readProjectNowOwnIssue(Long projectId, Long accountId) {
-        Set<MemberAndIssueProjection> result = assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(
+    public List<Assignee> readProjectNowOwnIssue(Long projectId, Long accountId) {
+
+        return assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(
                 projectId,
                 accountId);
-
-        if (result.size() != 1) {
-            throw new RuntimeException("해당하는 구성원이 존재하지 않습니다.");
-        }
-
-        return result.iterator().next();
     }
 }
