@@ -161,3 +161,10 @@ export const CommitIconContainer = styled.div`
     background-color: rgba(208, 215, 222, 0.7);
   }
 `;
+
+export const FilterType = styled.div`
+  width: 100%;
+  font-weight: 600;
+  border-bottom: 1px solid ${PALETTE.LIGHT_BLACK};
+  padding: 8px;
+`;

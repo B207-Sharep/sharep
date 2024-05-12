@@ -7,6 +7,8 @@ import { MoreVertical, GitCommit, Trash2Icon } from 'lucide-react';
 import { PALETTE } from '@/styles';
 import { useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function Issue({ id, issueName, jobs, assignees, priority, dragAble, deleteAble }: T.IssueProps) {
   const { projectId, accountId } = useParams();
@@ -54,7 +56,7 @@ export default function Issue({ id, issueName, jobs, assignees, priority, dragAb
                 <GitCommit size={16} color={PALETTE.LIGHT_BLACK} />
                 <span aria-label={jobs[0].name}>{jobs[0].name}</span>
               </p>
-              <span>{jobs[0].createdAt}</span>
+              <span>{dayjs(jobs[0].createdAt).locale('ko').fromNow()}</span>
             </>
           )}
         </S.RecentlyCommit>

@@ -48,44 +48,49 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
           },
         },
       );
+    } else if (event.key === 'Escape') {
+      setCreateNewCard(false);
+      setNewIssueName('');
     }
   };
+
   return (
     <S.Grid>
       <S.CardList>
         {issueList.map(issue => (
-          <Comp.GalleryCard
-            key={`issue-${issue.id}`}
-            id={issue.id}
-            issueName={issue.issueName}
-            createdAt={issue.createdAt}
-            type={type}
-            imageUrl={type === 'SCREEN' && issue.jobs.length > 0 ? issue.jobs[0].imageUrl : undefined}
-          />
+          <Comp.GalleryCard key={`issue-${issue.id}`} issue={issue} type={type} />
         ))}
-
         {createNewCard ? (
           <S.Card className="hover-moving" style={{ border: `1px solid ${PALETTE.MAIN_COLOR}` }}>
             <S.CardContent>{type === 'SCREEN' ? <S.DefaultImage /> : <S.PreviewContent />}</S.CardContent>
             <S.CardText>
               <S.NewCardInput
                 type="text"
+                placeholder="이슈의 이름을 입력해주세요."
                 value={newIssueName}
                 onChange={handleInputChange}
                 onKeyDown={handleInputEnter}
                 autoFocus
               />
+              <S.CardDate>
+              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                취소하려면 Esc를 누르세요.
+              </S.StyledText>
+
+              </S.CardDate>
             </S.CardText>
           </S.Card>
         ) : (
-          <S.CardAddBtn className="hover-moving" onClick={handleAddBtn}>
-            <S.TextContainer>
-              <Plus size={16} />
-              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={16}>
-                새로 만들기
-              </S.StyledText>
-            </S.TextContainer>
-          </S.CardAddBtn>
+          <S.Card className="hover-moving">
+            <S.CardAddBtn onClick={handleAddBtn}>
+              <S.TextContainer>
+                <Plus size={16} />
+                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={16}>
+                  새로 만들기
+                </S.StyledText>
+              </S.TextContainer>
+            </S.CardAddBtn>
+          </S.Card>
         )}
       </S.CardList>
     </S.Grid>
