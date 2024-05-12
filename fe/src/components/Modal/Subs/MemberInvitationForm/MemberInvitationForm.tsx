@@ -153,6 +153,7 @@ export default function MemberInvitationForm({
                 <S.DeleteBtn $cursor={false}>
                   <S.LeaderBadge $isLeader={member.id === 1}>
                     <S.StyledText color={PALETTE.MAIN_WHITE} fontSize={10}>
+                      {/* TODO: 누가 팀장? */}
                       {member.id === 1 ? '팀장' : '팀원'}
                     </S.StyledText>
                   </S.LeaderBadge>

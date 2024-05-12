@@ -51,6 +51,7 @@ export async function getKanbanList({
 }
 
 /** 팀원들의 진행중인 리스트 조회 */
+// TODO: type
 export async function getNowIssueAboutTeamMembers({
   projectId,
 }: {
@@ -60,6 +61,7 @@ export async function getNowIssueAboutTeamMembers({
 }
 
 /** 본인의 진행중인 리스트 조회 */
+// TODO: type
 export async function getNowIssueAboutMe({
   projectId,
 }: {
@@ -281,5 +283,5 @@ export async function inviteMembers({
     roles: T.RoleBadgeProps['role'][];
   }[];
 }) {
-  return await instanceOfJson.post(`/api/projects/${projectId}/members`, members);
+  return await instanceOfJson.post(`/projects/${projectId}/members`, members);
 }

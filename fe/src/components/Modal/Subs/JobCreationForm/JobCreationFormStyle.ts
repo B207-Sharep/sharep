@@ -129,3 +129,39 @@ export const IssueBadge = styled.div`
   border-radius: 6px;
   padding: 2px 6px;
 `;
+
+export const Dropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 100%;
+  margin-top: 4px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: ${PALETTE.MAIN_WHITE};
+  box-shadow: 0px 30px 150px rgba(139, 139, 139, 0.1);
+  border: 1px solid rgba(139, 139, 139, 0.1);
+  border-radius: 8px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+  z-index: 1;
+  overflow-y: auto;
+  max-height: 20vh;
+`;
+
+export const DropdowntItem = styled.div`
+  align-self: stretch;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
