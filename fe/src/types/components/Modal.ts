@@ -33,6 +33,7 @@ export interface ProjectCreationFormProps {
 }
 
 export interface InfraJobCreationFormProps {
+  issueId: number;
   name: string;
   description: string;
   notiUsers: {

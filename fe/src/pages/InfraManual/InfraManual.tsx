@@ -22,7 +22,7 @@ export default function InfraManual() {
 
   return (
     <L.SideBarLayout>
-      {infraIssueListSuccess && <Comp.GalleryGridWrapper issueList={infraIssueListResponse} type="SCREEN" />}
+      {infraIssueListSuccess && <Comp.GalleryGridWrapper issueList={infraIssueListResponse} type="INFRA" />}
     </L.SideBarLayout>
   );
 }

@@ -19,6 +19,7 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
     mutationFn: API.project.createNewIssue,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issues`, projectId }] });
+      // 아마 INFRA도 한번더 해야함
     },
   });
 
@@ -73,10 +74,9 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
                 autoFocus
               />
               <S.CardDate>
-              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-                취소하려면 Esc를 누르세요.
-              </S.StyledText>
-
+                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                  취소하려면 Esc를 누르세요.
+                </S.StyledText>
               </S.CardDate>
             </S.CardText>
           </S.Card>

@@ -4,17 +4,27 @@ import * as T from '@/types';
 import * as Comp from '@/components';
 import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
+import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
 import { Plus, X } from 'lucide-react';
 
 export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
-  const { updateContentByKey } = useModal<T.InfraJobCreationFormProps>(modalId);
+  const { updateContentByKey, updateIsValid } = useModal<T.InfraJobCreationFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState('left');
   const addbBtnRef = useRef<HTMLDivElement | null>(null);
   const notiContainerRef = useRef<HTMLDivElement | null>(null);
+  const { manualId } = useParams();
+  //조건 만족시 true되게 수정할 것
+
+  const updateValidityAndIssueId = () => {
+    if (contents.description.length > 0 && contents.name.length > 0) {
+      updateIsValid(true);
+      updateContentByKey('issueId', Number(manualId));
+    }
+  };
 
   const handleAddNotiUser = (userToAdd: T.InfraJobCreationFormProps['notiUsers'][number]) => {
     const isAlreadyAdded = contents.notiUsers.some(
@@ -87,7 +97,10 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
           id="name"
           type="text"
           value={contents.name}
-          onChange={event => updateContentByKey('name', event.target.value)}
+          onChange={event => {
+            updateContentByKey('name', event.target.value);
+            updateValidityAndIssueId(); // Check validity when name changes
+          }}
         />
       </S.FormItem>
       <S.FormItem>
@@ -150,12 +163,14 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
           width="100%"
           height="400px"
           value={contents.description}
+          // value={}
           hiddenTooltip={false}
-          stateSetter={newDescriptionOrUpdater =>
+          stateSetter={newDescriptionOrUpdater => {
             typeof newDescriptionOrUpdater === 'function'
               ? updateContentByKey('description', newDescriptionOrUpdater(contents.description))
-              : updateContentByKey('description', newDescriptionOrUpdater)
-          }
+              : updateContentByKey('description', newDescriptionOrUpdater);
+            updateValidityAndIssueId(); // Check validity when description changes
+          }}
           placeholder="내용을 입력하세요."
         />
       </S.EditorWrapper>

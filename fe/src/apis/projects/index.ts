@@ -163,7 +163,7 @@ export async function createNewJob({
     issueId: number;
     name: string;
     description: string;
-    imageFile: File | null;
+    imageFile?: File | null;
   };
 }) {
   const formData = new FormData();

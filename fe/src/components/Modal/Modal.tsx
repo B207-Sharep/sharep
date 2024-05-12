@@ -45,8 +45,8 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
   });
 
   const handleCreateButtonClick = useRecoilCallback(({ snapshot }) => async () => {
-    // console.log('click', isValid, isOpen);
-    // console.log(modalId);
+    console.log('click', isValid, isOpen);
+    console.log(modalId);
     const contents = (await snapshot.getPromise(modalDataState(modalId))).contents;
     try {
       if (contents) {
@@ -71,6 +71,11 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
             }
             break;
           case 'infra-job':
+            console.log(contents, 'MODAL CONTENTS');
+            await createNewJobMutation.mutateAsync({
+              projectId: Number(projectId),
+              newJob: contents as T.InfraJobCreationFormProps,
+            });
             break;
           case 'project-secretKey':
             break;

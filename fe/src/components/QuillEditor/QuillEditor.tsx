@@ -11,6 +11,7 @@ export default function QuillEditor({
   height,
   stateSetter,
   placeholder,
+  readonly,
 }: T.QuillEditorProps) {
   return (
     <S.EditorWrapper width={width} height={height} $isNoneStyle={hiddenTooltip}>
@@ -22,6 +23,7 @@ export default function QuillEditor({
         formats={hiddenTooltip ? HIDDEN_TOOLBAR_FORMAT : DEFAULT_TOOLBAR_FORMAT}
         onChange={stateSetter}
         placeholder={placeholder}
+        readOnly={readonly}
       />
     </S.EditorWrapper>
   );

@@ -26,12 +26,16 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
     mutationFn: API.project.deleteIssue,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issues`, projectId }] });
+      //여기도 아마 INFRA 한번 더 받아야함
     },
   });
 
   const handleCardClick = () => {
     if (type === 'SCREEN') {
       navigate(`/projects/${projectId}/screen-manual/${issue.id}`);
+    }
+    if (type === 'INFRA') {
+      navigate(`/projects/${projectId}/infra-manual/${issue.id}`);
     }
   };
 
