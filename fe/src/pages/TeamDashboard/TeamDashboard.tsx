@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import * as S from './TeamDashboardStyle';
 import * as T from '@types';
 import * as L from '@layouts';
@@ -13,7 +13,7 @@ export default function TeamDashboard() {
   const { projectId, accountId } = useParams();
   const [
     { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
-    { data: featureIssuesResponse, isFetching: isFeatureIssuesResponseFetching },
+    // { data: featureIssuesResponse, isFetching: isFeatureIssuesResponseFetching },
     { data: screenIssuesResponse, isFetching: isScreenIssuesResponseFetching },
     { data: membersResponse, isFetching: isMembersResponseFeting },
   ] = useQueries({
@@ -22,10 +22,10 @@ export default function TeamDashboard() {
         queryKey: [{ func: `get-now-issues`, projectId }],
         queryFn: () => API.project.getNowIssueAboutTeamMembers({ projectId: Number(projectId) }),
       },
-      {
-        queryKey: [{ func: `get-feature-issues`, projectId }],
-        queryFn: () => API.project.getFeatureIssuesList({ projectId: Number(projectId), dataType: 'SIMPLE' }),
-      },
+      // {
+      //   queryKey: [{ func: `get-feature-issues`, projectId }],
+      //   queryFn: () => API.project.getFeatureIssuesList({ projectId: Number(projectId), dataType: 'SIMPLE' }),
+      // },
       {
         queryKey: [{ func: `get-screen-issues`, projectId }],
         queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId) }),
@@ -36,6 +36,20 @@ export default function TeamDashboard() {
       },
     ],
   });
+
+  const sortedScreenIssueList = useMemo(() => {
+    if (!screenIssuesResponse?.data) return [];
+
+    const sortedIssues = [...screenIssuesResponse.data].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+
+    sortedIssues.forEach(issue => {
+      if (issue.jobs && issue.jobs.length > 0) {
+        issue.jobs.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      }
+    });
+
+    return sortedIssues;
+  }, [screenIssuesResponse?.data]);
 
   return (
     <L.SideBarLayout>
@@ -83,7 +97,7 @@ export default function TeamDashboard() {
             <Icon.GantChart />
             <span>화면 갤러리</span>
           </S.Title>
-          <Comp.GalleryGridWrapper issueList={screenIssuesResponse?.data || []} type="SCREEN" />
+          <Comp.GalleryGridWrapper issueList={sortedScreenIssueList} type="SCREEN" />
         </S.WhiteBoxWrapper>
       </S.Container>
     </L.SideBarLayout>

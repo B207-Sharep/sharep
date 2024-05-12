@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import * as Comp from '@components';
 import * as L from '@layouts';
 import * as S from './ScreenManualStyle';
@@ -20,6 +20,20 @@ export default function ScreenManual() {
     select: data => data.data,
   });
 
+  const sortedScreenIssueList = useMemo(() => {
+    if (!screenIssueListResponse) return [];
+
+    const sortedIssues = [...screenIssueListResponse].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+
+    sortedIssues.forEach(issue => {
+      if (issue.jobs && issue.jobs.length > 0) {
+        issue.jobs.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      }
+    });
+
+    return sortedIssues;
+  }, [screenIssueListResponse]);
+
   return (
     <L.SideBarLayout>
       <S.Wrapper>
@@ -28,7 +42,7 @@ export default function ScreenManual() {
             화면 정의서
           </S.StyledText>
         </S.Header>
-        {screenIssueListSuccess && <Comp.GalleryGridWrapper issueList={screenIssueListResponse} type="SCREEN" />}
+        {screenIssueListSuccess && <Comp.GalleryGridWrapper issueList={sortedScreenIssueList} type="SCREEN" />}
       </S.Wrapper>
     </L.SideBarLayout>
   );

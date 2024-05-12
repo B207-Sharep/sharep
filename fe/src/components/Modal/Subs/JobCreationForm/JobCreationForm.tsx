@@ -91,7 +91,7 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
           </S.IssueBadge>
           <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
             {(myNowIssueSuccess && myNowIssueResponse.issue && myNowIssueResponse.issue?.issueName) ||
-              '진행 중인 이슈가 없습니다'}
+              '작업을 연결할 이슈를 선택해주세요. '}
           </S.StyledText>
         </S.IssueTitle>
       </S.TitleContainer>

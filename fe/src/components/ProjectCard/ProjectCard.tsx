@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import * as S from './ProjectCardStyle';
 import * as T from '@/types';
 import { PALETTE } from '@/styles';
-import { UserImg } from '..';
-import { Plus } from 'lucide-react';
+import { Add, UserImg } from '..';
+import { CirclePlus, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface TooltipData {
@@ -60,6 +60,16 @@ export default function ProjectCard({ title, bio, accounts, add, id }: T.Project
               </S.Tooltip>
             </S.UserWrapper>
           ))}
+          <div
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            onClick={e => {
+              e.stopPropagation();
+              // TODO : 팀원 추가 모달
+              console.log('add click');
+            }}
+          >
+            <CirclePlus color={PALETTE.LIGHT_BLACK} />
+          </div>
         </S.ImgWrapper>
       ) : (
         <div style={{ width: '32px', height: '32px', visibility: 'hidden' }}>hello</div>
