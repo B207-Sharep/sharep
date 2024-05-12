@@ -16,24 +16,24 @@ const READY_STATE = {
 };
 
 export default function ManualTable({ dataList, usingFor }: T.FeatureManualTableProps) {
-  // const socket = useWebSocket();
+  const socket = useWebSocket();
 
-  // useEffect(() => {
-  //   if (socket) {
-  //     socket.addEventListener('open', event => {
-  //       if (event.target && socket.readyState === READY_STATE.OPEN) {
-  //         const messageObject = { username: `멀티버스 김성제 - ${Math.random()}`, message: '입장했습니다.' };
-  //         console.log(`OPEN :`, READY_STATE.OPEN);
-  //         socket.send(JSON.stringify(messageObject));
-  //       }
-  //     });
-  //     socket.addEventListener('message', event => {
-  //       if (event.target && socket.readyState === READY_STATE.OPEN) {
-  //         console.log(`MESSAGE :`, event);
-  //       }
-  //     });
-  //   }
-  // }, [socket]);
+  useEffect(() => {
+    if (socket) {
+      socket.addEventListener('open', event => {
+        if (event.target && socket.readyState === READY_STATE.OPEN) {
+          const messageObject = { username: `멀티버스 김성제 - ${Math.random()}`, message: '입장했습니다.' };
+          console.log(`OPEN :`, READY_STATE.OPEN);
+          socket.send(JSON.stringify(messageObject));
+        }
+      });
+      socket.addEventListener('message', event => {
+        if (event.target && socket.readyState === READY_STATE.OPEN) {
+          console.log(`MESSAGE :`, event);
+        }
+      });
+    }
+  }, [socket]);
 
   const createIconUsingIconName = useCallback(
     ({ idx }: { idx: number }) => {

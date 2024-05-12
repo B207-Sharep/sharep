@@ -40,8 +40,6 @@ export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor 
     }
   };
 
-  console.log(`membersResponse.data :`, membersResponse?.data);
-
   return (
     <S.Wrapper
       className="hover-bg-dark"
