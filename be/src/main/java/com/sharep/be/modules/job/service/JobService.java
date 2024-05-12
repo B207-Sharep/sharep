@@ -65,24 +65,7 @@ public class JobService {
         RoleType roleType = jobReadRequest.roleType();
         Long issueId = jobReadRequest.issueId();
 
-        if (jobReadRequest.accountId() != null && jobReadRequest.accountId() > 0) {
-            // 팀원별
-
-            return jobRepository.findAllByAccountIdAndProjectId(accountId, projectId);
-
-        } else if (jobReadRequest.roleType() != null) {
-            // 직무별
-
-            return jobRepository.findAllByProjectIdAndRoleType(projectId, roleType);
-        } else if (jobReadRequest.issueId() != null && jobReadRequest.issueId() > 0) {
-            // 이슈별
-
-            return jobRepository.findAllByProjectIdAndIssueId(projectId, issueId);
-        } else {
-            //팀별
-
-            return jobRepository.findAllByProjectId(projectId);
-        }
+        return jobRepository.findAllByCondition(projectId, accountId, issueId, roleType);
     }
 
     @Transactional(readOnly = true)
