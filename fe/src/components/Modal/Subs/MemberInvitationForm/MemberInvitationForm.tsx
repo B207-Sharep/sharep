@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { PALETTE } from '@/styles';
-import * as S from './ProjectCreationFormStyle';
+import * as S from './MemberInvitationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
 import * as API from '@/apis';
@@ -10,13 +10,29 @@ import { modalDataState } from '@/stores/atoms/modal';
 import { useModal } from '@/customhooks';
 import { useQuery } from '@tanstack/react-query';
 
-export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
-  const { updateContentByKey, updateIsValid } = useModal<T.ProjectCreationFormProps>(modalId);
+export default function MemberInvitationForm({
+  modalId,
+  projectId,
+}: {
+  modalId: T.ModalProps['modalId'];
+  projectId: number;
+}) {
+  const { updateContentByKey, updateIsValid } = useModal<T.MemberInvitationFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
   const [searchValue, setSearchValue] = useState<string>('');
 
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const {
+    data: memberListResponse,
+    isSuccess: memberListSuccess,
+    isFetching: memberListFetching,
+  } = useQuery({
+    queryKey: [{ func: `get-member-list`, projectId }],
+    queryFn: () => API.project.getProjectMemberList({ projectId: projectId }),
+    select: data => data.data,
+  });
 
   const {
     data: searchEmailResponse,
@@ -58,44 +74,42 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     if (id === 'members') {
-      setSearchValue(event.target.value);
-    } else {
-      updateContentByKey(id as keyof T.ProjectCreationFormProps, value);
-
-      if (id == 'title') {
-        updateIsValid(value.length > 0 && contents.bio.length > 0);
-      }
-      if (id == 'bio') {
-        updateIsValid(value.length > 0 && contents.title.length > 0);
-      }
+      setSearchValue(value);
     }
   };
 
   // 팀원 이메일 검색 내역 dropdown item 선택 했을 때, 중복 제외하고 선택된 팀원 추가
-  const handleResultClick = (selectedUser: Omit<T.ProjectCreationFormProps['members'][number], 'roles'>) => () => {
+  const handleResultClick = (selectedUser: Omit<T.MemberInvitationFormProps['members'][number], 'roles'>) => () => {
     setSearchValue('');
 
     // 이미 추가된 팀원인지 체크
     const isMemberAlreadyAdded = contents.members.some(
-      (member: T.ProjectCreationFormProps['members'][number]) => member.id === selectedUser.id,
+      (member: T.MemberInvitationFormProps['members'][number]) => member.id === selectedUser.id,
     );
-    if (!isMemberAlreadyAdded) {
+    const isMemberExists =
+      memberListResponse &&
+      memberListResponse.some((member: T.API.GetProjectMemberListResponse) => member.account.id === selectedUser.id);
+
+    if (!isMemberAlreadyAdded && !isMemberExists) {
       const newMember = {
         ...selectedUser,
         roles: { FRONT_END: false, BACK_END: false, INFRA: false, DESIGNER: false },
       };
       updateContentByKey('members', [...contents.members, newMember]);
+      updateIsValid(true);
     } else alert(`이미 추가된 팀원입니다`);
+
     setIsDropdownVisible(false);
   };
 
   // 추가된 팀원 목록에서 팀원 삭제
-  const handleRemoveClick = (selectedUser: T.ProjectCreationFormProps['members'][number]) => () => {
+  const handleRemoveClick = (selectedUser: T.MemberInvitationFormProps['members'][number]) => () => {
     setSearchValue('');
-    updateContentByKey(
-      'members',
-      contents.members.filter((member: T.ProjectCreationFormProps['members'][number]) => member.id !== selectedUser.id),
+    const updatedMembers = contents.members.filter(
+      (member: T.MemberInvitationFormProps['members'][number]) => member.id !== selectedUser.id,
     );
+    if (updatedMembers.length == 0) updateIsValid(false);
+    updateContentByKey('members', updatedMembers);
 
     setIsDropdownVisible(false);
   };
@@ -104,7 +118,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
   const toggleRoleState = (id: number, role: T.RoleBadgeProps['role']) => {
     updateContentByKey(
       'members',
-      contents.members.map((member: T.ProjectCreationFormProps['members'][number]) =>
+      contents.members.map((member: T.MemberInvitationFormProps['members'][number]) =>
         member.id === id
           ? {
               ...member,
@@ -120,16 +134,54 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
 
   return (
     <S.Wrapper>
-      {/* 프로젝트 이름 */}
-      <S.FormItem>
-        <Comp.InputWithLabel.Label labelFor="title">프로젝트 이름</Comp.InputWithLabel.Label>
-        <S.StyledInput id="title" type="text" value={contents.title} onChange={handleInputChange} />
-      </S.FormItem>
-      {/* 프로젝트 소개 */}
-      <S.FormItem>
-        <Comp.InputWithLabel.Label labelFor="bio">프로젝트 소개</Comp.InputWithLabel.Label>
-        <S.StyledInput id="bio" type="text" value={contents.bio} onChange={handleInputChange} />
-      </S.FormItem>
+      {/* 이미 추가된 팀원 */}
+      <S.StyledText>현재 프로젝트 팀원</S.StyledText>
+      <S.Content style={{ background: `${PALETTE.MAIN_BACKGROUND}` }}>
+        <S.RoleInfo>
+          <S.Icon $fillColor={PALETTE.LIGHT_BLACK} $strokeColor={PALETTE.MAIN_WHITE}>
+            <Info size={12} />
+          </S.Icon>
+          <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+            이미 추가된 팀원의 역할은 수정할 수 없습니다.
+          </S.StyledText>
+        </S.RoleInfo>
+        <S.MemberList>
+          {/* 팀장은 기본으로 등록, 삭제 불가 */}
+          {memberListResponse &&
+            memberListResponse.map(member => (
+              <S.Row key={`project-member-${member.id}`}>
+                <S.DeleteBtn $cursor={false}>
+                  <S.LeaderBadge $isLeader={member.id === 1}>
+                    <S.StyledText color={PALETTE.MAIN_WHITE} fontSize={10}>
+                      {member.id === 1 ? '팀장' : '팀원'}
+                    </S.StyledText>
+                  </S.LeaderBadge>
+                </S.DeleteBtn>
+
+                <S.RowContent>
+                  <S.UserProfile>
+                    <Comp.UserImg size="sm" path={member.account.imageUrl} />
+                    <S.UserInfo>
+                      <S.StyledText fontSize={12}>{member.account.email}</S.StyledText>
+                      <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
+                        {member.account.nickname}
+                      </S.StyledText>
+                    </S.UserInfo>
+                  </S.UserProfile>
+
+                  <S.RoleBadgeList>
+                    {member.roles.map(role => (
+                      <S.RoleBadgeBtn key={`leader-role-${member.account.id}-${role}`} $clickable={false} $role={role}>
+                        <Comp.RoleBadge role={role} selectAble={false} />
+                      </S.RoleBadgeBtn>
+                    ))}
+                  </S.RoleBadgeList>
+                </S.RowContent>
+              </S.Row>
+            ))}
+        </S.MemberList>
+      </S.Content>
+
       {/* 팀원 */}
       <S.FormItem>
         <Comp.InputWithLabel.Label labelFor="members">팀원 추가</Comp.InputWithLabel.Label>
@@ -176,48 +228,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
           </S.StyledText>
         </S.RoleInfo>
         <S.MemberList>
-          {/* 팀장은 기본으로 등록, 삭제 불가 */}
-          <S.Row>
-            <S.DeleteBtn $cursor={false}>
-              <S.LeaderBadge>
-                <S.StyledText color={PALETTE.MAIN_WHITE} fontSize={10}>
-                  팀장
-                </S.StyledText>
-              </S.LeaderBadge>
-            </S.DeleteBtn>
-
-            <S.RowContent>
-              <S.UserProfile>
-                <Comp.UserImg size="sm" path={contents.members[0].imageUrl} />
-                <S.UserInfo>
-                  <S.StyledText fontSize={12}>{contents.members[0].email}</S.StyledText>
-                  <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={10}>
-                    {contents.members[0].nickname}
-                  </S.StyledText>
-                </S.UserInfo>
-              </S.UserProfile>
-
-              <S.RoleBadgeList>
-                {roleList.map(role => (
-                  <S.RoleBadgeBtn
-                    key={`leader-role-${contents.members[0].id}-${role}`}
-                    onClick={() => toggleRoleState(contents.members[0].id, role)}
-                    $state={contents.members[0].roles[role]}
-                  >
-                    <Comp.RoleBadge
-                      role={role}
-                      selectAble={{
-                        state: contents.members[0].roles[role],
-                        onClick: () => {},
-                      }}
-                    />
-                  </S.RoleBadgeBtn>
-                ))}
-              </S.RoleBadgeList>
-            </S.RowContent>
-          </S.Row>
-
-          {contents.members.slice(1).map((member: T.ProjectCreationFormProps['members'][number]) => (
+          {contents.members.map((member: T.MemberInvitationFormProps['members'][number]) => (
             <S.Row key={`member-${member.id}`}>
               <S.DeleteBtn $cursor={true} onClick={handleRemoveClick(member)}>
                 <MinusCircle color={PALETTE.MAIN_RED} size={16} />
@@ -238,7 +249,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
                     <S.RoleBadgeBtn
                       key={`member-role-${member.id}-${role}`}
                       onClick={() => toggleRoleState(member.id, role)}
-                      $state={member.roles[role]}
+                      $clickable
                     >
                       <Comp.RoleBadge
                         role={role}

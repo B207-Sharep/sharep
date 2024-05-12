@@ -269,3 +269,17 @@ export async function updateIssue({
 export async function deleteIssue({ projectId, issueId }: { projectId: number; issueId: number }) {
   return instanceOfJson.delete(`/projects/${projectId}/issues/${issueId}`);
 }
+
+/** 프로젝트 멤버 초대 - 팀장 권한만 가능 */
+export async function inviteMembers({
+  projectId,
+  members,
+}: {
+  projectId: number;
+  members: {
+    id: number;
+    roles: T.RoleBadgeProps['role'][];
+  }[];
+}) {
+  return await instanceOfJson.post(`/api/projects/${projectId}/members`, members);
+}

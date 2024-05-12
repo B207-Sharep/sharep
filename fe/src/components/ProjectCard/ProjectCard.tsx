@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import * as S from './ProjectCardStyle';
 import * as T from '@/types';
 import { PALETTE } from '@/styles';
-import { Add, UserImg } from '..';
+import * as Comp from '@/components';
 import { CirclePlus, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useModal } from '@/customhooks';
 
 interface TooltipData {
   nickname: string;
@@ -13,6 +14,7 @@ interface TooltipData {
 
 export default function ProjectCard({ title, bio, accounts, add, id }: T.ProjectCardProps) {
   const navigate = useNavigate();
+  const invitationModal = useModal(`invitation-${id}`);
   const [tooltipData, setTooltipData] = useState<TooltipData | null>(null);
 
   const handleMouseEnter = (nickname: any, email: any) => {
@@ -30,50 +32,60 @@ export default function ProjectCard({ title, bio, accounts, add, id }: T.Project
   };
 
   return (
-    <S.Card className="hover-moving" onClick={handleCardClick}>
-      <S.CardTextWrapper>
-        <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={700} fontSize={20} $add={add}>
-          {title}
-        </S.StyledText>
-        {!add ? (
-          <S.StyledText color={PALETTE.LIGHT_BLACK} fontWeight={500} fontSize={14}>
-            {bio}
+    <>
+      <S.Card className="hover-moving" onClick={handleCardClick}>
+        <S.CardTextWrapper>
+          <S.StyledText color={PALETTE.SUB_BLACK} fontWeight={700} fontSize={20} $add={add}>
+            {title}
           </S.StyledText>
-        ) : (
-          <S.AddWrapper>
-            <Plus size={18} color={PALETTE.LIGHT_BLACK} />
+          {!add ? (
             <S.StyledText color={PALETTE.LIGHT_BLACK} fontWeight={500} fontSize={14}>
               {bio}
             </S.StyledText>
-          </S.AddWrapper>
+          ) : (
+            <S.AddWrapper>
+              <Plus size={18} color={PALETTE.LIGHT_BLACK} />
+              <S.StyledText color={PALETTE.LIGHT_BLACK} fontWeight={500} fontSize={14}>
+                {bio}
+              </S.StyledText>
+            </S.AddWrapper>
+          )}
+        </S.CardTextWrapper>
+        {!add ? (
+          <S.ImgWrapper>
+            {accounts?.map((img: any, idx) => (
+              <S.UserWrapper key={idx}>
+                <Comp.UserImg size="sm" path={img.imageUrl} />
+                <S.Tooltip aria-label={`${img.nickname} - ${img.email}`}>
+                  {img.nickname}
+                  <br />
+                  {img.email}
+                </S.Tooltip>
+              </S.UserWrapper>
+            ))}
+            {/* TODO: 내가 팀장일때만 보이도록 */}
+            <S.InvitationBtn
+              onClick={e => {
+                e.stopPropagation();
+                invitationModal.openModal({
+                  members: [],
+                });
+              }}
+            >
+              <CirclePlus color={PALETTE.LIGHT_BLACK} />
+            </S.InvitationBtn>
+          </S.ImgWrapper>
+        ) : (
+          <div style={{ width: '32px', height: '32px', visibility: 'hidden' }}>hello</div>
         )}
-      </S.CardTextWrapper>
-      {!add ? (
-        <S.ImgWrapper>
-          {accounts?.map((img: any, idx) => (
-            <S.UserWrapper key={idx}>
-              <UserImg size="sm" path={img.imageUrl} />
-              <S.Tooltip aria-label={`${img.nickname} - ${img.email}`}>
-                {img.nickname}
-                <br />
-                {img.email}
-              </S.Tooltip>
-            </S.UserWrapper>
-          ))}
-          <div
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            onClick={e => {
-              e.stopPropagation();
-              // TODO : 팀원 추가 모달
-              console.log('add click');
-            }}
-          >
-            <CirclePlus color={PALETTE.LIGHT_BLACK} />
-          </div>
-        </S.ImgWrapper>
-      ) : (
-        <div style={{ width: '32px', height: '32px', visibility: 'hidden' }}>hello</div>
-      )}
-    </S.Card>
+      </S.Card>
+      <Comp.Modal
+        modalId={`invitation-${id}`}
+        title="프로젝트 팀원 추가"
+        subTitle={`${title} 프로젝트에 아직 추가하지 않은 팀원들을 추가해보세요.`}
+      >
+        <Comp.MemberInvitationForm modalId={`invitation-${id}`} projectId={Number(id)} />
+      </Comp.Modal>
+    </>
   );
 }

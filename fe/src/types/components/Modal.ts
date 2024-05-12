@@ -32,6 +32,16 @@ export interface ProjectCreationFormProps {
   }[];
 }
 
+export interface MemberInvitationFormProps {
+  members: {
+    id: number;
+    email: string;
+    nickname: string;
+    roles: Record<T.RoleBadgeProps['role'], boolean>;
+    imageUrl: string | null;
+  }[];
+}
+
 export interface InfraJobCreationFormProps {
   name: string;
   description: string;
