@@ -114,7 +114,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         List<Assignee> assignees = assigneeRepository.findAllByProjectIdAndIssueIdAndAccountIdsIn(projectId, issueId, accountIds);
 
-//        Assignee assignee = assigneeRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId, issueId, accountId);
+        Assignee assignee = assigneeRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId, issueId, accountId);
         for(Assignee assignee: assignees){
             Notification notification = Notification.builder()
                 .assignee(assignee)

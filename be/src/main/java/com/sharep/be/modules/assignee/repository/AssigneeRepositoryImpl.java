@@ -12,6 +12,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.assignee.service.AssigneeRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -20,44 +21,38 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
+public class AssigneeRepositoryImpl implements AssigneeRepository {
 
     private final JPAQueryFactory queryFactory;
+    private final AssigneeJpaRepository assigneeJpaRepository;
+
+    @Override
+    public Optional<Assignee> findByMemberIdAndIssueId(Long memberId, Long issueId) {
+        return assigneeJpaRepository.findByMemberIdAndIssueId(memberId, issueId);
+    }
+
+    @Override
+    public boolean existsByMemberIdAndIssueId(Long memberId, Long issueId) {
+        return assigneeJpaRepository.existsByMemberIdAndIssueId(memberId, issueId);
+    }
+
+    @Override
+    public boolean existsByMemberIdAndState(Long memberId, State state) {
+        return assigneeJpaRepository.existsByMemberIdAndState(memberId, state);
+    }
+
+    @Override
+    public Assignee findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId, Long issueId,
+            Long accountId) {
+        return assigneeJpaRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId,
+                issueId, accountId);
+    }
 
     @Override
     public List<Assignee> findAllProjectNowIssueByProjectId(Long projectId) {
 
         return findAllProjectNowIssueByProjectIdAndAccountId(projectId, null);
     }
-
-//    @Override
-//    public Set<MemberAndIssueProjection> findAllProjectNowIssueByProjectIdAndAccountId(
-//            Long projectId,
-//            Long accountId) {
-//
-//        return new HashSet<>(queryFactory.select(
-//                        Projections.constructor(
-//                                MemberAndIssueProjection.class,
-//                                member,
-//                                assignee,
-//                                issue
-//                        )
-//                )
-//                .from(assignee)
-//                .innerJoin(assignee.issue, issue).fetchJoin()
-//                .innerJoin(issue.api, api).fetchJoin()
-//                .rightJoin(assignee.member, member)
-//                .on(assignee.state.eq(State.NOW))
-//                .leftJoin(member.account, account).fetchJoin()
-//                .leftJoin(member.project, project).fetchJoin()
-//                .leftJoin(member.roles, role1).fetchJoin()
-//                .where(project.id.eq(projectId))
-//                .where(eqAccountId(accountId))
-//                .orderBy(assignee.startedAt.desc())
-//                .fetch());
-
-    //    }
-
 
     @Override
     public List<Assignee> findAllProjectNowIssueByProjectIdAndAccountId(
