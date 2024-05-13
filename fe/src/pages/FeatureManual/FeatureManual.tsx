@@ -28,7 +28,7 @@ export default function FeatureManual() {
     <SocketProvider>
       <L.SideBarLayout>
         <S.ManualWrapper>
-          <Comp.ManualTable dataList={featureIssuesResponse?.data || []} usingFor="FEATURE" />
+          <Comp.FeatureManual readonly={false} dataList={featureIssuesResponse?.data || []} usingFor="FEATURE" />
         </S.ManualWrapper>
       </L.SideBarLayout>
     </SocketProvider>
