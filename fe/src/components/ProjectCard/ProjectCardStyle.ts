@@ -80,4 +80,10 @@ export const InvitationBtn = styled.button`
   justify-content: center;
   padding: 4px;
   cursor: pointer;
+  svg {
+    opacity: 0.6;
+    &:hover {
+      opacity: 1;
+    }
+  }
 `;

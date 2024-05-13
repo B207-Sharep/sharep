@@ -148,13 +148,12 @@ export default function MemberInvitationForm({
         <S.MemberList>
           {/* 팀장은 기본으로 등록, 삭제 불가 */}
           {memberListResponse &&
-            memberListResponse.map(member => (
+            memberListResponse.map((member, index) => (
               <S.Row key={`project-member-${member.id}`}>
                 <S.DeleteBtn $cursor={false}>
-                  <S.LeaderBadge $isLeader={member.id === 1}>
+                  <S.LeaderBadge $isLeader={index === 0}>
                     <S.StyledText color={PALETTE.MAIN_WHITE} fontSize={10}>
-                      {/* TODO: 누가 팀장? */}
-                      {member.id === 1 ? '팀장' : '팀원'}
+                      {index === 0 ? '팀장' : '팀원'}
                     </S.StyledText>
                   </S.LeaderBadge>
                 </S.DeleteBtn>

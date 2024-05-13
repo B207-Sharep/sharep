@@ -5,7 +5,7 @@ import * as T from '@types';
 export async function getGrass() {
   return await instanceOfJson.get(`/jobs`);
 }
-export async function getProjectList() {
+export async function getProjectList(): Promise<AxiosResponse<T.API.GetProjectListResponse[], any>> {
   return await instanceOfJson.get(`/projects`);
 }
 

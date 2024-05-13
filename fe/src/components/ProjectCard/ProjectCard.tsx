@@ -6,6 +6,8 @@ import * as Comp from '@/components';
 import { CirclePlus, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useModal } from '@/customhooks';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/stores/atoms/loadUser';
 
 interface TooltipData {
   nickname: string;
@@ -16,6 +18,7 @@ export default function ProjectCard({ title, bio, accounts, add, id }: T.Project
   const navigate = useNavigate();
   const invitationModal = useModal(`invitation-${id}`);
   const [tooltipData, setTooltipData] = useState<TooltipData | null>(null);
+  const user = useRecoilValue(userState);
 
   const handleMouseEnter = (nickname: any, email: any) => {
     setTooltipData({ nickname, email });
@@ -26,7 +29,7 @@ export default function ProjectCard({ title, bio, accounts, add, id }: T.Project
   };
 
   const handleCardClick = () => {
-    if (id !== '0') {
+    if (id !== 0) {
       navigate(`/projects/${id}`);
     }
   };
@@ -63,17 +66,18 @@ export default function ProjectCard({ title, bio, accounts, add, id }: T.Project
                 </S.Tooltip>
               </S.UserWrapper>
             ))}
-            {/* TODO: 내가 팀장일때만 보이도록 */}
-            <S.InvitationBtn
-              onClick={e => {
-                e.stopPropagation();
-                invitationModal.openModal({
-                  members: [],
-                });
-              }}
-            >
-              <CirclePlus color={PALETTE.LIGHT_BLACK} />
-            </S.InvitationBtn>
+            {user && accounts && user.id === accounts[0].id && (
+              <S.InvitationBtn
+                onClick={e => {
+                  e.stopPropagation();
+                  invitationModal.openModal({
+                    members: [],
+                  });
+                }}
+              >
+                <CirclePlus color={PALETTE.LIGHT_BLACK} />
+              </S.InvitationBtn>
+            )}
           </S.ImgWrapper>
         ) : (
           <div style={{ width: '32px', height: '32px', visibility: 'hidden' }}>hello</div>
