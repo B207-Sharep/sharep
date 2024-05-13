@@ -1,5 +1,6 @@
 import {
-  Api,
+  DetailApi,
+  SimpleApi,
   Assignee,
   Job,
   DetailIssue,
@@ -14,7 +15,8 @@ import {
 } from './projects';
 
 export type {
-  Api,
+  DetailApi,
+  SimpleApi,
   Assignee,
   Job,
   DetailIssue,
