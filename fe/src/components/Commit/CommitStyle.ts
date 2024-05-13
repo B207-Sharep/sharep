@@ -104,3 +104,9 @@ export const CommitContentDetail = styled.div`
   padding: 10px 64px;
   gap: 10px;
 `;
+
+export const Divider = styled.div`
+  width: 100%;
+  height: 0;
+  border: 1px #e3e3e3 solid;
+`;

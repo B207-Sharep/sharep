@@ -6,6 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 
 export default function QuillEditor({
   hiddenTooltip,
+
   value,
   width,
   height,
@@ -18,8 +19,9 @@ export default function QuillEditor({
       <ReactQuill
         theme="snow"
         value={value}
-        modules={hiddenTooltip ? HIDDEN_TOOLBAR_MODULE : DEFAULT_MODULE}
-        formats={hiddenTooltip ? HIDDEN_TOOLBAR_FORMAT : DEFAULT_TOOLBAR_FORMAT}
+        // modules={hiddenTooltip ? HIDDEN_TOOLBAR_MODULE : DEFAULT_MODULE}
+        modules={DEFAULT_MODULE}
+        formats={DEFAULT_TOOLBAR_FORMAT}
         onChange={stateSetter}
         placeholder={placeholder}
         readOnly={readonly}

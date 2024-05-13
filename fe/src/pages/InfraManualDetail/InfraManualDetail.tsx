@@ -26,11 +26,10 @@ export default function InfraManualDetail() {
   const [
     { data: jobListResponse, isSuccess: jobListSuccess, isFetching: jobListeFetching, refetch: jobListRefetch },
     { data: memberListResponse, isSuccess: memberListSuccess, isFetching: memberListFetching },
-    { data: issueListResponse, isSuccess: issueListSuccess, isFetching: issueListFetching },
   ] = useQueries({
     queries: [
       {
-        queryKey: [{ func: `get-job-list`, projectId, searchParams }],
+        queryKey: [{ func: `get-job-list`, projectId, searchParams, manualId }],
         queryFn: () =>
           API.project.getJobList({
             projectId: Number(projectId),
@@ -42,15 +41,6 @@ export default function InfraManualDetail() {
       {
         queryKey: [{ func: `get-member-list`, projectId }],
         queryFn: () => API.project.getProjectMemberList({ projectId: Number(projectId) }),
-      },
-      {
-        queryKey: [{ func: `get-issue-list`, projectId }],
-        queryFn: () =>
-          API.project.getProjectSimpleIssueList({
-            projectId: Number(projectId),
-            issueType: null,
-            accountId: null,
-          }),
       },
     ],
   });

@@ -70,15 +70,19 @@ export default function Commit({
                 {description}
               </S.CommitText>
             ) : (
-              <Comp.QuillEditor
-                width="100%"
-                height="400px"
-                value={description}
-                // value={}
-                readonly={true}
-                hiddenTooltip={false}
-                placeholder="내용을 입력하세요."
-              />
+              <>
+                <S.Divider />
+
+                <Comp.QuillEditor
+                  width="100%"
+                  height="400px"
+                  value={description}
+                  // value={}
+                  readonly={true}
+                  hiddenTooltip={true}
+                  placeholder="내용을 입력하세요."
+                />
+              </>
             )}
           </S.CommitContentDetail>
           <S.CommitImageDetail>{imageUrl && <S.Img src={imageUrl} />}</S.CommitImageDetail>
