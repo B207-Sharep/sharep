@@ -10,6 +10,7 @@ import static com.sharep.be.modules.member.QRole.*;
 import static com.sharep.be.modules.project.QProject.*;
 import static com.sharep.be.modules.project.QProject.project;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -57,6 +58,11 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
 
     @Override
     public List<Member> findAllWithAssigneeByProjectId(Long projectId) {
+        return findAllWithAssigneeByProjectIdAndAccountId(projectId, null);
+    }
+
+    @Override
+    public List<Member> findAllWithAssigneeByProjectIdAndAccountId(Long projectId, Long accountId) {
         return queryFactory.select(member).distinct()
                 .from(member)
                 .innerJoin(member.project, project).fetchJoin()
@@ -66,7 +72,12 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
                 .leftJoin(assignee.issue, issue).fetchJoin()
                 .leftJoin(issue.api, api).fetchJoin()
                 .where(member.project.id.eq(projectId))
+                .where(eqAccountId(accountId))
                 .where(assignee.state.eq(State.NOW))
                 .fetch();
+    }
+
+    private BooleanExpression eqAccountId(Long accountId) {
+        return accountId == null ? null : account.id.eq(accountId);
     }
 }

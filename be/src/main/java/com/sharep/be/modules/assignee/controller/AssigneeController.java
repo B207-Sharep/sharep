@@ -115,18 +115,25 @@ public class AssigneeController {
 
     // 본인 진행 이슈 조회
     @GetMapping("/projects/{projectId}/own/now/issues")
-    public ResponseEntity<List<AssigneeProjectNowIssueResponse>> readProjectNowOwnIssue(
+    public ResponseEntity<List<MemberWithIssueResponse>> readProjectNowOwnIssue(
             @AuthenticationPrincipal JwtAuthentication authentication,
             @PathVariable @Min(1) Long projectId
     ) {
 
-        return ResponseEntity.ok(
-                assigneeService.readProjectNowOwnIssue(projectId, authentication.id)
-                        .stream()
-                        .map(assignee -> new AssigneeProjectNowIssueResponse(assignee.getMember(), assignee.getIssue()))
-                        .sorted()
-                        .toList()
-        );
+        List<MemberWithIssueResponse> list = assigneeService.readProjectMemberNowOwnIssue(projectId,
+                        authentication.id)
+                .stream()
+                .map(member -> {
+                            List<Assignee> assignees = member.getAssignees();
+                            Set<Issue> issues = new HashSet<>();
+                            for (Assignee assignee : assignees) {
+                                issues.add(assignee.getIssue() == null ? null : assignee.getIssue());
+                            }
+                            return new MemberWithIssueResponse(member, issues);
+                        }
+                )
+                .toList();
+        return ResponseEntity.ok(list);
     }
 
 }

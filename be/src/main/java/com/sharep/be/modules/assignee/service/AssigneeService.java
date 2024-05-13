@@ -136,4 +136,8 @@ public class AssigneeService {
                 projectId,
                 accountId);
     }
+
+    public List<Member> readProjectMemberNowOwnIssue(Long projectId, Long accountId) {
+        return memberRepository.findAllWithAssigneeByProjectIdAndAccountId(projectId, accountId);
+    }
 }
