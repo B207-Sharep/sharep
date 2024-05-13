@@ -1,15 +1,23 @@
 package com.sharep.be.modules.member.repository;
 
 import static com.sharep.be.modules.account.QAccount.*;
+import static com.sharep.be.modules.api.QApi.*;
+import static com.sharep.be.modules.assignee.domain.QAssignee.*;
+import static com.sharep.be.modules.issue.QIssue.*;
 import static com.sharep.be.modules.job.domain.QJob.job;
 import static com.sharep.be.modules.member.QMember.member;
 import static com.sharep.be.modules.member.QRole.*;
 import static com.sharep.be.modules.project.QProject.*;
 import static com.sharep.be.modules.project.QProject.project;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import com.sharep.be.modules.api.QApi;
+import com.sharep.be.modules.assignee.domain.QAssignee;
+import com.sharep.be.modules.assignee.domain.State;
+import com.sharep.be.modules.issue.QIssue;
 import com.sharep.be.modules.job.domain.QJob;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.QMember;
@@ -46,5 +54,30 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
                 .leftJoin(member.jobs, job).fetchJoin()
                 .where(job.createdAt.between(startOfYesterday, startOfToday))
                 .fetch();
+    }
+
+    @Override
+    public List<Member> findAllWithAssigneeByProjectId(Long projectId) {
+        return findAllWithAssigneeByProjectIdAndAccountId(projectId, null);
+    }
+
+    @Override
+    public List<Member> findAllWithAssigneeByProjectIdAndAccountId(Long projectId, Long accountId) {
+        return queryFactory.select(member).distinct()
+                .from(member)
+                .innerJoin(member.project, project).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
+                .leftJoin(member.roles, role1).fetchJoin()
+                .leftJoin(member.assignees, assignee).fetchJoin()
+                .leftJoin(assignee.issue, issue).fetchJoin()
+                .leftJoin(issue.api, api).fetchJoin()
+                .where(member.project.id.eq(projectId))
+                .where(eqAccountId(accountId))
+                .where(assignee.state.eq(State.NOW))
+                .fetch();
+    }
+
+    private BooleanExpression eqAccountId(Long accountId) {
+        return accountId == null ? null : account.id.eq(accountId);
     }
 }

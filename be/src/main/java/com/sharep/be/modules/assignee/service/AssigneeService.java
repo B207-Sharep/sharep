@@ -126,10 +126,18 @@ public class AssigneeService {
         return assigneeRepository.findAllProjectNowIssueByProjectId(projectId);
     }
 
+    public List<Member> readProjectMemberNowIssue(Long projectId) {
+        return memberRepository.findAllWithAssigneeByProjectId(projectId);
+    }
+
     public List<Assignee> readProjectNowOwnIssue(Long projectId, Long accountId) {
 
         return assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(
                 projectId,
                 accountId);
+    }
+
+    public List<Member> readProjectMemberNowOwnIssue(Long projectId, Long accountId) {
+        return memberRepository.findAllWithAssigneeByProjectIdAndAccountId(projectId, accountId);
     }
 }
