@@ -1,6 +1,7 @@
 package com.sharep.be.modules.job.repository;
 
 import static com.sharep.be.modules.account.QAccount.account;
+import static com.sharep.be.modules.api.QApi.api;
 import static com.sharep.be.modules.issue.QIssue.issue;
 import static com.sharep.be.modules.job.domain.QJob.job;
 import static com.sharep.be.modules.member.QMember.member;
@@ -60,7 +61,8 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
                 .innerJoin(member.roles, role1).fetchJoin()
                 .innerJoin(member.account, account).fetchJoin()
                 .innerJoin(member.project, project).fetchJoin()
-                .innerJoin(job.issue, issue)
+                .innerJoin(job.issue, issue).fetchJoin()
+                .innerJoin(issue.api, api).fetchJoin()
                 .where(eqProjectId(projectId))
                 .where(eqAccountId(accountId))
                 .where(eqIssueId(issueId))
