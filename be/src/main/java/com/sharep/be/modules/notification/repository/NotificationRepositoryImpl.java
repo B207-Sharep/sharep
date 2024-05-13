@@ -11,16 +11,23 @@ import static com.sharep.be.modules.project.QProject.project;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sharep.be.modules.notification.domain.Notification;
+import com.sharep.be.modules.notification.service.NotificationRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class NotificationRepositoryCustomImpl implements NotificationRepositoryCustom{
+public class NotificationRepositoryImpl implements NotificationRepository {
 
     private final JPAQueryFactory queryFactory;
+    private final NotificationJpaRepository notificationJpaRepository;
 
+    @Override
+    public Optional<Notification> findByIdAndMemberAccountId(Long notificationId, Long accountId) {
+        return notificationJpaRepository.findByIdAndMemberAccountId(notificationId, accountId);
+    }
 
     @Override
     public List<Notification> findAllByProjectIdAndAccountId(Long projectId, Long accountId) {
@@ -36,5 +43,10 @@ public class NotificationRepositoryCustomImpl implements NotificationRepositoryC
                 .where(project.id.eq(projectId))
                 .where(account.id.eq(accountId))
                 .fetch();
+    }
+
+    @Override
+    public void save(Notification notification) {
+        notificationJpaRepository.save(notification);
     }
 }

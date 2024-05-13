@@ -3,6 +3,7 @@ package com.sharep.be.modules.notification.domain;
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.issue.Issue;
+import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.Role;
 import com.sharep.be.modules.member.Role.RoleType;
@@ -17,8 +18,10 @@ public record NotificationMessage(
         String nickname,
         List<RoleType> roles,
         Long issueId,
+        IssueType type,
         String issueName,
         LocalDateTime finishedAt,
+        String message,
         boolean isRead
 ) {
     public static NotificationMessage from(Notification notification, Account account, Member member, Assignee assignee, Issue issue){
@@ -32,8 +35,10 @@ public record NotificationMessage(
                                 .toList()
                 )
                 .issueId(issue.getId())
+                .type(issue.getType())
                 .issueName(issue.getIssueName())
                 .finishedAt(assignee.getFinishedAt())
+                .message(account.getNickname() + "님이 " + issue.getIssueName() + "를 완료했습니다.")
                 .isRead(false)
                 .build();
     }

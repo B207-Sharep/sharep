@@ -92,7 +92,7 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
 
 
     public List<Assignee> findAccountIdsByIssueId(Long issueId) {
-        return queryFactory.select(assignee).distinct()
+        return queryFactory.select(assignee)
                 .from(assignee)
                 .innerJoin(assignee.member, member).fetchJoin()
                 .innerJoin(member.account, account).fetchJoin()

@@ -11,14 +11,12 @@ import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.repository.MemberRepository;
 
 
+import com.sharep.be.modules.notification.controller.NotificationService;
 import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
 import com.sharep.be.modules.notification.service.NotificationRepository;
-import com.sharep.be.modules.notification.service.NotificationService;
 import com.sharep.be.modules.project.Project;
-import com.sharep.be.modules.project.dto.ProjectDto.ProjectResponseDto;
 import com.sharep.be.modules.project.repository.ProjectRepository;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,12 +43,6 @@ public class AssigneeService {
         Assignee assignee = assigneeRepository.findByMemberIdAndIssueId(member.getId(), issueId)
                 .orElseThrow(() -> new RuntimeException("해당하는 담당자가 존재하지 않습니다."));
 
-        // 이미 진행 중인 이슈가 있는지 확인하는 로직
-//        if (state == State.NOW && assigneeRepository.existsByMemberIdAndState(member.getId(),
-//                State.NOW)) {
-//            throw new RuntimeException("이미 진행중인 이슈가 있습니다.");
-//        }
-
         assignee.updateState(state);
 
         // 작업 완료 시 다른 담당자들에게 알림 보내는 로직
@@ -58,32 +50,24 @@ public class AssigneeService {
             List<Assignee> assigneesByIssue = assigneeRepository.findAccountIdsByIssueId(issueId);
 
             for (Assignee anotherAssignee : assigneesByIssue) {
-
                 Member anotherMember = anotherAssignee.getMember();
                 Account anotherAccount = anotherMember.getAccount();
-                Issue anotherIssue = anotherAssignee.getIssue();
 
                 if (accountId.equals(anotherAccount.getId())) {
                     continue;
                 }
 
-                notNull(anotherAccount);
-                notNull(anotherMember);
-                notNull(anotherAssignee);
-                notNull(anotherIssue);
-
                 Notification notification = Notification.builder()
-                        .assignee(anotherAssignee)
+                        .assignee(assignee)
                         .isRead(false)
                         .member(anotherMember)
                         .build();
 
                 notificationRepository.save(notification);
 
-                notificationService.notify(
+                notificationService.notifyAccountId(
                         anotherAccount.getId(),
-                        NotificationMessage.from(notification, anotherAccount, anotherMember,
-                                anotherAssignee, anotherIssue)
+                        NotificationMessage.from(notification, assignee)
                 );
             }
         }

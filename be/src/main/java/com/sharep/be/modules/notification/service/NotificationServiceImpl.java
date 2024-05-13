@@ -6,7 +6,9 @@ import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.service.AssigneeRepository;
 import com.sharep.be.modules.issue.Issue;
+import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.notification.controller.NotificationService;
 import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
 import java.io.IOException;
@@ -19,16 +21,17 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class NotificationService {
+public class NotificationServiceImpl implements NotificationService {
 
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
-    private final EmitterRepository emitterRepository;
+    private final AccountIdEmitterRepository accountIdEmitterRepository;
+    private final ProjectIdEmitterRepository projectIdEmitterRepository;
     private final NotificationRepository notificationRepository;
     private final AssigneeRepository assigneeRepository;
 
-    public SseEmitter subscribe(Long projectId, Long accountId) {
-        SseEmitter emitter = createEmitter(accountId);
+    public SseEmitter subscribeAccountId(Long projectId, Long accountId) {
+        SseEmitter emitter = createAccountIdEmitter(accountId);
 
         List<NotificationMessage> notificationMessages = notificationRepository.findAllByProjectIdAndAccountId(
                         projectId, accountId).stream()
@@ -48,7 +51,7 @@ public class NotificationService {
                 })
                 .toList();
 
-        notify(
+        notifyAccountId(
                 accountId,
                 notificationMessages
         );
@@ -56,32 +59,47 @@ public class NotificationService {
         return emitter;
     }
 
-    public void notify(Long userId, Object data) {
+    public void notifyAccountId(Long userId, Object data) {
         sendToClient(userId, data);
     }
 
     private void sendToClient(Long id, Object data) {
-        SseEmitter emitter = emitterRepository.get(id);
+        SseEmitter emitter = accountIdEmitterRepository.get(id);
         if (emitter != null) {
             try {
                 emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sse").data(data));
             } catch (IOException exception) {
-                emitterRepository.deleteById(id);
+                accountIdEmitterRepository.deleteById(id);
                 emitter.completeWithError(exception);
             }
         }
     }
 
-    private SseEmitter createEmitter(Long id) {
+    private SseEmitter createAccountIdEmitter(Long id) {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-        emitterRepository.save(id, emitter);
+        accountIdEmitterRepository.save(id, emitter);
 
-        emitter.onCompletion(() -> emitterRepository.deleteById(id));
-        emitter.onTimeout(() -> emitterRepository.deleteById(id));
+        emitter.onCompletion(() -> accountIdEmitterRepository.deleteById(id));
+        emitter.onTimeout(() -> accountIdEmitterRepository.deleteById(id));
 
         return emitter;
     }
+    private SseEmitter getProjectIdEmitter(Long projectId) {
+        SseEmitter emitter = projectIdEmitterRepository.get(projectId);
 
+        if (emitter == null) {
+            SseEmitter newEmitter = new SseEmitter(DEFAULT_TIMEOUT);
+
+            projectIdEmitterRepository.save(projectId, newEmitter);
+
+            newEmitter.onCompletion(() -> projectIdEmitterRepository.deleteById(projectId));
+            newEmitter.onTimeout(() -> projectIdEmitterRepository.deleteById(projectId));
+
+            return newEmitter;
+        }
+
+        return emitter;
+    }
     public Long updateNotificationState(Long accountId, Long notificationId) {
         Notification notification = notificationRepository.findByIdAndMemberAccountId(
                         notificationId, accountId)
@@ -92,10 +110,11 @@ public class NotificationService {
         return notificationId;
     }
 
-    public void sendToAccountIds(Long projectId, Long issueId, Long[] accountIds) {
+    public void sendToAccountIds(Long projectId, Long issueId, Long accountId, Long[] accountIds) {
 
         List<Assignee> assignees = assigneeRepository.findAllByProjectIdAndIssueIdAndAccountIdsIn(projectId, issueId, accountIds);
 
+//        Assignee assignee = assigneeRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId, issueId, accountId);
         for(Assignee assignee: assignees){
             Notification notification = Notification.builder()
                 .assignee(assignee)
@@ -105,7 +124,7 @@ public class NotificationService {
 
             notificationRepository.save(notification);
 
-            notify(
+            notifyAccountId(
                     assignee.getMember().getAccount().getId(),
                     NotificationMessage.from(
                             notification,
@@ -114,4 +133,15 @@ public class NotificationService {
             );
         }
     }
+
+    @Override
+    public SseEmitter subscribeProjectId(Long projectId) {
+        return createProjectIdEmitter(projectId);
+    }
+
+    @Override
+    public void updateIssue(Long projectId, IssueUpdate issueUpdate) {
+
+    }
+
 }
