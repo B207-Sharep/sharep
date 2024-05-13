@@ -56,7 +56,6 @@ public class JobController {
     public ResponseEntity<List<JobReadResponse>> read(
             @PathVariable @Min(1) Long projectId,
             JobReadRequest jobReadRequest
-
     ){
 
         return ResponseEntity.ok(

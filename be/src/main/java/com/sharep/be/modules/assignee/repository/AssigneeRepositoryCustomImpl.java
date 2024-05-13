@@ -102,4 +102,21 @@ public class AssigneeRepositoryCustomImpl implements AssigneeRepositoryCustom {
                 .where(issue.id.eq(issueId))
                 .fetch();
     }
+
+    @Override
+    public List<Assignee> findAllByProjectIdAndIssueIdAndAccountIdsIn(Long projectId, Long issueId,
+            Long[] accountIds) {
+        return queryFactory.select(assignee)
+                .from(assignee)
+                .innerJoin(assignee.member, member).fetchJoin()
+                .innerJoin(member.roles, role1).fetchJoin()
+                .innerJoin(member.project, project).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
+                .innerJoin(assignee.issue, issue).fetchJoin()
+                .innerJoin(issue.api, api).fetchJoin()
+                .where(project.id.eq(projectId))
+                .where(issue.id.eq(issueId))
+                .where(account.id.in(accountIds))
+                .fetch();
+    }
 }

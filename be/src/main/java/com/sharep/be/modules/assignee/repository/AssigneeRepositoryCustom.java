@@ -13,4 +13,6 @@ public interface AssigneeRepositoryCustom {
     List<Assignee> findAllProjectNowIssueByProjectIdAndAccountId(Long projectId, Long accountId);
 
     List<Assignee> findAccountIdsByIssueId(Long issueId);
+
+    List<Assignee> findAllByProjectIdAndIssueIdAndAccountIdsIn(Long projectId, Long issueId, Long[] accountIds);
 }
