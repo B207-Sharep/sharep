@@ -128,7 +128,11 @@ export async function getScreenIssueDetail({
 }
 
 /** API 이슈 리스트 조회 */
-export async function getApiIssueList({ projectId }: { projectId: number }) {
+export async function getApiIssueList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.DetailApi[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/apis`);
 }
 
@@ -268,4 +272,23 @@ export async function updateIssue({
 /** 이슈 삭제 */
 export async function deleteIssue({ projectId, issueId }: { projectId: number; issueId: number }) {
   return instanceOfJson.delete(`/projects/${projectId}/issues/${issueId}`);
+}
+
+/** API 수정 */
+export async function updateApi({
+  projectId,
+  id,
+  reqBody,
+}: {
+  projectId: number;
+  id: number;
+  reqBody: {
+    request: string | null;
+    response: string | null;
+    url: string | null;
+    description: string | null;
+    method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
+  };
+}) {
+  return instanceOfJson.put(`/projects/${projectId}/apis/${id}`, reqBody);
 }
