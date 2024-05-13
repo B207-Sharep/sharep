@@ -18,7 +18,10 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
     mutationKey: [{ func: `create-new-issue`, projectId }],
     mutationFn: API.project.createNewIssue,
     onSuccess: () => {
+      console.log('선언');
       queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issues`, projectId }] });
+      // 아마 INFRA도 한번더 해야함
+      queryClient.invalidateQueries({ queryKey: [{ func: `get-infra-issues`, projectId }] });
     },
   });
 
@@ -40,11 +43,12 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
         },
         {
           onSuccess: () => {
+            console.log('사용');
             setCreateNewCard(false);
             setNewIssueName('');
           },
           onError: error => {
-            console.log(error);
+            console.log(error, 'EERR');
           },
         },
       );
@@ -73,10 +77,9 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
                 autoFocus
               />
               <S.CardDate>
-              <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-                취소하려면 Esc를 누르세요.
-              </S.StyledText>
-
+                <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
+                  취소하려면 Esc를 누르세요.
+                </S.StyledText>
               </S.CardDate>
             </S.CardText>
           </S.Card>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import * as S from './GalleryCardStyle';
 import * as T from '@/types';
 import * as API from '@/apis';
+import * as Comp from '@/components';
 import { PALETTE } from '@/styles';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -26,12 +27,17 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
     mutationFn: API.project.deleteIssue,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issues`, projectId }] });
+      //여기도 아마 INFRA 한번 더 받아야함
+      queryClient.invalidateQueries({ queryKey: [{ func: `get-infra-issues`, projectId }] });
     },
   });
 
   const handleCardClick = () => {
     if (type === 'SCREEN') {
       navigate(`/projects/${projectId}/screen-manual/${issue.id}`);
+    }
+    if (type === 'INFRA') {
+      navigate(`/projects/${projectId}/infra-manual/${issue.id}/${issue.issueName}`);
     }
   };
 
@@ -75,6 +81,7 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
               setEditCard(false);
               setNewIssueName('');
               queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issues`, projectId }] });
+              queryClient.invalidateQueries({ queryKey: [{ func: `get-infra-issues`, projectId }] });
             },
             onError: error => {
               console.log(error);
@@ -100,10 +107,24 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
             )}
           </>
         ) : (
-          <S.PreviewContent>
-            <div>임시 컴포넌트ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ??</div>
-            <div>미리보기 임시 컴포넌트</div>
-          </S.PreviewContent>
+          // INFRA일떄
+          <>
+            {issue.jobs.length > 0 && issue.jobs[issue.jobs.length - 1].description ? (
+              <S.PreviewContent>
+                {/* {issue.jobs[issue.jobs.length - 1].name} */}
+                <Comp.QuillEditor
+                  width="100%"
+                  height="100%"
+                  value={issue.jobs[issue.jobs.length - 1].description}
+                  readonly={true}
+                  hiddenTooltip={true}
+                  // placeholder="내용을 입력하세요."
+                />
+              </S.PreviewContent>
+            ) : (
+              <S.DefaultImage />
+            )}
+          </>
         )}
       </S.CardContent>
       <S.CardText>

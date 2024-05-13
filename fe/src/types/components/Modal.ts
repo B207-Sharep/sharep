@@ -43,6 +43,7 @@ export interface MemberInvitationFormProps {
 }
 
 export interface InfraJobCreationFormProps {
+  issueId: number;
   name: string;
   description: string;
   notiUsers: {
