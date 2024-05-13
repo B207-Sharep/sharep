@@ -13,6 +13,7 @@ import ApiManual from './ApiManual/ApiManual';
 import ScreenManual from './ScreenManual/ScreenManual';
 import ScreenManualDetail from './ScreenManualDetail/ScreenManualDetail';
 import InfraManual from './InfraManual/InfraManual';
+import InfraManualDetail from './InfraManualDetail/InfraManualDetail';
 import Grass from '@/components/Grass/Grass';
 
 import TeamMember from './TeamMember/TeamMember';
@@ -30,6 +31,7 @@ export {
   ScreenManual,
   ScreenManualDetail,
   InfraManual,
+  InfraManualDetail,
   Mypage,
   TeamDashboard,
   TeamMember,

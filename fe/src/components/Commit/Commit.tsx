@@ -14,6 +14,7 @@ export default function Commit({
   imageUrl,
   member: { accountId, nickname, roles, userImageUrl },
   disabled,
+  infra,
 }: T.CommitProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,9 +64,26 @@ export default function Commit({
             <S.CommitText color={PALETTE.SUB_BLACK} fontSize={16}>
               {name}
             </S.CommitText>
-            <S.CommitText color={PALETTE.LIGHT_BLACK} fontSize={14}>
-              {description}
-            </S.CommitText>
+
+            {!infra ? (
+              <S.CommitText color={PALETTE.LIGHT_BLACK} fontSize={14}>
+                {description}
+              </S.CommitText>
+            ) : (
+              <>
+                <S.Divider />
+
+                <Comp.QuillEditor
+                  width="100%"
+                  height="400px"
+                  value={description}
+                  // value={}
+                  readonly={true}
+                  hiddenTooltip={true}
+                  placeholder="내용을 입력하세요."
+                />
+              </>
+            )}
           </S.CommitContentDetail>
           <S.CommitImageDetail>{imageUrl && <S.Img src={imageUrl} />}</S.CommitImageDetail>
         </S.CommitDetailContainer>
