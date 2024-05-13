@@ -3,7 +3,7 @@ import * as S from './ApiManualStyle';
 import * as Comp from '@components';
 import * as API from '@apis';
 import * as L from '@layouts';
-import { useMutation, useQueries } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
 export default function ApiManual() {

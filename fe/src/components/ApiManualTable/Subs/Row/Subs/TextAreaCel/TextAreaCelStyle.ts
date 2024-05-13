@@ -24,6 +24,7 @@ export const TextAreaCel = styled.textarea<{ $fixedWidth: string; $isEditingMode
   }
 
   &:read-only {
+    background-color: ${PALETTE.MAIN_BACKGROUND};
     cursor: default;
   }
 `;

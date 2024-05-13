@@ -5,7 +5,7 @@ import * as T from '@types';
 import * as API from '@apis';
 import * as Sub from './Subs';
 import { MANUAL_CONSTANTS } from '@/constants';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
 interface ReqBody {
@@ -17,48 +17,42 @@ interface ReqBody {
 }
 
 export default function Row({ usingFor, data, idx, refetch }: T.ApiRowProps) {
+  const queryClient = useQueryClient();
   const { projectId } = useParams();
   const { mutate: updateApi } = useMutation({
     mutationFn: ({ reqBody }: { reqBody: ReqBody }) =>
-      API.project.updateApi({ projectId: Number(projectId), id: data.id, reqBody }).then(res => {
-        console.log(`RES :`, res);
-        return res;
-      }),
+      API.project.updateApi({ projectId: Number(projectId), id: data.id, reqBody }),
     onSuccess: res => {
-      if (res.status === 204) refetch && refetch();
+      if (res.status === 204) queryClient.invalidateQueries({ queryKey: [{ func: `get-api-list`, projectId }] });
     },
   });
-
   const handleApiUpdate = ({ key, value }: { key: string; value: any }) => {
     if (refetch) {
       const body: ReqBody = { ...data, [key]: value };
-
       updateApi({ reqBody: body });
     }
   };
 
   const { mutate: deleteAssignee } = useMutation({
-    mutationFn: ({ issueId, accountId }: { issueId: number; accountId: number }) =>
-      API.project.deleteIssueAssignees({ projectId: Number(projectId), issueId, accountId }),
+    mutationFn: ({ accountId }: { accountId: number }) =>
+      API.project.deleteIssueAssignees({ projectId: Number(projectId), issueId: data.id, accountId }),
     onSuccess: res => {
-      if (res.status === 204) refetch && refetch();
+      if (res.status === 200) queryClient.invalidateQueries({ queryKey: [{ func: `get-api-list`, projectId }] });
     },
   });
-
-  const { mutate: createAssignee } = useMutation({
-    mutationFn: ({ issueId, accountId }: { issueId: number; accountId: number }) =>
-      API.project.createIssueAssignee({ projectId: Number(projectId), issueId, accountId }),
-    onSuccess: res => {
-      if (res.status === 204) refetch && refetch();
-    },
-  });
-
-  const handleDeleteAssignee = ({ id, accountId }: { id: number; accountId: number }) => {
-    deleteAssignee({ issueId: id, accountId: accountId });
+  const handleDeleteAssignee = ({ accountId }: { accountId: number }) => {
+    deleteAssignee({ accountId: accountId });
   };
 
-  const handleCreateAssignee = ({ id, accountId }: { id: number; accountId: number }) => {
-    createAssignee({ issueId: id, accountId: accountId });
+  const { mutate: createAssignee } = useMutation({
+    mutationFn: ({ accountId }: { accountId: number }) =>
+      API.project.createIssueAssignee({ projectId: Number(projectId), issueId: data.id, accountId }),
+    onSuccess: res => {
+      if (res.status === 201) queryClient.invalidateQueries({ queryKey: [{ func: `get-api-list`, projectId }] });
+    },
+  });
+  const handleCreateAssignee = ({ accountId }: { accountId: number }) => {
+    createAssignee({ accountId: accountId });
   };
 
   const createCelType = useCallback(

@@ -49,10 +49,10 @@ export default function ApiManualTable({ dataList, usingFor, refetch }: T.ApiMan
           );
         })}
       </S.TableContainer>
-      <S.CreateNewRowButton>
+      {/* <S.CreateNewRowButton>
         <Plus color={PALETTE.LIGHT_BLACK} size={14}></Plus>
         <span>작업 추가</span>
-      </S.CreateNewRowButton>
+      </S.CreateNewRowButton> */}
     </S.TableWrapper>
   );
 }
