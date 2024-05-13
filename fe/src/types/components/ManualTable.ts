@@ -1,60 +1,71 @@
 import React from 'react';
 import * as T from '@types';
 
-export interface ManualTableProps {
-  usingFor: 'API' | 'FEATURE';
-  columnTitles: {
-    name: string;
-    celType: 'TEXT' | 'SELECT';
-    iconName: 'current-state-title' | 'main-title-icon' | 'text-content-title';
-    fixedWidth: string;
-  }[];
-  dataList:
-    | {
-        requestName: string;
-        functionName: string;
-        priority: string;
-        willUsingScreen: string;
-        detail: string;
-        state: string;
-        assignees: string;
-        startedDate: string;
-        endedDate: string;
-        [key: string]: string;
-      }[]
-    | {
-        category: string;
-        state: string;
-        method: string;
-        apiPath: string;
-        detail: string;
-        requestBody: string;
-        responseBody: string;
-        beState: string;
-        feState: string;
-        assignees: string;
-        [key: string]: string;
-      }[];
-}
+export type ManualTableProps =
+  | {
+      usingFor: 'API';
+      dataList: Array<T.API.DetailApi>;
+      readonly: boolean;
+    }
+  | {
+      usingFor: 'FEATURE';
+      dataList: Array<T.API.DetailIssue>;
+      readonly: boolean;
+    };
 
-export interface FeatureManualTableProps {
-  usingFor: 'API' | 'FEATURE';
-  dataList: Array<T.API.DetailIssue>;
-}
+export type RowProps =
+  | {
+      usingFor: 'API';
+      data: T.API.DetailApi;
+      idx: number;
+      readonly: boolean;
+    }
+  | {
+      usingFor: 'FEATURE';
+      data: T.API.DetailIssue;
+      idx: number;
+      readonly: boolean;
+    };
 
-export interface CelProps {
-  initialState: string;
-  fixedWidth: string;
-}
+export type CelProps =
+  | {
+      initialState: string;
+      fixedWidth: string;
+      readonly: false;
+    }
+  | {
+      initialState: string;
+      fixedWidth: string;
+      readonly: true;
+      refetch: () => void;
+    };
 
-export interface SelectCelProps {
-  initialState: string;
-  fixedWidth: string;
-  usingFor: 'PRIORITY' | 'STATE' | 'METHOD';
-}
+export type SelectCelProps =
+  | {
+      initialState: string;
+      fixedWidth: string;
+      usingFor: 'PRIORITY' | 'STATE' | 'METHOD';
+      readonly: false;
+    }
+  | {
+      initialState: string;
+      fixedWidth: string;
+      usingFor: 'PRIORITY' | 'STATE' | 'METHOD';
+      readonly: true;
+      refetch: () => void;
+    };
 
-export interface SelectAssigneesCelProps {
-  initialState: T.API.Assignee[];
-  fixedWidth: string;
-  usingFor: 'ASSIGNEES';
-}
+export type SelectAssigneesCelProps =
+  | {
+      initialState: T.API.Assignee[];
+      fixedWidth: string;
+      usingFor: 'ASSIGNEES';
+      readonly: false;
+    }
+  | {
+      initialState: T.API.Assignee[];
+      fixedWidth: string;
+      usingFor: 'ASSIGNEES';
+      readonly: true;
+      refetch: () => void;
+    };

@@ -1,11 +1,13 @@
 import {
-  Api,
+  DetailApi,
+  SimpleApi,
   Assignee,
   Job,
   DetailIssue,
   SimpleIssue,
   GetContributionsResponse,
   GetJobListResponse,
+  GetProjectListResponse,
   GetNowIssueListResponse,
   GetProjectMemberListResponse,
   GetProjectIssueListResponse,
@@ -14,13 +16,15 @@ import {
 } from './projects';
 
 export type {
-  Api,
+  DetailApi,
+  SimpleApi,
   Assignee,
   Job,
   DetailIssue,
   SimpleIssue,
   GetContributionsResponse,
   GetJobListResponse,
+  GetProjectListResponse,
   GetNowIssueListResponse,
   GetProjectMemberListResponse,
   GetProjectIssueListResponse,

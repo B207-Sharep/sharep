@@ -3,30 +3,24 @@ import * as S from './SelectCelStyle';
 import * as T from '@types';
 import * as Comp from '@components';
 
-export default function SelectCel({ initialState, fixedWidth, usingFor }: T.SelectCelProps) {
+export default function SelectCel({ initialState, fixedWidth, usingFor, onUpdate }: T.ApiSelectCelProps) {
   const celRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(initialState || '');
-  const [isEditingMode, setIsEditingMode] = useState(false);
-
-  useEffect(() => {
-    if (isEditingMode && celRef.current) celRef.current.focus();
-  }, [isEditingMode]);
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (toggledValue) {
-      celRef.current?.focus();
-    } else {
-      celRef.current?.blur();
-    }
+    if (usingFor === 'STATE') return;
 
-    setIsEditingMode(() => toggledValue);
+    if (toggledValue) celRef.current?.focus();
+    else celRef.current?.blur();
   };
 
   const handleListOptionClick = (e: React.MouseEvent) => {
-    setValue(String(e.currentTarget.ariaValueText));
+    if (usingFor === 'STATE') return;
 
+    setValue(String(e.currentTarget.ariaValueText));
+    onUpdate && onUpdate({ key: 'method', value: e.currentTarget.ariaValueText });
     if (celRef.current) {
-      celRef.current?.blur();
+      celRef.current.blur();
       handleCelClick(false);
     }
   };
@@ -38,10 +32,10 @@ export default function SelectCel({ initialState, fixedWidth, usingFor }: T.Sele
       onFocus={() => handleCelClick(true)}
       onBlur={() => handleCelClick(false)}
       $fixedWidth={fixedWidth}
-      $isEditingMode={isEditingMode}
+      disabled={usingFor === 'STATE'}
     >
-      <S.Palceholder>{OPTIONS[usingFor][value]}</S.Palceholder>
-      <S.OptionUlWrapper $isEditingMode={isEditingMode}>
+      <S.Palceholder role="button">{OPTIONS[usingFor][value]}</S.Palceholder>
+      <S.OptionUlWrapper>
         {Object.keys(OPTIONS[usingFor]).map((key, idx) => (
           <S.OptionLi
             className="hover-bg-dark"

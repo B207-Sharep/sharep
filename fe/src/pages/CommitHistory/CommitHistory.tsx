@@ -66,7 +66,6 @@ export default function CommitHistory() {
     return groupIssuesByType(sortedIssues);
   }, [issueListResponse]);
 
-  console.log(groupedIssueList);
   const handleModalOpen = () => {
     jobModal.openModal({
       name: '',
@@ -79,7 +78,7 @@ export default function CommitHistory() {
     setOpenFilter(openFilter === filter ? null : filter);
   };
 
-  const selectValue = (filter: keyof T.FilterProps['type'], value: string) => {
+  const handleSelectValue = (filter: keyof T.FilterProps['type'], value: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set(filter, value);
 
@@ -147,7 +146,7 @@ export default function CommitHistory() {
                           {roleList.map(role => (
                             <S.DropdowntItem
                               key={`filter-${openFilter}-${role}`}
-                              onClick={() => selectValue(openFilter, role)}
+                              onClick={() => handleSelectValue(openFilter, role)}
                             >
                               <Comp.RoleBadge role={role} selectAble={false} />
                             </S.DropdowntItem>
@@ -158,7 +157,7 @@ export default function CommitHistory() {
                           {memberListResponse?.data.map((member: T.API.GetProjectMemberListResponse) => (
                             <S.DropdowntItem
                               key={`filter-${openFilter}-${member.id}`}
-                              onClick={() => selectValue(openFilter, member.account.id.toString())}
+                              onClick={() => handleSelectValue(openFilter, member.account.id.toString())}
                             >
                               <S.UserProfile>
                                 <Comp.UserImg size="sm" path={member.account.imageUrl} />
@@ -186,7 +185,7 @@ export default function CommitHistory() {
                               {issues.map(issue => (
                                 <S.DropdowntItem
                                   key={`filter-${openFilter}-${type}-${issue.id}`}
-                                  onClick={() => selectValue(openFilter, issue.id.toString())}
+                                  onClick={() => handleSelectValue(openFilter, issue.id.toString())}
                                 >
                                   <S.StyledText>{issue.issueName}</S.StyledText>
                                 </S.DropdowntItem>

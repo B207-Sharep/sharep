@@ -44,6 +44,14 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
     },
   });
 
+  const inviteNewMembersMutation = useMutation({
+    mutationKey: [{ func: `invite-new-members` }, projectId],
+    mutationFn: API.project.inviteMembers,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [{ projectList: `projectList` }] });
+    },
+  });
+
   const handleCreateButtonClick = useRecoilCallback(({ snapshot }) => async () => {
     console.log('click', isValid, isOpen);
     console.log(modalId);
@@ -53,9 +61,13 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
         switch (modalId) {
           case 'project':
             {
-              const result = processProjectData(contents as T.ProjectCreationFormProps);
+              const result = processMemberData(contents.members as T.MemberInvitationFormProps['members']);
               if (result) {
-                await createNewProjectMutation.mutateAsync(result);
+                await createNewProjectMutation.mutateAsync({
+                  title: contents.title,
+                  bio: contents.bio,
+                  members: result,
+                });
               } else throw Error;
             }
             break;
@@ -83,10 +95,17 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
             await editImg.mutateAsync({
               newJob: contents as T.EditProps,
             });
-
             break;
-
           default:
+            if (modalId.includes('invitation')) {
+              const result = processMemberData(contents.members as T.MemberInvitationFormProps['members']);
+              if (result) {
+                await inviteNewMembersMutation.mutateAsync({
+                  projectId: Number(modalId.split('-')[1]),
+                  members: result,
+                });
+              } else throw Error;
+            }
             break;
         }
       }
@@ -138,22 +157,18 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
   ) : null;
 }
 
-function processProjectData(contents: T.ProjectCreationFormProps) {
-  const hasMemberWithoutRole = contents.members.some(member => Object.values(member.roles).every(hasRole => !hasRole));
+function processMemberData(members: T.MemberInvitationFormProps['members']) {
+  const hasMemberWithoutRole = members.some(member => Object.values(member.roles).every(hasRole => !hasRole));
 
   if (hasMemberWithoutRole) {
     alert('담당 역할이 선택되지 않은 팀원이 있습니다.');
     return null;
   }
 
-  return {
-    title: contents.title,
-    bio: contents.bio,
-    members: contents.members.map(member => ({
-      id: member.id,
-      roles: Object.entries(member.roles)
-        .filter(([_, hasRole]) => hasRole)
-        .map(([role, _]) => role) as T.RoleBadgeProps['role'][],
-    })),
-  };
+  return members.map(member => ({
+    id: member.id,
+    roles: Object.entries(member.roles)
+      .filter(([_, hasRole]) => hasRole)
+      .map(([role, _]) => role) as T.RoleBadgeProps['role'][],
+  }));
 }

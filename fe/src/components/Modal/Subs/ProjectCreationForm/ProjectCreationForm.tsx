@@ -33,7 +33,6 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
   useEffect(() => {
     if (searchEmailSuccess) {
       setIsDropdownVisible(true);
-      console.log('Data fetched successfully:', searchEmailResponse);
     }
   }, [searchEmailSuccess, searchEmailResponse]);
 
@@ -58,7 +57,6 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
   //  팀원 이메일 검색 시 input change
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
-    console.log(contents, modalDataState);
     if (id === 'members') {
       setSearchValue(event.target.value);
     } else {
@@ -87,7 +85,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
         roles: { FRONT_END: false, BACK_END: false, INFRA: false, DESIGNER: false },
       };
       updateContentByKey('members', [...contents.members, newMember]);
-    }
+    } else alert(`이미 추가된 팀원입니다`);
     setIsDropdownVisible(false);
   };
 
@@ -222,7 +220,7 @@ export default function ProjectCreationForm({ modalId }: Pick<T.ModalProps, 'mod
           {contents.members.slice(1).map((member: T.ProjectCreationFormProps['members'][number]) => (
             <S.Row key={`member-${member.id}`}>
               <S.DeleteBtn $cursor={true} onClick={handleRemoveClick(member)}>
-                <MinusCircle color={PALETTE.LIGHT_BLACK} size={16} />
+                <MinusCircle color={PALETTE.MAIN_RED} size={16} />
               </S.DeleteBtn>
 
               <S.RowContent>

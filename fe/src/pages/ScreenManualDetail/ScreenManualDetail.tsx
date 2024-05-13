@@ -247,16 +247,20 @@ export default function ScreenManualDetail() {
                   </S.ContentItem>
                 </>
               )}
-              {selectedIssueDetail?.connectedIssues && (
+              {/* {selectedIssueDetail?.connectedIssues && (
                 <S.ContentItem>
                   <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
                     기능 명세서
                   </S.StyledText>
                   <S.ManualWrapper>
-                    <Comp.ManualTable dataList={FEATURE_MANUAL_DUMMY as T.API.DetailIssue[]} usingFor="FEATURE" />
+                    <Comp.FeatureManual
+                      readonly={true}
+                      dataList={FEATURE_MANUAL_DUMMY as T.API.DetailIssue[]}
+                      usingFor="FEATURE"
+                    />
                   </S.ManualWrapper>
                 </S.ContentItem>
-              )}
+              )} */}
               {/* {selectedIssueDetail?.api && (
                 <S.ContentItem>
                   <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
