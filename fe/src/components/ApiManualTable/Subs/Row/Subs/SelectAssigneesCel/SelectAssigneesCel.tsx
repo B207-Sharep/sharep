@@ -1,20 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import * as S from './SelectAssigneesCelStyle';
 import * as T from '@types';
 import * as API from '@apis';
 import * as Comp from '@components';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { X } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import { PALETTE } from '@/styles';
 
-export default function SelectAssigneesCel({
-  initialState,
-  fixedWidth,
-  usingFor,
-  onUpdate,
-}: T.ApiSelectAssigneesCelProps) {
+export default function SelectAssigneesCel({ initialState, fixedWidth, onUpdate }: T.ApiSelectAssigneesCelProps) {
   const { projectId } = useParams();
   const celRef = useRef<HTMLDivElement>(null);
-  const [value, setValue] = useState(initialState || []);
+  const alreadyAssigneesList = useMemo(() => {
+    return initialState.map(state => state.accountId);
+  }, [initialState]);
 
   const { data: membersResponse, isFetching: isMembersResponseFeting } = useQuery({
     queryKey: [{ func: `get-member-list`, projectId }],
@@ -28,12 +27,10 @@ export default function SelectAssigneesCel({
     else celRef.current.blur();
   };
 
-  const handleListOptionClick = (e: React.MouseEvent) => {
-    console.log(`${usingFor} :`, e);
-    if (celRef.current) {
-      celRef.current.blur();
-      handleCelClick(false);
-    }
+  const handleListOptionClick = ({ id }: { id: number }) => {
+    onUpdate?.create({ accountId: id });
+    celRef.current?.blur();
+    handleCelClick(false);
   };
 
   return (
@@ -44,23 +41,32 @@ export default function SelectAssigneesCel({
       onBlur={() => handleCelClick(false)}
       $fixedWidth={fixedWidth}
     >
-      <S.Palceholder>
-        {value.map((el, i) => (
-          <Comp.UserImg key={`assignees-${el.accountId}-${i}`} size="32px" path={el.imageUrl} />
+      <S.Placeholder>
+        {initialState.map((el, i) => (
+          <S.UserWrapper>
+            <Comp.UserImg key={`assignees-${el.accountId}-${i}`} size="32px" path={el.imageUrl} />
+            <button onClick={() => onUpdate && onUpdate.delete({ accountId: el.accountId })}>
+              <X size={12} color={PALETTE.LIGHT_BLACK} />
+            </button>
+          </S.UserWrapper>
         ))}
-      </S.Palceholder>
+      </S.Placeholder>
       <S.OptionUlWrapper>
-        {membersResponse?.data.map((res, idx) => (
-          <S.OptionLi
-            className="hover-bg-dark"
-            aria-valuetext={res.account.nickname}
-            key={`assignees-li-${res.account.id}-${res.id}-${idx}`}
-            onClick={handleListOptionClick}
-          >
-            <Comp.UserImg size="32px" path={res.account.imageUrl} />
-            <span>{res.account.nickname}</span>
-          </S.OptionLi>
-        ))}
+        {membersResponse?.data.map((res, idx) => {
+          return (
+            !alreadyAssigneesList.includes(res.account.id) && (
+              <S.OptionLi
+                className="hover-bg-dark"
+                aria-valuetext={res.account.nickname}
+                key={`assignees-li-${res.account.id}-${res.id}-${idx}`}
+                onClick={() => handleListOptionClick({ id: res.account.id })}
+              >
+                <Comp.UserImg size="32px" path={res.account.imageUrl} />
+                <span>{res.account.nickname}</span>
+              </S.OptionLi>
+            )
+          );
+        })}
       </S.OptionUlWrapper>
     </S.Wrapper>
   );
