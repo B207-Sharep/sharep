@@ -106,6 +106,13 @@ public class Issue {
         this.api = api;
     }
 
+    public void update(String issueName, String description, String epic, PriorityType priority) {
+        this.issueName = issueName;
+        this.description = description;
+        this.epic = epic;
+        this.priority = priority;
+    }
+
     public State calculateState() {
         EnumMap<State, Long> stateCount = assignees.stream().collect(
                 Collectors.groupingBy(Assignee::getState, () -> new EnumMap<>(State.class),

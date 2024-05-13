@@ -28,12 +28,13 @@ public class CustomIssueRepositoryImpl implements CustomIssueRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<Issue> findByIssueId(Long id) {
+    public Optional<Issue> findByIssueId(Long id, DataType dataType) {
 
         BooleanBuilder condition = new BooleanBuilder();
         condition.and(issue.id.eq(id));
 
-        JPAQuery<Issue> query = detailIssueQuery(condition);
+        JPAQuery<Issue> query = DataType.SIMPLE.equals(dataType) ?
+                simpleIssueQuery(condition) : detailIssueQuery(condition);
 
         return Optional.ofNullable(query.fetchOne());
     }
