@@ -12,7 +12,7 @@ import { useQueries } from '@tanstack/react-query';
 
 export default function InfraManualDetail() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { projectId, manualId } = useParams();
+  const { projectId, manualId, issueName } = useParams();
   const navigate = useNavigate();
   const infraModal = useModal('infra-job');
 
@@ -60,13 +60,6 @@ export default function InfraManualDetail() {
     return jobListResponse && groupCommitsByDate(jobListResponse.data);
   }, [jobListResponse]);
 
-  //   const groupedIssueList = useMemo(() => {
-  //     if (!issueListResponse) return [];
-  //     const sortedIssues = [...issueListResponse.data].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-  //     return groupIssuesByType(sortedIssues);
-  //   }, [issueListResponse]);
-
-  //   console.log(manualId);
   const handleModalOpen = () => {
     infraModal.openModal({
       name: '',
@@ -75,24 +68,25 @@ export default function InfraManualDetail() {
     });
   };
 
-  const toggleDropdown = (filter: keyof T.FilterProps['type']) => {
-    setOpenFilter(openFilter === filter ? null : filter);
-  };
-
-  const selectValue = (filter: keyof T.FilterProps['type'], value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set(filter, value);
-
-    navigate(`?${newSearchParams.toString()}`, { replace: true });
+  const infraListClick = () => {
+    navigate(`/projects/${projectId}/infra-manual`);
   };
 
   return (
     <L.SideBarLayout>
       <S.CommitHistoryWrapper>
         <S.Header>
-          <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
-            작업 기록
-          </S.StyledText>
+          <S.HeaderTitle>
+            <S.TitleText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700} onClick={infraListClick}>
+              <>인프라 명세서</>
+            </S.TitleText>
+            <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
+              <>&nbsp;&gt;&nbsp;</>
+            </S.StyledText>
+            <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
+              <>{issueName}</>
+            </S.StyledText>
+          </S.HeaderTitle>
           <div>
             <S.FilterWrapper>
               <S.CommitAddBtn onClick={handleModalOpen}>
@@ -125,8 +119,6 @@ export default function InfraManualDetail() {
   );
 }
 
-const roleList = ['FRONT_END' as 'FRONT_END', 'BACK_END' as 'BACK_END', 'INFRA' as 'INFRA', 'DESIGNER' as 'DESIGNER'];
-
 const filters: {
   type: keyof T.FilterProps['type'];
   icon: React.JSX.Element;
@@ -146,20 +138,4 @@ function groupCommitsByDate(commits: T.CommitHistoryProps[]): Record<string, T.C
     acc[date].push(commit);
     return acc;
   }, {} as Record<string, T.CommitHistoryProps[]>);
-}
-
-function groupIssuesByType(issues: T.API.SimpleIssue[]): {
-  [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.SimpleIssue[];
-} {
-  return issues.reduce((acc, issue) => {
-    const { type } = issue;
-
-    if (!acc[type]) {
-      acc[type] = [];
-    }
-
-    acc[type].push(issue);
-
-    return acc;
-  }, {} as { [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.SimpleIssue[] });
 }

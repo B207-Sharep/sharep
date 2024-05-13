@@ -35,7 +35,7 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
       navigate(`/projects/${projectId}/screen-manual/${issue.id}`);
     }
     if (type === 'INFRA') {
-      navigate(`/projects/${projectId}/infra-manual/${issue.id}`);
+      navigate(`/projects/${projectId}/infra-manual/${issue.id}/${issue.issueName}`);
     }
   };
 

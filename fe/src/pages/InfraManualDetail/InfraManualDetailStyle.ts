@@ -168,3 +168,16 @@ export const FilterType = styled.div`
   border-bottom: 1px solid ${PALETTE.LIGHT_BLACK};
   padding: 8px;
 `;
+
+export const HeaderTitle = styled.div`
+  width: fit-content;
+  display: flex;
+  height: 100%;
+`;
+
+export const TitleText = styled(StyledText)`
+  text-decoration: none;
+  &:hover {
+    background-color: ${PALETTE.LIGHT_COLOR};
+  }
+`;

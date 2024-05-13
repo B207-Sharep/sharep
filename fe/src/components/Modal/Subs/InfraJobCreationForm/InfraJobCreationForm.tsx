@@ -23,6 +23,7 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
     if (contents.description.length > 0 && contents.name.length > 0) {
       updateIsValid(true);
       updateContentByKey('issueId', Number(manualId));
+      // console.log(contents, 'contents======');
     }
   };
 

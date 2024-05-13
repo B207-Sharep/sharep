@@ -15,7 +15,6 @@ export default function QuillEditor({
 }: T.QuillEditorProps) {
   return (
     <S.EditorWrapper width={width} height={height} $isNoneStyle={hiddenTooltip}>
-      {/* TBD readonly props 추가할것 */}
       <ReactQuill
         theme="snow"
         value={value}
@@ -36,7 +35,7 @@ const DEFAULT_MODULE = {
     [{ color: [] }, { background: [] }],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-    ['link', 'image'],
+    ['link'],
     ['clean'],
   ],
 };
@@ -57,5 +56,4 @@ const DEFAULT_TOOLBAR_FORMAT = [
   'bullet',
   'indent',
   'link',
-  'image',
 ];

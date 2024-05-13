@@ -34,7 +34,7 @@ function App() {
         <Route path="/projects/:projectId/screen-manual" element={<Page.ScreenManual />} />
         <Route path="/projects/:projectId/screen-manual/:manualId" element={<Page.ScreenManualDetail />} />
         <Route path="/projects/:projectId/infra-manual" element={<Page.InfraManual />} />
-        <Route path="/projects/:projectId/infra-manual/:manualId" element={<Page.InfraManualDetail />} />
+        <Route path="/projects/:projectId/infra-manual/:manualId/:issueName" element={<Page.InfraManualDetail />} />
       </Routes>
     </>
   );

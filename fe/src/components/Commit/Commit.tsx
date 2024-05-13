@@ -61,7 +61,6 @@ export default function Commit({
       {!disabled && isOpen && (
         <S.CommitDetailContainer>
           <S.CommitContentDetail>
-            {/* 이거 왜있는거지 ? */}
             <S.CommitText color={PALETTE.SUB_BLACK} fontSize={16}>
               {name}
             </S.CommitText>
