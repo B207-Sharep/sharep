@@ -28,14 +28,31 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   } = useQuery({
     queryKey: [{ func: `get-now-issue-about-me`, projectId }],
     queryFn: () => API.project.getNowIssueAboutMe({ projectId: Number(projectId) }),
-    select: data => data.data,
+    select: data => console.log(data.data),
   });
 
   // const groupedIssueList = useMemo(() => {
   //   if (!myNowIssueResponse) return [];
-  //   const sortedIssues = [...myNowIssueResponse].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-  //   return groupIssuesByType(sortedIssues);
+  //   console.log(myNowIssueResponse);
+  //   // const sortedIssues = myNowIssueSuccess && myNowIssueResponse[0].issue.sort((a, b) => a.id - b.id);
+  //   // console.log(sortedIssues);
+  //   return [];
+  //   // groupIssuesByType(sortedIssues);
   // }, [myNowIssueResponse]);
+
+  // const sortedScreenIssueList = useMemo(() => {
+  //   if (!screenIssueListResponse) return [];
+
+  //   const sortedIssues = [...screenIssueListResponse].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+
+  //   sortedIssues.forEach(issue => {
+  //     if (issue.jobs && issue.jobs.length > 0) {
+  //       issue.jobs.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  //     }
+  //   });
+
+  //   return sortedIssues;
+  // }, [screenIssueListResponse]);
 
   const handleSelectValue = (value: string) => {
     setSelectedNowIssueName(value);
@@ -85,9 +102,9 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   };
 
   useEffect(() => {
-    if (myNowIssueSuccess && myNowIssueResponse.issue) {
+    if (myNowIssueSuccess) {
       console.log(myNowIssueResponse);
-      updateContentByKey('issueId', myNowIssueResponse.issue.id);
+      // updateContentByKey('issueId', myNowIssueResponse[0].issue[0].id);
     }
   }, [myNowIssueSuccess, myNowIssueResponse]);
 
@@ -173,8 +190,8 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   );
 }
 
-function groupIssuesByType(issues: T.API.SimpleIssue[]): {
-  [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.SimpleIssue[];
+function groupIssuesByType(issues: T.API.GetNowIssueListResponse['issue']): {
+  [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.GetNowIssueListResponse['issue'];
 } {
   return issues.reduce((acc, issue) => {
     const { type } = issue;
@@ -185,6 +202,7 @@ function groupIssuesByType(issues: T.API.SimpleIssue[]): {
 
     acc[type].push(issue);
 
+    console.log(acc);
     return acc;
-  }, {} as { [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.SimpleIssue[] });
+  }, {} as { [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.GetNowIssueListResponse['issue'] });
 }

@@ -51,6 +51,7 @@ export default function TeamDashboard() {
     return sortedIssues;
   }, [screenIssuesResponse?.data]);
 
+  console.log(nowIssuesResponse?.data);
   return (
     <L.SideBarLayout>
       <S.Container>
@@ -75,9 +76,11 @@ export default function TeamDashboard() {
               {nowIssuesResponse?.data.map((res: T.API.GetNowIssueListResponse, i: number) => (
                 <S.CurrentWork key={`current-work-${i}`}>
                   <Sub.TeamMember {...res.member} />
-                  {res.issue !== null && (
-                    <Comp.Issue {...res.issue} assignees={null} jobs={null} dragAble={false} deleteAble={false} />
-                  )}
+                  {res.issue &&
+                    res.issue.map(issue => (
+                      // TODO:issue []
+                      <Comp.Issue {...issue} assignees={null} jobs={null} dragAble={false} deleteAble={false} />
+                    ))}
                 </S.CurrentWork>
               ))}
             </S.CurrentWorksScrollContainer>

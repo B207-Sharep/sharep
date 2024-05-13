@@ -66,7 +66,7 @@ export async function getNowIssueAboutMe({
   projectId,
 }: {
   projectId: number;
-}): Promise<AxiosResponse<T.API.GetNowIssueListResponse, any>> {
+}): Promise<AxiosResponse<T.API.GetNowIssueListResponse[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/own/now/issues`);
 }
 
