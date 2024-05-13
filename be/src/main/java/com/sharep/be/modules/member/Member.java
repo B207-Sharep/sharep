@@ -1,6 +1,7 @@
 package com.sharep.be.modules.member;
 
 import com.sharep.be.modules.account.Account;
+import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.job.domain.Job;
 import com.sharep.be.modules.project.Project;
 import jakarta.persistence.*;
@@ -38,6 +39,9 @@ public class Member {
 
     @Column(length = 255)
     private String summary;
+
+    @OneToMany(mappedBy = "member")
+    private List<Assignee> assignees;
 
     @Builder
     public Member(Project project, Account account) {
