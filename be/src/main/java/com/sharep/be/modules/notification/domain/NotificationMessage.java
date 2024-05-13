@@ -38,4 +38,13 @@ public record NotificationMessage(
                 .build();
     }
 
+    public static NotificationMessage from(Notification notification, Assignee assignee){
+        return from(
+                notification,
+                assignee.getMember().getAccount(),
+                assignee.getMember(),
+                assignee,
+                assignee.getIssue()
+        );
+    }
 }
