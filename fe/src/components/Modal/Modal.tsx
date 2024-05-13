@@ -53,6 +53,8 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
   });
 
   const handleCreateButtonClick = useRecoilCallback(({ snapshot }) => async () => {
+    // console.log('click', isValid, isOpen);
+    // console.log(modalId);
     const contents = (await snapshot.getPromise(modalDataState(modalId))).contents;
     try {
       if (contents) {

@@ -1,6 +1,18 @@
 import * as T from '@types';
 
-export interface Api {
+export interface DetailApi {
+  assignees: Assignee[];
+  description: string | null;
+  epic: string | null;
+  id: number;
+  state: 'YET' | 'NOW' | 'DONE';
+  method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
+  request: string | null;
+  response: string | null;
+  url: string | null;
+}
+
+export interface SimpleApi {
   id: number;
   method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
   request: string | null;
@@ -37,7 +49,7 @@ export interface DetailIssue {
   priority: 'HIGH' | 'MEDIUM' | 'LOW' | null;
   startedAt: string | null;
   finishedAt: string | null;
-  api: Api | null;
+  api: SimpleApi | null;
   assignees: Assignee[];
   jobs: Job[];
   connectedIssues: SimpleIssue[];
@@ -55,10 +67,28 @@ export interface SimpleIssue {
   priority: 'HIGH' | 'MEDIUM' | 'LOW' | null;
   startedAt: string | null;
   finishedAt: string | null;
-  api: Api | null;
+  api: SimpleApi | null;
   assignees: Assignee[];
   jobs: Job[];
 }
+
+// "id": 26,
+// "epic": "PRIVATE",
+// "state": "YET",
+// "method": null,
+// "url": null,
+// "description": "PRIVATE 이슈 생성 테스트",
+// "request": null,
+// "response": null,
+// "assignees": [
+//     {
+//         "id": 9,
+//         "state": "YET",
+//         "accountId": 2,
+//         "name": "sss",
+//         "imageUrl": null
+//     }
+// ]
 /** GetFeatureIssuesList - 기능 이슈 리스트 조회,  GetKanbanList - 칸반 리스트 조회  */
 
 /** GetNowIssueList - 팀원들의 진행중인 이슈 리스트 조회 */

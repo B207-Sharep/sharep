@@ -10,37 +10,26 @@ export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor 
   const { projectId } = useParams();
   const celRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(initialState || []);
-  const [isEditingMode, setIsEditingMode] = useState(false);
 
   const { data: membersResponse, isFetching: isMembersResponseFeting } = useQuery({
     queryKey: [{ func: `get-member-list`, projectId }],
     queryFn: () => API.project.getProjectMemberList({ projectId: Number(projectId) }),
   });
 
-  useEffect(() => {
-    if (isEditingMode && celRef.current) celRef.current.focus();
-  }, [isEditingMode]);
-
   const handleCelClick = (toggledValue: boolean) => {
-    if (toggledValue) {
-      celRef.current?.focus();
-    } else {
-      celRef.current?.blur();
-    }
+    if (celRef.current === null) return;
 
-    setIsEditingMode(() => toggledValue);
+    if (toggledValue) celRef.current.focus();
+    else celRef.current.blur();
   };
 
   const handleListOptionClick = (e: React.MouseEvent) => {
-    // setValue(String(e.currentTarget.ariaValueText));
     console.log(`${usingFor} :`, e);
     if (celRef.current) {
-      celRef.current?.blur();
+      celRef.current.blur();
       handleCelClick(false);
     }
   };
-
-  console.log(`membersResponse.data :`, membersResponse?.data);
 
   return (
     <S.Wrapper
@@ -49,14 +38,13 @@ export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor 
       onFocus={() => handleCelClick(true)}
       onBlur={() => handleCelClick(false)}
       $fixedWidth={fixedWidth}
-      $isEditingMode={isEditingMode}
     >
       <S.Palceholder>
         {value.map((el, i) => (
           <Comp.UserImg key={`assignees-${el.accountId}-${i}`} size="32px" path={el.imageUrl} />
         ))}
       </S.Palceholder>
-      <S.OptionUlWrapper $isEditingMode={isEditingMode}>
+      <S.OptionUlWrapper>
         {membersResponse?.data.map((res, idx) => (
           <S.OptionLi
             className="hover-bg-dark"

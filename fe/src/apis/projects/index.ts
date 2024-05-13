@@ -130,7 +130,11 @@ export async function getScreenIssueDetail({
 }
 
 /** API 이슈 리스트 조회 */
-export async function getApiIssueList({ projectId }: { projectId: number }) {
+export async function getApiIssueList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.DetailApi[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/apis`);
 }
 
@@ -284,4 +288,23 @@ export async function inviteMembers({
   }[];
 }) {
   return await instanceOfJson.post(`/projects/${projectId}/members`, members);
+}
+
+/** API 수정 */
+export async function updateApi({
+  projectId,
+  id,
+  reqBody,
+}: {
+  projectId: number;
+  id: number;
+  reqBody: {
+    request: string | null;
+    response: string | null;
+    url: string | null;
+    description: string | null;
+    method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
+  };
+}) {
+  return instanceOfJson.put(`/projects/${projectId}/apis/${id}`, reqBody);
 }

@@ -253,7 +253,11 @@ export default function ScreenManualDetail() {
                     기능 명세서
                   </S.StyledText>
                   <S.ManualWrapper>
-                    <Comp.ManualTable dataList={FEATURE_MANUAL_DUMMY as T.API.DetailIssue[]} usingFor="FEATURE" />
+                    <Comp.FeatureManual
+                      readonly={true}
+                      dataList={FEATURE_MANUAL_DUMMY as T.API.DetailIssue[]}
+                      usingFor="FEATURE"
+                    />
                   </S.ManualWrapper>
                 </S.ContentItem>
               )} */}
