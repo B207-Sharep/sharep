@@ -8,7 +8,8 @@ import PriorityBadge from './PriorityBadge/PriorityBadge';
 import UserImg from './UserImg/UserImg';
 import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
-import ManualTable from './ManualTable/ManualTable';
+import FeatureManual from './FeatureManualTable/FeatureManualTable.tsx';
+import ApiManual from './ApiManualTable/ApiManualTable.tsx';
 import Modal from './Modal/Modal';
 import { ProjectCreationForm, JobCreationForm, InfraJobCreationForm, SecretKeyForm, EditForm } from './Modal/Subs';
 import GalleryCard from './GalleryCard/GalleryCard';
@@ -31,7 +32,8 @@ export {
   SideBar,
   UserImg,
   TableBtn,
-  ManualTable,
+  FeatureManual,
+  ApiManual,
   QuillEditor,
   Modal,
   ProjectCreationForm,

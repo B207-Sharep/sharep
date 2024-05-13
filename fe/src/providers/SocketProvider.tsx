@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import * as Y from 'yjs';
+import { WebsocketProvider } from 'y-websocket';
 
 const WebSocketContext = createContext<WebSocket | null>(null);
 
@@ -8,11 +10,12 @@ export function useWebSocket(): WebSocket | null {
 }
 
 export function SocketProvider({ children }: { children: React.ReactNode }) {
+  const { projectId } = useParams();
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   useEffect(() => {
-    const chatWebSocket = new WebSocket(import.meta.env.VITE_DEV_SOKET_SERVER);
-    setSocket(chatWebSocket);
+    const socketInstance = new WebSocket(`${import.meta.env.VITE_DEV_SOKET_SERVER}?projectId=${projectId}`);
+    setSocket(socketInstance);
   }, []);
 
   return <WebSocketContext.Provider value={socket}>{children}</WebSocketContext.Provider>;
