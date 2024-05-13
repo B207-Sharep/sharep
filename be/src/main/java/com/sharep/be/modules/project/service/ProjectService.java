@@ -18,6 +18,7 @@ import com.sharep.be.modules.project.dto.ProjectDto.ProjectCreate.MemberCreate;
 import com.sharep.be.modules.project.repository.ProjectRepository;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -143,7 +144,24 @@ public class ProjectService {
 
     @Transactional(readOnly = true)
     public List<MemberResponse> readMember(Long projectId) {
-        return memberRepository.findAllByProjectId(projectId).stream()
+        Project project = projectRepository.findWithLeaderById(projectId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 프로젝트이니다."));
+
+        Account leader = project.getLeader();
+        List<MemberResponse> members = memberRepository.findAllByProjectId(projectId).stream()
                 .map(MemberDto::toDto).collect(Collectors.toList());
+
+        // 리더를 찾아 첫 번째 위치로 이동
+        Optional<MemberResponse> leaderMember = members.stream()
+                .filter(member -> member.account().id().equals(leader.getId()))
+                .findFirst();
+
+        // 리더가 리스트에 있다면, 해당 멤버를 제거하고 리스트 맨 앞에 추가
+        leaderMember.ifPresent(member -> {
+            members.remove(member);
+            members.add(0, member);
+        });
+
+        return members;
     }
 }
