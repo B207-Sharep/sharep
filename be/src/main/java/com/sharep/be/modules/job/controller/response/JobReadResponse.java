@@ -1,5 +1,6 @@
 package com.sharep.be.modules.job.controller.response;
 
+import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.job.domain.Job;
 import com.sharep.be.modules.member.MemberResponse;
 import java.time.LocalDateTime;
@@ -16,6 +17,8 @@ public record JobReadResponse(
 
         Long issueId,
 
+        IssueType type,
+
         MemberResponse member
 ) {
     public static JobReadResponse from(Job job){
@@ -26,6 +29,7 @@ public record JobReadResponse(
                 job.getCreatedAt(),
                 job.getImageUrl(),
                 job.getIssue().getId(),
+                job.getIssue().getType(),
                 MemberResponse.from(job.getMember())
         );
     }

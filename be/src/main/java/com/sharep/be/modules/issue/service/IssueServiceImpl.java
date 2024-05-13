@@ -40,7 +40,8 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public Issue getIssue(Long id) {
 
-        return issueRepository.findByIssueId(id).orElseThrow(IssueNotFoundException::new);
+        return issueRepository.findByIssueId(id, DataType.DETAIL)
+                .orElseThrow(IssueNotFoundException::new);
     }
 
     @Override
@@ -76,9 +77,11 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public void updateIssue(Long id, Long accountId, Long projectId, IssueUpdate issueUpdate) {
-        Issue issue = issueRepository.findById(id).orElseThrow(IssueNotFoundException::new);
+        Issue issue = issueRepository.findByIssueId(id, DataType.SIMPLE)
+                .orElseThrow(IssueNotFoundException::new);
         assertPrivateIssueModifyAuthorization(accountId, projectId, issue);
-        issueRepository.save(issueUpdate.toEntityWith(issue));
+        issue.update(issueUpdate.issueName(), issueUpdate.description(),
+                issueUpdate.epic(), issueUpdate.priority());
     }
 
     public void deleteIssue(Long id, Long accountId, Long projectId) {
@@ -95,10 +98,10 @@ public class IssueServiceImpl implements IssueService {
                     .orElseThrow(MemberNotFoundException::new).getId();
 
             Set<Assignee> assignees = issue.getAssignees();
-            isTrue(assignees.size() == 1, "");
+            isTrue(assignees.size() == 1, "담당자가 한 명이 아닙니다. (데이터 오류)");
 
             Assignee assignee = assignees.stream().findFirst().get();
-            isTrue(assignee.getMember().getId().equals(memberId), "");
+            isTrue(assignee.getMember().getId().equals(memberId), "권한이 없습니다.");
         }
     }
 

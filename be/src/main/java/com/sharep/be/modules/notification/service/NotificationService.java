@@ -4,6 +4,7 @@ import static io.jsonwebtoken.lang.Assert.notNull;
 
 import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.domain.Assignee;
+import com.sharep.be.modules.assignee.service.AssigneeRepository;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.notification.domain.Notification;
@@ -24,6 +25,7 @@ public class NotificationService {
 
     private final EmitterRepository emitterRepository;
     private final NotificationRepository notificationRepository;
+    private final AssigneeRepository assigneeRepository;
 
     public SseEmitter subscribe(Long projectId, Long accountId) {
         SseEmitter emitter = createEmitter(accountId);
@@ -88,5 +90,28 @@ public class NotificationService {
         notification.readNotification();
 
         return notificationId;
+    }
+
+    public void sendToAccountIds(Long projectId, Long issueId, Long[] accountIds) {
+
+        List<Assignee> assignees = assigneeRepository.findAllByProjectIdAndIssueIdAndAccountIdsIn(projectId, issueId, accountIds);
+
+        for(Assignee assignee: assignees){
+            Notification notification = Notification.builder()
+                .assignee(assignee)
+                .isRead(false)
+                .member(assignee.getMember())
+                .build();
+
+            notificationRepository.save(notification);
+
+            notify(
+                    assignee.getMember().getAccount().getId(),
+                    NotificationMessage.from(
+                            notification,
+                            assignee
+                    )
+            );
+        }
     }
 }
