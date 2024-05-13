@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { instanceOfFormData, instanceOfJson } from '../instance';
+import { instanceOfEventStream, instanceOfFormData, instanceOfJson } from '../instance';
 import * as T from '@types';
 
 export async function getGrass() {
@@ -307,4 +307,18 @@ export async function updateApi({
   };
 }) {
   return instanceOfJson.put(`/projects/${projectId}/apis/${id}`, reqBody);
+}
+
+/** ConnectNotiList - 내 알림 목록 연결 */
+export async function connectNotiList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.GetNotificationListResponse[], any>> {
+  return instanceOfEventStream.get(`/notifications/projects/${projectId}/subscriptions`);
+}
+
+/** readNoti - 알림 확인 */
+export async function readNoti({ notificationId }: { notificationId: number }) {
+  return instanceOfEventStream.post(`/notifications/${notificationId}`);
 }

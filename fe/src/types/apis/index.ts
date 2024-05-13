@@ -13,6 +13,7 @@ import {
   GetProjectIssueListResponse,
   //   GetScreenIssueListResponse,
   SearchUserByEmailResponse,
+  GetNotificationListResponse,
 } from './projects';
 
 export type {
@@ -30,4 +31,5 @@ export type {
   GetProjectIssueListResponse,
   //   GetScreenIssueListResponse,
   SearchUserByEmailResponse,
+  GetNotificationListResponse,
 };

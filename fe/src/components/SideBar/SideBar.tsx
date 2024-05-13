@@ -6,7 +6,8 @@ import { History as CommitHistory, Plus } from 'lucide-react';
 import * as G from '@/styles';
 import * as Comp from '@/components';
 import * as T from '@/types';
-import API from '@/assets/svgs/api-docs-icon.svg?react';
+import * as API from '@/apis';
+import APIIcon from '@/assets/svgs/api-docs-icon.svg?react';
 // import ETC from '../../../public/svgs/etc-docs-icon.svg?react';
 import INFRA from '@/assets/svgs/infra-docs-icon.svg?react';
 import MY from '@/assets/svgs/my-dashboard-icon.svg?react';
@@ -18,13 +19,30 @@ import UserImg from '../UserImg/UserImg';
 import { useModal } from '@/customhooks';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/stores/atoms/loadUser';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export default function SideBar() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
   const user = useRecoilValue(userState);
   const { projectId, accountId } = useParams();
+
+  const {
+    data: myNotificationResponse,
+    isSuccess: myNotificationSuccess,
+    isFetching: myNotificationFetching,
+  } = useQuery({
+    queryKey: [`get-my-notification`, projectId],
+    queryFn: () => API.project.connectNotiList({ projectId: Number(projectId) }),
+    select: data => data.data,
+  });
+
+  const readNotiMutation = useMutation({
+    mutationKey: [{ func: `read-noti` }],
+    mutationFn: API.project.readNoti,
+  });
 
   const handleHistoryClick = () => {
     navigate(`/projects/${projectId}/commit-history`);
@@ -60,8 +78,20 @@ export default function SideBar() {
     });
   };
 
-  const handleNotiClick = (noti: T.NotiProps) => () => {
+  const handleNotiClick = (noti: T.API.GetNotificationListResponse) => () => {
     console.log(noti);
+    if (noti) {
+      readNotiMutation.mutate(
+        {
+          notificationId: noti.notificationId,
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [`get-my-notification`, projectId] });
+          },
+        },
+      );
+    } else throw Error;
   };
 
   return (
@@ -126,7 +156,7 @@ export default function SideBar() {
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleAPIClick}>
-                <API></API>
+                <APIIcon></APIIcon>
                 <S.SideBarFont $size="14px" $weight={400}>
                   API 명세서
                 </S.SideBarFont>
@@ -157,34 +187,35 @@ export default function SideBar() {
                     알림 목록
                   </S.StyledText>
                 </S.NotiDropdownHeader>
-                {dummyNoti.map(noti => (
-                  <S.NotiItem key={noti.id} $unread={noti.unread} onClick={handleNotiClick(noti)}>
-                    <S.NotiMessage>
-                      <S.NotiIcon>
-                        {noti.type === 'FEATURE' ? <PLAN /> : noti.type === 'SCREEN' ? <SCREEN /> : <INFRA />}
-                        {noti.unread && <S.UnReadMark />}
-                      </S.NotiIcon>
-                      <S.NotiMessageContent>
-                        <S.StyledText color={noti.unread ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK}>
-                          {noti.message}
+                {myNotificationSuccess &&
+                  myNotificationResponse.map(noti => (
+                    <S.NotiItem key={noti.notificationId} $isRead={noti.isRead} onClick={handleNotiClick(noti)}>
+                      <S.NotiMessage>
+                        <S.NotiIcon>
+                          {noti.type === 'FEATURE' ? <PLAN /> : noti.type === 'SCREEN' ? <SCREEN /> : <INFRA />}
+                          {!noti.isRead && <S.UnReadMark />}
+                        </S.NotiIcon>
+                        <S.NotiMessageContent>
+                          <S.StyledText color={noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK}>
+                            {noti.message}
+                          </S.StyledText>
+                          <S.StyledText color={noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={10}>
+                            {noti.finishedAt}
+                          </S.StyledText>
+                        </S.NotiMessageContent>
+                      </S.NotiMessage>
+                      <S.NotiUserInfo>
+                        <S.StyledText color={noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={12}>
+                          {noti.nickname}
                         </S.StyledText>
-                        <S.StyledText color={noti.unread ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={10}>
-                          {noti.createdAt}
-                        </S.StyledText>
-                      </S.NotiMessageContent>
-                    </S.NotiMessage>
-                    <S.NotiUserInfo>
-                      <S.StyledText color={noti.unread ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={12}>
-                        {noti.member.nickname}
-                      </S.StyledText>
-                      <S.RoleBadgeList>
-                        {noti.member.roles.map((role, index) => (
-                          <Comp.RoleBadge key={index} role={role} selectAble={false} />
-                        ))}
-                      </S.RoleBadgeList>
-                    </S.NotiUserInfo>
-                  </S.NotiItem>
-                ))}
+                        <S.RoleBadgeList>
+                          {noti.roles.map((role, index) => (
+                            <Comp.RoleBadge key={index} role={role} selectAble={false} />
+                          ))}
+                        </S.RoleBadgeList>
+                      </S.NotiUserInfo>
+                    </S.NotiItem>
+                  ))}
               </S.NotiDropdownContent>
             </S.NotiDropdownContainer>
           </S.SideBarContents>
@@ -194,45 +225,45 @@ export default function SideBar() {
   );
 }
 
-const dummyNoti: T.NotiProps[] = [
-  {
-    id: 1,
-    issueId: 1,
-    type: 'FEATURE',
-    message: '기능 명세 #1 수정',
-    unread: true,
-    createdAt: '2024-05-05',
-    member: {
-      memberId: 1,
-      nickname: '이승민',
-      roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
-    },
-  },
-  {
-    id: 2,
-    issueId: 2,
-    type: 'SCREEN',
-    message: '화면 정의 #메인 페이지 수정',
-    unread: false,
-    createdAt: '2024-05-04',
-    member: {
-      memberId: 1,
-      nickname: '김성제',
-      roles: ['FRONT_END'] as Extract<T.RoleBadgeProps, 'role'>[],
-    },
-  },
+// const dummyNoti: T.NotiProps[] = [
+//   {
+//     id: 1,
+//     issueId: 1,
+//     type: 'FEATURE',
+//     message: '기능 명세 #1 수정',
+//     unread: true,
+//     createdAt: '2024-05-05',
+//     member: {
+//       memberId: 1,
+//       nickname: '이승민',
+//       roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
+//     },
+//   },
+//   {
+//     id: 2,
+//     issueId: 2,
+//     type: 'SCREEN',
+//     message: '화면 정의 #메인 페이지 수정',
+//     unread: false,
+//     createdAt: '2024-05-04',
+//     member: {
+//       memberId: 1,
+//       nickname: '김성제',
+//       roles: ['FRONT_END'] as Extract<T.RoleBadgeProps, 'role'>[],
+//     },
+//   },
 
-  {
-    id: 3,
-    issueId: 3,
-    type: 'INFRA',
-    message: '인프라 명세 #1 수정',
-    unread: true,
-    createdAt: '2024-05-03',
-    member: {
-      memberId: 1,
-      nickname: '오상훈',
-      roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
-    },
-  },
-];
+//   {
+//     id: 3,
+//     issueId: 3,
+//     type: 'INFRA',
+//     message: '인프라 명세 #1 수정',
+//     unread: true,
+//     createdAt: '2024-05-03',
+//     member: {
+//       memberId: 1,
+//       nickname: '오상훈',
+//       roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
+//     },
+//   },
+// ];
