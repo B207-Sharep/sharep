@@ -5,7 +5,7 @@ import * as T from '@types';
 export async function getGrass() {
   return await instanceOfJson.get(`/jobs`);
 }
-export async function getProjectList() {
+export async function getProjectList(): Promise<AxiosResponse<T.API.GetProjectListResponse[], any>> {
   return await instanceOfJson.get(`/projects`);
 }
 
@@ -51,6 +51,7 @@ export async function getKanbanList({
 }
 
 /** 팀원들의 진행중인 리스트 조회 */
+// TODO: type
 export async function getNowIssueAboutTeamMembers({
   projectId,
 }: {
@@ -60,6 +61,7 @@ export async function getNowIssueAboutTeamMembers({
 }
 
 /** 본인의 진행중인 리스트 조회 */
+// TODO: type
 export async function getNowIssueAboutMe({
   projectId,
 }: {
@@ -272,6 +274,20 @@ export async function updateIssue({
 /** 이슈 삭제 */
 export async function deleteIssue({ projectId, issueId }: { projectId: number; issueId: number }) {
   return instanceOfJson.delete(`/projects/${projectId}/issues/${issueId}`);
+}
+
+/** 프로젝트 멤버 초대 - 팀장 권한만 가능 */
+export async function inviteMembers({
+  projectId,
+  members,
+}: {
+  projectId: number;
+  members: {
+    id: number;
+    roles: T.RoleBadgeProps['role'][];
+  }[];
+}) {
+  return await instanceOfJson.post(`/projects/${projectId}/members`, members);
 }
 
 /** API 수정 */

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './JobCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
@@ -16,6 +16,7 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   const { updateContentByKey, updateIsValid } = useModal<T.JobCreationFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
   const { projectId } = useParams();
+  const [selectedIssueName, setSelectedNowIssueName] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
@@ -29,6 +30,16 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
     queryFn: () => API.project.getNowIssueAboutMe({ projectId: Number(projectId) }),
     select: data => data.data,
   });
+
+  // const groupedIssueList = useMemo(() => {
+  //   if (!myNowIssueResponse) return [];
+  //   const sortedIssues = [...myNowIssueResponse].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  //   return groupIssuesByType(sortedIssues);
+  // }, [myNowIssueResponse]);
+
+  const handleSelectValue = (value: string) => {
+    setSelectedNowIssueName(value);
+  };
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -90,9 +101,37 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
             </S.StyledText>
           </S.IssueBadge>
           <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
-            {(myNowIssueSuccess && myNowIssueResponse.issue && myNowIssueResponse.issue?.issueName) ||
-              '작업을 연결할 이슈를 선택해주세요. '}
+            {selectedIssueName || '작업을 연결할 이슈를 선택해주세요. '}
           </S.StyledText>
+          {/* TODO : 이슈 dropdown */}
+          {/* <S.Dropdown>
+            {myNowIssueResponse ? (
+              <>
+                {Object.entries(groupedIssueList).map(([type, issues]) => (
+                  <div key={`${type}-issues`} style={{ width: '100%' }}>
+                    <S.FilterType>
+                      {type === 'FEATURE'
+                        ? `기능 `
+                        : type === 'SCREEN'
+                        ? `화면 `
+                        : type === 'INFRA'
+                        ? `인프라 `
+                        : `개인 `}
+                      이슈
+                    </S.FilterType>
+                    {issues.map(issue => (
+                      <S.DropdowntItem
+                        key={`filter-${type}-${issue.id}`}
+                        onClick={() => handleSelectValue(issue.id.toString())}
+                      >
+                        <S.StyledText>{issue.issueName}</S.StyledText>
+                      </S.DropdowntItem>
+                    ))}
+                  </div>
+                ))}
+              </>
+            ) : null}
+          </S.Dropdown> */}
         </S.IssueTitle>
       </S.TitleContainer>
       <S.Container onClick={handleButtonClick} onDragOver={handleDragOver} onDrop={handleDrop}>
@@ -132,4 +171,20 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
       </S.FormItem>
     </S.Wrapper>
   );
+}
+
+function groupIssuesByType(issues: T.API.SimpleIssue[]): {
+  [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.SimpleIssue[];
+} {
+  return issues.reduce((acc, issue) => {
+    const { type } = issue;
+
+    if (!acc[type]) {
+      acc[type] = [];
+    }
+
+    acc[type].push(issue);
+
+    return acc;
+  }, {} as { [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.SimpleIssue[] });
 }
