@@ -9,7 +9,9 @@ export interface TeamMemberProps {
   userImageUrl: string;
 }
 
-export interface GanttChartProps {}
+export interface GanttChartProps {
+  projectIssueList: T.API.SimpleIssue[];
+}
 
 export interface CurrentWorkProps {
   member: TeamMemberProps;

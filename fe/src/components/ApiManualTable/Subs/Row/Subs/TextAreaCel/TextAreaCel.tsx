@@ -13,10 +13,6 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, onUpda
     if (isEditingMode && textareaRef.current) textareaRef.current.focus();
   }, [isEditingMode]);
 
-  useEffect(() => {
-    console.log(`value :`, value);
-  }, [value]);
-
   const handleCelClick = (toggledValue: boolean) => {
     if (textareaRef.current === null || !onUpdate) return;
 

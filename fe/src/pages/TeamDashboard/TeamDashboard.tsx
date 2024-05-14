@@ -13,7 +13,7 @@ export default function TeamDashboard() {
   const { projectId, accountId } = useParams();
   const [
     { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
-    // { data: featureIssuesResponse, isFetching: isFeatureIssuesResponseFetching },
+    { data: projectIssuesResponse, isFetching: isProjectIssuesResponseFetching },
     { data: screenIssuesResponse, isFetching: isScreenIssuesResponseFetching },
     { data: membersResponse, isFetching: isMembersResponseFeting },
   ] = useQueries({
@@ -22,10 +22,11 @@ export default function TeamDashboard() {
         queryKey: [{ func: `get-now-issues`, projectId }],
         queryFn: () => API.project.getNowIssueAboutTeamMembers({ projectId: Number(projectId) }),
       },
-      // {
-      //   queryKey: [{ func: `get-feature-issues`, projectId }],
-      //   queryFn: () => API.project.getFeatureIssuesList({ projectId: Number(projectId), dataType: 'SIMPLE' }),
-      // },
+      {
+        queryKey: [{ func: `get-all-simple-issues`, projectId }],
+        queryFn: () =>
+          API.project.getProjectSimpleIssueList({ projectId: Number(projectId), issueType: null, accountId: null }),
+      },
       {
         queryKey: [{ func: `get-screen-issues`, projectId }],
         queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId) }),
@@ -75,8 +76,8 @@ export default function TeamDashboard() {
               {nowIssuesResponse?.data.map((res: T.API.GetNowIssueListResponse, i: number) => (
                 <S.CurrentWork key={`current-work-${i}`}>
                   <Sub.TeamMember {...res.member} />
-                  {res.issue !== null && (
-                    <Comp.Issue {...res.issue} assignees={null} jobs={null} dragAble={false} deleteAble={false} />
+                  {res.issues !== null && (
+                    <Comp.Issue {...res.issues[0]} assignees={null} jobs={null} dragAble={false} deleteAble={false} />
                   )}
                 </S.CurrentWork>
               ))}
@@ -89,7 +90,7 @@ export default function TeamDashboard() {
             <span>간트 차트</span>
           </S.Title>
           <S.GantChartScrollContainer>
-            <Sub.GanttChart />
+            <Sub.GanttChart projectIssueList={projectIssuesResponse?.data || []} />
           </S.GantChartScrollContainer>
         </S.WhiteBoxWrapper>
         <S.WhiteBoxWrapper $flex="1" $height="fit-content">
