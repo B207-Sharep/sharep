@@ -84,6 +84,15 @@ public class IssueServiceImpl implements IssueService {
                 issueUpdate.epic(), issueUpdate.priority());
     }
 
+    @Override
+    public void updateIssue(Long id, IssueUpdate issueUpdate) {
+        Issue issue = issueRepository.findByIssueId(id, DataType.SIMPLE)
+                .orElseThrow(IssueNotFoundException::new);
+
+        issue.update(issueUpdate.issueName(), issueUpdate.description(),
+                issueUpdate.epic(), issueUpdate.priority());
+    }
+
     public void deleteIssue(Long id, Long accountId, Long projectId) {
         Issue issue = issueRepository.findById(id).orElseThrow(IssueNotFoundException::new);
         assertPrivateIssueModifyAuthorization(accountId, projectId, issue);

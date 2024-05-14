@@ -1,11 +1,8 @@
 package com.sharep.be.modules.notification.controller;
 
-import com.sharep.be.modules.notification.service.NotificationService;
+import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.constraints.Min;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,8 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -28,16 +26,20 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    @GetMapping(value = "/projects/{projectId}/subscriptions", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(
+    // 알림 구독하기
+    @GetMapping(value = "/projects/{projectId}/accounts/subscriptions", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> subscribeAccountId(
             @AuthenticationPrincipal JwtAuthentication authentication,
             @PathVariable @Min(1) Long projectId
     ) {
 
-        return notificationService.subscribe(projectId, authentication.id);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(notificationService.subscribeAccountId(projectId, authentication.id));
     }
 
-    @PostMapping("/{notificationId}")
+    // 알림 읽은 상태로 변경
+    @PatchMapping("/{notificationId}")
     public ResponseEntity<NotificationIdResponse> updateNotificationState(
             @AuthenticationPrincipal JwtAuthentication authentication,
             @PathVariable @Min(1) Long notificationId
@@ -53,15 +55,42 @@ public class NotificationController {
         );
     }
 
+// 선택된 여러명에게 알림보내기
     @PostMapping("/projects/{projectId}/issues/{issueId}/send")
-    public ResponseEntity<Void> sendNotification(
+    public ResponseEntity<Void> sendToAccountIds(
             @PathVariable Long projectId,
             @PathVariable Long issueId,
+            @AuthenticationPrincipal JwtAuthentication authentication,
             Long[] accountIds
     ){
 
-        notificationService.sendToAccountIds(projectId, issueId, accountIds);
+        notificationService.sendToAccountIds(projectId, issueId, authentication.id, accountIds);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    // 동시작업 시 알림 구독
+    @GetMapping(value = "/projects/{projectId}/subscriptions", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> subscribeProjectId(
+            @PathVariable Long projectId
+    ){
+
+        return ResponseEntity
+                .ok(notificationService.subscribeProjectId(projectId));
+    }
+
+
+    // 동시작업 시 이슈 수정 후 알림 보내기
+    @PutMapping("/projects/{projectId}/issues/{issueId}")
+    public ResponseEntity<Void> sendToProjectId(
+            @PathVariable Long projectId,
+            @PathVariable Long issueId,
+            @RequestBody IssueUpdate issueUpdate
+    ){
+
+        notificationService.updateIssue(projectId, issueId, issueUpdate);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
+
