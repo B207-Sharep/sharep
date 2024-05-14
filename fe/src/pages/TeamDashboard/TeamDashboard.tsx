@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import * as S from './TeamDashboardStyle';
 import * as T from '@types';
 import * as L from '@layouts';
@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 
 export default function TeamDashboard() {
   const { projectId, accountId } = useParams();
+
   const [
     { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
     // { data: featureIssuesResponse, isFetching: isFeatureIssuesResponseFetching },
@@ -51,7 +52,6 @@ export default function TeamDashboard() {
     return sortedIssues;
   }, [screenIssuesResponse?.data]);
 
-  console.log(nowIssuesResponse?.data);
   return (
     <L.SideBarLayout>
       <S.Container>
@@ -76,11 +76,17 @@ export default function TeamDashboard() {
               {nowIssuesResponse?.data.map((res: T.API.GetNowIssueListResponse, i: number) => (
                 <S.CurrentWork key={`current-work-${i}`}>
                   <Sub.TeamMember {...res.member} />
-                  {res.issue &&
-                    res.issue.map(issue => (
-                      // TODO:issue []
-                      <Comp.Issue {...issue} assignees={null} jobs={null} dragAble={false} deleteAble={false} />
-                    ))}
+                  {res.issues.map(issue => (
+                    // TODO:issue []
+                    <Comp.Issue
+                      {...issue}
+                      key={`now-issue-${issue.id}`}
+                      assignees={null}
+                      jobs={null}
+                      dragAble={false}
+                      deleteAble={false}
+                    />
+                  ))}
                 </S.CurrentWork>
               ))}
             </S.CurrentWorksScrollContainer>

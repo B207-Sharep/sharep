@@ -172,3 +172,39 @@ export const FilterType = styled.div`
   border-bottom: 1px solid ${PALETTE.LIGHT_BLACK};
   padding: 8px;
 `;
+
+export const Filter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  background-color: #f6f8fa;
+  border: 1px #d0d7d3 solid;
+  border-radius: 6px;
+  height: 32px;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+`;
+
+export const AccordionIconButton = styled.button`
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  width: 12px;
+  height: 12px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const AccordionIcon = styled.div<{ $isOpen: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+  transition: transform 0.3s ease;
+`;

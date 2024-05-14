@@ -93,7 +93,7 @@ export interface SimpleIssue {
 
 /** GetNowIssueList - 팀원들의 진행중인 이슈 리스트 조회 */
 export interface GetNowIssueListResponse {
-  issue: {
+  issues: {
     description: string;
     epic: string;
     id: number;

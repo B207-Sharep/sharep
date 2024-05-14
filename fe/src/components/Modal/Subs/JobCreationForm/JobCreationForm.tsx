@@ -5,7 +5,7 @@ import * as Comp from '@/components';
 import * as Icon from '@/assets';
 import * as API from '@/apis';
 import { PALETTE } from '@/styles';
-import { Image as UploadImageIcon } from 'lucide-react';
+import { ChevronDown, CircleDotDashed, Image as UploadImageIcon } from 'lucide-react';
 import { useModal } from '@/customhooks';
 import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
@@ -16,10 +16,15 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   const { updateContentByKey, updateIsValid } = useModal<T.JobCreationFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
   const { projectId } = useParams();
-  const [selectedIssueName, setSelectedNowIssueName] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
+  const [openIssueList, setOpenIssueList] = useState<boolean>(false);
+  const [selectedIssue, setSelectedIssue] = useState<{ id: number | null; issueName: string | null }>({
+    id: null,
+    issueName: null,
+  });
 
   const {
     data: myNowIssueResponse,
@@ -28,17 +33,16 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   } = useQuery({
     queryKey: [{ func: `get-now-issue-about-me`, projectId }],
     queryFn: () => API.project.getNowIssueAboutMe({ projectId: Number(projectId) }),
-    select: data => console.log(data.data),
+    select: data => data.data,
   });
 
-  // const groupedIssueList = useMemo(() => {
-  //   if (!myNowIssueResponse) return [];
-  //   console.log(myNowIssueResponse);
-  //   // const sortedIssues = myNowIssueSuccess && myNowIssueResponse[0].issue.sort((a, b) => a.id - b.id);
-  //   // console.log(sortedIssues);
-  //   return [];
-  //   // groupIssuesByType(sortedIssues);
-  // }, [myNowIssueResponse]);
+  const groupedIssueList = useMemo(() => {
+    if (!myNowIssueResponse) return [];
+    console.log(myNowIssueResponse);
+    const sortedIssues = myNowIssueResponse[0].issues.sort((a, b) => a.id - b.id);
+    console.log(sortedIssues);
+    return groupIssuesByType(sortedIssues);
+  }, [myNowIssueResponse]);
 
   // const sortedScreenIssueList = useMemo(() => {
   //   if (!screenIssueListResponse) return [];
@@ -54,8 +58,8 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   //   return sortedIssues;
   // }, [screenIssueListResponse]);
 
-  const handleSelectValue = (value: string) => {
-    setSelectedNowIssueName(value);
+  const handleSelectValue = (issueId: number | null, issueName: string | null) => {
+    setSelectedIssue({ id: issueId, issueName: issueName });
   };
 
   const handleButtonClick = () => {
@@ -101,6 +105,10 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
     }
   };
 
+  const toggleDropdown = () => {
+    setOpenIssueList(!openIssueList);
+  };
+
   useEffect(() => {
     if (myNowIssueSuccess) {
       console.log(myNowIssueResponse);
@@ -117,38 +125,51 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
               Issue
             </S.StyledText>
           </S.IssueBadge>
-          <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
-            {selectedIssueName || '작업을 연결할 이슈를 선택해주세요. '}
-          </S.StyledText>
-          {/* TODO : 이슈 dropdown */}
-          {/* <S.Dropdown>
-            {myNowIssueResponse ? (
-              <>
-                {Object.entries(groupedIssueList).map(([type, issues]) => (
-                  <div key={`${type}-issues`} style={{ width: '100%' }}>
-                    <S.FilterType>
-                      {type === 'FEATURE'
-                        ? `기능 `
-                        : type === 'SCREEN'
-                        ? `화면 `
-                        : type === 'INFRA'
-                        ? `인프라 `
-                        : `개인 `}
-                      이슈
-                    </S.FilterType>
-                    {issues.map(issue => (
-                      <S.DropdowntItem
-                        key={`filter-${type}-${issue.id}`}
-                        onClick={() => handleSelectValue(issue.id.toString())}
-                      >
-                        <S.StyledText>{issue.issueName}</S.StyledText>
-                      </S.DropdowntItem>
+          <S.Filter onClick={toggleDropdown}>
+            <CircleDotDashed color={PALETTE.LIGHT_BLACK} size={14} />
+            <S.StyledText color={PALETTE.SUB_BLACK} fontSize={14}>
+              {selectedIssue.issueName ? `${selectedIssue.issueName}` : '작업을 연결할 이슈를 선택해주세요.'}
+            </S.StyledText>
+            <S.AccordionIconButton>
+              <S.AccordionIcon $isOpen={openIssueList}>
+                <ChevronDown size={12} />
+              </S.AccordionIcon>
+            </S.AccordionIconButton>
+            {/* TODO : 이슈 dropdown */}
+            {openIssueList && (
+              <S.Dropdown>
+                {groupedIssueList ? (
+                  <>
+                    {Object.entries(groupedIssueList).map(([type, issues]) => (
+                      <div key={`${type}-issues`} style={{ width: '100%' }}>
+                        <S.FilterType>
+                          {type === 'FEATURE'
+                            ? `기능 `
+                            : type === 'SCREEN'
+                            ? `화면 `
+                            : type === 'INFRA'
+                            ? `인프라 `
+                            : `개인 `}
+                          이슈
+                        </S.FilterType>
+                        {issues.map(issue => (
+                          <S.DropdowntItem
+                            key={`filter-${type}-${issue.id}`}
+                            onClick={() => handleSelectValue(issue.id, issue.issueName)}
+                          >
+                            <S.StyledText>{issue.issueName}</S.StyledText>
+                          </S.DropdowntItem>
+                        ))}
+                      </div>
                     ))}
-                  </div>
-                ))}
-              </>
-            ) : null}
-          </S.Dropdown> */}
+                  </>
+                ) : null}
+              </S.Dropdown>
+            )}
+          </S.Filter>
+          {/* <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
+            {selectedIssueName || '작업을 연결할 이슈를 선택해주세요. '}
+          </S.StyledText> */}
         </S.IssueTitle>
       </S.TitleContainer>
       <S.Container onClick={handleButtonClick} onDragOver={handleDragOver} onDrop={handleDrop}>
@@ -190,8 +211,8 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   );
 }
 
-function groupIssuesByType(issues: T.API.GetNowIssueListResponse['issue']): {
-  [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.GetNowIssueListResponse['issue'];
+function groupIssuesByType(issues: T.API.GetNowIssueListResponse['issues']): {
+  [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.GetNowIssueListResponse['issues'];
 } {
   return issues.reduce((acc, issue) => {
     const { type } = issue;
@@ -204,5 +225,5 @@ function groupIssuesByType(issues: T.API.GetNowIssueListResponse['issue']): {
 
     console.log(acc);
     return acc;
-  }, {} as { [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.GetNowIssueListResponse['issue'] });
+  }, {} as { [key in 'FEATURE' | 'SCREEN' | 'PRIVATE' | 'INFRA']: T.API.GetNowIssueListResponse['issues'] });
 }

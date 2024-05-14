@@ -129,7 +129,7 @@ export default function CommitHistory() {
             <S.FilterWrapper>
               {filters.map(filter => (
                 <S.Filter key={`filter-${filter.type}`} onClick={() => toggleDropdown(filter.type)}>
-                  <UsersRound color={PALETTE.LIGHT_BLACK} size={14} />
+                  {filter.icon}
                   <S.StyledText color={PALETTE.SUB_BLACK} fontSize={14}>
                     {filter.label}
                     {selectedFilter[filter.type].data ? `: ${selectedFilter[filter.type].data}` : ''}
