@@ -75,18 +75,19 @@ export default function TeamDashboard() {
             <S.CurrentWorksScrollContainer>
               {nowIssuesResponse?.data.map((res: T.API.GetNowIssueListResponse, i: number) => (
                 <S.CurrentWork key={`current-work-${i}`}>
-                  <Sub.TeamMember {...res.member} />
-                  {res.issues.map(issue => (
-                    // TODO:issue []
-                    <Comp.Issue
-                      {...issue}
-                      key={`now-issue-${issue.id}`}
-                      assignees={null}
-                      jobs={null}
-                      dragAble={false}
-                      deleteAble={false}
-                    />
-                  ))}
+                  <S.IssueContainer>
+                    <Sub.TeamMember {...res.member} />
+                    {res.issues.map(issue => (
+                      <Comp.Issue
+                        {...issue}
+                        key={`now-issue-${issue.id}`}
+                        assignees={null}
+                        jobs={null}
+                        dragAble={false}
+                        deleteAble={false}
+                      />
+                    ))}
+                  </S.IssueContainer>
                 </S.CurrentWork>
               ))}
             </S.CurrentWorksScrollContainer>
