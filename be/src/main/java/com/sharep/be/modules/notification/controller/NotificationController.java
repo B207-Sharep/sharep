@@ -34,8 +34,7 @@ public class NotificationController {
     ) {
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(notificationService.subscribeAccountId(projectId, authentication.id));
+                .ok(notificationService.subscribeAccountId(projectId, authentication.id));
     }
 
     // 알림 읽은 상태로 변경
