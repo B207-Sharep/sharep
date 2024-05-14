@@ -8,10 +8,12 @@ import com.sharep.be.modules.assignee.service.AssigneeRepository;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.notification.controller.NotificationService;
 import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final ProjectIdEmitterRepository projectIdEmitterRepository;
     private final NotificationRepository notificationRepository;
     private final AssigneeRepository assigneeRepository;
+    private final MemberRepository memberRepository;
 
     public SseEmitter subscribeAccountId(Long projectId, Long accountId) {
         SseEmitter emitter = createAccountIdEmitter(accountId);
@@ -112,20 +115,21 @@ public class NotificationServiceImpl implements NotificationService {
 
     public void sendToAccountIds(Long projectId, Long issueId, Long accountId, Long[] accountIds) {
 
-        List<Assignee> assignees = assigneeRepository.findAllByProjectIdAndIssueIdAndAccountIdsIn(projectId, issueId, accountIds);
-
         Assignee assignee = assigneeRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId, issueId, accountId);
-        for(Assignee assignee: assignees){
+
+        List<Member> targetMembers = memberRepository.findAllByProjectIdAndAccountIdIn(projectId, Arrays.asList(accountIds));
+
+        for(Member targetMember: targetMembers){
             Notification notification = Notification.builder()
                 .assignee(assignee)
                 .isRead(false)
-                .member(assignee.getMember())
+                .member(targetMember)
                 .build();
 
             notificationRepository.save(notification);
 
             notifyAccountId(
-                    assignee.getMember().getAccount().getId(),
+                    targetMember.getAccount().getId(),
                     NotificationMessage.from(
                             notification,
                             assignee

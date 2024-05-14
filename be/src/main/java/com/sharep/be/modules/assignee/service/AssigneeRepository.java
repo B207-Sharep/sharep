@@ -2,7 +2,6 @@ package com.sharep.be.modules.assignee.service;
 
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.domain.State;
-import com.sharep.be.modules.assignee.repository.AssigneeRepositoryCustom;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,4 +25,8 @@ public interface AssigneeRepository {
     List<Assignee> findAccountIdsByIssueId(Long issueId);
 
     List<Assignee> findAllByProjectIdAndIssueIdAndAccountIdsIn(Long projectId, Long issueId, Long[] accountIds);
+
+    void save(Assignee assignee);
+
+    void delete(Assignee assignee);
 }

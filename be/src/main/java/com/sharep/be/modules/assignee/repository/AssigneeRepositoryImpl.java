@@ -114,4 +114,14 @@ public class AssigneeRepositoryImpl implements AssigneeRepository {
                 .where(account.id.in(accountIds))
                 .fetch();
     }
+
+    @Override
+    public void save(Assignee assignee) {
+        assigneeJpaRepository.save(assignee);
+    }
+
+    @Override
+    public void delete(Assignee assignee) {
+        assigneeJpaRepository.delete(assignee);
+    }
 }
