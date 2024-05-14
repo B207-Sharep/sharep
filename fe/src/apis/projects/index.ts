@@ -316,14 +316,7 @@ export async function updateApi({
   return instanceOfJson.put(`/projects/${projectId}/apis/${id}`, reqBody);
 }
 
-// export async function sendInfraAlarm({
-//   projectId,
-// }: {
-//   projectId: number;
-// }): Promise<AxiosResponse<T.API.SimpleIssue[], any>> {
-//   return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${'SIMPLE'}&issueType=${'INFRA'}&accountId=`);
-// }
-
+/** sendInfraAlarm - 인프라 이슈 알림 전송 */
 export async function sendInfraAlarm({
   projectId,
   issueId,
@@ -337,8 +330,6 @@ export async function sendInfraAlarm({
     `/notifications/projects/${projectId}/issues/${issueId}/send?accountIds=${targetmember}`,
   );
 }
-
-// /api/projects/{projectId}/issues/{issueId}/send?accountIds=1,2,3
 
 /** readNoti - 알림 확인 */
 export async function readNoti({ notificationId }: { notificationId: number }) {
