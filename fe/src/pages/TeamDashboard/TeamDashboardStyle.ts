@@ -14,7 +14,7 @@ export const WhiteBoxWrapper = styled.article<{ $flex: string; $height: string }
   padding: 16px;
   border-radius: 12px;
   background-color: white;
-  overflow: auto;
+  overflow: hidden;
   margin-bottom: 16px;
   box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.1);
 `;
@@ -81,5 +81,3 @@ export const CurrentWork = styled.div`
     border-radius: 12px;
   }
 `;
-
-export const GantChartScrollContainer = styled(RootScrollContainer)``;
