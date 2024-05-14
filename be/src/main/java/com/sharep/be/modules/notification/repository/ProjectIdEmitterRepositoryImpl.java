@@ -1,14 +1,14 @@
-package com.sharep.be.modules.notification.service;
+package com.sharep.be.modules.notification.repository;
 
+import com.sharep.be.modules.notification.service.ProjectIdEmitterRepository;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Repository
-@RequiredArgsConstructor
-public class EmitterRepository {
+public class ProjectIdEmitterRepositoryImpl implements ProjectIdEmitterRepository {
+
     private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
 
     public void save(Long id, SseEmitter emitter) {
