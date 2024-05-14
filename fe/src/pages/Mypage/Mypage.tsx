@@ -2,6 +2,7 @@ import { NoneSideBarLayout } from '@/layouts';
 import * as S from './MypageStyle';
 import * as GS from '@/components/Grass/GrassStyle';
 import * as G from '@/styles';
+import * as T from '@/types';
 // import * as API from '@/apis/projects';
 import * as API from '@/apis';
 import { GalleryGridWrapper, UserImg } from '@/components';
@@ -16,21 +17,21 @@ import { userState } from '@/stores/atoms/loadUser';
 import { Pencil } from 'lucide-react';
 import { useModal } from '@/customhooks';
 ////////////////////////DUMMY
-const issueList = [
-  ...Array.from({ length: 7 }, (_, index) => ({
-    id: `${index + 1} 페이지`,
-    title: 'SCREEN',
-    bio: 'Lorem ipsum',
-    accounts: ['/youjack.png', '/lee-jae-yong.png'],
-    createdAt: '2024.04.27',
-    add: false,
-  })),
-];
-//이건 add 추가
-const modifiedIssueList = issueList.map(issue => ({
-  ...issue,
-  add: false,
-}));
+// const issueList = [
+//   ...Array.from({ length: 7 }, (_, index) => ({
+//     id: `${index + 1} 페이지`,
+//     title: 'SCREEN',
+//     bio: 'Lorem ipsum',
+//     accounts: ['/youjack.png', '/lee-jae-yong.png'],
+//     createdAt: '2024.04.27',
+//     add: false,
+//   })),
+// ];
+// //이건 add 추가
+// const modifiedIssueList = issueList.map(issue => ({
+//   ...issue,
+//   add: false,
+// }));
 
 ////////////////////////////DUMMY
 
@@ -47,26 +48,13 @@ export default function Mypage() {
   // console.log(user);
   const {
     data: projectListResponse,
+    isSuccess: projectListSuccess,
     isFetched: projectListFetched,
     isPending: projectListPending,
   } = useQuery({
     queryKey: [{ projectList: `projectList` }],
-    queryFn: () =>
-      API.project.getProjectList().then(res => {
-        let modires = [];
-        if (res.status === 204) {
-          // console.log('HI');
-          return { projectListResponse: '' };
-        } else {
-          modires = res.data.map((issue: any) => ({
-            ...issue,
-            add: false,
-          }));
-          // console.log('WHAT? ', modires);
-        }
-
-        return modires;
-      }),
+    queryFn: () => API.project.getProjectList(),
+    select: data => data.data,
     retry: false,
     // enabled: !!initalflag,
   });
@@ -183,7 +171,7 @@ export default function Mypage() {
               )}
             </S.GrassWrapper>
           </S.HeaderWrapper>
-          {projectListFetched ? <ProjectGridWrapper issueList={projectListResponse}></ProjectGridWrapper> : <></>}
+          {projectListSuccess ? <ProjectGridWrapper projectList={projectListResponse}></ProjectGridWrapper> : <></>}
         </S.Wrapper>
       </NoneSideBarLayout>
     </>

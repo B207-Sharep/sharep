@@ -17,6 +17,7 @@ import {
   InfraJobCreationFormProps,
   SecretKeyFormProps,
   EditProps,
+  MemberInvitationFormProps,
 } from './components/Modal';
 import {
   ManualTableProps,
@@ -74,6 +75,7 @@ export type {
   JobCreationFormProps,
   InfraJobCreationFormProps,
   SecretKeyFormProps,
+  MemberInvitationFormProps,
   ManualTableProps,
   RowProps,
   SelectAssigneesCelProps,

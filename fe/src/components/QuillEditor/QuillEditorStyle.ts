@@ -26,6 +26,8 @@ export const EditorWrapper = styled.div<{ width: string; height: string; $isNone
   .ql-toolbar {
     border-radius: 8px 8px 0px 0px;
     background-color: ${PALETTE.MAIN_BACKGROUND};
+    // 여기서 props 받아서 처리해
+    display: ${({ $isNoneStyle }) => ($isNoneStyle ? 'none' : ``)};
   }
 
   .ql-toolbar.ql-snow .ql-picker-label {

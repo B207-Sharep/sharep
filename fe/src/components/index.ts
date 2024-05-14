@@ -11,7 +11,14 @@ import QuillEditor from './QuillEditor/QuillEditor';
 import FeatureManual from './FeatureManualTable/FeatureManualTable.tsx';
 import ApiManual from './ApiManualTable/ApiManualTable.tsx';
 import Modal from './Modal/Modal';
-import { ProjectCreationForm, JobCreationForm, InfraJobCreationForm, SecretKeyForm, EditForm } from './Modal/Subs';
+import {
+  ProjectCreationForm,
+  JobCreationForm,
+  InfraJobCreationForm,
+  SecretKeyForm,
+  EditForm,
+  MemberInvitationForm,
+} from './Modal/Subs';
 import GalleryCard from './GalleryCard/GalleryCard';
 import GalleryGridWrapper from './GalleryGridWrapper/GalleryGridWrapper';
 import ProjectCard from './ProjectCard/ProjectCard';
@@ -41,6 +48,7 @@ export {
   InfraJobCreationForm,
   EditForm,
   SecretKeyForm,
+  MemberInvitationForm,
   GalleryCard,
   GalleryGridWrapper,
   ProjectCard,

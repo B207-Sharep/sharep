@@ -92,6 +92,7 @@ export interface SimpleIssue {
 /** GetFeatureIssuesList - 기능 이슈 리스트 조회,  GetKanbanList - 칸반 리스트 조회  */
 
 /** GetNowIssueList - 팀원들의 진행중인 이슈 리스트 조회 */
+// TODO: type
 export interface GetNowIssueListResponse {
   issue: {
     description: string;
@@ -128,6 +129,20 @@ export interface GetJobListResponse {
 }
 /** GetJobList - 작업 리스트 조회 */
 
+/** GetProjectList - 프로젝트 리스트 조회 */
+export interface GetProjectListResponse {
+  id: number;
+  title: string;
+  bio: string;
+  accounts: {
+    id: number;
+    nickname: string;
+    email: string;
+    imageUrl: string;
+  }[];
+}
+/** GetProjectList - 프로젝트 리스트 조회 */
+
 /** GetMemberList - 프로젝트의 멤버 리스트 조회 */
 export interface GetProjectMemberListResponse {
   account: {
@@ -163,3 +178,4 @@ export interface SearchUserByEmailResponse {
   email: string;
   imageUrl: string | null;
 }
+/** SearchUserByEmail - 이메일 계정 조회 */

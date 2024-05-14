@@ -247,7 +247,7 @@ export default function ScreenManualDetail() {
                   </S.ContentItem>
                 </>
               )}
-              {selectedIssueDetail?.connectedIssues && (
+              {/* {selectedIssueDetail?.connectedIssues && (
                 <S.ContentItem>
                   <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
                     기능 명세서
@@ -260,7 +260,7 @@ export default function ScreenManualDetail() {
                     />
                   </S.ManualWrapper>
                 </S.ContentItem>
-              )}
+              )} */}
               {/* {selectedIssueDetail?.api && (
                 <S.ContentItem>
                   <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
