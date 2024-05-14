@@ -74,6 +74,8 @@ export const SideBarBtn = styled.button`
   border: solid 1px ${G.PALETTE.MAIN_COLOR};
   border-radius: 6px;
   padding: 6px 10px;
+  cursor: pointer;
+
   &:hover {
     background-color: ${G.PALETTE.GRASS_1};
     color: white;
@@ -199,4 +201,34 @@ export const NotiMessageContent = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 4px;
+`;
+
+export const TooltipContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+export const TooltipText = styled.span`
+  visibility: hidden;
+  width: auto;
+  min-width: 50px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: ${G.PALETTE.LIGHT_BLACK};
+  color: ${G.PALETTE.MAIN_WHITE};
+  text-align: left;
+  border-radius: 4px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  ${TooltipContainer}:hover & {
+    visibility: visible;
+    opacity: 1;
+  }
 `;

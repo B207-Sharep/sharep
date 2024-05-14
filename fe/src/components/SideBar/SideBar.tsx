@@ -114,15 +114,24 @@ export default function SideBar() {
             <S.SideBarMyProject>
               <S.SideBarTitle>
                 <S.SideBarFont $size="18px" $weight={700}>
+                  {/* TODO */}
                   Share.P
                 </S.SideBarFont>
                 <S.SideBarBtnGroup>
-                  <S.SideBarBtn onClick={handleHistoryClick}>
-                    <CommitHistory color={G.PALETTE.MAIN_COLOR} size={14}></CommitHistory>
-                  </S.SideBarBtn>
-                  <S.SideBarBtn onClick={handleModalOpen}>
-                    <Plus color={G.PALETTE.MAIN_COLOR} size={14}></Plus>
-                  </S.SideBarBtn>
+                  <S.TooltipContainer>
+                    <S.SideBarBtn onClick={handleHistoryClick}>
+                      <CommitHistory color={G.PALETTE.MAIN_COLOR} size={14}></CommitHistory>
+                    </S.SideBarBtn>
+                    <S.TooltipText>작업 기록</S.TooltipText>
+                  </S.TooltipContainer>
+
+                  <S.TooltipContainer>
+                    <S.SideBarBtn onClick={handleModalOpen}>
+                      <Plus color={G.PALETTE.MAIN_COLOR} size={14}></Plus>
+                    </S.SideBarBtn>
+                    <S.TooltipText>새 작업 생성</S.TooltipText>
+                  </S.TooltipContainer>
+
                   <Comp.Modal modalId="job" title="새 작업 작성">
                     <Comp.JobCreationForm modalId="job" />
                   </Comp.Modal>
