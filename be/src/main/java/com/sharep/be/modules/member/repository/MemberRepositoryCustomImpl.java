@@ -63,7 +63,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
 
     @Override
     public List<Member> findAllWithAssigneeByProjectIdAndAccountId(Long projectId, Long accountId) {
-        return queryFactory.select(member).distinct()
+        List<Member> members = queryFactory.select(member).distinct()
                 .from(member)
                 .innerJoin(member.project, project).fetchJoin()
                 .innerJoin(member.account, account).fetchJoin()
@@ -74,7 +74,23 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
                 .where(member.project.id.eq(projectId))
                 .where(eqAccountId(accountId))
                 .where(assignee.state.eq(State.NOW))
+                .orderBy(account.createdAt.desc())
                 .fetch();
+//        members.addAll(queryFactory.select(member).distinct()
+//                .from(member)
+//                .innerJoin(member.project, project).fetchJoin()
+//                .innerJoin(member.account, account).fetchJoin()
+//                .leftJoin(member.roles, role1).fetchJoin()
+//                .leftJoin(member.assignees, assignee).fetchJoin()
+//                .leftJoin(assignee.issue, issue).fetchJoin()
+//                .leftJoin(issue.api, api).fetchJoin()
+//                .where(member.project.id.eq(projectId))
+//                .where(eqAccountId(accountId))
+//                .where(assignee.state.isNull())
+//                .orderBy(account.createdAt.desc())
+//                .fetch());
+
+        return members;
     }
 
     private BooleanExpression eqAccountId(Long accountId) {
