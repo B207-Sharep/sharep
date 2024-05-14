@@ -157,7 +157,7 @@ export const NotiDropdownHeader = styled.div`
   padding: 16px 12px 20px;
 `;
 
-export const NotiItem = styled.div<{ $unread: boolean }>`
+export const NotiItem = styled.div<{ $isRead: boolean }>`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -165,7 +165,7 @@ export const NotiItem = styled.div<{ $unread: boolean }>`
   justify-content: center;
   padding: 8px 12px;
   border-top: 1px solid #e3e3e3;
-  background-color: ${({ $unread }) => ($unread ? `${G.PALETTE.MAIN_BACKGROUND}` : `${G.PALETTE.MAIN_WHITE}`)};
+  background-color: ${({ $isRead }) => ($isRead ? `${G.PALETTE.MAIN_BACKGROUND}` : `${G.PALETTE.MAIN_WHITE}`)};
 `;
 
 export const NotiIcon = styled.div`

@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { instanceOfFormData, instanceOfJson, instanceOfEventStream } from '../instance';
+import { instanceOfEventStream, instanceOfFormData, instanceOfJson } from '../instance';
 import * as T from '@types';
 
 export async function getGrass() {
@@ -318,14 +318,7 @@ export async function updateApi({
   return instanceOfJson.put(`/projects/${projectId}/apis/${id}`, reqBody);
 }
 
-// export async function sendInfraAlarm({
-//   projectId,
-// }: {
-//   projectId: number;
-// }): Promise<AxiosResponse<T.API.SimpleIssue[], any>> {
-//   return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${'SIMPLE'}&issueType=${'INFRA'}&accountId=`);
-// }
-
+/** ConnectNotiList - 인프라 이슈 알림 전송 */
 export async function sendInfraAlarm({
   projectId,
   issueId,
@@ -340,4 +333,16 @@ export async function sendInfraAlarm({
   );
 }
 
-// /api/projects/{projectId}/issues/{issueId}/send?accountIds=1,2,3
+/** ConnectNotiList - 내 알림 목록 연결 */
+export async function connectNotiList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.GetNotificationListResponse[], any>> {
+  return instanceOfEventStream.get(`/notifications/projects/${projectId}/subscriptions`);
+}
+
+/** readNoti - 알림 확인 */
+export async function readNoti({ notificationId }: { notificationId: number }) {
+  return instanceOfEventStream.post(`/notifications/${notificationId}`);
+}
