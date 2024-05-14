@@ -178,3 +178,20 @@ export interface SearchUserByEmailResponse {
   imageUrl: string | null;
 }
 /** SearchUserByEmail - 이메일 계정 조회 */
+
+/** GetNotificationList - 알림  */
+export interface GetNotificationListResponse {
+  notificationId: number;
+  accountId: number;
+  nickname: string;
+  roles: Extract<T.RoleBadgeProps, 'role'>[];
+  issueId: number;
+  type: 'FEATURE' | 'SCREEN' | 'INFRA';
+  message: string;
+  issueName: string;
+  finishedAt: string;
+  isRead: boolean;
+}
+/** GetNotificationList - 알림  */
+
+
