@@ -15,6 +15,10 @@ import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
 import com.sharep.be.modules.notification.service.NotificationRepository;
 import com.sharep.be.modules.notification.service.NotificationService;
+import com.sharep.be.modules.project.Project;
+import com.sharep.be.modules.project.dto.ProjectDto.ProjectResponseDto;
+import com.sharep.be.modules.project.repository.ProjectRepository;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +35,7 @@ public class AssigneeService {
     private final MemberRepository memberRepository;
     private final IssueRepository issueRepository;
     private final NotificationRepository notificationRepository;
+    private final ProjectRepository projectRepository;
 
     public Long update(Long accountId, Long projectId, Long issueId, State state) {
 
@@ -126,8 +131,22 @@ public class AssigneeService {
         return assigneeRepository.findAllProjectNowIssueByProjectId(projectId);
     }
 
+    @Transactional(readOnly = true)
     public List<Member> readProjectMemberNowIssue(Long projectId) {
-        return memberRepository.findAllWithAssigneeByProjectId(projectId);
+        List<Member> members = memberRepository.findAllWithAssigneeByProjectId(
+                projectId);
+
+        Project project = projectRepository.findWithLeaderAndMembersById(projectId)
+                .orElseThrow(() ->
+                        new RuntimeException("프로젝트가 없습니다."));
+        for(Member member : project.getMembers()){
+            if(!members.contains(member)){
+                members.add(member);
+            }
+        }
+
+        members.sort((o1, o2) -> Long.compare(o1.getAccount().getId(), o2.getAccount().getId()));
+        return members;
     }
 
     public List<Assignee> readProjectNowOwnIssue(Long projectId, Long accountId) {
@@ -137,6 +156,7 @@ public class AssigneeService {
                 accountId);
     }
 
+    @Transactional(readOnly = true)
     public List<Member> readProjectMemberNowOwnIssue(Long projectId, Long accountId) {
         return memberRepository.findAllWithAssigneeByProjectIdAndAccountId(projectId, accountId);
     }

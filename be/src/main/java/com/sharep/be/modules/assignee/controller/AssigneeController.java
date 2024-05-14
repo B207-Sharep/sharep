@@ -95,6 +95,7 @@ public class AssigneeController {
                 .map(member -> {
                             List<Assignee> assignees = member.getAssignees();
                             Set<Issue> issues = new HashSet<>();
+
                             for (Assignee assignee : assignees) {
                                 issues.add(assignee.getIssue() == null ? null : assignee.getIssue());
                             }
