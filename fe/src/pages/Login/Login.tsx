@@ -33,7 +33,6 @@ export default function Login() {
         console.log('ERROR');
       }
     } catch (error: any) {
-      console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEE', error);
       setloginError(error.response.data);
     }
   };
