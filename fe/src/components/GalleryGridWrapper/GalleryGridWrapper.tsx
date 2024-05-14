@@ -18,7 +18,7 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
     mutationKey: [{ func: `create-new-issue`, projectId }],
     mutationFn: API.project.createNewIssue,
     onSuccess: () => {
-      console.log('선언');
+      // console.log('선언');
       queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issues`, projectId }] });
       // 아마 INFRA도 한번더 해야함
       queryClient.invalidateQueries({ queryKey: [{ func: `get-infra-issues`, projectId }] });
@@ -43,7 +43,7 @@ export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWra
         },
         {
           onSuccess: () => {
-            console.log('사용');
+            // console.log('사용');
             setCreateNewCard(false);
             setNewIssueName('');
           },

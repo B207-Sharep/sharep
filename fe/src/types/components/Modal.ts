@@ -47,10 +47,15 @@ export interface InfraJobCreationFormProps {
   name: string;
   description: string;
   notiUsers: {
-    accountId: number;
-    nickname: string;
-    roles: T.RoleBadgeProps['role'][];
-    userImageUrl?: string;
+    account: {
+      email: string;
+      id: number;
+      imageUrl: string;
+      nickname: string;
+    };
+    id: number;
+    roles: Extract<T.RoleBadgeProps, 'role'>[];
+    summary: string | null;
   }[];
 }
 
