@@ -14,7 +14,7 @@ public interface AssigneeRepository {
 
     boolean existsByMemberIdAndState(Long id, State state);
 
-    Assignee findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId, Long issueId, Long accountId);
+    Optional<Assignee> findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId, Long issueId, Long accountId);
 
     List<Assignee> findAllProjectNowIssueByProjectId(Long projectsId);
 

@@ -14,5 +14,5 @@ public interface NotificationService {
 
     SseEmitter subscribeProjectId(Long projectId);
 
-    void updateIssue(Long projectId, IssueUpdate issueUpdate);
+    void updateIssue(Long projectId, Long issueId, IssueUpdate issueUpdate);
 }

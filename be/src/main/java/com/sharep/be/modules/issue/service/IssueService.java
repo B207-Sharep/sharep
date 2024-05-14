@@ -17,5 +17,7 @@ public interface IssueService {
 
     void updateIssue(Long id, Long accountId, Long projectId, IssueUpdate issueUpdate);
 
+    void updateIssue(Long issueId, IssueUpdate issueUpdate);
+
     void deleteIssue(Long id, Long accountId, Long projectId);
 }

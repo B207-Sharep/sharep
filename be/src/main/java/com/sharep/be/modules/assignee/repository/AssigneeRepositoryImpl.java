@@ -42,7 +42,7 @@ public class AssigneeRepositoryImpl implements AssigneeRepository {
     }
 
     @Override
-    public Assignee findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId, Long issueId,
+    public Optional<Assignee> findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId, Long issueId,
             Long accountId) {
         return assigneeJpaRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId,
                 issueId, accountId);
