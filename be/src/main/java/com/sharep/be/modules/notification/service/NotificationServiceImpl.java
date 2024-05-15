@@ -145,7 +145,16 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public SseEmitter subscribeProjectId(Long projectId) {
-        return getProjectIdEmitter(projectId);
+        SseEmitter emitter = getProjectIdEmitter(projectId);
+
+        List<IssueResponse> data = issueService.getIssues(projectId, null, IssueType.FEATURE,
+                        DataType.DETAIL).stream()
+                .map(IssueResponse::from)
+                .toList();
+
+        sendToProjectIdClient(projectId, data);
+
+        return emitter;
     }
 
     @Override
