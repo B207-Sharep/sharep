@@ -1,11 +1,7 @@
 package com.sharep.be.modules.notification.service;
 
-import static io.jsonwebtoken.lang.Assert.notNull;
-
-import com.sharep.be.modules.account.Account;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.service.AssigneeRepository;
-import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
 import com.sharep.be.modules.issue.IssueResponse;
 import com.sharep.be.modules.issue.service.IssueService;
@@ -44,20 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         List<NotificationMessage> notificationMessages = notificationRepository.findAllByProjectIdAndAccountId(
                         projectId, accountId).stream()
-                .map(notification -> {
-                    Member anotherMember = notification.getMember();
-                    Assignee anotherAssignee = notification.getAssignee();
-                    Issue anotherIssue = anotherAssignee.getIssue();
-                    Account anotherAccount = anotherMember.getAccount();
-
-                    notNull(anotherAccount);
-                    notNull(anotherMember);
-                    notNull(anotherAssignee);
-                    notNull(anotherIssue);
-
-                    return NotificationMessage.from(notification, anotherAccount, anotherMember,
-                            anotherAssignee, anotherIssue);
-                })
+                .map(NotificationMessage::from)
                 .toList();
 
         notifyAccountId(
@@ -155,17 +138,23 @@ public class NotificationServiceImpl implements NotificationService {
 
             notifyAccountId(
                     targetMember.getAccount().getId(),
-                    NotificationMessage.from(
-                            notification,
-                            assignee
-                    )
+                    NotificationMessage.from(notification)
             );
         }
     }
 
     @Override
     public SseEmitter subscribeProjectId(Long projectId) {
-        return getProjectIdEmitter(projectId);
+        SseEmitter emitter = getProjectIdEmitter(projectId);
+
+        List<IssueResponse> data = issueService.getIssues(projectId, null, IssueType.FEATURE,
+                        DataType.DETAIL).stream()
+                .map(IssueResponse::from)
+                .toList();
+
+        sendToProjectIdClient(projectId, data);
+
+        return emitter;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.sharep.be.modules.notification.controller;
 
 import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
+import com.sharep.be.modules.notification.controller.response.NotificationIdResponse;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
