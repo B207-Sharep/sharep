@@ -42,6 +42,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
                 .innerJoin(issue.api, api).fetchJoin()
                 .where(project.id.eq(projectId))
                 .where(account.id.eq(accountId))
+                .orderBy(notification.createdAt.desc())
                 .fetch();
     }
 

@@ -24,7 +24,13 @@ public record NotificationMessage(
         String message,
         boolean isRead
 ) {
-    public static NotificationMessage from(Notification notification, Account account, Member member, Assignee assignee, Issue issue){
+
+    public static NotificationMessage from(Notification notification) {
+        Assignee assignee = notification.getAssignee();
+        Issue issue = assignee.getIssue();
+        Member member = notification.getMember();
+        Account account = member.getAccount();
+
         return NotificationMessage.builder()
                 .notificationId(notification.getId())
                 .accountId(account.getId())
@@ -37,19 +43,9 @@ public record NotificationMessage(
                 .issueId(issue.getId())
                 .type(issue.getType())
                 .issueName(issue.getIssueName())
-                .finishedAt(assignee.getFinishedAt())
+                .finishedAt(notification.getCreatedAt())
                 .message(account.getNickname() + "님이 " + issue.getIssueName() + "를 완료했습니다.")
-                .isRead(false)
+                .isRead(notification.isRead())
                 .build();
-    }
-
-    public static NotificationMessage from(Notification notification, Assignee assignee){
-        return from(
-                notification,
-                assignee.getMember().getAccount(),
-                assignee.getMember(),
-                assignee,
-                assignee.getIssue()
-        );
     }
 }
