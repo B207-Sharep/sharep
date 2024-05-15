@@ -39,7 +39,7 @@ public record NotificationMessage(
                 .issueName(issue.getIssueName())
                 .finishedAt(assignee.getFinishedAt())
                 .message(account.getNickname() + "님이 " + issue.getIssueName() + "를 완료했습니다.")
-                .isRead(false)
+                .isRead(notification.isRead())
                 .build();
     }
 
