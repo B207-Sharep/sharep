@@ -92,7 +92,6 @@ export interface SimpleIssue {
 /** GetFeatureIssuesList - 기능 이슈 리스트 조회,  GetKanbanList - 칸반 리스트 조회  */
 
 /** GetNowIssueList - 팀원들의 진행중인 이슈 리스트 조회 */
-// TODO: type
 export interface GetNowIssueListResponse {
   issues: {
     description: string;
@@ -179,3 +178,20 @@ export interface SearchUserByEmailResponse {
   imageUrl: string | null;
 }
 /** SearchUserByEmail - 이메일 계정 조회 */
+
+/** GetNotificationList - 알림  */
+export interface GetNotificationListResponse {
+  notificationId: number;
+  accountId: number;
+  nickname: string;
+  roles: Extract<T.RoleBadgeProps, 'role'>[];
+  issueId: number;
+  type: 'FEATURE' | 'SCREEN' | 'INFRA';
+  message: string;
+  issueName: string;
+  finishedAt: string;
+  isRead: boolean;
+}
+/** GetNotificationList - 알림  */
+
+

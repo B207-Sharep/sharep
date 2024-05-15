@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { instanceOfFormData, instanceOfJson } from '../instance';
+import { instanceOfEventStream, instanceOfFormData, instanceOfJson } from '../instance';
 import * as T from '@types';
 
 export async function getGrass() {
@@ -51,7 +51,6 @@ export async function getKanbanList({
 }
 
 /** 팀원들의 진행중인 리스트 조회 */
-// TODO: type
 export async function getNowIssueAboutTeamMembers({
   projectId,
 }: {
@@ -61,12 +60,11 @@ export async function getNowIssueAboutTeamMembers({
 }
 
 /** 본인의 진행중인 리스트 조회 */
-// TODO: type
 export async function getNowIssueAboutMe({
   projectId,
 }: {
   projectId: number;
-}): Promise<AxiosResponse<T.API.GetNowIssueListResponse, any>> {
+}): Promise<AxiosResponse<T.API.GetNowIssueListResponse[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/own/now/issues`);
 }
 
@@ -316,4 +314,24 @@ export async function updateApi({
   };
 }) {
   return instanceOfJson.put(`/projects/${projectId}/apis/${id}`, reqBody);
+}
+
+/** sendInfraAlarm - 인프라 이슈 알림 전송 */
+export async function sendInfraAlarm({
+  projectId,
+  issueId,
+  targetmember,
+}: {
+  projectId: number;
+  issueId: number;
+  targetmember: number[];
+}) {
+  return await instanceOfEventStream.post(
+    `/notifications/projects/${projectId}/issues/${issueId}/send?accountIds=${targetmember}`,
+  );
+}
+
+/** readNoti - 알림 확인 */
+export async function readNoti({ notificationId }: { notificationId: number }) {
+  return instanceOfEventStream.patch(`/notifications/${notificationId}`);
 }

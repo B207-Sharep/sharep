@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as S from './ModalStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
@@ -8,15 +8,28 @@ import { useModal } from '@/customhooks';
 import { X } from 'lucide-react';
 import * as API from '@/apis';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export default function Modal({ modalId, title, subTitle, children, btnText }: T.ModalProps) {
   const queryClient = useQueryClient();
   const { closeModal } = useModal(modalId);
-  const { projectId } = useParams();
+  const { projectId, manualId } = useParams();
   const { isOpen, isValid } = useRecoilValue(modalDataState(modalId));
 
-  // console.log(isValid, 'VAL');
+  // const [infraAlarm, setInfraAlarm] = useState([]);
+  // const {
+  //   data: sendInfraAlarmResponse,
+  //   isSuccess: sendInfraAlarmSuccess,
+  //   isFetched: sendInfraAlarmFetched,
+  //   isPending: sendInfraAlarmPending,
+  // } = useQuery({
+  //   queryKey: [{ func: `send-infra-alarm` }],
+  //   queryFn: () =>
+  //     API.project.sendInfraAlarm({ projectId: Number(projectId), issueId: Number(manualId), targetmember: infraAlarm }),
+  //   select: data => data.data,
+  //   retry: false,
+  //   // enabled: !!initalflag,
+  // });
 
   const createNewProjectMutation = useMutation({
     mutationKey: [{ func: `create-new-project` }],
@@ -88,6 +101,24 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
               projectId: Number(projectId),
               newJob: contents as T.InfraJobCreationFormProps,
             });
+            if (contents.notiUsers.length > 0) {
+              let accountIdArray: any[] = [];
+              contents.notiUsers.map((user: any) => {
+                accountIdArray.push(user.account.id);
+              });
+
+              try {
+                const res = await API.project.sendInfraAlarm({
+                  projectId: Number(projectId),
+                  issueId: Number(manualId),
+                  targetmember: accountIdArray,
+                });
+
+                console.log(res, 'ALARM RES');
+              } catch (error: any) {
+                console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEE', error);
+              }
+            }
             break;
           case 'project-secretKey':
             break;

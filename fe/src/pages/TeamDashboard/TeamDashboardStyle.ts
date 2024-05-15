@@ -62,7 +62,8 @@ export const YesterdayWork = styled.div`
 
 export const CurrentWorksScrollContainer = styled(RootScrollContainer)`
   display: grid;
-  grid-template-columns: repeat(2, calc((554px - 10px - 8px) / 2));
+  grid-template-columns: repeat(auto-fill, minmax(263px, 1fr));
+  /* grid-template-columns: repeat(2, calc((554px - 10px - 8px) / 2)); */
   grid-gap: 10px;
   z-index: 1;
 `;
