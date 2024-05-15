@@ -6,13 +6,13 @@ import { BrowserRouter } from 'react-router-dom';
 import ReactQueryProvider from './providers/ReactQueryProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ReactQueryProvider>
-      <RecoilRoot>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </RecoilRoot>
-    </ReactQueryProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <ReactQueryProvider>
+    <RecoilRoot>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </RecoilRoot>
+  </ReactQueryProvider>,
+  // </React.StrictMode>,
 );
