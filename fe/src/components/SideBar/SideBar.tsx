@@ -21,12 +21,16 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '@/stores/atoms/loadUser';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function SideBar() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
+  const [notifications, setNotifications] = useState<T.API.GetNotificationListResponse[] | null>(null);
+  const [unreadNoti, setUnreadNoti] = useState<number | null>(null);
   const user = useRecoilValue(userState);
   const { projectId } = useParams();
 
@@ -44,36 +48,47 @@ export default function SideBar() {
     refetchOnReconnect: false,
   });
 
-  // const [data, setData] = useState(null);
-
-  const EventSource = EventSourcePolyfill;
   useEffect(() => {
-    console.log(localStorage.getItem('token'));
-    const eventSource = new EventSource(
-      `${import.meta.env.VITE_END_POINT}/notifications/projects/${projectId}/accounts/subscriptions`,
-      {
+    const token = localStorage.getItem('token');
+    const url = `${import.meta.env.VITE_END_POINT}/notifications/projects/${projectId}/accounts/subscriptions`;
+
+    if (!token) return;
+
+    const eventSourceInit = () =>
+      new EventSourcePolyfill(url, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'text/event-stream',
+          Authorization: `Bearer ${token}`,
         },
-      },
-    );
+      });
 
-    eventSource.addEventListener('sse', (event: any) => {
-      const { data } = event;
-      console.log(data);
-    });
+    let eventSource = eventSourceInit();
 
-    eventSource.onmessage = event => {
+    const onMessage = (event: any) => {
       const { data } = event;
-      console.log(data);
+      const notificationList = JSON.parse(data);
+      console.log('message', notificationList);
+
+      const count = notificationList.filter((noti: T.API.GetNotificationListResponse) => noti.isRead === false).length;
+
+      setNotifications(notificationList);
+      setUnreadNoti(count);
     };
 
-    eventSource.onerror = () => {
-      //에러 발생시 할 동작
-      console.log('ERROR');
-      eventSource.close(); //연결 끊기
+    const onError = (event: any) => {
+      console.error('EventSource failed. Reconnecting...', event);
+      eventSource.close();
+      setTimeout(() => {
+        eventSource = eventSourceInit();
+        setupEventSource(eventSource);
+      }, 1000);
     };
+
+    const setupEventSource = (es: EventSourcePolyfill) => {
+      es.addEventListener('sse', onMessage);
+      es.onerror = onError;
+    };
+
+    setupEventSource(eventSource);
 
     return () => {
       eventSource.close();
@@ -155,7 +170,6 @@ export default function SideBar() {
             <S.SideBarMyProject>
               <S.SideBarTitle>
                 <S.SideBarFont $size="18px" $weight={700}>
-                  {/* TODO */}
                   {projectInfoSuccess && projectInfoResponse && projectInfoResponse.title}
                 </S.SideBarFont>
                 <S.SideBarBtnGroup>
@@ -228,17 +242,20 @@ export default function SideBar() {
           <S.SideBarContents className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
             <S.NotiDropdownContainer>
               <NOTI></NOTI>
-              <S.SideBarFont $size="12px" $weight={400}>
+              <S.SideBarFont $size="14px" $weight={400}>
                 알림
               </S.SideBarFont>
+              {unreadNoti && unreadNoti > 0 && (
+                <S.UnReadMessage>{unreadNoti >= 100 ? `99+` : unreadNoti}</S.UnReadMessage>
+              )}
               <S.NotiDropdownContent $show={showNoti}>
                 <S.NotiDropdownHeader>
                   <S.StyledText color={G.PALETTE.SUB_BLACK} fontSize={16} fontWeight={700}>
                     알림 목록
                   </S.StyledText>
                 </S.NotiDropdownHeader>
-                {/* {myNotificationSuccess &&
-                  myNotificationResponse.map(noti => (
+                {notifications &&
+                  notifications.map(noti => (
                     <S.NotiItem key={noti.notificationId} $isRead={noti.isRead} onClick={handleNotiClick(noti)}>
                       <S.NotiMessage>
                         <S.NotiIcon>
@@ -250,7 +267,7 @@ export default function SideBar() {
                             {noti.message}
                           </S.StyledText>
                           <S.StyledText color={noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={10}>
-                            {noti.finishedAt}
+                            {noti.finishedAt && dayjs(noti.finishedAt).locale('ko').fromNow()}
                           </S.StyledText>
                         </S.NotiMessageContent>
                       </S.NotiMessage>
@@ -265,7 +282,7 @@ export default function SideBar() {
                         </S.RoleBadgeList>
                       </S.NotiUserInfo>
                     </S.NotiItem>
-                  ))} */}
+                  ))}
               </S.NotiDropdownContent>
             </S.NotiDropdownContainer>
           </S.SideBarContents>

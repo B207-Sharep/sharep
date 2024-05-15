@@ -232,3 +232,16 @@ export const TooltipText = styled.span`
     opacity: 1;
   }
 `;
+
+export const UnReadMessage = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e42a2a;
+  border-radius: 25%;
+  color: ${G.PALETTE.MAIN_WHITE};
+  padding: 2px;
+  font-size: 12px;
+`;
