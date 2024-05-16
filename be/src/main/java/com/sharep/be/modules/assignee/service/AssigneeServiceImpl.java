@@ -13,9 +13,7 @@ import com.sharep.be.modules.notification.controller.NotificationService;
 import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
 import com.sharep.be.modules.notification.service.NotificationRepository;
-import com.sharep.be.modules.project.repository.ProjectRepository;
 import java.util.HashSet;
-
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +31,6 @@ public class AssigneeServiceImpl implements AssigneeService {
     private final MemberRepository memberRepository;
     private final IssueRepository issueRepository;
     private final NotificationRepository notificationRepository;
-    private final ProjectRepository projectRepository;
 
     public Long update(Long accountId, Long projectId, Long issueId, State state) {
 
@@ -111,9 +108,6 @@ public class AssigneeServiceImpl implements AssigneeService {
         return assignee.getId();
     }
 
-    public List<Assignee> readProjectNowIssue(Long projectId) {
-        return assigneeRepository.findAllProjectNowIssueByProjectId(projectId);
-    }
 
     @Transactional(readOnly = true)
     public List<MemberWithIssueResponse> readProjectMemberNowIssue(Long projectId) {
@@ -135,16 +129,11 @@ public class AssigneeServiceImpl implements AssigneeService {
                 .toList();
     }
 
-    public List<Assignee> readProjectNowOwnIssue(Long projectId, Long accountId) {
-
-        return assigneeRepository.findAllProjectNowIssueByProjectIdAndAccountId(
-                projectId,
-                accountId);
-    }
-
     @Transactional(readOnly = true)
-    public List<MemberWithIssueResponse> readProjectMemberNowOwnIssue(Long projectId, Long accountId) {
-        return memberRepository.findAllWithAssigneeByProjectIdAndAccountId(projectId, accountId).stream()
+    public List<MemberWithIssueResponse> readProjectMemberNowOwnIssue(Long projectId,
+            Long accountId) {
+        return memberRepository.findAllWithAssigneeByProjectIdAndAccountId(projectId, accountId)
+                .stream()
                 .map(member -> {
                             List<Assignee> assignees = member.getAssignees();
                             Set<Issue> issues = new HashSet<>();

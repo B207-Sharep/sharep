@@ -33,16 +33,18 @@ public class JobController {
     private final JobService jobService;
 
     // 작업 생성
-    @PostMapping(value = "/projects/{projectId}/issues/{issueId}/jobs", consumes = {MediaType.APPLICATION_JSON_VALUE,  MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/projects/{projectId}/issues/{issueId}/jobs", consumes = {
+            MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<JobIdResponse> create(
             @AuthenticationPrincipal JwtAuthentication authentication,
             @PathVariable @Min(1) Long projectId,
             @PathVariable @Min(1) Long issueId,
             @Valid @RequestPart(value = "request") JobCreateRequest jobCreateRequest,
             @RequestPart(value = "image", required = false) MultipartFile image
-    ){
+    ) {
 
-        Long jobId = jobService.create(authentication.id, projectId, issueId, jobCreateRequest, image);
+        Long jobId = jobService.create(authentication.id, projectId, issueId, jobCreateRequest,
+                image);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new JobIdResponse(jobId)
@@ -54,7 +56,7 @@ public class JobController {
     public ResponseEntity<List<JobReadResponse>> read(
             @PathVariable @Min(1) Long projectId,
             JobReadRequest jobReadRequest
-    ){
+    ) {
 
         return ResponseEntity.ok(
                 jobService.read(projectId, jobReadRequest)
@@ -69,7 +71,7 @@ public class JobController {
     public ResponseEntity<Map<String, Integer>> readContribution(
             @PathVariable @Min(1) Long projectId,
             @PathVariable @Min(1) Long accountId
-    ){
+    ) {
 
         List<Job> jobs = jobService.readContribution(projectId, accountId);
 
@@ -81,7 +83,7 @@ public class JobController {
     @GetMapping("/jobs")
     public ResponseEntity<JobGrassResponse> grassRead(
             @AuthenticationPrincipal JwtAuthentication authentication
-    ){
+    ) {
         return ResponseEntity.ok(jobService.readGrass(authentication.id));
     }
 
@@ -89,7 +91,6 @@ public class JobController {
     @PostMapping("/projects/{projectId}/hook")
     public ResponseEntity<Void> readHook(@RequestBody GitlabHook hook,
             @PathVariable("projectId") Long projectId) {
-        // TODO hook work
         jobService.commitCreated(hook, projectId);
         return ResponseEntity.ok().build();
     }

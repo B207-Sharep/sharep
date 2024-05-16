@@ -37,15 +37,8 @@ public class AssigneeRepositoryImpl implements AssigneeRepository {
     }
 
     @Override
-    public boolean existsByMemberIdAndState(Long memberId, State state) {
-        return assigneeJpaRepository.existsByMemberIdAndState(memberId, state);
-    }
-
-    @Override
     public Optional<Assignee> findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId, Long issueId,
             Long accountId) {
-//        return assigneeJpaRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId,
-//                issueId, accountId);
         return Optional.ofNullable(queryFactory.select(assignee)
                 .from(assignee)
                 .innerJoin(assignee.member, member).fetchJoin()
@@ -55,29 +48,9 @@ public class AssigneeRepositoryImpl implements AssigneeRepository {
                 .innerJoin(assignee.issue, issue).fetchJoin()
                 .innerJoin(issue.api, api).fetchJoin()
                 .where(project.id.eq(projectId))
+                .where(issue.id.eq(issueId))
                 .where(account.id.eq(accountId))
                 .fetchOne());
-    }
-
-    @Override
-    public List<Assignee> findAllProjectNowIssueByProjectId(Long projectId) {
-
-        return findAllProjectNowIssueByProjectIdAndAccountId(projectId, null);
-    }
-
-    @Override
-    public List<Assignee> findAllProjectNowIssueByProjectIdAndAccountId(
-            Long projectId, Long accountId) {
-        return queryFactory.select(assignee)
-                .from(assignee)
-                .innerJoin(assignee.member, member)
-                .innerJoin(member.account, account)
-                .innerJoin(member.project, project)
-                .where(eqAccountId(accountId))
-                .where(project.id.eq(projectId))
-                .where(assignee.state.eq(State.NOW))
-                .orderBy(assignee.startedAt.asc())
-                .fetch();
     }
 
     private BooleanExpression eqAccountId(Long accountId) {

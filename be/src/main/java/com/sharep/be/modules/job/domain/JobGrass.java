@@ -7,7 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class JobGrass{
+public class JobGrass {
+
     int step;
     int count;
 
@@ -16,8 +17,10 @@ public class JobGrass{
         totalStep();
     }
 
-    private void totalStep(){
-        if(count == 0)return;
+    private void totalStep() {
+        if (count == 0) {
+            return;
+        }
         step = (count / 4) + 1; // step 0, 1~4, count 4 == step 1
         step = Math.min(step, 4); // max step 4
     }
