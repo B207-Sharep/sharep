@@ -7,7 +7,6 @@ const instance = ({
 }) => {
   return axios.create({
     baseURL: import.meta.env.VITE_END_POINT,
-
     headers: {
       'Content-Type': contentType,
       // Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
