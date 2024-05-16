@@ -38,7 +38,7 @@ export const SloganWrapper = styled.div`
   position: relative;
   /* justify-content: center; */
   /* align-items: center; */
-  background-color: ${G.PALETTE.MAIN_COLOR};
+  /* background-color: ${G.PALETTE.GRASS_1}; */
   /* background: linear-gradient(to bottom, ${G.PALETTE.MAIN_COLOR}, ${G.PALETTE.MAIN_WHITE}); */
 `;
 
@@ -59,8 +59,8 @@ export const SubSlogan = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${G.PALETTE.NO_GRASS};
-  font-size: 24px;
-  font-weight: 700;
+  /* font-size: 20px;
+  font-weight: 600; */
   padding: 30px 0px;
 `;
 
@@ -98,8 +98,8 @@ export const MonitorScreen = styled.div`
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
   padding: 0px 20px;
-  /* margin: 0px 15px; */
-  background: url('/sang-hun.png');
+  margin: 10px 0px;
+  background: no-repeat top/100% url('/landing.png');
 `;
 
 export const ContentsWrapper = styled.div`
@@ -114,16 +114,25 @@ export const ContentsWrapper = styled.div`
 export const Contents = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 350px;
+  width: 40vw;
+  height: 30vh;
   /* background-color: greenyellow; */
 `;
 
 export const CardSection = styled.div`
   display: flex;
   flex-direction: row;
-  width: 40vw;
+  width: 100%;
   height: 100%;
-  background: no-repeat center/100% url('/work-status.png');
+  /* background: no-repeat top/80% url('/work-status.png'); */
   /* background-color: greenyellow; */
+`;
+
+export const StyledText = styled.div<{ color?: string; fontSize?: number; fontWeight?: number }>`
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : '14px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? `${fontWeight}` : '400')};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

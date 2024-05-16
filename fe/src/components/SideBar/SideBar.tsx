@@ -17,7 +17,7 @@ import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 import UserImg from '../UserImg/UserImg';
 import { useModal } from '@/customhooks';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userState } from '@/stores/atoms/loadUser';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { EventSourcePolyfill } from 'event-source-polyfill';
@@ -33,6 +33,7 @@ export default function SideBar() {
   const [unreadNoti, setUnreadNoti] = useState<number | null>(null);
   const user = useRecoilValue(userState);
   const { projectId } = useParams();
+  const setUserState = useSetRecoilState(userState);
 
   const {
     data: projectInfoResponse,
@@ -152,6 +153,7 @@ export default function SideBar() {
 
   const logoutClick = () => {
     localStorage.removeItem('token');
+    setUserState(null);
     navigate('/');
   };
 

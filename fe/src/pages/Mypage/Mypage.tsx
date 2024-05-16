@@ -110,6 +110,7 @@ export default function Mypage() {
 
   const logoutClick = () => {
     localStorage.removeItem('token');
+    setUserState(null);
     navigate('/');
   };
 
