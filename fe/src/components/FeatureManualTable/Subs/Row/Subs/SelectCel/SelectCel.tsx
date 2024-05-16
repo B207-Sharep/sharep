@@ -1,28 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import * as S from './SelectCelStyle';
 import * as T from '@types';
 import * as Comp from '@components';
 
-export default function SelectCel({ initialState, fixedWidth, usingFor }: T.FeatureSelectCelProps) {
+export default function SelectCel({ initialState, fixedWidth, usingFor, readonly, onUpdate }: T.FeatureSelectCelProps) {
   const celRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(initialState || '');
-  // const [isEditingMode, setIsEditingMode] = useState(false);
-
-  // useEffect(() => {
-  //   if (isEditingMode && celRef.current) celRef.current.focus();
-  // }, [isEditingMode]);
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (celRef.current === null) return;
+    if (celRef.current === null || readonly || usingFor === 'STATE') return;
 
-    // setIsEditingMode(() => toggledValue);
     if (toggledValue) celRef.current.focus();
     else celRef.current.blur();
   };
 
   const handleListOptionClick = (e: React.MouseEvent) => {
-    setValue(String(e.currentTarget.ariaValueText));
+    if (readonly || usingFor === 'STATE') return;
 
+    setValue(String(e.currentTarget.ariaValueText));
+    onUpdate({ key: 'priority', value: e.currentTarget.ariaValueText });
     if (celRef.current) {
       celRef.current.blur();
       handleCelClick(false);
@@ -36,6 +32,7 @@ export default function SelectCel({ initialState, fixedWidth, usingFor }: T.Feat
       onFocus={() => handleCelClick(true)}
       onBlur={() => handleCelClick(false)}
       $fixedWidth={fixedWidth}
+      disabled={readonly || usingFor === 'STATE'}
     >
       <S.Palceholder role="button">{OPTIONS[usingFor][value]}</S.Palceholder>
       <S.OptionUlWrapper>

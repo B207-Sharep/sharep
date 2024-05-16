@@ -30,17 +30,15 @@ export default function FeatureManualTable({ dataList, usingFor, readonly }: T.F
           </S.Title>
         ))}
       </S.TitleRowWrapper>
-      {dataList?.map((data, dataIdx) => {
-        return (
-          <Row
-            idx={dataIdx}
-            data={data as T.API.DetailIssue}
-            usingFor={'FEATURE'}
-            readonly={readonly}
-            key={`${usingFor}-table-row-${dataIdx}`}
-          />
-        );
-      })}
+      {dataList?.map((data, dataIdx) => (
+        <Row
+          idx={dataIdx}
+          data={data as T.API.DetailIssue}
+          usingFor={'FEATURE'}
+          readonly={readonly}
+          key={`${usingFor}-table-row-${dataIdx}`}
+        />
+      ))}
     </S.TableContainer>
   );
 }
