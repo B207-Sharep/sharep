@@ -51,7 +51,6 @@ export async function getKanbanList({
 }
 
 /** 팀원들의 진행중인 리스트 조회 */
-// TODO: type
 export async function getNowIssueAboutTeamMembers({
   projectId,
 }: {
@@ -61,12 +60,11 @@ export async function getNowIssueAboutTeamMembers({
 }
 
 /** 본인의 진행중인 리스트 조회 */
-// TODO: type
 export async function getNowIssueAboutMe({
   projectId,
 }: {
   projectId: number;
-}): Promise<AxiosResponse<T.API.GetNowIssueListResponse, any>> {
+}): Promise<AxiosResponse<T.API.GetNowIssueListResponse[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/own/now/issues`);
 }
 
@@ -318,7 +316,7 @@ export async function updateApi({
   return instanceOfJson.put(`/projects/${projectId}/apis/${id}`, reqBody);
 }
 
-/** ConnectNotiList - 인프라 이슈 알림 전송 */
+/** sendInfraAlarm - 인프라 이슈 알림 전송 */
 export async function sendInfraAlarm({
   projectId,
   issueId,
@@ -333,16 +331,7 @@ export async function sendInfraAlarm({
   );
 }
 
-/** ConnectNotiList - 내 알림 목록 연결 */
-export async function connectNotiList({
-  projectId,
-}: {
-  projectId: number;
-}): Promise<AxiosResponse<T.API.GetNotificationListResponse[], any>> {
-  return instanceOfEventStream.get(`/notifications/projects/${projectId}/subscriptions`);
-}
-
 /** readNoti - 알림 확인 */
 export async function readNoti({ notificationId }: { notificationId: number }) {
-  return instanceOfEventStream.post(`/notifications/${notificationId}`);
+  return instanceOfEventStream.patch(`/notifications/${notificationId}`);
 }

@@ -70,12 +70,12 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
             }
             break;
           case 'job':
-            if (contents.issueId)
+            if (contents.issueId) {
               await createNewJobMutation.mutateAsync({
                 projectId: Number(projectId),
                 newJob: contents as T.JobCreationFormProps,
               });
-            else {
+            } else {
               alert('작업을 연결할 이슈를 선택해주세요.');
               throw Error;
             }
