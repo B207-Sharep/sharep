@@ -24,8 +24,6 @@ public interface AssigneeRepository {
 
     List<Assignee> findAccountIdsByIssueId(Long issueId);
 
-    List<Assignee> findAllByProjectIdAndIssueIdAndAccountIdsIn(Long projectId, Long issueId, Long[] accountIds);
-
     void save(Assignee assignee);
 
     void delete(Assignee assignee);

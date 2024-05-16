@@ -81,14 +81,12 @@ public class NotificationController {
 
 
     // 동시작업 시 이슈 수정 후 알림 보내기
-    @PutMapping("/projects/{projectId}/issues/{issueId}")
+    @PostMapping("/projects/{projectId}")
     public ResponseEntity<Void> sendToProjectId(
-            @PathVariable Long projectId,
-            @PathVariable Long issueId,
-            @RequestBody IssueUpdate issueUpdate
+            @PathVariable Long projectId
     ){
 
-        notificationService.updateIssue(projectId, issueId, issueUpdate);
+        notificationService.updateIssue(projectId);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -1,7 +1,6 @@
 package com.sharep.be.modules.job.domain;
 
 import com.sharep.be.modules.issue.Issue;
-import com.sharep.be.modules.job.controller.request.JobCreateRequest;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.project.dto.GitlabHook.Commit;
 import jakarta.persistence.Column;
@@ -13,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,7 +21,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "job")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)

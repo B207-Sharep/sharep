@@ -44,8 +44,19 @@ public class AssigneeRepositoryImpl implements AssigneeRepository {
     @Override
     public Optional<Assignee> findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId, Long issueId,
             Long accountId) {
-        return assigneeJpaRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId,
-                issueId, accountId);
+//        return assigneeJpaRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId,
+//                issueId, accountId);
+        return Optional.ofNullable(queryFactory.select(assignee)
+                .from(assignee)
+                .innerJoin(assignee.member, member).fetchJoin()
+                .innerJoin(member.roles, role1).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
+                .innerJoin(member.project, project).fetchJoin()
+                .innerJoin(assignee.issue, issue).fetchJoin()
+                .innerJoin(issue.api, api).fetchJoin()
+                .where(project.id.eq(projectId))
+                .where(account.id.eq(accountId))
+                .fetchOne());
     }
 
     @Override
@@ -95,23 +106,6 @@ public class AssigneeRepositoryImpl implements AssigneeRepository {
                 .leftJoin(issue.api, api).fetchJoin()
                 .leftJoin(member.roles, role1).fetchJoin()
                 .where(issue.id.eq(issueId))
-                .fetch();
-    }
-
-    @Override
-    public List<Assignee> findAllByProjectIdAndIssueIdAndAccountIdsIn(Long projectId, Long issueId,
-            Long[] accountIds) {
-        return queryFactory.select(assignee)
-                .from(assignee)
-                .innerJoin(assignee.member, member).fetchJoin()
-                .innerJoin(member.roles, role1).fetchJoin()
-                .innerJoin(member.project, project).fetchJoin()
-                .innerJoin(member.account, account).fetchJoin()
-                .innerJoin(assignee.issue, issue).fetchJoin()
-                .innerJoin(issue.api, api).fetchJoin()
-                .where(project.id.eq(projectId))
-                .where(issue.id.eq(issueId))
-                .where(account.id.in(accountIds))
                 .fetch();
     }
 

@@ -97,6 +97,23 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
         return members;
     }
 
+    @Override
+    public List<Member> findAllByProjectIdAndAccountIdIn(Long projectId, List<Long> accountIds) {
+        return queryFactory.select(member)
+                .from(member)
+                .innerJoin(member.assignees, assignee).fetchJoin()
+                .innerJoin(assignee.issue, issue).fetchJoin()
+//                .innerJoin(issue.api, api)
+                .innerJoin(issue.api, api).fetchJoin()
+//                .innerJoin(assignee.member, member)
+                .innerJoin(member.roles, role1).fetchJoin()
+                .innerJoin(member.project, project).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
+                .where(project.id.eq(projectId))
+                .where(account.id.in(accountIds))
+                .fetch();
+    }
+
     private BooleanExpression eqAccountId(Long accountId) {
         return accountId == null ? null : account.id.eq(accountId);
     }

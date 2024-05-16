@@ -28,7 +28,7 @@ public record NotificationMessage(
     public static NotificationMessage from(Notification notification) {
         Assignee assignee = notification.getAssignee();
         Issue issue = assignee.getIssue();
-        Member member = notification.getMember();
+        Member member = assignee.getMember();
         Account account = member.getAccount();
 
         return NotificationMessage.builder()

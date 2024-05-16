@@ -7,14 +7,15 @@ import com.sharep.be.modules.assignee.service.AssigneeRepository;
 import com.sharep.be.modules.common.service.port.S3Repository;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.repository.IssueRepository;
-import com.sharep.be.modules.job.domain.Job;
-import com.sharep.be.modules.job.domain.JobGrass;
+import com.sharep.be.modules.job.controller.JobService;
 import com.sharep.be.modules.job.controller.request.JobCreateRequest;
 import com.sharep.be.modules.job.controller.request.JobReadRequest;
 import com.sharep.be.modules.job.controller.response.JobGrassResponse;
+import com.sharep.be.modules.job.domain.Job;
+import com.sharep.be.modules.job.domain.JobGrass;
 import com.sharep.be.modules.member.Member;
-import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.member.Role.RoleType;
+import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.project.dto.GitlabHook;
 import com.sharep.be.modules.project.dto.GitlabHook.Commit;
 import java.time.LocalDate;
@@ -32,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class JobService {
+public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
     private final S3Repository s3Repository;

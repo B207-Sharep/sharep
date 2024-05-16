@@ -1,15 +1,13 @@
 package com.sharep.be.modules.job.controller;
 
-import com.sharep.be.modules.project.dto.GitlabHook;
-import com.sharep.be.modules.job.domain.Job;
-import com.sharep.be.modules.job.service.JobService;
 import com.sharep.be.modules.job.controller.request.JobCreateRequest;
 import com.sharep.be.modules.job.controller.request.JobReadRequest;
 import com.sharep.be.modules.job.controller.response.JobContributionResponse;
 import com.sharep.be.modules.job.controller.response.JobGrassResponse;
 import com.sharep.be.modules.job.controller.response.JobIdResponse;
 import com.sharep.be.modules.job.controller.response.JobReadResponse;
-
+import com.sharep.be.modules.job.domain.Job;
+import com.sharep.be.modules.project.dto.GitlabHook;
 import com.sharep.be.modules.security.JwtAuthentication;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
