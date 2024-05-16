@@ -13,9 +13,11 @@ import com.sharep.be.modules.storyboard.StoryboardRequest.IssueConnect;
 import com.sharep.be.modules.storyboard.repository.StoryboardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class StoryboardServiceImpl implements StoryboardService {
 
     private final StoryboardRepository storyboardRepository;
