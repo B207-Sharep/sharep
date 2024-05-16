@@ -6,6 +6,7 @@ import com.sharep.be.modules.assignee.domain.State;
 import com.sharep.be.modules.issue.Issue;
 import com.sharep.be.modules.issue.repository.IssueRepository;
 import com.sharep.be.modules.member.Member;
+import com.sharep.be.modules.member.MemberWithIssueResponse;
 import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.notification.controller.NotificationService;
 import com.sharep.be.modules.notification.domain.Notification;
@@ -13,7 +14,11 @@ import com.sharep.be.modules.notification.domain.NotificationMessage;
 import com.sharep.be.modules.notification.service.NotificationRepository;
 import com.sharep.be.modules.project.Project;
 import com.sharep.be.modules.project.repository.ProjectRepository;
+import java.util.Collections;
+import java.util.HashSet;
+
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,21 +117,23 @@ public class AssigneeService {
     }
 
     @Transactional(readOnly = true)
-    public List<Member> readProjectMemberNowIssue(Long projectId) {
+    public List<MemberWithIssueResponse> readProjectMemberNowIssue(Long projectId) {
         List<Member> members = memberRepository.findAllWithAssigneeByProjectId(
                 projectId);
 
-        Project project = projectRepository.findWithLeaderAndMembersById(projectId)
-                .orElseThrow(() ->
-                        new RuntimeException("프로젝트가 없습니다."));
-        for(Member member : project.getMembers()){
-            if(!members.contains(member)){
-                members.add(member);
-            }
-        }
-
         members.sort((o1, o2) -> Long.compare(o1.getAccount().getId(), o2.getAccount().getId()));
-        return members;
+        return members.stream()
+                .map(member -> {
+                            List<Assignee> assignees = member.getAssignees();
+                            Set<Issue> issues = new HashSet<>();
+
+                            for (Assignee assignee : assignees) {
+                                issues.add(assignee.getIssue() == null ? null : assignee.getIssue());
+                            }
+                            return new MemberWithIssueResponse(member, issues);
+                        }
+                )
+                .toList();
     }
 
     public List<Assignee> readProjectNowOwnIssue(Long projectId, Long accountId) {
@@ -137,7 +144,17 @@ public class AssigneeService {
     }
 
     @Transactional(readOnly = true)
-    public List<Member> readProjectMemberNowOwnIssue(Long projectId, Long accountId) {
-        return memberRepository.findAllWithAssigneeByProjectIdAndAccountId(projectId, accountId);
+    public List<MemberWithIssueResponse> readProjectMemberNowOwnIssue(Long projectId, Long accountId) {
+        return memberRepository.findAllWithAssigneeByProjectIdAndAccountId(projectId, accountId).stream()
+                .map(member -> {
+                            List<Assignee> assignees = member.getAssignees();
+                            Set<Issue> issues = new HashSet<>();
+                            for (Assignee assignee : assignees) {
+                                issues.add(assignee.getIssue() == null ? null : assignee.getIssue());
+                            }
+                            return new MemberWithIssueResponse(member, issues);
+                        }
+                )
+                .toList();
     }
 }
