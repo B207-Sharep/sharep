@@ -13,9 +13,7 @@ import com.sharep.be.modules.notification.controller.NotificationService;
 import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
 import com.sharep.be.modules.notification.service.NotificationRepository;
-import com.sharep.be.modules.project.Project;
 import com.sharep.be.modules.project.repository.ProjectRepository;
-import java.util.Collections;
 import java.util.HashSet;
 
 import java.util.List;
