@@ -326,7 +326,7 @@ export async function sendInfraAlarm({
   issueId: number;
   targetmember: number[];
 }) {
-  return await instanceOfEventStream.post(
+  return await instanceOfJson.post(
     `/notifications/projects/${projectId}/issues/${issueId}/send?accountIds=${targetmember}`,
   );
 }
@@ -336,20 +336,32 @@ export async function readNoti({ notificationId }: { notificationId: number }) {
   return instanceOfEventStream.patch(`/notifications/${notificationId}`);
 }
 
-/** 기능 명세서 수정 */
-export async function modifyFeatureManualIssue({
+/** 이슈 연결 생성 */
+export async function createConnectionWithIssue({
   projectId,
-  issueId,
   body,
 }: {
   projectId: number;
-  issueId: number;
   body: {
-    issueName: string | null;
-    description: string | null;
-    epic: string | null;
-    priority: T.PriorityBadgeProps[`priority`] | null;
+    featureIssueId: number;
+    screenIssueId: number;
   };
 }) {
-  return instanceOfJson.put(`/notifications/projects/${projectId}/issues/${issueId}`, body);
+  return instanceOfJson.post(`/projects/${projectId}/issues/connect`, body);
+}
+
+/** 이슈 연결 삭제 */
+export async function deleteConnectionWithIssue({
+  projectId,
+  connectionId,
+}: {
+  projectId: number;
+  connectionId: number;
+}) {
+  return instanceOfJson.delete(`/projects/${projectId}/issues/disconnect/${connectionId}`);
+}
+
+/** 기능 명세서 수정 시 알람 */
+export async function sendFeatureManualAlram({ projectId }: { projectId: number }) {
+  return instanceOfJson.post(`/notifications/projects/${projectId}`);
 }

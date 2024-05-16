@@ -14,7 +14,7 @@ export interface ApiRowProps {
   readonly?: boolean;
 }
 
-export interface ApiCelProps {
+export interface ApiTextCelProps {
   usingFor: keyof T.API.DetailApi;
   initialState: string;
   fixedWidth: string;

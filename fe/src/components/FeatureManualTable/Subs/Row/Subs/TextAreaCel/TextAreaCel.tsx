@@ -2,12 +2,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as S from './TextAreaCelStyle';
 import * as T from '@types';
 
-export default function TextAreaCel({ initialState, fixedWidth, usingFor, readonly, onUpdate }: T.FeatureCelProps) {
+export default function TextAreaCel({
+  initialState,
+  fixedWidth,
+  usingFor,
+  readonly,
+  onUpdate,
+}: T.FeatureTextAreaCelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [value, setValue] = useState(initialState || '');
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [isPressingShiftKey, setIsPressingShiftKey] = useState(false);
+
+  useEffect(() => {
+    if (textareaRef.current === null) return;
+
+    const { scrollHeight, style } = textareaRef.current;
+    style.height = `${scrollHeight}px`;
+  }, [initialState]);
 
   useEffect(() => {
     if (isEditingMode && textareaRef.current) textareaRef.current.focus();
