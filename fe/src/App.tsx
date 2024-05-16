@@ -10,12 +10,13 @@ dayjs.extend(relativeTime);
 
 function App() {
   const user = useLoadUser();
+  const mainElement = user ? <Page.Mypage /> : <Page.Main />;
   // console.log(user, 'USER APP');
   return (
     <>
       <GlobalStyle />
       <Routes>
-        <Route path="/" element={<Page.Main />} />
+        <Route path="/" element={mainElement} />
         <Route path="/seo-jeong" element={<Page.SeoJeong />} />
         <Route path="/sung-gu" element={<Page.SungGu />} />
         <Route path="/sung-je" element={<Page.SungJe />} />

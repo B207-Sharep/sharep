@@ -44,22 +44,9 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
     return groupIssuesByType(sortedIssues);
   }, [myNowIssueResponse]);
 
-  // const sortedScreenIssueList = useMemo(() => {
-  //   if (!screenIssueListResponse) return [];
-
-  //   const sortedIssues = [...screenIssueListResponse].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-
-  //   sortedIssues.forEach(issue => {
-  //     if (issue.jobs && issue.jobs.length > 0) {
-  //       issue.jobs.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  //     }
-  //   });
-
-  //   return sortedIssues;
-  // }, [screenIssueListResponse]);
-
   const handleSelectValue = (issueId: number | null, issueName: string | null) => {
     setSelectedIssue({ id: issueId, issueName: issueName });
+    if (issueId) updateContentByKey('issueId', issueId);
   };
 
   const handleButtonClick = () => {
@@ -112,7 +99,6 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   useEffect(() => {
     if (myNowIssueSuccess) {
       console.log(myNowIssueResponse);
-      // updateContentByKey('issueId', myNowIssueResponse[0].issue[0].id);
     }
   }, [myNowIssueSuccess, myNowIssueResponse]);
 
@@ -135,7 +121,6 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
                 <ChevronDown size={12} />
               </S.AccordionIcon>
             </S.AccordionIconButton>
-            {/* TODO : 이슈 dropdown */}
             {openIssueList && (
               <S.Dropdown>
                 {groupedIssueList ? (
@@ -167,9 +152,6 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
               </S.Dropdown>
             )}
           </S.Filter>
-          {/* <S.StyledText fontSize={16} color={PALETTE.SUB_BLACK}>
-            {selectedIssueName || '작업을 연결할 이슈를 선택해주세요. '}
-          </S.StyledText> */}
         </S.IssueTitle>
       </S.TitleContainer>
       <S.Container onClick={handleButtonClick} onDragOver={handleDragOver} onDrop={handleDrop}>

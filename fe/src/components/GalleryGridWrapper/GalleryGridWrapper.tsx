@@ -7,21 +7,36 @@ import { PALETTE } from '@/styles';
 import { Plus } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userState } from '@/stores';
 
 export default function GalleryGridWrapper({ issueList, type }: T.GalleryGridWrapperProps) {
   const [createNewCard, setCreateNewCard] = useState<boolean>(false);
   const [newIssueName, setNewIssueName] = useState<string>('');
-  const { projectId } = useParams();
+  const { projectId, manualId } = useParams();
   const queryClient = useQueryClient();
 
+  const user = useRecoilValue(userState);
+  const accountId = user?.id;
   const createNewIssueMutation = useMutation({
     mutationKey: [{ func: `create-new-issue`, projectId }],
     mutationFn: API.project.createNewIssue,
-    onSuccess: () => {
-      // console.log('선언');
+    onSuccess: res => {
+      console.log('M');
+      createAssignee({ issueId: Number(res.data.id), accountId: Number(accountId) });
+      // queryClient.invalidateQueries({ queryKey: [{ func: `create-issue-assignee`, projectId, manualId, accountId }] });
+
       queryClient.invalidateQueries({ queryKey: [{ func: `get-screen-issues`, projectId }] });
       // 아마 INFRA도 한번더 해야함
       queryClient.invalidateQueries({ queryKey: [{ func: `get-infra-issues`, projectId }] });
+    },
+  });
+
+  const { mutate: createAssignee } = useMutation({
+    mutationFn: ({ issueId, accountId }: { issueId: number; accountId: number }) =>
+      API.project.createIssueAssignee({ projectId: Number(projectId), issueId, accountId }),
+    onSuccess: () => {
+      console.log('Connect Success');
     },
   });
 

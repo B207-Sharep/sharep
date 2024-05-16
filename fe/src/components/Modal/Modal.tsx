@@ -9,27 +9,14 @@ import { X } from 'lucide-react';
 import * as API from '@/apis';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { userState } from '@/stores';
 
 export default function Modal({ modalId, title, subTitle, children, btnText }: T.ModalProps) {
   const queryClient = useQueryClient();
   const { closeModal } = useModal(modalId);
   const { projectId, manualId } = useParams();
   const { isOpen, isValid } = useRecoilValue(modalDataState(modalId));
-
-  // const [infraAlarm, setInfraAlarm] = useState([]);
-  // const {
-  //   data: sendInfraAlarmResponse,
-  //   isSuccess: sendInfraAlarmSuccess,
-  //   isFetched: sendInfraAlarmFetched,
-  //   isPending: sendInfraAlarmPending,
-  // } = useQuery({
-  //   queryKey: [{ func: `send-infra-alarm` }],
-  //   queryFn: () =>
-  //     API.project.sendInfraAlarm({ projectId: Number(projectId), issueId: Number(manualId), targetmember: infraAlarm }),
-  //   select: data => data.data,
-  //   retry: false,
-  //   // enabled: !!initalflag,
-  // });
+  const user = useRecoilValue(userState);
 
   const createNewProjectMutation = useMutation({
     mutationKey: [{ func: `create-new-project` }],
@@ -66,8 +53,6 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
   });
 
   const handleCreateButtonClick = useRecoilCallback(({ snapshot }) => async () => {
-    console.log('click', isValid, isOpen);
-    console.log(modalId);
     const contents = (await snapshot.getPromise(modalDataState(modalId))).contents;
     try {
       if (contents) {
@@ -85,18 +70,17 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
             }
             break;
           case 'job':
-            if (contents.issueId)
+            if (contents.issueId) {
               await createNewJobMutation.mutateAsync({
                 projectId: Number(projectId),
                 newJob: contents as T.JobCreationFormProps,
               });
-            else {
+            } else {
               alert('작업을 연결할 이슈를 선택해주세요.');
               throw Error;
             }
             break;
           case 'infra-job':
-            console.log(contents, 'MODAL CONTENTS');
             await createNewJobMutation.mutateAsync({
               projectId: Number(projectId),
               newJob: contents as T.InfraJobCreationFormProps,
@@ -113,8 +97,6 @@ export default function Modal({ modalId, title, subTitle, children, btnText }: T
                   issueId: Number(manualId),
                   targetmember: accountIdArray,
                 });
-
-                console.log(res, 'ALARM RES');
               } catch (error: any) {
                 console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEE', error);
               }

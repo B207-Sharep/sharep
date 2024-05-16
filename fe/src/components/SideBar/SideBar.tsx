@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import * as S from './SideBarStyle';
-import { History as CommitHistory, Plus } from 'lucide-react';
+import { History as CommitHistory, Plus, LogOut } from 'lucide-react';
 import * as G from '@/styles';
 import * as Comp from '@/components';
 import * as T from '@/types';
@@ -17,7 +17,7 @@ import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
 import NOTI from '@/assets/svgs/noti.svg?react';
 import UserImg from '../UserImg/UserImg';
 import { useModal } from '@/customhooks';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userState } from '@/stores/atoms/loadUser';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { EventSourcePolyfill } from 'event-source-polyfill';
@@ -29,10 +29,11 @@ export default function SideBar() {
   const navigate = useNavigate();
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
-  const [notifications, setNotifications] = useState<T.API.GetNotificationListResponse[] | null>(null);
+  const [notifications, setNotifications] = useState<T.API.GetNotificationListResponse[]>([]);
   const [unreadNoti, setUnreadNoti] = useState<number | null>(null);
   const user = useRecoilValue(userState);
   const { projectId } = useParams();
+  const setUserState = useSetRecoilState(userState);
 
   const {
     data: projectInfoResponse,
@@ -134,8 +135,9 @@ export default function SideBar() {
     });
   };
 
-  const handleNotiClick = (noti: T.API.GetNotificationListResponse) => () => {
+  const handleNotiClick = (noti: T.API.GetNotificationListResponse) => (event: React.MouseEvent) => {
     console.log(noti);
+    event.stopPropagation();
     if (noti) {
       readNotiMutation.mutate(
         {
@@ -143,11 +145,23 @@ export default function SideBar() {
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [`get-my-notification`, projectId] });
+            setNotifications(prev =>
+              prev.map(notification =>
+                notification.notificationId === noti.notificationId ? { ...notification, isRead: true } : notification,
+              ),
+            );
+
+            setUnreadNoti(prev => (prev !== null ? prev - 1 : 0));
           },
         },
       );
     } else throw Error;
+  };
+
+  const logoutClick = () => {
+    localStorage.removeItem('token');
+    setUserState(null);
+    navigate('/');
   };
 
   return (
@@ -239,8 +253,8 @@ export default function SideBar() {
               </S.SideBarContents>
             </S.SideBarMyProject>
           </S.SideBarNavMain>
-          <S.SideBarContents className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
-            <S.NotiDropdownContainer>
+          <S.SideBarContents>
+            <S.NotiDropdownContainer className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
               <NOTI></NOTI>
               <S.SideBarFont $size="14px" $weight={400}>
                 알림
@@ -248,6 +262,7 @@ export default function SideBar() {
               {unreadNoti && unreadNoti > 0 && (
                 <S.UnReadMessage>{unreadNoti >= 100 ? `99+` : unreadNoti}</S.UnReadMessage>
               )}
+
               <S.NotiDropdownContent $show={showNoti}>
                 <S.NotiDropdownHeader>
                   <S.StyledText color={G.PALETTE.SUB_BLACK} fontSize={16} fontWeight={700}>
@@ -263,10 +278,13 @@ export default function SideBar() {
                           {!noti.isRead && <S.UnReadMark />}
                         </S.NotiIcon>
                         <S.NotiMessageContent>
-                          <S.StyledText color={noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK}>
+                          <S.StyledText color={!noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK}>
                             {noti.message}
                           </S.StyledText>
-                          <S.StyledText color={noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={10}>
+                          <S.StyledText
+                            color={!noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK}
+                            fontSize={10}
+                          >
                             {noti.finishedAt && dayjs(noti.finishedAt).locale('ko').fromNow()}
                           </S.StyledText>
                         </S.NotiMessageContent>
@@ -285,6 +303,7 @@ export default function SideBar() {
                   ))}
               </S.NotiDropdownContent>
             </S.NotiDropdownContainer>
+            <LogOut onClick={logoutClick} style={{ cursor: 'pointer' }}></LogOut>
           </S.SideBarContents>
         </S.SideBarNavList>
       </S.SideBarWrapper>
