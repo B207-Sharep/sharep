@@ -26,6 +26,7 @@ export const useModal = <Contents extends { [key: string]: any }>(modalId: strin
       contents: { ...oldModalData.contents, [key]: value },
     }));
   };
+
   const updateIsValid = (value: boolean) => {
     setModalData(oldModalData => ({
       ...oldModalData,
