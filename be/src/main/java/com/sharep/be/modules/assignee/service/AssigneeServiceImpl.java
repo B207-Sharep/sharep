@@ -1,6 +1,7 @@
 package com.sharep.be.modules.assignee.service;
 
 import com.sharep.be.modules.account.Account;
+import com.sharep.be.modules.assignee.controller.AssigneeService;
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.domain.State;
 import com.sharep.be.modules.issue.Issue;
@@ -26,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AssigneeService {
+public class AssigneeServiceImpl implements AssigneeService {
 
     private final NotificationService notificationService;
 
