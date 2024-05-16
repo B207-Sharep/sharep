@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import * as S from './FeatureManualStyle';
 import * as T from '@types';
 import * as API from '@apis';
@@ -10,7 +10,7 @@ import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 
-const END_POINT = import.meta.env.VITE_END_POINT;
+const END_POINT = import.meta.env.VITE_DEV_END_POINT;
 const { CLOSED, CONNECTING, OPEN } = { CLOSED: 2, CONNECTING: 0, OPEN: 1 };
 
 export default function FeatureManual() {
@@ -31,12 +31,18 @@ export default function FeatureManual() {
     ],
   });
 
+  const { mutate: sendAlram } = useMutation({
+    mutationFn: () => API.project.sendFeatureManualAlram({ projectId: Number(projectId) }),
+  });
+
   const { mutate: createIssue } = useMutation({
     mutationFn: ({ body }: { body: HandlerParams }) =>
       API.project.createNewIssue({ projectId: Number(projectId), newIssue: { ...body, type: 'FEATURE' } }),
     onSuccess: res => {
-      if (res.status === 201)
+      if (res.status === 201) {
         queryClient.invalidateQueries({ queryKey: [{ func: `get-detail-feature-issues`, projectId }] });
+        sendAlram();
+      }
     },
   });
   const handleCreateNewIssue = ({ issueName, description, epic, priority }: HandlerParams) => {
@@ -51,15 +57,16 @@ export default function FeatureManual() {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     eventSource.addEventListener('sse', (e: any) => {
-      const { data: response } = e;
-      console.log(`response :`, response);
-      if (JSON.parse(response).message === 'refetch') console.log(`REFETCH :`);
+      const response = JSON.parse(e.data);
+      if (response.message === 'refetch') {
+        queryClient.invalidateQueries({ queryKey: [{ func: `get-detail-feature-issues`, projectId }] });
+      }
     });
 
     return () => {
       eventSource.close();
     };
-  }, [projectId]);
+  }, [projectId, queryClient]);
 
   return (
     <L.SideBarLayout>

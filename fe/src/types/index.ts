@@ -33,14 +33,15 @@ import { NotiProps } from './components/SideBar';
 import {
   ApiManualTableProps,
   ApiRowProps,
-  ApiCelProps,
+  ApiTextCelProps,
   ApiSelectAssigneesCelProps,
   ApiSelectCelProps,
 } from './components/ApiManualTable';
 import {
   FeatureManualTableProps,
   FeatureRowProps,
-  FeatureCelProps,
+  FeatureTextAreaCelProps,
+  FeatureSelectConnectedIssueCelProps,
   FeatureSelectAssigneesCelProps,
   FeatureSelectCelProps,
 } from './components/FeatureManualTable';
@@ -98,13 +99,14 @@ export type {
   EditProps,
   ApiManualTableProps,
   ApiRowProps,
-  ApiCelProps,
+  ApiTextCelProps,
   ApiSelectAssigneesCelProps,
   ApiSelectCelProps,
   FeatureManualTableProps,
   FeatureRowProps,
-  FeatureCelProps,
+  FeatureTextAreaCelProps,
   FeatureSelectAssigneesCelProps,
+  FeatureSelectConnectedIssueCelProps,
   FeatureSelectCelProps,
   API,
 };
