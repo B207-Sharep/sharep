@@ -90,20 +90,7 @@ public class AssigneeController {
     public ResponseEntity<List<MemberWithIssueResponse>> readProjectNowIssue(
             @PathVariable @Min(1) Long projectId
     ) {
-        List<MemberWithIssueResponse> list = assigneeService.readProjectMemberNowIssue(projectId)
-                .stream()
-                .map(member -> {
-                            List<Assignee> assignees = member.getAssignees();
-                            Set<Issue> issues = new HashSet<>();
-
-                            for (Assignee assignee : assignees) {
-                                issues.add(assignee.getIssue() == null ? null : assignee.getIssue());
-                            }
-                            return new MemberWithIssueResponse(member, issues);
-                        }
-                )
-                .toList();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(assigneeService.readProjectMemberNowIssue(projectId));
 //        return ResponseEntity.ok(
 //                assigneeService.readProjectNowIssue(projectId)
 //                        .stream()
@@ -121,20 +108,8 @@ public class AssigneeController {
             @PathVariable @Min(1) Long projectId
     ) {
 
-        List<MemberWithIssueResponse> list = assigneeService.readProjectMemberNowOwnIssue(projectId,
-                        authentication.id)
-                .stream()
-                .map(member -> {
-                            List<Assignee> assignees = member.getAssignees();
-                            Set<Issue> issues = new HashSet<>();
-                            for (Assignee assignee : assignees) {
-                                issues.add(assignee.getIssue() == null ? null : assignee.getIssue());
-                            }
-                            return new MemberWithIssueResponse(member, issues);
-                        }
-                )
-                .toList();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(assigneeService.readProjectMemberNowOwnIssue(projectId,
+                authentication.id));
     }
 
 }
