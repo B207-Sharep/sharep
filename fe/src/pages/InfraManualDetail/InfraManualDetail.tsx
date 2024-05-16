@@ -99,7 +99,7 @@ export default function InfraManualDetail() {
             </S.CommitDateWrapper>
             <S.CommitList>
               {commits.map(commit => (
-                <Comp.Commit key={`commit-${commit.id}`} {...commit} infra={true} disabled={false} />
+                <Comp.Commit key={`commit-${commit.id}`} {...commit} disabled={false} />
               ))}
             </S.CommitList>
           </div>

@@ -29,7 +29,6 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
     queryFn: () => API.project.getProjectMemberList({ projectId: Number(projectId) }),
   });
 
-  console.log(memberListResponse, 'member');
   const updateValidityAndIssueId = () => {
     if (contents.description.length > 0 && contents.name.length > 0) {
       updateIsValid(true);

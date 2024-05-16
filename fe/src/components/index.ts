@@ -29,6 +29,8 @@ import HistoryBtn from './Button/History/HistoryBtn';
 import MainColorBtn from './Button/MainColorBtn/MainColorBtn';
 import Slogan from './Slogan/Slogan';
 import Header from './Header/Header';
+import PortalModal from './PortalModal/PortalModal';
+import PModal from './PortalModal/Subs/PModal';
 export {
   InputWithLabel,
   StatusBadge,
@@ -59,4 +61,6 @@ export {
   MainColorBtn,
   Slogan,
   Header,
+  PortalModal,
+  PModal,
 };

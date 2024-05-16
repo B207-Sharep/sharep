@@ -42,6 +42,15 @@ export const ProfileTextWrapper = styled.div`
   align-items: center;
 `;
 
+export const ProfileLogout = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  /* width: 100%; */
+  justify-content: center;
+  align-items: center;
+`;
+
 export const GrassWrapper = styled.div`
   width: 630px;
   height: 222px;

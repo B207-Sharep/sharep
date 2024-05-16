@@ -14,7 +14,7 @@ export default function Commit({
   imageUrl,
   member: { accountId, nickname, roles, userImageUrl },
   disabled,
-  infra,
+  type,
 }: T.CommitProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -65,7 +65,7 @@ export default function Commit({
               {name}
             </S.CommitText>
 
-            {!infra ? (
+            {!type ? (
               <S.CommitText color={PALETTE.LIGHT_BLACK} fontSize={14}>
                 {description}
               </S.CommitText>
