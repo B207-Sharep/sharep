@@ -92,7 +92,6 @@ export interface SimpleIssue {
 /** GetFeatureIssuesList - 기능 이슈 리스트 조회,  GetKanbanList - 칸반 리스트 조회  */
 
 /** GetNowIssueList - 팀원들의 진행중인 이슈 리스트 조회 */
-// TODO: type
 export interface GetNowIssueListResponse {
   issues: {
     description: string;

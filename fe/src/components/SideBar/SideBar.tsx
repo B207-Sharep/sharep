@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import * as S from './SideBarStyle';
@@ -20,24 +20,80 @@ import { useModal } from '@/customhooks';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/stores/atoms/loadUser';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { EventSourcePolyfill } from 'event-source-polyfill';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function SideBar() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
+  const [notifications, setNotifications] = useState<T.API.GetNotificationListResponse[] | null>(null);
+  const [unreadNoti, setUnreadNoti] = useState<number | null>(null);
   const user = useRecoilValue(userState);
-  const { projectId, accountId } = useParams();
+  const { projectId } = useParams();
 
   const {
-    data: myNotificationResponse,
-    isSuccess: myNotificationSuccess,
-    isFetching: myNotificationFetching,
+    data: projectInfoResponse,
+    isSuccess: projectInfoSuccess,
+    isFetched: projectInfoFetched,
+    isPending: projectInfoPending,
   } = useQuery({
-    queryKey: [`get-my-notification`, projectId],
-    queryFn: () => API.project.connectNotiList({ projectId: Number(projectId) }),
-    select: data => data.data,
+    queryKey: [{ func: `projectList`, projectId }],
+    queryFn: () => API.project.getProjectList(),
+    select: data => data.data.find(project => project.id === Number(projectId)),
+    // staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const url = `${import.meta.env.VITE_END_POINT}/notifications/projects/${projectId}/accounts/subscriptions`;
+
+    if (!token) return;
+
+    const eventSourceInit = () =>
+      new EventSourcePolyfill(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+    let eventSource = eventSourceInit();
+
+    const onMessage = (event: any) => {
+      const { data } = event;
+      const notificationList = JSON.parse(data);
+      console.log('message', notificationList);
+
+      const count = notificationList.filter((noti: T.API.GetNotificationListResponse) => noti.isRead === false).length;
+
+      setNotifications(notificationList);
+      setUnreadNoti(count);
+    };
+
+    const onError = (event: any) => {
+      console.error('EventSource failed. Reconnecting...', event);
+      eventSource.close();
+      setTimeout(() => {
+        eventSource = eventSourceInit();
+        setupEventSource(eventSource);
+      }, 1000);
+    };
+
+    const setupEventSource = (es: EventSourcePolyfill) => {
+      es.addEventListener('sse', onMessage);
+      es.onerror = onError;
+    };
+
+    setupEventSource(eventSource);
+
+    return () => {
+      eventSource.close();
+    };
+  }, [projectId]);
 
   const readNotiMutation = useMutation({
     mutationKey: [{ func: `read-noti` }],
@@ -114,15 +170,23 @@ export default function SideBar() {
             <S.SideBarMyProject>
               <S.SideBarTitle>
                 <S.SideBarFont $size="18px" $weight={700}>
-                  Share.P
+                  {projectInfoSuccess && projectInfoResponse && projectInfoResponse.title}
                 </S.SideBarFont>
                 <S.SideBarBtnGroup>
-                  <S.SideBarBtn onClick={handleHistoryClick}>
-                    <CommitHistory color={G.PALETTE.MAIN_COLOR} size={14}></CommitHistory>
-                  </S.SideBarBtn>
-                  <S.SideBarBtn onClick={handleModalOpen}>
-                    <Plus color={G.PALETTE.MAIN_COLOR} size={14}></Plus>
-                  </S.SideBarBtn>
+                  <S.TooltipContainer>
+                    <S.SideBarBtn onClick={handleHistoryClick}>
+                      <CommitHistory color={G.PALETTE.MAIN_COLOR} size={14}></CommitHistory>
+                    </S.SideBarBtn>
+                    <S.TooltipText>작업 기록</S.TooltipText>
+                  </S.TooltipContainer>
+
+                  <S.TooltipContainer>
+                    <S.SideBarBtn onClick={handleModalOpen}>
+                      <Plus color={G.PALETTE.MAIN_COLOR} size={14}></Plus>
+                    </S.SideBarBtn>
+                    <S.TooltipText>새 작업 생성</S.TooltipText>
+                  </S.TooltipContainer>
+
                   <Comp.Modal modalId="job" title="새 작업 작성">
                     <Comp.JobCreationForm modalId="job" />
                   </Comp.Modal>
@@ -178,17 +242,20 @@ export default function SideBar() {
           <S.SideBarContents className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
             <S.NotiDropdownContainer>
               <NOTI></NOTI>
-              <S.SideBarFont $size="12px" $weight={400}>
+              <S.SideBarFont $size="14px" $weight={400}>
                 알림
               </S.SideBarFont>
+              {unreadNoti && unreadNoti > 0 && (
+                <S.UnReadMessage>{unreadNoti >= 100 ? `99+` : unreadNoti}</S.UnReadMessage>
+              )}
               <S.NotiDropdownContent $show={showNoti}>
                 <S.NotiDropdownHeader>
                   <S.StyledText color={G.PALETTE.SUB_BLACK} fontSize={16} fontWeight={700}>
                     알림 목록
                   </S.StyledText>
                 </S.NotiDropdownHeader>
-                {myNotificationSuccess &&
-                  myNotificationResponse.map(noti => (
+                {notifications &&
+                  notifications.map(noti => (
                     <S.NotiItem key={noti.notificationId} $isRead={noti.isRead} onClick={handleNotiClick(noti)}>
                       <S.NotiMessage>
                         <S.NotiIcon>
@@ -200,7 +267,7 @@ export default function SideBar() {
                             {noti.message}
                           </S.StyledText>
                           <S.StyledText color={noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={10}>
-                            {noti.finishedAt}
+                            {noti.finishedAt && dayjs(noti.finishedAt).locale('ko').fromNow()}
                           </S.StyledText>
                         </S.NotiMessageContent>
                       </S.NotiMessage>
@@ -224,46 +291,3 @@ export default function SideBar() {
     </>
   );
 }
-
-// const dummyNoti: T.NotiProps[] = [
-//   {
-//     id: 1,
-//     issueId: 1,
-//     type: 'FEATURE',
-//     message: '기능 명세 #1 수정',
-//     unread: true,
-//     createdAt: '2024-05-05',
-//     member: {
-//       memberId: 1,
-//       nickname: '이승민',
-//       roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
-//     },
-//   },
-//   {
-//     id: 2,
-//     issueId: 2,
-//     type: 'SCREEN',
-//     message: '화면 정의 #메인 페이지 수정',
-//     unread: false,
-//     createdAt: '2024-05-04',
-//     member: {
-//       memberId: 1,
-//       nickname: '김성제',
-//       roles: ['FRONT_END'] as Extract<T.RoleBadgeProps, 'role'>[],
-//     },
-//   },
-
-//   {
-//     id: 3,
-//     issueId: 3,
-//     type: 'INFRA',
-//     message: '인프라 명세 #1 수정',
-//     unread: true,
-//     createdAt: '2024-05-03',
-//     member: {
-//       memberId: 1,
-//       nickname: '오상훈',
-//       roles: ['BACK_END', 'INFRA'] as Extract<T.RoleBadgeProps, 'role'>[],
-//     },
-//   },
-// ];
