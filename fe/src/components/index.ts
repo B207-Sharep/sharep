@@ -31,6 +31,7 @@ import Slogan from './Slogan/Slogan';
 import Header from './Header/Header';
 import PortalModal from './PortalModal/PortalModal';
 import PModal from './PortalModal/Subs/PModal';
+import Carousel from './Carousel/Carousel';
 export {
   InputWithLabel,
   StatusBadge,
@@ -63,4 +64,5 @@ export {
   Header,
   PortalModal,
   PModal,
+  Carousel,
 };
