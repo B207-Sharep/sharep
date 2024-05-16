@@ -20,7 +20,7 @@ export default function ApiManual() {
   return (
     <L.SideBarLayout>
       <S.ManualWrapper>
-        <Comp.ApiManual refetch={refetchApiList} dataList={apiListResponse?.data || []} usingFor="API" />
+        <Comp.ApiManual readonly={false} dataList={apiListResponse?.data || []} usingFor="API" />
       </S.ManualWrapper>
     </L.SideBarLayout>
   );

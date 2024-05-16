@@ -76,7 +76,7 @@ export default function SideBar() {
     };
 
     const onError = (event: any) => {
-      // console.error('EventSource failed. Reconnecting...', event);
+      console.error('EventSource failed. Reconnecting...', event);
       eventSource.close();
       setTimeout(() => {
         eventSource = eventSourceInit();
