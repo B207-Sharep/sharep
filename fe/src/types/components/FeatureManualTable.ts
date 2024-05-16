@@ -17,22 +17,31 @@ export interface FeatureRowProps {
 export interface FeatureCelProps {
   initialState: string;
   fixedWidth: string;
-  readonly: true;
-  refetch: () => void;
+  usingFor: keyof T.API.DetailIssue;
+  readonly: boolean;
+  onUpdate: (...args: any) => void;
 }
 
 export interface FeatureSelectCelProps {
   initialState: string;
   fixedWidth: string;
   usingFor: 'PRIORITY' | 'STATE' | 'METHOD';
-  readonly: true;
-  refetch: () => void;
+  readonly: boolean;
+  onUpdate: (...args: any) => void;
 }
 
 export interface FeatureSelectAssigneesCelProps {
   initialState: T.API.Assignee[];
   fixedWidth: string;
   usingFor: 'ASSIGNEES';
-  readonly: true;
-  refetch: () => void;
+  readonly: boolean;
+  onCreate: ({ accountId }: { accountId: number }) => void;
+  onDelete: ({ accountId }: { accountId: number }) => void;
+}
+
+interface Body {
+  issueName: string | null;
+  description: string | null;
+  epic: string | null;
+  priority: T.PriorityBadgeProps[`priority`] | null;
 }

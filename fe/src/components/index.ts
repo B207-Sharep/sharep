@@ -8,7 +8,7 @@ import PriorityBadge from './PriorityBadge/PriorityBadge';
 import UserImg from './UserImg/UserImg';
 import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
-import FeatureManual from './FeatureManualTable/FeatureManualTable.tsx';
+import FeatureManualTable from './FeatureManualTable/FeatureManualTable.tsx';
 import ApiManual from './ApiManualTable/ApiManualTable.tsx';
 import Modal from './Modal/Modal';
 import {
@@ -42,7 +42,7 @@ export {
   SideBar,
   UserImg,
   TableBtn,
-  FeatureManual,
+  FeatureManualTable,
   ApiManual,
   QuillEditor,
   Modal,

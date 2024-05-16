@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 import { PALETTE } from '@/styles';
 
-export const TableWrapper = styled.div`
-  width: fit-content;
-  height: fit-content;
-  border-radius: 12px;
-`;
-
 export const TableContainer = styled.ul`
   width: fit-content;
   min-width: fit-content;
@@ -55,22 +49,5 @@ export const RowWrapper = styled.li`
 
   & > div:nth-of-type(1) {
     font-weight: 700;
-  }
-`;
-
-export const CreateNewRowButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  height: 42px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 12px;
-
-  & > span {
-    color: ${PALETTE.LIGHT_BLACK};
   }
 `;

@@ -24,6 +24,14 @@ export const PALETTE: {
   LIGHT_COLOR: '#a3de83';
   GANTT_CHART: '#cdcdcd';
   MAIN_RED: '#E42A2A';
+  ROLE_COLOR_0: '#FFEFF1';
+  ROLE_COLOR_1: '#FD5B71';
+  ROLE_COLOR_2: '#E6FCF4';
+  ROLE_COLOR_3: '#07E092';
+  ROLE_COLOR_4: '#F2F2F2';
+  ROLE_COLOR_5: '#828282';
+  ROLE_COLOR_6: '#F5EEFC';
+  ROLE_COLOR_7: '#9B51E0';
   [key: string]: string;
 } = {
   MAIN_BACKGROUND: '#f7f7f7',
@@ -49,6 +57,14 @@ export const PALETTE: {
   LIGHT_COLOR: '#a3de83',
   GANTT_CHART: '#cdcdcd',
   MAIN_RED: '#E42A2A',
+  ROLE_COLOR_0: '#FFEFF1',
+  ROLE_COLOR_1: '#FD5B71',
+  ROLE_COLOR_2: '#E6FCF4',
+  ROLE_COLOR_3: '#07E092',
+  ROLE_COLOR_4: '#F2F2F2',
+  ROLE_COLOR_5: '#828282',
+  ROLE_COLOR_6: '#F5EEFC',
+  ROLE_COLOR_7: '#9B51E0',
 };
 
 export const GlobalStyle = createGlobalStyle`

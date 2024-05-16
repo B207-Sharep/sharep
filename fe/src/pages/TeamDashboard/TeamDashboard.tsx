@@ -13,20 +13,21 @@ export default function TeamDashboard() {
   const { projectId, accountId } = useParams();
 
   const [
-    { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
-    // { data: featureIssuesResponse, isFetching: isFeatureIssuesResponseFetching },
+    // { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
+    { data: projectIssuesResponse, isFetching: isProjectIssuesResponseFetching },
     { data: screenIssuesResponse, isFetching: isScreenIssuesResponseFetching },
     { data: membersResponse, isFetching: isMembersResponseFeting },
   ] = useQueries({
     queries: [
-      {
-        queryKey: [{ func: `get-now-issues`, projectId }],
-        queryFn: () => API.project.getNowIssueAboutTeamMembers({ projectId: Number(projectId) }),
-      },
       // {
-      //   queryKey: [{ func: `get-feature-issues`, projectId }],
-      //   queryFn: () => API.project.getFeatureIssuesList({ projectId: Number(projectId), dataType: 'SIMPLE' }),
+      //   queryKey: [{ func: `get-now-issues`, projectId }],
+      //   queryFn: () => API.project.getNowIssueAboutTeamMembers({ projectId: Number(projectId) }),
       // },
+      {
+        queryKey: [{ func: `get-all-simple-issues`, projectId }],
+        queryFn: () =>
+          API.project.getProjectSimpleIssueList({ projectId: Number(projectId), issueType: null, accountId: null }),
+      },
       {
         queryKey: [{ func: `get-screen-issues`, projectId }],
         queryFn: () => API.project.getScreenIssueList({ projectId: Number(projectId) }),
@@ -73,23 +74,14 @@ export default function TeamDashboard() {
               <span>가장 최근 작업 중인 이슈</span>
             </S.Title>
             <S.CurrentWorksScrollContainer>
-              {nowIssuesResponse?.data.map((res: T.API.GetNowIssueListResponse, i: number) => (
+              {/* {nowIssuesResponse?.data.map((res: T.API.GetNowIssueListResponse, i: number) => (
                 <S.CurrentWork key={`current-work-${i}`}>
-                  <S.IssueContainer>
-                    <Sub.TeamMember {...res.member} />
-                    {res.issues.map(issue => (
-                      <Comp.Issue
-                        {...issue}
-                        key={`now-issue-${issue.id}`}
-                        assignees={null}
-                        jobs={null}
-                        dragAble={false}
-                        deleteAble={false}
-                      />
-                    ))}
-                  </S.IssueContainer>
+                  <Sub.TeamMember {...res.member} />
+                  {res.issues !== null && (
+                    <Comp.Issue {...res.issues[0]} assignees={null} jobs={null} dragAble={false} deleteAble={false} />
+                  )}
                 </S.CurrentWork>
-              ))}
+              ))} */}
             </S.CurrentWorksScrollContainer>
           </S.WhiteBoxWrapper>
         </div>
@@ -98,9 +90,7 @@ export default function TeamDashboard() {
             <Icon.GantChart />
             <span>간트 차트</span>
           </S.Title>
-          <S.GantChartScrollContainer>
-            <Sub.GanttChart />
-          </S.GantChartScrollContainer>
+          <Sub.GanttChart projectIssueList={projectIssuesResponse?.data || []} />
         </S.WhiteBoxWrapper>
         <S.WhiteBoxWrapper $flex="1" $height="fit-content">
           <S.Title>
