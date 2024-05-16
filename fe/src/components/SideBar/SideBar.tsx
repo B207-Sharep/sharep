@@ -29,7 +29,7 @@ export default function SideBar() {
   const navigate = useNavigate();
   const jobModal = useModal('job');
   const [showNoti, setShowNoti] = useState(false);
-  const [notifications, setNotifications] = useState<T.API.GetNotificationListResponse[] | null>(null);
+  const [notifications, setNotifications] = useState<T.API.GetNotificationListResponse[]>([]);
   const [unreadNoti, setUnreadNoti] = useState<number | null>(null);
   const user = useRecoilValue(userState);
   const { projectId } = useParams();
@@ -135,8 +135,9 @@ export default function SideBar() {
     });
   };
 
-  const handleNotiClick = (noti: T.API.GetNotificationListResponse) => () => {
+  const handleNotiClick = (noti: T.API.GetNotificationListResponse) => (event: React.MouseEvent) => {
     console.log(noti);
+    event.stopPropagation();
     if (noti) {
       readNotiMutation.mutate(
         {
@@ -144,7 +145,13 @@ export default function SideBar() {
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [`get-my-notification`, projectId] });
+            setNotifications(prev =>
+              prev.map(notification =>
+                notification.notificationId === noti.notificationId ? { ...notification, isRead: true } : notification,
+              ),
+            );
+
+            setUnreadNoti(prev => (prev !== null ? prev - 1 : 0));
           },
         },
       );
@@ -271,10 +278,13 @@ export default function SideBar() {
                           {!noti.isRead && <S.UnReadMark />}
                         </S.NotiIcon>
                         <S.NotiMessageContent>
-                          <S.StyledText color={noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK}>
+                          <S.StyledText color={!noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK}>
                             {noti.message}
                           </S.StyledText>
-                          <S.StyledText color={noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK} fontSize={10}>
+                          <S.StyledText
+                            color={!noti.isRead ? G.PALETTE.SUB_BLACK : G.PALETTE.LIGHT_BLACK}
+                            fontSize={10}
+                          >
                             {noti.finishedAt && dayjs(noti.finishedAt).locale('ko').fromNow()}
                           </S.StyledText>
                         </S.NotiMessageContent>
