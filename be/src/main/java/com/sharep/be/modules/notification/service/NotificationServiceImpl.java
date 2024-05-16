@@ -12,6 +12,7 @@ import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.notification.controller.NotificationService;
 import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.domain.NotificationMessage;
+import com.sharep.be.modules.notification.domain.NotificationRefetchMessage;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -128,18 +129,20 @@ public class NotificationServiceImpl implements NotificationService {
                 Arrays.asList(accountIds));
 
         for (Member targetMember : targetMembers) {
+
             Notification notification = Notification.builder()
                     .assignee(assignee)
                     .isRead(false)
                     .member(targetMember)
                     .build();
 
-            notificationRepository.save(notification);
+            Notification notification1 = notificationRepository.save(notification);
 
             notifyAccountId(
                     targetMember.getAccount().getId(),
-                    NotificationMessage.from(notification)
+                    NotificationMessage.from(notification1)
             );
+
         }
     }
 
@@ -147,26 +150,14 @@ public class NotificationServiceImpl implements NotificationService {
     public SseEmitter subscribeProjectId(Long projectId) {
         SseEmitter emitter = getProjectIdEmitter(projectId);
 
-        List<IssueResponse> data = issueService.getIssues(projectId, null, IssueType.FEATURE,
-                        DataType.DETAIL).stream()
-                .map(IssueResponse::from)
-                .toList();
-
-        sendToProjectIdClient(projectId, data);
+        sendToProjectIdClient(projectId, new NotificationRefetchMessage());
 
         return emitter;
     }
 
     @Override
-    public void updateIssue(Long projectId, Long issueId, IssueUpdate issueUpdate) {
-        issueService.updateIssue(issueId, issueUpdate);
-
-        List<IssueResponse> data = issueService.getIssues(projectId, null, IssueType.FEATURE,
-                        DataType.DETAIL).stream()
-                .map(IssueResponse::from)
-                .toList();
-
-        sendToProjectIdClient(projectId, data);
+    public void updateIssue(Long projectId) {
+        sendToProjectIdClient(projectId, new NotificationRefetchMessage());
     }
 
 }

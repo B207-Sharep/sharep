@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AssigneeJpaRepository extends JpaRepository<Assignee, Long> {
 
-
     Optional<Assignee> findByMemberIdAndIssueId(Long memberId, Long issueId);
 
     boolean existsByMemberIdAndIssueId(Long memberId, Long issueId);
