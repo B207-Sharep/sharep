@@ -5,16 +5,13 @@ import * as API from '@apis';
 import * as Sub from './Subs';
 import { MANUAL_CONSTANTS } from '@/constants';
 
-export default function Row({ usingFor, data, idx, readonly }: T.RowProps) {
+export default function Row({ usingFor, data, idx, readonly }: T.FeatureRowProps) {
   const createCelType = useCallback(
     ({ key, fixedWidth, celType, idx }: CreateCelTypeParam) => {
-      let state;
+      const state = data[key as keyof T.API.DetailIssue];
       const using = key.toUpperCase() as 'PRIORITY' | 'STATE' | 'METHOD';
       const mapKey = `${usingFor}-table-cell-${key}-${idx}`;
 
-      if (usingFor === 'FEATURE') state = data[key as keyof T.API.DetailIssue];
-      else if (usingFor === 'API') state = data[key as keyof T.API.DetailApi];
-      console.log(`ID :`, data.id);
       if (celType === 'TEXT') {
         return (
           <Sub.TextAreaCel fixedWidth={fixedWidth} initialState={state as string} key={mapKey} readonly={readonly} />
