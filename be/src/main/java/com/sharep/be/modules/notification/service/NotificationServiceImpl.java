@@ -126,7 +126,6 @@ public class NotificationServiceImpl implements NotificationService {
 
         List<Member> targetMembers = memberRepository.findAllByProjectIdAndAccountIdIn(projectId,
                 Arrays.asList(accountIds));
-        System.out.println(targetMembers.size());
 
         for (Member targetMember : targetMembers) {
 
