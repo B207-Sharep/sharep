@@ -116,7 +116,7 @@ export const NotiDropdownContent = styled.div<{ $show: boolean }>`
   left: 50%;
   bottom: 0;
   z-index: 1000;
-  width: 40vh;
+  width: 60vh;
   min-height: 400px;
   max-height: 500px;
   flex-direction: column;
@@ -167,6 +167,7 @@ export const NotiItem = styled.div<{ $isRead: boolean }>`
   justify-content: center;
   padding: 8px 12px;
   border-top: 1px solid #e3e3e3;
+  cursor: ${({ $isRead }) => ($isRead ? `default` : `pointer`)};
   background-color: ${({ $isRead }) => ($isRead ? `${G.PALETTE.MAIN_BACKGROUND}` : `${G.PALETTE.MAIN_WHITE}`)};
 `;
 
@@ -242,6 +243,6 @@ export const UnReadMessage = styled.div`
   background-color: #e42a2a;
   border-radius: 25%;
   color: ${G.PALETTE.MAIN_WHITE};
-  padding: 2px;
+  padding: 2px 4px;
   font-size: 12px;
 `;
