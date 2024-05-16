@@ -1,10 +1,8 @@
 package com.sharep.be.modules.assignee.service;
 
 import com.sharep.be.modules.assignee.domain.Assignee;
-import com.sharep.be.modules.assignee.domain.State;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AssigneeRepository {
 
@@ -12,15 +10,10 @@ public interface AssigneeRepository {
 
     boolean existsByMemberIdAndIssueId(Long id, Long id1);
 
-    boolean existsByMemberIdAndState(Long id, State state);
-
-    Optional<Assignee> findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId, Long issueId, Long accountId);
-
-    List<Assignee> findAllProjectNowIssueByProjectId(Long projectsId);
+    Optional<Assignee> findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId,
+            Long issueId, Long accountId);
 
     Optional<Assignee> findByAccountIdAndProjectId(Long accountId, Long projectId);
-
-    List<Assignee> findAllProjectNowIssueByProjectIdAndAccountId(Long projectId, Long accountId);
 
     List<Assignee> findAccountIdsByIssueId(Long issueId);
 

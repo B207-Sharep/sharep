@@ -1,13 +1,13 @@
 package com.sharep.be.modules.job.service;
 
 
+import com.sharep.be.modules.job.domain.Job;
 import com.sharep.be.modules.member.Role.RoleType;
 import java.util.List;
 import java.util.Optional;
 
-import com.sharep.be.modules.job.domain.Job;
-
 public interface JobRepository {
+
     Optional<Job> findByCommitId(String commitId);
 
     List<Job> findAllByAccountId(Long accountId);

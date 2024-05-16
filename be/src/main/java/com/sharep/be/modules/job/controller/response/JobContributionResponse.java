@@ -9,13 +9,13 @@ import java.util.TreeMap;
 
 public record JobContributionResponse() {
 
-    public static SortedMap<String, Integer> from(List<Job> jobs){
+    public static SortedMap<String, Integer> from(List<Job> jobs) {
 
         SortedMap<String, Integer> response = new TreeMap<>();
 
         LocalDate todayLocalDate = LocalDateTime.now().toLocalDate();
 
-        for(int i = 0; i < 30; i++){
+        for (int i = 0; i < 30; i++) {
             String todayString = todayLocalDate.minusDays(i).toString();
 
             response.put(todayString, 0);
@@ -24,7 +24,9 @@ public record JobContributionResponse() {
         jobs.forEach(job -> {
                     String date = job.getCreatedAt().toLocalDate().toString();
 
-                    if(!response.containsKey(date)) return;
+            if (!response.containsKey(date)) {
+                return;
+            }
 
                     Integer now = response.get(date);
                     response.put(date, now + 1);

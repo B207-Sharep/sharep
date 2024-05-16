@@ -2,11 +2,6 @@ package com.sharep.be.modules.notification.service;
 
 import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.assignee.service.AssigneeRepository;
-import com.sharep.be.modules.issue.IssueRequest.IssueUpdate;
-import com.sharep.be.modules.issue.IssueResponse;
-import com.sharep.be.modules.issue.service.IssueService;
-import com.sharep.be.modules.issue.type.DataType;
-import com.sharep.be.modules.issue.type.IssueType;
 import com.sharep.be.modules.member.Member;
 import com.sharep.be.modules.member.repository.MemberRepository;
 import com.sharep.be.modules.notification.controller.NotificationService;
@@ -27,8 +22,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class NotificationServiceImpl implements NotificationService {
 
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
-
-    private final IssueService issueService;
 
     private final AccountIdEmitterRepository accountIdEmitterRepository;
     private final ProjectIdEmitterRepository projectIdEmitterRepository;

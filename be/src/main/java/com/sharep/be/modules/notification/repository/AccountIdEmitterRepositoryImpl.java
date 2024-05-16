@@ -3,7 +3,6 @@ package com.sharep.be.modules.notification.repository;
 import com.sharep.be.modules.notification.service.AccountIdEmitterRepository;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
