@@ -8,7 +8,13 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { PALETTE } from '@/styles';
 
-export default function SelectAssigneesCel({ initialState, fixedWidth, onUpdate }: T.ApiSelectAssigneesCelProps) {
+export default function SelectAssigneesCel({
+  initialState,
+  fixedWidth,
+  readonly,
+  onCreate,
+  onDelete,
+}: T.ApiSelectAssigneesCelProps) {
   const { projectId } = useParams();
   const celRef = useRef<HTMLDivElement>(null);
   const alreadyAssigneesList = useMemo(() => {
@@ -21,14 +27,16 @@ export default function SelectAssigneesCel({ initialState, fixedWidth, onUpdate 
   });
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (celRef.current === null) return;
+    if (celRef.current === null || readonly) return;
 
     if (toggledValue) celRef.current.focus();
     else celRef.current.blur();
   };
 
   const handleListOptionClick = ({ id }: { id: number }) => {
-    onUpdate?.create({ accountId: id });
+    if (readonly) return;
+
+    onCreate({ accountId: id });
     celRef.current?.blur();
     handleCelClick(false);
   };
@@ -40,12 +48,13 @@ export default function SelectAssigneesCel({ initialState, fixedWidth, onUpdate 
       onFocus={() => handleCelClick(true)}
       onBlur={() => handleCelClick(false)}
       $fixedWidth={fixedWidth}
+      disabled={readonly}
     >
       <S.Placeholder>
         {initialState.map((el, i) => (
-          <S.UserWrapper>
-            <Comp.UserImg key={`assignees-${el.accountId}-${i}`} size="32px" path={el.imageUrl} />
-            <button onClick={() => onUpdate && onUpdate.delete({ accountId: el.accountId })}>
+          <S.UserWrapper key={`assignees-${el.accountId}-${i}`}>
+            <Comp.UserImg size="32px" path={el.imageUrl} />
+            <button onClick={() => !readonly && onDelete({ accountId: el.accountId })}>
               <X size={12} color={PALETTE.LIGHT_BLACK} />
             </button>
           </S.UserWrapper>

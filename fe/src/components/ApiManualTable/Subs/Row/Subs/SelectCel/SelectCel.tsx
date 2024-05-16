@@ -3,19 +3,19 @@ import * as S from './SelectCelStyle';
 import * as T from '@types';
 import * as Comp from '@components';
 
-export default function SelectCel({ initialState, fixedWidth, usingFor, onUpdate }: T.ApiSelectCelProps) {
+export default function SelectCel({ initialState, fixedWidth, usingFor, readonly, onUpdate }: T.ApiSelectCelProps) {
   const celRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(initialState || '');
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (usingFor === 'STATE') return;
+    if (celRef.current === null || readonly || usingFor === 'STATE') return;
 
     if (toggledValue) celRef.current?.focus();
     else celRef.current?.blur();
   };
 
   const handleListOptionClick = (e: React.MouseEvent) => {
-    if (usingFor === 'STATE') return;
+    if (readonly || usingFor === 'STATE') return;
 
     setValue(String(e.currentTarget.ariaValueText));
     onUpdate && onUpdate({ key: 'method', value: e.currentTarget.ariaValueText });
@@ -32,7 +32,7 @@ export default function SelectCel({ initialState, fixedWidth, usingFor, onUpdate
       onFocus={() => handleCelClick(true)}
       onBlur={() => handleCelClick(false)}
       $fixedWidth={fixedWidth}
-      disabled={usingFor === 'STATE'}
+      disabled={readonly || usingFor === 'STATE'}
     >
       <S.Palceholder role="button">{OPTIONS[usingFor][value]}</S.Palceholder>
       <S.OptionUlWrapper>

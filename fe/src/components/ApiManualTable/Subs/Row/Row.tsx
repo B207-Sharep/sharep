@@ -16,7 +16,7 @@ interface ReqBody {
   method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
 }
 
-export default function Row({ usingFor, data, idx, refetch }: T.ApiRowProps) {
+export default function Row({ usingFor, data, idx, readonly }: T.ApiRowProps) {
   const queryClient = useQueryClient();
   const { projectId } = useParams();
   const { mutate: updateApi } = useMutation({
@@ -27,7 +27,7 @@ export default function Row({ usingFor, data, idx, refetch }: T.ApiRowProps) {
     },
   });
   const handleApiUpdate = ({ key, value }: { key: string; value: any }) => {
-    if (refetch) {
+    if (!readonly) {
       const body: ReqBody = { ...data, [key]: value };
       updateApi({ reqBody: body });
     }
@@ -68,7 +68,8 @@ export default function Row({ usingFor, data, idx, refetch }: T.ApiRowProps) {
             initialState={state as string}
             usingFor={using}
             key={mapKey}
-            onUpdate={using !== 'epic' && using !== 'description' ? handleApiUpdate : undefined}
+            readonly={readonly}
+            onUpdate={handleApiUpdate}
           />
         );
       } else if (celType === 'SELECT') {
@@ -78,7 +79,8 @@ export default function Row({ usingFor, data, idx, refetch }: T.ApiRowProps) {
             initialState={state as string}
             usingFor={using.toUpperCase() as 'PRIORITY' | 'STATE' | 'METHOD'}
             key={mapKey}
-            onUpdate={using.toUpperCase() !== 'STATE' ? handleApiUpdate : undefined}
+            readonly={readonly}
+            onUpdate={handleApiUpdate}
           />
         );
       }
@@ -88,11 +90,13 @@ export default function Row({ usingFor, data, idx, refetch }: T.ApiRowProps) {
           initialState={state as T.API.Assignee[]}
           usingFor="ASSIGNEES"
           key={mapKey}
-          onUpdate={refetch ? { create: handleCreateAssignee, delete: handleDeleteAssignee } : undefined}
+          readonly={readonly}
+          onCreate={handleCreateAssignee}
+          onDelete={handleDeleteAssignee}
         />
       );
     },
-    [data, usingFor, refetch, handleApiUpdate, handleCreateAssignee, handleDeleteAssignee],
+    [data, usingFor, handleApiUpdate, handleCreateAssignee, handleDeleteAssignee],
   );
   return (
     <S.RowWrapper>
