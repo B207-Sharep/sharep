@@ -37,6 +37,10 @@ export const Wrapper = styled.button<{ $fixedWidth: string }>`
   color: ${PALETTE.TABLE_CONTENT};
   position: relative;
 
+  &:disabled {
+    background-color: ${PALETTE.MAIN_BACKGROUND};
+  }
+
   &:focus-within {
     * {
       cursor: pointer;
@@ -55,8 +59,36 @@ export const Wrapper = styled.button<{ $fixedWidth: string }>`
   }
 `;
 
-export const Palceholder = styled.span`
+export const Placeholder = styled.span`
   display: flex;
   gap: 4px;
   justify-content: flex-start;
+`;
+
+export const UserWrapper = styled.div`
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+
+  & > span {
+    display: flex;
+    padding: 4px;
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 50%;
+    top: -8px;
+    right: -8px;
+    background-color: ${PALETTE.MAIN_BACKGROUND};
+    visibility: hidden;
+  }
+
+  ${Wrapper}:focus-within &:hover > span {
+    visibility: visible;
+  }
+
+  & > span,
+  & > div {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.36);
+  }
 `;

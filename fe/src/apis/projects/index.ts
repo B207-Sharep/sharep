@@ -234,7 +234,7 @@ export async function createNewIssue({
 }: {
   projectId: number;
   newIssue: {
-    issueName: string;
+    issueName?: string;
     description?: string;
     type: T.IssueProps['type'];
     epic?: string;
@@ -269,7 +269,7 @@ export async function updateIssue({
   projectId: number;
   issueId: number;
   updatedIssue: {
-    issueName: string;
+    issueName: string | null;
     description: string | null;
     epic: string | null;
     priority: T.PriorityBadgeProps['priority'] | null;
@@ -316,7 +316,7 @@ export async function updateApi({
   return instanceOfJson.put(`/projects/${projectId}/apis/${id}`, reqBody);
 }
 
-/** sendInfraAlarm - 인프라 이슈 알림 전송 */
+/** 인프라 이슈 알림 전송 */
 export async function sendInfraAlarm({
   projectId,
   issueId,
@@ -331,7 +331,25 @@ export async function sendInfraAlarm({
   );
 }
 
-/** readNoti - 알림 확인 */
+/** 알림 확인 */
 export async function readNoti({ notificationId }: { notificationId: number }) {
   return instanceOfEventStream.patch(`/notifications/${notificationId}`);
+}
+
+/** 기능 명세서 수정 */
+export async function modifyFeatureManualIssue({
+  projectId,
+  issueId,
+  body,
+}: {
+  projectId: number;
+  issueId: number;
+  body: {
+    issueName: string | null;
+    description: string | null;
+    epic: string | null;
+    priority: T.PriorityBadgeProps[`priority`] | null;
+  };
+}) {
+  return instanceOfJson.put(`/notifications/projects/${projectId}/issues/${issueId}`, body);
 }

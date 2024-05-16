@@ -35,6 +35,10 @@ export const Wrapper = styled.button<{ $fixedWidth: string }>`
   color: ${PALETTE.TABLE_CONTENT};
   position: relative;
 
+  &:disabled {
+    background-color: ${PALETTE.MAIN_BACKGROUND};
+  }
+
   &:focus-within {
     * {
       cursor: pointer;
