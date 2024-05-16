@@ -41,7 +41,7 @@ public class NotificationServiceImpl implements NotificationService {
                 accountId,
                 notificationMessages
         );
-
+        System.out.println(emitter);
         return emitter;
     }
 
@@ -62,14 +62,15 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
-    private void sendToProjectIdClient(Long ProjectId, Object data) {
-        SseEmitter emitter = projectIdEmitterRepository.get(ProjectId);
+    private void sendToProjectIdClient(Long memberId, Object data) {
+        SseEmitter emitter = projectIdEmitterRepository.get(memberId);
+
         if (emitter != null) {
             try {
                 emitter.send(
-                        SseEmitter.event().id(String.valueOf(ProjectId)).name("sse").data(data));
+                        SseEmitter.event().id(String.valueOf(memberId)).name("sse").data(data));
             } catch (IOException exception) {
-                projectIdEmitterRepository.deleteById(ProjectId);
+                projectIdEmitterRepository.deleteById(memberId);
                 emitter.completeWithError(exception);
             }
         }
@@ -95,7 +96,6 @@ public class NotificationServiceImpl implements NotificationService {
 
             newEmitter.onCompletion(() -> projectIdEmitterRepository.deleteById(projectId));
             newEmitter.onTimeout(() -> projectIdEmitterRepository.deleteById(projectId));
-
             return newEmitter;
         }
 
@@ -140,17 +140,23 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public SseEmitter subscribeProjectId(Long projectId) {
+    public SseEmitter subscribeProjectId(Long projectId, Long accountId) {
         SseEmitter emitter = getProjectIdEmitter(projectId);
 
-        sendToProjectIdClient(projectId, new NotificationRefetchMessage());
+        Long memberId = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
+                .orElseThrow(() -> new RuntimeException("해당하는 구성원이 존재하지 않습니다."))
+                .getId();
 
+        sendToProjectIdClient(memberId, new NotificationRefetchMessage());
+
+        System.out.println(emitter);
         return emitter;
     }
 
     @Override
     public void updateIssue(Long projectId) {
-        sendToProjectIdClient(projectId, new NotificationRefetchMessage());
+        memberRepository.findAllByProjectId(projectId)
+                .forEach(member -> sendToProjectIdClient(member.getId(), new NotificationRefetchMessage()));
     }
 
 }

@@ -69,11 +69,12 @@ public class NotificationController {
     // 동시작업 시 알림 구독
     @GetMapping(value = "/projects/{projectId}/subscriptions", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> subscribeProjectId(
+            @AuthenticationPrincipal JwtAuthentication authentication,
             @PathVariable Long projectId
     ){
 
         return ResponseEntity
-                .ok(notificationService.subscribeProjectId(projectId));
+                .ok(notificationService.subscribeProjectId(projectId, authentication.id));
     }
 
 

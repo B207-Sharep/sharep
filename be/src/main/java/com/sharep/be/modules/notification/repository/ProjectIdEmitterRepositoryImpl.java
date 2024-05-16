@@ -11,15 +11,15 @@ public class ProjectIdEmitterRepositoryImpl implements ProjectIdEmitterRepositor
 
     private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
 
-    public void save(Long id, SseEmitter emitter) {
-        emitters.put(id, emitter);
+    public void save(Long memberId, SseEmitter emitter) {
+        emitters.put(memberId, emitter);
     }
 
-    public void deleteById(Long id) {
-        emitters.remove(id);
+    public void deleteById(Long memberId) {
+        emitters.remove(memberId);
     }
 
-    public SseEmitter get(Long id) {
-        return emitters.get(id);
+    public SseEmitter get(Long memberId) {
+        return emitters.get(memberId);
     }
 }
