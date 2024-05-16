@@ -141,11 +141,11 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public SseEmitter subscribeProjectId(Long projectId, Long accountId) {
-        SseEmitter emitter = getProjectIdEmitter(projectId);
-
         Long memberId = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
                 .orElseThrow(() -> new RuntimeException("해당하는 구성원이 존재하지 않습니다."))
                 .getId();
+
+        SseEmitter emitter = getProjectIdEmitter(memberId);
 
         sendToProjectIdClient(memberId, new NotificationRefetchMessage());
 
