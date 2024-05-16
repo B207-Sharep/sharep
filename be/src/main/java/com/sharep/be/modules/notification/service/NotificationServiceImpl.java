@@ -86,16 +86,26 @@ public class NotificationServiceImpl implements NotificationService {
         return emitter;
     }
 
-    private SseEmitter getProjectIdEmitter(Long projectId) {
-        SseEmitter emitter = projectIdEmitterRepository.get(projectId);
+    private SseEmitter createMemberIdEmitter(Long memberId) {
+        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
+        projectIdEmitterRepository.save(memberId, emitter);
+
+        emitter.onCompletion(() -> accountIdEmitterRepository.deleteById(memberId));
+        emitter.onTimeout(() -> accountIdEmitterRepository.deleteById(memberId));
+
+        return emitter;
+    }
+
+    private SseEmitter getProjectIdEmitter(Long memberId) {
+        SseEmitter emitter = projectIdEmitterRepository.get(memberId);
 
         if (emitter == null) {
             SseEmitter newEmitter = new SseEmitter(DEFAULT_TIMEOUT);
 
-            projectIdEmitterRepository.save(projectId, newEmitter);
+            projectIdEmitterRepository.save(memberId, newEmitter);
 
-            newEmitter.onCompletion(() -> projectIdEmitterRepository.deleteById(projectId));
-            newEmitter.onTimeout(() -> projectIdEmitterRepository.deleteById(projectId));
+            newEmitter.onCompletion(() -> projectIdEmitterRepository.deleteById(memberId));
+            newEmitter.onTimeout(() -> projectIdEmitterRepository.deleteById(memberId));
             return newEmitter;
         }
 
@@ -145,7 +155,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .orElseThrow(() -> new RuntimeException("해당하는 구성원이 존재하지 않습니다."))
                 .getId();
 
-        SseEmitter emitter = getProjectIdEmitter(memberId);
+        SseEmitter emitter = createMemberIdEmitter(memberId);
 
         sendToProjectIdClient(memberId, new NotificationRefetchMessage());
 
