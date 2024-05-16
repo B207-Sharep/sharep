@@ -17,22 +17,19 @@ export interface FeatureRowProps {
 export interface FeatureCelProps {
   initialState: string;
   fixedWidth: string;
-  readonly: true;
-  refetch: () => void;
+  readonly: boolean;
 }
 
 export interface FeatureSelectCelProps {
   initialState: string;
   fixedWidth: string;
   usingFor: 'PRIORITY' | 'STATE' | 'METHOD';
-  readonly: true;
-  refetch: () => void;
+  readonly: boolean;
 }
 
 export interface FeatureSelectAssigneesCelProps {
   initialState: T.API.Assignee[];
   fixedWidth: string;
   usingFor: 'ASSIGNEES';
-  readonly: true;
-  refetch: () => void;
+  readonly: boolean;
 }

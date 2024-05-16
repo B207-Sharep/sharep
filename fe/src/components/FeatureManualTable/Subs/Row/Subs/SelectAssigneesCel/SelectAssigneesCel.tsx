@@ -6,7 +6,7 @@ import * as Comp from '@components';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor }: T.SelectAssigneesCelProps) {
+export default function SelectAssigneesCel({ initialState, fixedWidth, usingFor }: T.FeatureSelectAssigneesCelProps) {
   const { projectId } = useParams();
   const celRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(initialState || []);

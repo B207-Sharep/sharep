@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as S from './TextAreaCelStyle';
 import * as T from '@types';
 
-export default function TextAreaCel({ initialState, fixedWidth }: T.CelProps) {
+export default function TextAreaCel({ initialState, fixedWidth }: T.FeatureCelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [value, setValue] = useState(initialState || '');
