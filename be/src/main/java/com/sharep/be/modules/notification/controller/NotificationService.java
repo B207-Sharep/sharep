@@ -12,7 +12,7 @@ public interface NotificationService {
 
     void sendToAccountIds(Long projectId, Long issueId, Long accountId, Long[] accountIds);
 
-    SseEmitter subscribeProjectId(Long projectId);
+    SseEmitter subscribeProjectId(Long projectId, Long accountId);
 
     void updateIssue(Long projectId);
 }
