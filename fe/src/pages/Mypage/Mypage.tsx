@@ -14,8 +14,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { userState } from '@/stores/atoms/loadUser';
-import { Pencil } from 'lucide-react';
+import { Pencil, LogOut } from 'lucide-react';
 import { useModal } from '@/customhooks';
+import { useNavigate } from 'react-router';
 ////////////////////////DUMMY
 // const issueList = [
 //   ...Array.from({ length: 7 }, (_, index) => ({
@@ -39,6 +40,7 @@ export default function Mypage() {
   const [clickedYear, setClickedYear] = useState(2024);
   const editModal = useModal('edit');
   const setUserState = useSetRecoilState(userState);
+  const navigate = useNavigate();
 
   //   useEffect(() => console.log(clickedYear, 'CY'), [clickedYear]);
 
@@ -106,6 +108,11 @@ export default function Mypage() {
     });
   };
 
+  const logoutClick = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   return (
     <>
       <NoneSideBarLayout>
@@ -115,17 +122,22 @@ export default function Mypage() {
               <S.ProfileWrapper>
                 <Comp.UserImg size="lg" path={user?.imageUrl} />
                 <S.ProfileTextWrapper>
-                  <S.Font $size="24px" $weight="600">
-                    {user?.nickname}
-                  </S.Font>
+                  <S.ProfileLogout>
+                    <LogOut size={18} style={{ visibility: 'hidden' }}></LogOut>
 
+                    <S.Font $size="24px" $weight="600">
+                      {user?.nickname}
+                    </S.Font>
+                    <LogOut size={18} onClick={logoutClick} style={{ cursor: 'pointer' }}></LogOut>
+                  </S.ProfileLogout>
                   <S.Font $size="16px" $weight="400" style={{ color: `${G.PALETTE.LIGHT_BLACK}` }}>
                     {user?.email}
                   </S.Font>
                 </S.ProfileTextWrapper>
               </S.ProfileWrapper>
 
-              <Pencil size={18} onClick={handleModalOpen} />
+              <Pencil size={18} onClick={handleModalOpen} style={{ cursor: 'pointer' }} />
+
               <Comp.Modal modalId="edit" title="프로필 변경" subTitle="나를 나타내는 이미지를 선택해보세요.">
                 <Comp.EditForm modalId="edit" />
               </Comp.Modal>

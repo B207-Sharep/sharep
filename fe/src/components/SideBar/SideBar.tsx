@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import * as S from './SideBarStyle';
-import { History as CommitHistory, Plus } from 'lucide-react';
+import { History as CommitHistory, Plus, LogOut } from 'lucide-react';
 import * as G from '@/styles';
 import * as Comp from '@/components';
 import * as T from '@/types';
@@ -150,6 +150,11 @@ export default function SideBar() {
     } else throw Error;
   };
 
+  const logoutClick = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   return (
     <>
       <S.SideBarWrapper>
@@ -239,8 +244,8 @@ export default function SideBar() {
               </S.SideBarContents>
             </S.SideBarMyProject>
           </S.SideBarNavMain>
-          <S.SideBarContents className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
-            <S.NotiDropdownContainer>
+          <S.SideBarContents>
+            <S.NotiDropdownContainer className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
               <NOTI></NOTI>
               <S.SideBarFont $size="14px" $weight={400}>
                 알림
@@ -248,6 +253,7 @@ export default function SideBar() {
               {unreadNoti && unreadNoti > 0 && (
                 <S.UnReadMessage>{unreadNoti >= 100 ? `99+` : unreadNoti}</S.UnReadMessage>
               )}
+
               <S.NotiDropdownContent $show={showNoti}>
                 <S.NotiDropdownHeader>
                   <S.StyledText color={G.PALETTE.SUB_BLACK} fontSize={16} fontWeight={700}>
@@ -285,6 +291,7 @@ export default function SideBar() {
                   ))}
               </S.NotiDropdownContent>
             </S.NotiDropdownContainer>
+            <LogOut onClick={logoutClick} style={{ cursor: 'pointer' }}></LogOut>
           </S.SideBarContents>
         </S.SideBarNavList>
       </S.SideBarWrapper>
