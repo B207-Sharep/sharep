@@ -53,7 +53,6 @@ public class JobServiceImpl implements JobService {
         Issue issue = issueRepository.findById(issueId)
                 .orElseThrow(() -> new RuntimeException("해당하는 이슈를 찾을 수 없습니다."));
 
-//        Job job = Job.from(jobCreateRequest, member, issue, imageUrl);
         Job job = jobCreateRequest.toEntity(member, issue, imageUrl);
 
         jobRepository.save(job);

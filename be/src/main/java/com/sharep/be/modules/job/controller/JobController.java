@@ -91,7 +91,6 @@ public class JobController {
     @PostMapping("/projects/{projectId}/hook")
     public ResponseEntity<Void> readHook(@RequestBody GitlabHook hook,
             @PathVariable("projectId") Long projectId) {
-        // TODO hook work
         jobService.commitCreated(hook, projectId);
         return ResponseEntity.ok().build();
     }
