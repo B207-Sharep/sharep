@@ -12,8 +12,9 @@ export const Tooltip = styled.div`
   font-size: 8px;
   display: flex;
   flex-direction: row;
-  width: 30px;
+  width: 40px;
   z-index: 2;
+  justify-content: center;
 `;
 
 export const GridSquare = styled.div<{
@@ -29,13 +30,3 @@ export const GridSquare = styled.div<{
   position: relative;
   /* z-index: 1; */
 `;
-
-// {
-//     "year": 2024,
-//     "roleCount": 4,
-//     "roles": [
-//     {
-//     "step": 0,
-//     "count": 0
-//     },
-//     }

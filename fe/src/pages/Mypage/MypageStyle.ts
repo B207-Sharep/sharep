@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import * as G from '@/styles';
+import { Pencil } from 'lucide-react'; // lucide에서 Pencil 아이콘 가져오기
 
 interface FontOption {
   $size: string;
@@ -37,6 +38,15 @@ export const ProfileTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ProfileLogout = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  /* width: 100%; */
   justify-content: center;
   align-items: center;
 `;
@@ -91,7 +101,13 @@ export const GrassYear = styled.div`
   background-color: ${G.PALETTE.MAIN_COLOR};
 `;
 
+export const Edit = styled.div`
+  display: flex;
+`;
+
 export const Font = styled.div<FontOption>`
+  display: flex;
+  flex-direction: row;
   font-size: ${({ $size }) => $size};
   font-weight: ${({ $weight }) => $weight};
 `;

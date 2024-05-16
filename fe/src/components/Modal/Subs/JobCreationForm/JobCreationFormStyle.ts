@@ -129,3 +129,82 @@ export const IssueBadge = styled.div`
   border-radius: 6px;
   padding: 2px 6px;
 `;
+
+export const Dropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 100%;
+  margin-top: 4px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: ${PALETTE.MAIN_WHITE};
+  box-shadow: 0px 30px 150px rgba(139, 139, 139, 0.1);
+  border: 1px solid rgba(139, 139, 139, 0.1);
+  border-radius: 8px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+  z-index: 1;
+  overflow-y: auto;
+  max-height: 20vh;
+`;
+
+export const DropdowntItem = styled.div`
+  align-self: stretch;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const FilterType = styled.div`
+  width: 100%;
+  font-weight: 600;
+  border-bottom: 1px solid ${PALETTE.LIGHT_BLACK};
+  padding: 8px;
+`;
+
+export const Filter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  background-color: #f6f8fa;
+  border: 1px #d0d7d3 solid;
+  border-radius: 6px;
+  height: 32px;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+`;
+
+export const AccordionIconButton = styled.button`
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  width: 12px;
+  height: 12px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const AccordionIcon = styled.div<{ $isOpen: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+  transition: transform 0.3s ease;
+`;

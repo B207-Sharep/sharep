@@ -16,10 +16,12 @@ import {
   JobCreationFormProps,
   InfraJobCreationFormProps,
   SecretKeyFormProps,
+  EditProps,
+  MemberInvitationFormProps,
 } from './components/Modal';
 import {
   ManualTableProps,
-  FeatureManualTableProps,
+  RowProps,
   CelProps,
   SelectCelProps,
   SelectAssigneesCelProps,
@@ -28,6 +30,20 @@ import { ProjectGridWrapperProps } from './components/ProjectGridWrapper';
 import { ProjectCardProps } from './components/ProjectCard';
 import { IssueProps } from './components/Issue';
 import { NotiProps } from './components/SideBar';
+import {
+  ApiManualTableProps,
+  ApiRowProps,
+  ApiCelProps,
+  ApiSelectAssigneesCelProps,
+  ApiSelectCelProps,
+} from './components/ApiManualTable';
+import {
+  FeatureManualTableProps,
+  FeatureRowProps,
+  FeatureCelProps,
+  FeatureSelectAssigneesCelProps,
+  FeatureSelectCelProps,
+} from './components/FeatureManualTable';
 /** ================= Components ================= */
 
 /** ================= Pages ================= */
@@ -59,8 +75,9 @@ export type {
   JobCreationFormProps,
   InfraJobCreationFormProps,
   SecretKeyFormProps,
+  MemberInvitationFormProps,
   ManualTableProps,
-  FeatureManualTableProps,
+  RowProps,
   SelectAssigneesCelProps,
   CelProps,
   SelectCelProps,
@@ -78,5 +95,16 @@ export type {
   FilterProps,
   CurrentWorkProps,
   MemberListResponse,
+  EditProps,
+  ApiManualTableProps,
+  ApiRowProps,
+  ApiCelProps,
+  ApiSelectAssigneesCelProps,
+  ApiSelectCelProps,
+  FeatureManualTableProps,
+  FeatureRowProps,
+  FeatureCelProps,
+  FeatureSelectAssigneesCelProps,
+  FeatureSelectCelProps,
   API,
 };

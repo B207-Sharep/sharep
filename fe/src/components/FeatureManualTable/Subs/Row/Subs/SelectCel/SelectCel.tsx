@@ -1,32 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import * as S from './SelectCelStyle';
 import * as T from '@types';
 import * as Comp from '@components';
 
-export default function SelectCel({ initialState, fixedWidth, usingFor }: T.SelectCelProps) {
+export default function SelectCel({ initialState, fixedWidth, usingFor, readonly, onUpdate }: T.FeatureSelectCelProps) {
   const celRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(initialState || '');
-  const [isEditingMode, setIsEditingMode] = useState(false);
-
-  useEffect(() => {
-    if (isEditingMode && celRef.current) celRef.current.focus();
-  }, [isEditingMode]);
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (toggledValue) {
-      celRef.current?.focus();
-    } else {
-      celRef.current?.blur();
-    }
+    if (celRef.current === null || readonly || usingFor === 'STATE') return;
 
-    setIsEditingMode(() => toggledValue);
+    if (toggledValue) celRef.current.focus();
+    else celRef.current.blur();
   };
 
   const handleListOptionClick = (e: React.MouseEvent) => {
-    setValue(String(e.currentTarget.ariaValueText));
+    if (readonly || usingFor === 'STATE') return;
 
+    setValue(String(e.currentTarget.ariaValueText));
+    onUpdate({ key: 'priority', value: e.currentTarget.ariaValueText });
     if (celRef.current) {
-      celRef.current?.blur();
+      celRef.current.blur();
       handleCelClick(false);
     }
   };
@@ -38,10 +32,10 @@ export default function SelectCel({ initialState, fixedWidth, usingFor }: T.Sele
       onFocus={() => handleCelClick(true)}
       onBlur={() => handleCelClick(false)}
       $fixedWidth={fixedWidth}
-      $isEditingMode={isEditingMode}
+      disabled={readonly || usingFor === 'STATE'}
     >
-      <S.Palceholder>{OPTIONS[usingFor][value]}</S.Palceholder>
-      <S.OptionUlWrapper $isEditingMode={isEditingMode}>
+      <S.Palceholder role="button">{OPTIONS[usingFor][value]}</S.Palceholder>
+      <S.OptionUlWrapper>
         {Object.keys(OPTIONS[usingFor]).map((key, idx) => (
           <S.OptionLi
             className="hover-bg-dark"

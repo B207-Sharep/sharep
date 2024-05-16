@@ -3,16 +3,15 @@ import styled from 'styled-components';
 
 export const Grid = styled.div`
   width: 100%;
-  background-color: ${PALETTE.MAIN_WHITE};
-  border-radius: 24px;
-  padding: 16px;
-  gap: 20px;
 `;
 
 export const CardList = styled.div`
-  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  margin: 20px 0px 30px;
+  width: 100%;
+  background-color: ${PALETTE.MAIN_WHITE};
+  border-radius: 24px;
   justify-items: center;
   gap: 30px;
   padding: 24px 16px;
@@ -20,14 +19,12 @@ export const CardList = styled.div`
 
 export const CardAddBtn = styled.div`
   width: 100%;
-  height: 250px;
   aspect-ratio: 16/9;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 3px;
-  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
   cursor: pointer;
 `;
 
@@ -64,7 +61,7 @@ export const Card = styled.div`
 
 export const CardContent = styled.div`
   width: 100%;
-  height: 200px;
+  height: 80%;
   overflow: hidden;
 `;
 
@@ -78,7 +75,7 @@ export const PreviewContent = styled.div`
 `;
 
 export const CardText = styled.div`
-  height: 50px;
+  height: 20%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -98,4 +95,10 @@ export const DefaultImage = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${PALETTE.MAIN_BACKGROUND};
+`;
+
+export const CardDate = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `;

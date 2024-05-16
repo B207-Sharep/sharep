@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { PALETTE } from '@/styles';
 
-export const OptionUlWrapper = styled.ul<{ $isEditingMode: boolean }>`
+export const OptionUlWrapper = styled.ul`
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -15,7 +15,6 @@ export const OptionUlWrapper = styled.ul<{ $isEditingMode: boolean }>`
   transform: translate(-0%, 99%);
   visibility: hidden;
   border-radius: 0px 0px 6px 6px;
-  box-shadow: ${({ $isEditingMode }) => $isEditingMode && '2px 16px 16px rgba(0, 0, 0, 0.36)'};
 `;
 
 export const OptionLi = styled.li`
@@ -25,7 +24,7 @@ export const OptionLi = styled.li`
   padding: 6px 0px;
 `;
 
-export const Wrapper = styled.button<{ $isEditingMode: boolean; $fixedWidth: string }>`
+export const Wrapper = styled.button<{ $fixedWidth: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,18 +32,28 @@ export const Wrapper = styled.button<{ $isEditingMode: boolean; $fixedWidth: str
   width: ${({ $fixedWidth }) => $fixedWidth};
   min-width: 120px;
   min-height: fit-content;
-  border-radius: ${({ $isEditingMode }) => $isEditingMode && '6px'};
-  background-color: ${({ $isEditingMode }) => $isEditingMode && 'white !important'};
-  box-shadow: ${({ $isEditingMode }) => $isEditingMode && '2px 2px 16px rgba(0, 0, 0, 0.36)'};
   color: ${PALETTE.TABLE_CONTENT};
   position: relative;
 
-  * {
-    cursor: ${({ $isEditingMode }) => !$isEditingMode && 'pointer'};
+  &:disabled {
+    background-color: ${PALETTE.MAIN_BACKGROUND};
   }
 
-  &:focus-within ${OptionUlWrapper} {
-    visibility: visible;
+  &:focus-within {
+    * {
+      cursor: pointer;
+    }
+
+    & {
+      background-color: white;
+      border-radius: 6px 6px 0px 0px;
+      box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.36);
+    }
+
+    ${OptionUlWrapper} {
+      visibility: visible;
+      box-shadow: 2px 16px 16px rgba(0, 0, 0, 0.36);
+    }
   }
 `;
 

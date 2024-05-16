@@ -40,19 +40,26 @@ export default function Main() {
           </S.SloganWrapper>
 
           <S.SubSlogan>
-            안녕하세요? ShareP와 함께 뭐시기뭐기시 가나다라
-            <br />
-            도레미파솔라시도
-            <br />
-            유재건유죄건유잼건
+            <S.StyledText fontSize={20} fontWeight={700}>
+              기능명세 작성과 API명세부터
+            </S.StyledText>
+            <S.StyledText fontSize={20} fontWeight={700}>
+              화면설계, 인프라 담당자 또한 커밋을 남길 수 있고
+            </S.StyledText>
+            <S.StyledText fontSize={20} fontWeight={700}>
+              완료된 기능은 알림으로 알려드려요
+            </S.StyledText>
           </S.SubSlogan>
         </S.MainWrapper>
-        <S.tw>
-          <S.CardSection>fdfdfd</S.CardSection>
-          <S.CardSection>fdfdfd</S.CardSection>
-          <S.CardSection>fdfdfd</S.CardSection>
-          <S.CardSection>fdfdfd</S.CardSection>
-        </S.tw>
+        <section>
+          <S.ContentsWrapper>
+            <S.Contents>
+              <img src={'/work-status.png'} height="100%" alt="위원회들"></img>
+            </S.Contents>
+            <S.Contents>fdfdfd</S.Contents>
+            <S.Contents>fdfdfd</S.Contents>
+          </S.ContentsWrapper>
+        </section>
       </S.RootLayout>
     </>
   );

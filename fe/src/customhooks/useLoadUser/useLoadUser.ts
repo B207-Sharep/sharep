@@ -3,6 +3,8 @@ import { useRecoilState } from 'recoil';
 import { account } from '@/apis/accounts';
 import { userState } from '@/stores/atoms/loadUser';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import * as API from '@/apis';
 
 interface User {
   // 사용자 정보에 대한 타입 정의
@@ -17,6 +19,7 @@ export const useLoadUser = (): User | null => {
   const [user, setUser] = useRecoilState<User | null>(userState);
   const navigate = useNavigate();
   const location = useLocation();
+  // const flag=false
 
   useEffect(() => {
     const loadUser = async () => {
@@ -27,7 +30,6 @@ export const useLoadUser = (): User | null => {
           const response = await account();
           if (response) {
             setUser(response.data); // Recoil 상태 업데이트
-            // console.log(response.data, 'IMHERE AXIOS');
           }
         } catch (error) {
           console.error('사용자 정보를 불러오는데 실패했습니다.', error);

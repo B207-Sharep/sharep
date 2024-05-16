@@ -1,11 +1,11 @@
 import { AxiosResponse } from 'axios';
-import { instanceOfFormData, instanceOfJson } from '../instance';
+import { instanceOfEventStream, instanceOfFormData, instanceOfJson } from '../instance';
 import * as T from '@types';
 
 export async function getGrass() {
   return await instanceOfJson.get(`/jobs`);
 }
-export async function getProjectList() {
+export async function getProjectList(): Promise<AxiosResponse<T.API.GetProjectListResponse[], any>> {
   return await instanceOfJson.get(`/projects`);
 }
 
@@ -64,7 +64,7 @@ export async function getNowIssueAboutMe({
   projectId,
 }: {
   projectId: number;
-}): Promise<AxiosResponse<T.API.GetNowIssueListResponse, any>> {
+}): Promise<AxiosResponse<T.API.GetNowIssueListResponse[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/own/now/issues`);
 }
 
@@ -127,8 +127,21 @@ export async function getScreenIssueDetail({
   return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${'DETAIL'}&issueType=${'SCREEN'}&accountId=`);
 }
 
+/** 인프라 이슈 리스트 조회 */
+export async function getInfraIssueList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.SimpleIssue[], any>> {
+  return instanceOfJson.get(`/projects/${projectId}/issues?dataType=${'SIMPLE'}&issueType=${'INFRA'}&accountId=`);
+}
+
 /** API 이슈 리스트 조회 */
-export async function getApiIssueList({ projectId }: { projectId: number }) {
+export async function getApiIssueList({
+  projectId,
+}: {
+  projectId: number;
+}): Promise<AxiosResponse<T.API.DetailApi[], any>> {
   return instanceOfJson.get(`/projects/${projectId}/apis`);
 }
 
@@ -154,7 +167,7 @@ export async function createNewJob({
     issueId: number;
     name: string;
     description: string;
-    imageFile: File | null;
+    imageFile?: File | null;
   };
 }) {
   const formData = new FormData();
@@ -221,7 +234,7 @@ export async function createNewIssue({
 }: {
   projectId: number;
   newIssue: {
-    issueName: string;
+    issueName?: string;
     description?: string;
     type: T.IssueProps['type'];
     epic?: string;
@@ -245,4 +258,98 @@ export async function createIssueAssignee({
     `/projects/${projectId}/issues/${issueId}/accounts/${accountId}/assignees`,
     accountId,
   );
+}
+
+/** 이슈 수정 */
+export async function updateIssue({
+  projectId,
+  issueId,
+  updatedIssue,
+}: {
+  projectId: number;
+  issueId: number;
+  updatedIssue: {
+    issueName: string | null;
+    description: string | null;
+    epic: string | null;
+    priority: T.PriorityBadgeProps['priority'] | null;
+  };
+}) {
+  return await instanceOfJson.put(`/projects/${projectId}/issues/${issueId}`, updatedIssue);
+}
+
+/** 이슈 삭제 */
+export async function deleteIssue({ projectId, issueId }: { projectId: number; issueId: number }) {
+  return instanceOfJson.delete(`/projects/${projectId}/issues/${issueId}`);
+}
+
+/** 프로젝트 멤버 초대 - 팀장 권한만 가능 */
+export async function inviteMembers({
+  projectId,
+  members,
+}: {
+  projectId: number;
+  members: {
+    id: number;
+    roles: T.RoleBadgeProps['role'][];
+  }[];
+}) {
+  return await instanceOfJson.post(`/projects/${projectId}/members`, members);
+}
+
+/** API 수정 */
+export async function updateApi({
+  projectId,
+  id,
+  reqBody,
+}: {
+  projectId: number;
+  id: number;
+  reqBody: {
+    request: string | null;
+    response: string | null;
+    url: string | null;
+    description: string | null;
+    method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
+  };
+}) {
+  return instanceOfJson.put(`/projects/${projectId}/apis/${id}`, reqBody);
+}
+
+/** 인프라 이슈 알림 전송 */
+export async function sendInfraAlarm({
+  projectId,
+  issueId,
+  targetmember,
+}: {
+  projectId: number;
+  issueId: number;
+  targetmember: number[];
+}) {
+  return await instanceOfEventStream.post(
+    `/notifications/projects/${projectId}/issues/${issueId}/send?accountIds=${targetmember}`,
+  );
+}
+
+/** 알림 확인 */
+export async function readNoti({ notificationId }: { notificationId: number }) {
+  return instanceOfEventStream.patch(`/notifications/${notificationId}`);
+}
+
+/** 기능 명세서 수정 */
+export async function modifyFeatureManualIssue({
+  projectId,
+  issueId,
+  body,
+}: {
+  projectId: number;
+  issueId: number;
+  body: {
+    issueName: string | null;
+    description: string | null;
+    epic: string | null;
+    priority: T.PriorityBadgeProps[`priority`] | null;
+  };
+}) {
+  return instanceOfJson.put(`/notifications/projects/${projectId}/issues/${issueId}`, body);
 }

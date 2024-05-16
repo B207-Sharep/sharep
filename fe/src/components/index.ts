@@ -8,9 +8,17 @@ import PriorityBadge from './PriorityBadge/PriorityBadge';
 import UserImg from './UserImg/UserImg';
 import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
-import ManualTable from './ManualTable/ManualTable';
+import FeatureManualTable from './FeatureManualTable/FeatureManualTable.tsx';
+import ApiManual from './ApiManualTable/ApiManualTable.tsx';
 import Modal from './Modal/Modal';
-import { ProjectCreationForm, JobCreationForm, InfraJobCreationForm, SecretKeyForm } from './Modal/Subs';
+import {
+  ProjectCreationForm,
+  JobCreationForm,
+  InfraJobCreationForm,
+  SecretKeyForm,
+  EditForm,
+  MemberInvitationForm,
+} from './Modal/Subs';
 import GalleryCard from './GalleryCard/GalleryCard';
 import GalleryGridWrapper from './GalleryGridWrapper/GalleryGridWrapper';
 import ProjectCard from './ProjectCard/ProjectCard';
@@ -21,6 +29,8 @@ import HistoryBtn from './Button/History/HistoryBtn';
 import MainColorBtn from './Button/MainColorBtn/MainColorBtn';
 import Slogan from './Slogan/Slogan';
 import Header from './Header/Header';
+import PortalModal from './PortalModal/PortalModal';
+import PModal from './PortalModal/Subs/PModal';
 export {
   InputWithLabel,
   StatusBadge,
@@ -31,13 +41,16 @@ export {
   SideBar,
   UserImg,
   TableBtn,
-  ManualTable,
+  FeatureManualTable,
+  ApiManual,
   QuillEditor,
   Modal,
   ProjectCreationForm,
   JobCreationForm,
   InfraJobCreationForm,
+  EditForm,
   SecretKeyForm,
+  MemberInvitationForm,
   GalleryCard,
   GalleryGridWrapper,
   ProjectCard,
@@ -48,4 +61,6 @@ export {
   MainColorBtn,
   Slogan,
   Header,
+  PortalModal,
+  PModal,
 };

@@ -8,8 +8,7 @@ import { useModal } from '@/customhooks';
 import { useRecoilValue } from 'recoil';
 import { userState } from '@/stores/atoms/loadUser';
 
-export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProps) {
-  console.log(issueList, 'PSDFIOPSJDOFIJK');
+export default function ProjectGridWrapper({ projectList }: ProjectGridWrapperProps) {
   const projectModal = useModal('project');
   const user = useRecoilValue(userState);
 
@@ -40,7 +39,7 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
     <S.Grid>
       <S.CardList>
         <S.ProjectAddBtn onClick={handleModalOpen}>
-          <ProjectCard key={0} title={'new'} bio={'새로 만들기'} id={'0'} accounts={null} createdAt={null} add={true} />
+          <ProjectCard key={0} title={'new'} bio={'새로 만들기'} id={0} accounts={null} add={true} />
         </S.ProjectAddBtn>
         <Comp.Modal
           modalId="project"
@@ -49,14 +48,13 @@ export default function ProjectGridWrapper({ issueList }: ProjectGridWrapperProp
         >
           <Comp.ProjectCreationForm modalId="project" />
         </Comp.Modal>
-        {issueList.map((issue, index) => (
+        {projectList.map((project, index) => (
           <ProjectCard
             key={index}
-            title={issue.title}
-            bio={issue.bio}
-            id={issue.id}
-            accounts={issue.accounts}
-            createdAt={issue.createdAt}
+            title={project.title}
+            bio={project.bio}
+            id={project.id}
+            accounts={project.accounts}
             add={false}
           />
         ))}

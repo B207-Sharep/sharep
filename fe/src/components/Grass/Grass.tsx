@@ -25,6 +25,7 @@ const GitHubGrid = ({ data }: any) => {
         flexDirection: 'row',
         width: '100%',
         overflowX: 'auto',
+        padding: '20px 20px',
       }}
     >
       {data.map((row: any[], rowIndex: number) => (
@@ -70,12 +71,10 @@ const convertToGrid = (data: any[]) => {
   for (let i = 0; i < rows; i++) {
     grid.push(data.slice(i * 7, (i + 1) * 7));
   }
-  console.log(grid, 'GRID');
 
   return grid;
 };
 
 export default function Grass({ grass }: any) {
-  console.log(grass, 'grass');
   return <GitHubGrid data={convertToGrid(grass.jobs)} />;
 }

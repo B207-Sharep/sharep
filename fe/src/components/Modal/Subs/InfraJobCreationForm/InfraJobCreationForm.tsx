@@ -2,23 +2,44 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as S from './InfraJobCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
+import * as API from '@/apis';
 import { PALETTE } from '@/styles';
 import { useModal } from '@/customhooks';
+import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { modalDataState } from '@/stores/atoms/modal';
 import { Plus, X } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
 export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
-  const { updateContentByKey } = useModal<T.InfraJobCreationFormProps>(modalId);
+  const { updateContentByKey, updateIsValid } = useModal<T.InfraJobCreationFormProps>(modalId);
   const { contents } = useRecoilValue(modalDataState(modalId));
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState('left');
   const addbBtnRef = useRef<HTMLDivElement | null>(null);
   const notiContainerRef = useRef<HTMLDivElement | null>(null);
+  const { projectId, manualId } = useParams();
+
+  const {
+    data: memberListResponse,
+    isSuccess: memberListSuccess,
+    isFetching: memberListFetching,
+  } = useQuery({
+    queryKey: [{ func: `get-member-list`, projectId }],
+    queryFn: () => API.project.getProjectMemberList({ projectId: Number(projectId) }),
+  });
+
+  const updateValidityAndIssueId = () => {
+    if (contents.description.length > 0 && contents.name.length > 0) {
+      updateIsValid(true);
+      updateContentByKey('issueId', Number(manualId));
+      // console.log(contents, 'contents======');
+    }
+  };
 
   const handleAddNotiUser = (userToAdd: T.InfraJobCreationFormProps['notiUsers'][number]) => {
     const isAlreadyAdded = contents.notiUsers.some(
-      (user: T.InfraJobCreationFormProps['notiUsers'][number]) => user.accountId === userToAdd.accountId,
+      (user: T.InfraJobCreationFormProps['notiUsers'][number]) => user.account.id === userToAdd.account.id,
     );
 
     if (!isAlreadyAdded) {
@@ -33,7 +54,7 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
     updateContentByKey(
       'notiUsers',
       contents.notiUsers.filter(
-        (notiUser: T.InfraJobCreationFormProps['notiUsers'][number]) => notiUser.accountId !== selectedUser.accountId,
+        (notiUser: T.InfraJobCreationFormProps['notiUsers'][number]) => notiUser.account.id !== selectedUser.account.id,
       ),
     );
 
@@ -87,7 +108,10 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
           id="name"
           type="text"
           value={contents.name}
-          onChange={event => updateContentByKey('name', event.target.value)}
+          onChange={event => {
+            updateContentByKey('name', event.target.value);
+            updateValidityAndIssueId(); // Check validity when name changes
+          }}
         />
       </S.FormItem>
       <S.FormItem>
@@ -96,11 +120,11 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
         </S.StyledText>
         <S.NotiContainer ref={notiContainerRef}>
           {contents.notiUsers.map((user: T.InfraJobCreationFormProps['notiUsers'][number]) => (
-            <S.NotiUser key={`accountId-${user.accountId}`}>
+            <S.NotiUser key={`accountId-${user.account.id}`}>
               <S.UserInfo>
-                <Comp.UserImg size="sm" path={user.userImageUrl} />
+                <Comp.UserImg size="sm" path={user.account.imageUrl} />
                 <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-                  {user.nickname}
+                  {user.account.nickname}
                 </S.StyledText>
                 <S.RoleBadgeList>
                   {user.roles.map(role => (
@@ -119,21 +143,18 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
             </S.Icon>
             {isDropdownVisible && (
               <S.Dropdown $dropdownPosition={dropdownPosition}>
-                {dummyUsers.map(user => (
-                  <S.DropdowntItem
-                    key={`infra-job-accountId-${user.accountId}`}
-                    onClick={() => handleAddNotiUser(user)}
-                  >
+                {memberListResponse?.data.map(user => (
+                  <S.DropdowntItem key={`infra-job-accountId-${user.id}`} onClick={() => handleAddNotiUser(user)}>
                     <S.UserInfo>
                       <S.UserProfile>
-                        <Comp.UserImg size="sm" path={user.userImageUrl} />
+                        <Comp.UserImg size="sm" path={user.account.imageUrl} />
                         <S.StyledText color={PALETTE.LIGHT_BLACK} fontSize={12}>
-                          {user.nickname}
+                          {user.account.nickname}
                         </S.StyledText>
                       </S.UserProfile>
                       <S.RoleBadgeList>
                         {user.roles.map(role => (
-                          <Comp.RoleBadge key={`infra-noti-${user.accountId}-${role}`} role={role} selectAble={false} />
+                          <Comp.RoleBadge key={`infra-noti-${user.id}-${role}`} role={role} selectAble={false} />
                         ))}
                       </S.RoleBadgeList>
                     </S.UserInfo>
@@ -150,12 +171,14 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
           width="100%"
           height="400px"
           value={contents.description}
+          // value={}
           hiddenTooltip={false}
-          stateSetter={newDescriptionOrUpdater =>
+          stateSetter={newDescriptionOrUpdater => {
             typeof newDescriptionOrUpdater === 'function'
               ? updateContentByKey('description', newDescriptionOrUpdater(contents.description))
-              : updateContentByKey('description', newDescriptionOrUpdater)
-          }
+              : updateContentByKey('description', newDescriptionOrUpdater);
+            updateValidityAndIssueId(); // Check validity when description changes
+          }}
           placeholder="내용을 입력하세요."
         />
       </S.EditorWrapper>
@@ -163,28 +186,28 @@ export default function InfraJobCreationForm({ modalId }: Pick<T.ModalProps, 'mo
   );
 }
 
-const dummyUsers: T.InfraJobCreationFormProps['notiUsers'][number][] = [
-  {
-    accountId: 1,
-    nickname: '임서정',
-    roles: ['FRONT_END', 'DESIGNER'],
-  },
-  {
-    accountId: 2,
-    nickname: '오상훈',
-    roles: ['INFRA', 'BACK_END'],
-    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
-  },
-  {
-    accountId: 3,
-    nickname: '조성규',
-    roles: ['FRONT_END', 'BACK_END'],
-    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/2.jpg',
-  },
-  {
-    accountId: 4,
-    nickname: '김성제',
-    roles: ['INFRA', 'BACK_END'],
-    userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/3.jpg',
-  },
-];
+// const dummyUsers: T.InfraJobCreationFormProps['notiUsers'][number][] = [
+//   {
+//     accountId: 1,
+//     nickname: '임서정',
+//     roles: ['FRONT_END', 'DESIGNER'],
+//   },
+//   {
+//     accountId: 2,
+//     nickname: '오상훈',
+//     roles: ['INFRA', 'BACK_END'],
+//     userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/1.jpg',
+//   },
+//   {
+//     accountId: 3,
+//     nickname: '조성규',
+//     roles: ['FRONT_END', 'BACK_END'],
+//     userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/2.jpg',
+//   },
+//   {
+//     accountId: 4,
+//     nickname: '김성제',
+//     roles: ['INFRA', 'BACK_END'],
+//     userImageUrl: 'https://xsgames.co/randomusers/assets/avatars/pixel/3.jpg',
+//   },
+// ];

@@ -73,3 +73,17 @@ export const StyledText = styled.span<{
   text-overflow: ellipsis;
   visibility: ${props => (props.$add ? 'hidden' : 'visible')};
 `;
+
+export const InvitationBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  cursor: pointer;
+  svg {
+    opacity: 0.6;
+    &:hover {
+      opacity: 1;
+    }
+  }
+`;
