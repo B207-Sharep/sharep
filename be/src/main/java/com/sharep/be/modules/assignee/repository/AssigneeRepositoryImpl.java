@@ -44,8 +44,19 @@ public class AssigneeRepositoryImpl implements AssigneeRepository {
     @Override
     public Optional<Assignee> findByMemberProjectIdAndIssueIdAndMemberAccountId(Long projectId, Long issueId,
             Long accountId) {
-        return assigneeJpaRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId,
-                issueId, accountId);
+//        return assigneeJpaRepository.findByMemberProjectIdAndIssueIdAndMemberAccountId(projectId,
+//                issueId, accountId);
+        return Optional.ofNullable(queryFactory.select(assignee)
+                .from(assignee)
+                .innerJoin(assignee.member, member).fetchJoin()
+                .innerJoin(member.roles, role1).fetchJoin()
+                .innerJoin(member.account, account).fetchJoin()
+                .innerJoin(member.project, project).fetchJoin()
+                .innerJoin(assignee.issue, issue).fetchJoin()
+                .innerJoin(issue.api, api).fetchJoin()
+                .where(project.id.eq(projectId))
+                .where(account.id.eq(accountId))
+                .fetchOne());
     }
 
     @Override

@@ -126,20 +126,23 @@ public class NotificationServiceImpl implements NotificationService {
 
         List<Member> targetMembers = memberRepository.findAllByProjectIdAndAccountIdIn(projectId,
                 Arrays.asList(accountIds));
+        System.out.println(targetMembers.size());
 
         for (Member targetMember : targetMembers) {
+
             Notification notification = Notification.builder()
                     .assignee(assignee)
                     .isRead(false)
                     .member(targetMember)
                     .build();
 
-            notificationRepository.save(notification);
+            Notification notification1 = notificationRepository.save(notification);
 
             notifyAccountId(
                     targetMember.getAccount().getId(),
-                    NotificationMessage.from(notification)
+                    NotificationMessage.from(notification1)
             );
+
         }
     }
 
