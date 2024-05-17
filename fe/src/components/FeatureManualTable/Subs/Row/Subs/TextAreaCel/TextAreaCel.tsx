@@ -18,6 +18,8 @@ export default function TextAreaCel({
   useEffect(() => {
     if (textareaRef.current === null) return;
 
+    console.log(`TEXT-CEL INITIALSTATE CHANGED :`, initialState);
+    setValue(initialState);
     const { scrollHeight, style } = textareaRef.current;
     style.height = `${scrollHeight}px`;
   }, [initialState]);
