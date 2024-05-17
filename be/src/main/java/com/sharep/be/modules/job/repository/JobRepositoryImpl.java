@@ -46,18 +46,27 @@ public class JobRepositoryImpl implements JobRepository {
 
     @Override
     public List<Job> findContributionByProjectIdAndAccountId(Long projectId, Long accountId) {
-        return queryFactory.select(job).from(job).innerJoin(job.member, member)
-                .innerJoin(member.project, project).innerJoin(member.account, account)
-                .where(project.id.eq(projectId)).where(account.id.eq(accountId)).fetch();
+        return queryFactory.select(job)
+                .from(job)
+                .innerJoin(job.member, member)
+                .innerJoin(member.project, project)
+                .innerJoin(member.account, account)
+                .where(project.id.eq(projectId))
+                .where(account.id.eq(accountId))
+                .fetch();
     }
 
     @Override
     public List<Job> findAllByCondition(Long projectId, Long accountId, Long issueId,
             RoleType roleType) {
-        return queryFactory.select(job).from(job).innerJoin(job.member, member).fetchJoin()
-                .innerJoin(member.roles, role1).fetchJoin().innerJoin(member.account, account)
+        return queryFactory.select(job)
+                .from(job)
+                .innerJoin(job.member, member).fetchJoin()
+                .innerJoin(member.roles, role1).fetchJoin()
+                .innerJoin(member.account, account)
                 .fetchJoin().innerJoin(member.project, project).fetchJoin()
-                .innerJoin(job.issue, issue).fetchJoin().innerJoin(issue.api, api).fetchJoin()
+                .innerJoin(job.issue, issue).fetchJoin()
+                .leftJoin(issue.api, api).fetchJoin()
                 .where(eqProjectId(projectId)).where(eqAccountId(accountId))
                 .where(eqIssueId(issueId)).where(eqRoleType(roleType)).orderBy(job.createdAt.desc())
                 .fetch();
