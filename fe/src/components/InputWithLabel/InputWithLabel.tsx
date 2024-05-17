@@ -4,7 +4,7 @@ import * as T from '@types';
 
 const BaseInput = forwardRef(
   (
-    { id, type, value, onChange, className, placeholder, accept, hidden }: T.BaseInputProps,
+    { id, type, value, onChange, className, placeholder, accept, hidden, autoautoComplete }: T.BaseInputProps,
     ref: Ref<HTMLInputElement>,
   ) => {
     return (
@@ -15,6 +15,7 @@ const BaseInput = forwardRef(
         onChange={onChange}
         placeholder={placeholder}
         className={className}
+        autoComplete={autoautoComplete}
         aria-hidden={hidden ? true : false}
         accept={accept}
         ref={ref}
