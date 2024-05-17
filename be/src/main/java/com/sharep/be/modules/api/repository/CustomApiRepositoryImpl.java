@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class CustomApiRepositoryImpl implements CustomApiRepository {
-    
+
     private final JPAQueryFactory queryFactory;
 
     @Override
@@ -28,6 +28,7 @@ public class CustomApiRepositoryImpl implements CustomApiRepository {
                 .leftJoin(issue.assignees, assignee).fetchJoin()
                 .leftJoin(assignee.member, member).fetchJoin()
                 .leftJoin(member.account, account).fetchJoin()
+                .leftJoin(member.roles).fetchJoin()
                 .innerJoin(issue.project, project)
                 .where(project.id.eq(projectId))
                 .fetch();
