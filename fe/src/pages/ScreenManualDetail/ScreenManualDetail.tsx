@@ -135,7 +135,7 @@ export default function ScreenManualDetail() {
   }, [addbBtnRef]);
 
   return (
-    <L.SideBarLayout>
+    <>
       <S.Wrapper>
         {screenIssueDetailSuccess && (
           <>
@@ -279,7 +279,7 @@ export default function ScreenManualDetail() {
           </>
         )}
       </S.Wrapper>
-    </L.SideBarLayout>
+    </>
   );
 }
 

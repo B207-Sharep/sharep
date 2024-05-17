@@ -15,6 +15,7 @@ import GantChart from './svgs/gant-chart-icon.svg?react';
 import YesterdayWork from './svgs/yesterday-work-icon.svg?react';
 import GitIcon from './svgs/git-icon.svg?react';
 import DefaultUploadImage from './svgs/default-upload-image.svg?react';
+import Bgc from './svgs/bgc.svg?react';
 
 export {
   ApiDocs,
@@ -34,4 +35,5 @@ export {
   YesterdayWork,
   GitIcon,
   DefaultUploadImage,
+  Bgc,
 };

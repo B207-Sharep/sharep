@@ -62,7 +62,7 @@ export default function FeatureManual() {
   }, [projectId]);
 
   return (
-    <L.SideBarLayout>
+    <>
       <S.ManualWrapper>
         <S.TableWrapper>
           <Comp.FeatureManualTable readonly={false} dataList={featureIssuesResponse?.data || []} usingFor="FEATURE" />
@@ -72,7 +72,7 @@ export default function FeatureManual() {
           </S.CreateNewRowButton>
         </S.TableWrapper>
       </S.ManualWrapper>
-    </L.SideBarLayout>
+    </>
   );
 }
 

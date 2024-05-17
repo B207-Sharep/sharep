@@ -5,6 +5,7 @@ import * as Comp from '@components';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import BG from '@/assets/svgs/bgc.svg?react';
 
 export default function Main() {
   const navigate = useNavigate();
@@ -17,8 +18,12 @@ export default function Main() {
     <>
       {/* <S.Header>Header TEMP</S.Header> */}
       <Comp.Header></Comp.Header>
+
       <S.RootLayout>
         <S.MainWrapper>
+          <S.BgImg>
+            <BG></BG>
+          </S.BgImg>
           <S.SloganWrapper>
             <S.Slogan>
               <Comp.Slogan></Comp.Slogan>
@@ -34,9 +39,9 @@ export default function Main() {
             > */}
             <Comp.Carousel>
               {/* 캐러셀 컴포넌트 시작 */}
-              <S.MonitorScreen />
+              <S.MonitorScreen1 />
               <S.MonitorScreen2 />
-              <S.MonitorScreen />
+              <S.MonitorScreen3 />
             </Comp.Carousel>{' '}
             {/* 캐러셀 컴포넌트 끝 */}
             {/* </motion.div> */}
