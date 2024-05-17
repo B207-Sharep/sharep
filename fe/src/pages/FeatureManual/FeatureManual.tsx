@@ -10,7 +10,7 @@ import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 
-const END_POINT = import.meta.env.VITE_DEV_END_POINT;
+const END_POINT = import.meta.env.VITE_END_POINT;
 const { CLOSED, CONNECTING, OPEN } = { CLOSED: 2, CONNECTING: 0, OPEN: 1 };
 
 export default function FeatureManual() {
