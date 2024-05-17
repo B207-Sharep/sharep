@@ -33,8 +33,8 @@ public record ApiResponse(Long id, String request, String response, String url, 
     }
 
     @Builder
-    public record ApiDetailResponse(Long id, String epic, State state, MethodType method,
-                                    String url, String description,
+    public record ApiDetailResponse(Long id, String epic, String issueName, State state,
+                                    MethodType method, String url, String description,
                                     String request, String response,
                                     List<AssigneeResponse> assignees) {
 
@@ -42,6 +42,7 @@ public record ApiResponse(Long id, String request, String response, String url, 
             return ApiDetailResponse.builder()
                     .id(api.getId())
                     .epic(api.getIssue().getEpic())
+                    .issueName(api.getIssue().getIssueName())
                     .state(api.getIssue().calculateState())
                     .method(api.getMethod())
                     .url(api.getUrl())
