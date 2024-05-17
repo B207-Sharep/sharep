@@ -66,25 +66,20 @@ export default function ScreenManualDetail() {
     },
   });
 
-  const selectedIssueDetail = useMemo(
-    () => screenIssueDetailResponse && screenIssueDetailResponse.data.find(issue => issue.id === Number(manualId)),
-    [screenIssueDetailResponse, manualId],
-  );
+  const selectedIssueDetail = useMemo(() => {
+    return screenIssueDetailResponse && screenIssueDetailResponse.data.find(issue => issue.id === Number(manualId));
+  }, [screenIssueDetailResponse, manualId]);
 
-  const recentJob = useMemo(
-    () =>
+  const recentJob = useMemo(() => {
+    return (
       selectedIssueDetail &&
       jobListResponse &&
-      jobListResponse.data.filter(job => job.issueId === selectedIssueDetail.id)[0],
-    [selectedIssueDetail, jobListResponse],
-  );
+      jobListResponse.data.filter(job => job.issueId === selectedIssueDetail.id)[0]
+    );
+  }, [selectedIssueDetail, jobListResponse]);
 
   const handleModalOpen = () => {
-    jobModal.openModal({
-      name: '',
-      imageFile: null,
-      description: '',
-    });
+    jobModal.openModal({ name: '', imageFile: null, description: '' });
   };
 
   // 이슈 담당자 생성
@@ -133,6 +128,15 @@ export default function ScreenManualDetail() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [addbBtnRef]);
+
+  const findFeatureIssuesInConnected = useMemo(() => {
+    if (!selectedIssueDetail?.connectedIssues) return [];
+    const { connectedIssues } = selectedIssueDetail;
+    return connectedIssues.reduce((basket: T.API.SimpleIssue[], issue) => {
+      if (issue.type === 'FEATURE') basket.push(issue);
+      return basket;
+    }, []);
+  }, [selectedIssueDetail]);
 
   return (
     <>
@@ -207,7 +211,9 @@ export default function ScreenManualDetail() {
                 </S.IssueAssigneeContainer>
               </S.Header>
               <S.CommitWrapper>
-                <S.BtnWrapper onClick={() => navigate(`/projects/${projectId}/commit-history`)}>
+                <S.BtnWrapper
+                  onClick={() => navigate(`/projects/${projectId}/commit-history?issueId=${selectedIssueDetail?.id}`)}
+                >
                   <Comp.HistoryBtn />
                 </S.BtnWrapper>
                 <div onClick={handleModalOpen}>
@@ -225,7 +231,7 @@ export default function ScreenManualDetail() {
               {recentJob && (
                 <>
                   <S.ContentItem>
-                    <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
+                    <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20} fontWeight={700}>
                       최근 작업
                     </S.StyledText>
                     <Comp.Commit
@@ -247,34 +253,25 @@ export default function ScreenManualDetail() {
                   </S.ContentItem>
                 </>
               )}
-              {/* {selectedIssueDetail?.connectedIssues && (
-                <S.ContentItem>
-                  <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
-                    기능 명세서
-                  </S.StyledText>
-                  <S.ManualWrapper>
-                    <Comp.FeatureManual
-                      readonly={true}
-                      dataList={FEATURE_MANUAL_DUMMY as T.API.DetailIssue[]}
-                      usingFor="FEATURE"
-                    />
-                  </S.ManualWrapper>
-                </S.ContentItem>
-              )} */}
-              {/* {selectedIssueDetail?.api && (
-                <S.ContentItem>
-                  <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20}>
-                    API 명세서
-                  </S.StyledText>
-                  <S.ManualWrapper>
-                    <Comp.ManualTable
-                      columnTitles={API_MANUAL_COLUMN_TITLES}
-                      dataList={API_MANUAL_DUMMY}
-                      usingFor="FEATURE"
-                    />
-                  </S.ManualWrapper>
-                </S.ContentItem>
-              )} */}
+              <S.ContentItem>
+                <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20} fontWeight={700}>
+                  기능 명세서
+                </S.StyledText>
+                <S.ManualWrapper>
+                  <Comp.FeatureManualTable readonly={true} dataType="SIMPLE" dataList={findFeatureIssuesInConnected} />
+                </S.ManualWrapper>
+              </S.ContentItem>
+              <S.ContentItem>
+                <S.StyledText color={PALETTE.SUB_BLACK} fontSize={20} fontWeight={700}>
+                  API 명세서
+                </S.StyledText>
+                <S.ManualWrapper>
+                  <Comp.ApiManualTable
+                    readonly={true}
+                    dataList={selectedIssueDetail?.api ? [...selectedIssueDetail.api] : []}
+                  />
+                </S.ManualWrapper>
+              </S.ContentItem>
             </S.ContentContainer>
           </>
         )}
@@ -282,85 +279,3 @@ export default function ScreenManualDetail() {
     </>
   );
 }
-
-const FEATURE_MANUAL_COLUMN_TITLES: {
-  name: string;
-  celType: 'TEXT' | 'SELECT';
-  iconName: 'current-state-title' | 'main-title-icon' | 'text-content-title';
-  fixedWidth: string;
-}[] = [
-  { name: '요구사항명', celType: 'TEXT', iconName: 'main-title-icon', fixedWidth: '200px' },
-  { name: '기능명', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '200px' },
-  { name: '우선순위', celType: 'SELECT', iconName: 'main-title-icon', fixedWidth: '120px' },
-  { name: '사용할 화면', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '200px' },
-  { name: '상세 기능', celType: 'TEXT', iconName: 'current-state-title', fixedWidth: '312px' },
-  { name: '진행 상태', celType: 'SELECT', iconName: 'current-state-title', fixedWidth: '120px' },
-  { name: '담당자', celType: 'SELECT', iconName: 'text-content-title', fixedWidth: '160px' },
-  { name: '시작 날짜', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '160px' },
-  { name: '종료 날짜', celType: 'TEXT', iconName: 'text-content-title', fixedWidth: '160px' },
-];
-
-const FEATURE_MANUAL_DUMMY = [
-  {
-    id: 1,
-    issueName: '이슈생성테스트',
-    description: '사용자 경험 추가해야 합니다.',
-    type: 'FEATURE',
-    epic: '사용자 개선',
-    state: 'NOW',
-    createdAt: '2024-05-09T10:28:34.962963',
-    priority: 'HIGH',
-    startedAt: '2024-05-09T16:38:09.029607',
-    finishedAt: null,
-    api: {
-      id: 1,
-      request: null,
-      response: null,
-      url: null,
-      method: null,
-    },
-    assignees: [
-      {
-        id: 1,
-        state: 'NOW',
-        accountId: 4,
-        name: 'test1',
-        imageUrl: 'https://share-p.s3.ap-northeast-2.amazonaws.com/2024/05/09/c8810940-1e52-4dce-a2df-ff1df49de76e',
-        roles: ['BACK_END', 'INFRA'],
-      },
-    ],
-    jobs: [],
-    connectedIssues: [],
-  },
-  {
-    id: 9,
-    issueName: '로그인',
-    description: '서비스에 로그인 요청',
-    type: 'FEATURE',
-    epic: '회원',
-    state: 'YET',
-    createdAt: '2024-05-09T10:35:55.376246',
-    priority: 'HIGH',
-    startedAt: null,
-    finishedAt: null,
-    api: {
-      id: 9,
-      request: null,
-      response: null,
-      url: null,
-      method: null,
-    },
-    assignees: [
-      {
-        id: 3,
-        state: 'YET',
-        accountId: 4,
-        name: 'test1',
-        imageUrl: 'https://share-p.s3.ap-northeast-2.amazonaws.com/2024/05/09/c8810940-1e52-4dce-a2df-ff1df49de76e',
-        roles: ['BACK_END', 'INFRA'],
-      },
-    ],
-    jobs: [],
-    connectedIssues: [],
-  },
-];

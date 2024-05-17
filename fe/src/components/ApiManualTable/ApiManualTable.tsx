@@ -4,34 +4,26 @@ import * as T from '@types';
 import * as Icon from '@assets';
 import Row from './Subs/Row/Row';
 import { MANUAL_CONSTANTS } from '@/constants';
-import { Plus } from 'lucide-react';
-import { PALETTE } from '@/styles';
 
-export default function ApiManualTable({ dataList, usingFor, readonly }: T.ApiManualTableProps) {
-  const createIconUsingIconName = useCallback(
-    ({ idx }: { idx: number }) => {
-      if (MANUAL_CONSTANTS[usingFor][idx].iconName === 'main-title-icon') {
-        return <Icon.MainTitle />;
-      }
-      if (MANUAL_CONSTANTS[usingFor][idx].iconName === 'current-state-title') {
-        return <Icon.CurrentStateTitle />;
-      }
-      if (MANUAL_CONSTANTS[usingFor][idx].iconName === 'text-content-title') {
-        return <Icon.TextContentTitle />;
-      }
-    },
-    [usingFor],
-  );
+export default function ApiManualTable({ dataList, readonly }: T.ApiManualTableProps) {
+  const createIconUsingIconName = useCallback(({ idx }: { idx: number }) => {
+    if (MANUAL_CONSTANTS.API[idx].iconName === 'main-title-icon') {
+      return <Icon.MainTitle />;
+    }
+    if (MANUAL_CONSTANTS.API[idx].iconName === 'current-state-title') {
+      return <Icon.CurrentStateTitle />;
+    }
+    if (MANUAL_CONSTANTS.API[idx].iconName === 'text-content-title') {
+      return <Icon.TextContentTitle />;
+    }
+  }, []);
 
   return (
     <S.TableWrapper>
       <S.TableContainer>
         <S.TitleRowWrapper>
-          {MANUAL_CONSTANTS[usingFor].map((title, titleIdx) => (
-            <S.Title
-              $fixedWidth={MANUAL_CONSTANTS[usingFor][titleIdx].fixedWidth}
-              key={`title-${title.name}-${titleIdx}`}
-            >
+          {MANUAL_CONSTANTS.API.map((title, titleIdx) => (
+            <S.Title $fixedWidth={MANUAL_CONSTANTS.API[titleIdx].fixedWidth} key={`title-${title.name}-${titleIdx}`}>
               {createIconUsingIconName({ idx: titleIdx })}
               <span>{title.name}</span>
             </S.Title>
@@ -39,20 +31,10 @@ export default function ApiManualTable({ dataList, usingFor, readonly }: T.ApiMa
         </S.TitleRowWrapper>
         {dataList?.map((data, dataIdx) => {
           return (
-            <Row
-              idx={dataIdx}
-              data={data as T.API.DetailApi}
-              usingFor={'API'}
-              readonly={readonly}
-              key={`${usingFor}-table-row-${dataIdx}`}
-            />
+            <Row idx={dataIdx} data={data as T.API.DetailApi} readonly={readonly} key={`api-table-row-${dataIdx}`} />
           );
         })}
       </S.TableContainer>
-      {/* <S.CreateNewRowButton>
-        <Plus color={PALETTE.LIGHT_BLACK} size={14}></Plus>
-        <span>작업 추가</span>
-      </S.CreateNewRowButton> */}
     </S.TableWrapper>
   );
 }

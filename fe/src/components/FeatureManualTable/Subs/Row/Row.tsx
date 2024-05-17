@@ -8,7 +8,7 @@ import { MANUAL_CONSTANTS } from '@/constants';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 
-export default function Row({ usingFor, data, idx, readonly }: T.FeatureRowProps) {
+export default function Row({ dataType, data, idx, readonly }: T.FeatureRowProps) {
   const queryClient = useQueryClient();
   const { projectId } = useParams();
 
@@ -91,9 +91,11 @@ export default function Row({ usingFor, data, idx, readonly }: T.FeatureRowProps
   return (
     <S.RowWrapper>
       {MANUAL_CONSTANTS.FEATURE.map(({ key, fixedWidth, celType }) => {
-        const using = key as keyof T.API.DetailIssue;
-        const state = data[using];
-        const mapKey = `${usingFor}-table-cell-${key}-${idx}`;
+        const using = key;
+        const state = isDetailIssue(data)
+          ? data[using as keyof T.API.DetailIssue]
+          : data[using as keyof T.API.SimpleIssue];
+        const mapKey = `feature-table-cell-${key}-${idx}`;
 
         if (celType === 'TEXT') {
           return (
@@ -129,28 +131,26 @@ export default function Row({ usingFor, data, idx, readonly }: T.FeatureRowProps
               onDelete={handleDeleteAssignee}
             />
           );
+        } else if (dataType !== 'SIMPLE') {
+          return (
+            <Sub.SelectConnectedIssue
+              fixedWidth={fixedWidth}
+              initialState={state as T.API.SimpleIssue[]}
+              usingFor="CONNECTEDISSUES"
+              key={mapKey}
+              readonly={readonly}
+              onCreate={handleCreateConnectionIssue}
+              onDelete={handleDeleteConnectionIssue}
+            />
+          );
         }
-        return (
-          <Sub.SelectConnectedIssue
-            fixedWidth={fixedWidth}
-            initialState={state as T.API.SimpleIssue[]}
-            usingFor="CONNECTEDISSUES"
-            key={mapKey}
-            readonly={readonly}
-            onCreate={handleCreateConnectionIssue}
-            onDelete={handleDeleteConnectionIssue}
-          />
-        );
       })}
     </S.RowWrapper>
   );
 }
 
-interface CreateCelTypeParam {
-  key: keyof T.API.DetailIssue;
-  fixedWidth: string;
-  celType: 'TEXT' | 'SELECT' | 'ASSIGNEES' | 'CONNECTEDISSUES';
-  idx: number;
+function isDetailIssue(data: T.API.DetailIssue | T.API.SimpleIssue): data is T.API.DetailIssue {
+  return (data as T.API.DetailIssue).connectedIssues !== undefined;
 }
 
 interface Body {

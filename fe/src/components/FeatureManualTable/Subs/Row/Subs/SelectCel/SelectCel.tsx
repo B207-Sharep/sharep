@@ -8,7 +8,6 @@ export default function SelectCel({ initialState, fixedWidth, usingFor, readonly
   const [value, setValue] = useState(initialState || '');
 
   useEffect(() => {
-    console.log(`SELECT-CEL INITIALSTATE CHANGED :`, initialState);
     setValue(initialState);
   }, [initialState]);
 
