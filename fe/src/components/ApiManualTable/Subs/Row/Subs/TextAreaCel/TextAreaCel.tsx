@@ -10,11 +10,23 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, readon
   const [isPressingShiftKey, setIsPressingShiftKey] = useState(false);
 
   useEffect(() => {
-    if (isEditingMode && textareaRef.current) textareaRef.current.focus();
+    if (textareaRef.current === null) return;
+
+    setValue(initialState);
+    const { scrollHeight, style } = textareaRef.current;
+    style.height = `${scrollHeight}px`;
+
+    return () => {
+      setValue('');
+    };
+  }, [initialState]);
+
+  useEffect(() => {
+    if (isEditingMode && textareaRef.current !== null) textareaRef.current.focus();
   }, [isEditingMode]);
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (textareaRef.current === null || !onUpdate) return;
+    if (textareaRef.current === null || readonly || usingFor === 'epic' || usingFor === 'description') return;
 
     if (toggledValue) textareaRef.current.focus();
     else textareaRef.current.blur();
@@ -23,12 +35,12 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, readon
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (textareaRef.current === null || readonly) return;
+    if (textareaRef.current === null || readonly || usingFor === 'epic' || usingFor === 'description') return;
 
     setValue(e.target.value || '');
     if (textareaRef.current) {
       const { scrollHeight, style } = textareaRef.current;
-      style.height = `${scrollHeight}px`;
+      style.height = `${Math.max(scrollHeight, 48)}px`;
     }
   };
 
@@ -39,7 +51,7 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, readon
     const curHeight = Number(style.height.replace('px', ''));
 
     if (e.key === 'Shift') setIsPressingShiftKey(() => toggledValue);
-    if (e.key === 'Backspace' && toggledValue && curHeight > 48) style.height = `${scrollHeight - 16}px`;
+    if (e.key === 'Backspace' && toggledValue) style.height = `${Math.max(scrollHeight - 16, 48)}px`;
     if ((!isPressingShiftKey && e.key === 'Enter') || e.key === 'Escape') {
       onUpdate({ key: usingFor, value: value });
       handleCelClick(false);
@@ -49,7 +61,7 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, readon
   return (
     <S.TextAreaCel
       ref={textareaRef}
-      value={value}
+      value={value || ''}
       onChange={handleOnChange}
       onKeyDown={e => handleKeyboardEventOnEditor(e, true)}
       onKeyUp={e => handleKeyboardEventOnEditor(e, false)}
