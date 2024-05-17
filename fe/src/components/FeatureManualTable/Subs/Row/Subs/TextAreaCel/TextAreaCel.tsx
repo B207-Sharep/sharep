@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as S from './TextAreaCelStyle';
 import * as T from '@types';
+import dayjs from 'dayjs';
 
 export default function TextAreaCel({
   initialState,
@@ -16,10 +17,21 @@ export default function TextAreaCel({
   const [isPressingShiftKey, setIsPressingShiftKey] = useState(false);
 
   useEffect(() => {
+    setValue(initialState => {
+      if (initialState === null || initialState === '') return '';
+      if (usingFor === 'startedAt' || usingFor === 'finishedAt') {
+        const formatedDate = dayjs(initialState).format('YY년 MM월 DD일');
+        return formatedDate.toString();
+      }
+      return initialState;
+    });
+  }, []);
+
+  useEffect(() => {
     if (textareaRef.current === null) return;
 
-    setValue(initialState);
     const { scrollHeight, style } = textareaRef.current;
+
     style.height = `${Math.max(scrollHeight, 48)}px`;
   }, [initialState]);
 

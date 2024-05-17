@@ -2,22 +2,22 @@ import React from 'react';
 import * as T from '@types';
 
 export interface FeatureManualTableProps {
-  usingFor: 'FEATURE';
-  dataList: Array<T.API.DetailIssue>;
+  dataList: Array<T.API.DetailIssue | T.API.SimpleIssue>;
   readonly: boolean;
+  dataType: 'DETAIL' | 'SIMPLE';
 }
 
 export interface FeatureRowProps {
-  usingFor: 'FEATURE';
-  data: T.API.DetailIssue;
+  data: T.API.DetailIssue | T.API.SimpleIssue;
   idx: number;
   readonly: boolean;
+  dataType: 'DETAIL' | 'SIMPLE';
 }
 
 export interface FeatureTextAreaCelProps {
   initialState: string;
   fixedWidth: string;
-  usingFor: keyof T.API.DetailIssue;
+  usingFor: keyof T.API.DetailIssue | T.API.SimpleIssue;
   readonly: boolean;
   onUpdate: (...args: any) => void;
 }

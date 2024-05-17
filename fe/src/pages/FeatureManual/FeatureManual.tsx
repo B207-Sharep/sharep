@@ -78,7 +78,7 @@ export default function FeatureManual() {
         </S.Header>
         <S.ManualWrapper>
           <S.TableWrapper>
-            <Comp.FeatureManualTable readonly={false} dataList={featureIssuesResponse?.data || []} usingFor="FEATURE" />
+            <Comp.FeatureManualTable readonly={false} dataList={featureIssuesResponse?.data || []} dataType="DETAIL" />
             <S.CreateNewRowButton onClick={() => handleCreateNewIssue({})}>
               <Plus color={PALETTE.LIGHT_BLACK} size={14}></Plus>
               <span>작업 추가</span>

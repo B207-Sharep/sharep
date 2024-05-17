@@ -6,38 +6,32 @@ import * as API from '@apis';
 import Row from './Subs/Row/Row';
 import { MANUAL_CONSTANTS } from '@/constants';
 
-export default function FeatureManualTable({ dataList, usingFor, readonly }: T.FeatureManualTableProps) {
-  const createIconUsingIconName = useCallback(
-    ({ idx }: { idx: number }) => {
-      const iconName = MANUAL_CONSTANTS[usingFor][idx].iconName;
-      if (iconName === 'main-title-icon') return <Icon.MainTitle />;
-      if (iconName === 'current-state-title') return <Icon.CurrentStateTitle />;
-      if (iconName === 'text-content-title') return <Icon.TextContentTitle />;
-    },
-    [usingFor],
-  );
+export default function FeatureManualTable({ dataType, dataList, readonly }: T.FeatureManualTableProps) {
+  const createIconUsingIconName = useCallback(({ idx }: { idx: number }) => {
+    const iconName = MANUAL_CONSTANTS.FEATURE[idx].iconName;
+    if (iconName === 'main-title-icon') return <Icon.MainTitle />;
+    if (iconName === 'current-state-title') return <Icon.CurrentStateTitle />;
+    if (iconName === 'text-content-title') return <Icon.TextContentTitle />;
+  }, []);
 
   return (
     <S.TableContainer>
       <S.TitleRowWrapper>
-        {MANUAL_CONSTANTS[usingFor].map((title, titleIdx) => (
-          <S.Title
-            $fixedWidth={MANUAL_CONSTANTS[usingFor][titleIdx].fixedWidth}
-            key={`title-${title.name}-${titleIdx}`}
-          >
-            {createIconUsingIconName({ idx: titleIdx })}
-            <span>{title.name}</span>
-          </S.Title>
-        ))}
+        {MANUAL_CONSTANTS.FEATURE.map((title, titleIdx) => {
+          if (dataType === 'SIMPLE' && title.key === 'connectedIssues') return;
+          return (
+            <S.Title
+              $fixedWidth={MANUAL_CONSTANTS.FEATURE[titleIdx].fixedWidth}
+              key={`title-${title.name}-${titleIdx}`}
+            >
+              {createIconUsingIconName({ idx: titleIdx })}
+              <span>{title.name}</span>
+            </S.Title>
+          );
+        })}
       </S.TitleRowWrapper>
       {dataList?.map((data, dataIdx) => (
-        <Row
-          idx={dataIdx}
-          data={data as T.API.DetailIssue}
-          usingFor={'FEATURE'}
-          readonly={readonly}
-          key={`${usingFor}-table-row-${dataIdx}`}
-        />
+        <Row dataType={dataType} idx={dataIdx} data={data} readonly={readonly} key={`feature-table-row-${dataIdx}`} />
       ))}
     </S.TableContainer>
   );
