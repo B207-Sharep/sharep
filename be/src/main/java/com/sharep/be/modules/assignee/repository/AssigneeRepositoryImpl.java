@@ -46,7 +46,7 @@ public class AssigneeRepositoryImpl implements AssigneeRepository {
                 .innerJoin(member.account, account).fetchJoin()
                 .innerJoin(member.project, project).fetchJoin()
                 .innerJoin(assignee.issue, issue).fetchJoin()
-                .innerJoin(issue.api, api).fetchJoin()
+                .leftJoin(issue.api, api).fetchJoin()
                 .where(project.id.eq(projectId))
                 .where(issue.id.eq(issueId))
                 .where(account.id.eq(accountId))
