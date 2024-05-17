@@ -60,7 +60,6 @@ export default function SideBar() {
     const onMessage = (event: any) => {
       const { data } = event;
       const notificationList = JSON.parse(data);
-      console.log('message', notificationList);
 
       const count = notificationList.filter((noti: T.API.GetNotificationListResponse) => noti.isRead === false).length;
 
@@ -68,8 +67,7 @@ export default function SideBar() {
       setUnreadNoti(count);
     };
 
-    const onError = (event: any) => {
-      console.error('EventSource failed. Reconnecting...', event);
+    const onError = () => {
       eventSource.close();
       setTimeout(() => {
         eventSource = eventSourceInit();

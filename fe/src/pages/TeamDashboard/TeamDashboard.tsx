@@ -13,16 +13,16 @@ export default function TeamDashboard() {
   const { projectId, accountId } = useParams();
 
   const [
-    // { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
+    { data: nowIssuesResponse, isFetching: isNowIssuesResponseFetching },
     { data: projectIssuesResponse, isFetching: isProjectIssuesResponseFetching },
     { data: screenIssuesResponse, isFetching: isScreenIssuesResponseFetching },
     { data: membersResponse, isFetching: isMembersResponseFeting },
   ] = useQueries({
     queries: [
-      // {
-      //   queryKey: [{ func: `get-now-issues`, projectId }],
-      //   queryFn: () => API.project.getNowIssueAboutTeamMembers({ projectId: Number(projectId) }),
-      // },
+      {
+        queryKey: [{ func: `get-now-issues`, projectId }],
+        queryFn: () => API.project.getNowIssueAboutTeamMembers({ projectId: Number(projectId) }),
+      },
       {
         queryKey: [{ func: `get-all-simple-issues`, projectId }],
         queryFn: () =>
@@ -74,14 +74,14 @@ export default function TeamDashboard() {
               <span>가장 최근 작업 중인 이슈</span>
             </S.Title>
             <S.CurrentWorksScrollContainer>
-              {/* {nowIssuesResponse?.data.map((res: T.API.GetNowIssueListResponse, i: number) => (
+              {nowIssuesResponse?.data.map((res: T.API.GetNowIssueListResponse, i: number) => (
                 <S.CurrentWork key={`current-work-${i}`}>
                   <Sub.TeamMember {...res.member} />
                   {res.issues !== null && (
                     <Comp.Issue {...res.issues[0]} assignees={null} jobs={null} dragAble={false} deleteAble={false} />
                   )}
                 </S.CurrentWork>
-              ))} */}
+              ))}
             </S.CurrentWorksScrollContainer>
           </S.WhiteBoxWrapper>
         </div>

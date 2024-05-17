@@ -14,7 +14,7 @@ export interface FeatureRowProps {
   readonly: boolean;
 }
 
-export interface FeatureCelProps {
+export interface FeatureTextAreaCelProps {
   initialState: string;
   fixedWidth: string;
   usingFor: keyof T.API.DetailIssue;
@@ -28,6 +28,15 @@ export interface FeatureSelectCelProps {
   usingFor: 'PRIORITY' | 'STATE' | 'METHOD';
   readonly: boolean;
   onUpdate: (...args: any) => void;
+}
+
+export interface FeatureSelectConnectedIssueCelProps {
+  initialState: T.API.SimpleIssue[];
+  fixedWidth: string;
+  usingFor: 'CONNECTEDISSUES';
+  readonly: boolean;
+  onCreate: ({ screenIssueId }: { screenIssueId: number }) => void;
+  onDelete: ({ connectionId }: { connectionId: number }) => void;
 }
 
 export interface FeatureSelectAssigneesCelProps {
