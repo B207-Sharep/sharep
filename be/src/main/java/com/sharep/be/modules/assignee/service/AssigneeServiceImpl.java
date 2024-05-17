@@ -103,6 +103,8 @@ public class AssigneeServiceImpl implements AssigneeService {
         Assignee assignee = assigneeRepository.findByMemberIdAndIssueId(member.getId(), issueId)
                 .orElseThrow(() -> new RuntimeException("해당하는 담당자가 존재하지 않습니다."));
 
+        notificationRepository.deleteAllByAssignee(assignee);
+
         assigneeRepository.delete(assignee);
 
         return assignee.getId();
