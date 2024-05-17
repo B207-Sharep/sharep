@@ -236,7 +236,7 @@ export default function SideBar() {
               <S.SideBarContents className="hover-bg-dark" onClick={handleAPIClick}>
                 {/* <APIIcon></APIIcon> */}
                 <S.ContentsImg>
-                  <img src={'/api-docs-icon.png'} height="100%" width="100%" alt=""></img>
+                  <img src={'/apis-docs-icon.png'} height="100%" width="100%" alt=""></img>
                 </S.ContentsImg>
                 <S.SideBarFont $size="14px" $weight={400}>
                   API 명세서
