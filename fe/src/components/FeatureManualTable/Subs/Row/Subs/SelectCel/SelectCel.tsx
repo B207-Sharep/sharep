@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from './SelectCelStyle';
 import * as T from '@types';
 import * as Comp from '@components';
@@ -6,6 +6,11 @@ import * as Comp from '@components';
 export default function SelectCel({ initialState, fixedWidth, usingFor, readonly, onUpdate }: T.FeatureSelectCelProps) {
   const celRef = useRef<HTMLButtonElement>(null);
   const [value, setValue] = useState(initialState || '');
+
+  useEffect(() => {
+    console.log(`SELECT-CEL INITIALSTATE CHANGED :`, initialState);
+    setValue(initialState);
+  }, [initialState]);
 
   const handleCelClick = (toggledValue: boolean) => {
     if (celRef.current === null || readonly || usingFor === 'STATE') return;

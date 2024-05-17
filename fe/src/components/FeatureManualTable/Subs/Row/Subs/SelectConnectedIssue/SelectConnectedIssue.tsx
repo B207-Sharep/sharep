@@ -46,7 +46,7 @@ export default function SelectConnectedIssue({
     },
   });
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    if (readonly) return;
+    if (readonly || value === '') return;
 
     e.preventDefault();
     const body = { issueName: value, description: '', type: 'SCREEN' as 'SCREEN', epic: '', priority: 'LOW' as 'LOW' };
@@ -104,6 +104,7 @@ export default function SelectConnectedIssue({
             type="text"
             autoautoComplete="off"
             id="create-new-screen-issue-input"
+            placeholder="기존 화면을 선택하거나 생성할 수 있습니다."
           />
         </S.InputWrapper>
         {regexScreenIssues.map((res, idx) => {
