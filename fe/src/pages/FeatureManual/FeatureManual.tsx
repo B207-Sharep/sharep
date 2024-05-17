@@ -70,15 +70,22 @@ export default function FeatureManual() {
 
   return (
     <>
-      <S.ManualWrapper>
-        <S.TableWrapper>
-          <Comp.FeatureManualTable readonly={false} dataList={featureIssuesResponse?.data || []} usingFor="FEATURE" />
-          <S.CreateNewRowButton onClick={() => handleCreateNewIssue({})}>
-            <Plus color={PALETTE.LIGHT_BLACK} size={14}></Plus>
-            <span>작업 추가</span>
-          </S.CreateNewRowButton>
-        </S.TableWrapper>
-      </S.ManualWrapper>
+      <S.Wrapper>
+        <S.Header>
+          <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
+            기능 명세서
+          </S.StyledText>
+        </S.Header>
+        <S.ManualWrapper>
+          <S.TableWrapper>
+            <Comp.FeatureManualTable readonly={false} dataList={featureIssuesResponse?.data || []} usingFor="FEATURE" />
+            <S.CreateNewRowButton onClick={() => handleCreateNewIssue({})}>
+              <Plus color={PALETTE.LIGHT_BLACK} size={14}></Plus>
+              <span>작업 추가</span>
+            </S.CreateNewRowButton>
+          </S.TableWrapper>
+        </S.ManualWrapper>
+      </S.Wrapper>
     </>
   );
 }
