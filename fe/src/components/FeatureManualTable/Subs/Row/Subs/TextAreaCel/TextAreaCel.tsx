@@ -54,7 +54,7 @@ export default function TextAreaCel({
     const curHeight = Number(style.height.replace('px', ''));
 
     if (e.key === 'Shift') setIsPressingShiftKey(() => toggledValue);
-    if (e.key === 'Backspace' && toggledValue && curHeight > 36) style.height = `${scrollHeight - 16}px`;
+    if (e.key === 'Backspace' && toggledValue && curHeight > 48) style.height = `${scrollHeight - 16}px`;
     if ((!isPressingShiftKey && e.key === 'Enter') || e.key === 'Escape') {
       onUpdate({ key: usingFor, value: value });
       handleCelClick(false);
