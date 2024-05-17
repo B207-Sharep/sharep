@@ -74,6 +74,16 @@ export const HiddenFileInput = styled.input`
   display: none;
 `;
 
+export const ContentsImg = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 64px;
+  margin-bottom: 10px;
+  column-gap: 10px;
+  align-items: center;
+  border-radius: 12px;
+`;
+
 export const DefaultContainer = styled.div`
   border: 1px dashed ${PALETTE.LIGHT_BLACK};
   width: 100%;

@@ -7,14 +7,7 @@ import * as G from '@/styles';
 import * as Comp from '@/components';
 import * as T from '@/types';
 import * as API from '@/apis';
-import APIIcon from '@/assets/svgs/api-docs-icon.svg?react';
-// import ETC from '../../../public/svgs/etc-docs-icon.svg?react';
-import INFRA from '@/assets/svgs/infra-docs-icon.svg?react';
-import MY from '@/assets/svgs/my-dashboard-icon.svg?react';
-import PLAN from '@/assets/svgs/plan-docs-icon.svg?react';
-import SCREEN from '@/assets/svgs/screen-definition-icon.svg?react';
-import TEAM from '@/assets/svgs/team-dashboard-icon.svg?react';
-import NOTI from '@/assets/svgs/noti.svg?react';
+
 import UserImg from '../UserImg/UserImg';
 import { useModal } from '@/customhooks';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -205,13 +198,19 @@ export default function SideBar() {
                 </S.SideBarBtnGroup>
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleTeamDashClick}>
-                <TEAM />
+                {/* <TEAM /> */}
+                <S.ContentsImg>
+                  <img src={'/team-dashboard-icon.png'} height="100%" width="100%" alt=""></img>
+                </S.ContentsImg>
                 <S.SideBarFont $size="14px" $weight={400}>
                   팀 대시보드
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleMyDashClick}>
-                <MY></MY>
+                {/* <MY></MY> */}
+                <S.ContentsImg>
+                  <img src={'/my-dashboard-icon.png'} height="100%" width="100%" alt=""></img>
+                </S.ContentsImg>
                 <S.SideBarFont $size="14px" $weight={400}>
                   나의 대시보드
                 </S.SideBarFont>
@@ -226,25 +225,37 @@ export default function SideBar() {
                 </S.SideBarFont>
               </S.SideBarTitle>
               <S.SideBarContents className="hover-bg-dark" onClick={handleFeatureManualClick}>
-                <PLAN></PLAN>
+                {/* <PLAN></PLAN> */}
+                <S.ContentsImg>
+                  <img src={'/plan-docs-icon.png'} height="100%" width="100%" alt=""></img>
+                </S.ContentsImg>
                 <S.SideBarFont $size="14px" $weight={400}>
                   기능 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleAPIClick}>
-                <APIIcon></APIIcon>
+                {/* <APIIcon></APIIcon> */}
+                <S.ContentsImg>
+                  <img src={'/api-docs-icon.png'} height="100%" width="100%" alt=""></img>
+                </S.ContentsImg>
                 <S.SideBarFont $size="14px" $weight={400}>
                   API 명세서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleScreenClick}>
-                <SCREEN></SCREEN>
+                {/* <SCREEN></SCREEN> */}
+                <S.ContentsImg>
+                  <img src={'/screen-definition-icon.png'} height="100%" width="100%" alt=""></img>
+                </S.ContentsImg>
                 <S.SideBarFont $size="14px" $weight={400}>
                   화면 정의서
                 </S.SideBarFont>
               </S.SideBarContents>
               <S.SideBarContents className="hover-bg-dark" onClick={handleInfraClick}>
-                <INFRA></INFRA>
+                {/* <INFRA></INFRA> */}
+                <S.ContentsImg>
+                  <img src={'/infra-docs-icon.png'} height="100%" width="100%" alt=""></img>
+                </S.ContentsImg>
                 <S.SideBarFont $size="14px" $weight={400}>
                   인프라 명세서
                 </S.SideBarFont>
@@ -253,7 +264,10 @@ export default function SideBar() {
           </S.SideBarNavMain>
           <S.SideBarContents>
             <S.NotiDropdownContainer className="hover-bg-dark" onClick={() => setShowNoti(!showNoti)}>
-              <NOTI></NOTI>
+              {/* <NOTI></NOTI> */}
+              <S.ContentsImg style={{ width: '24px', height: '24px' }}>
+                <img src={'/alarm-icon.png'} width="100%" alt=""></img>
+              </S.ContentsImg>
               <S.SideBarFont $size="14px" $weight={400}>
                 알림
               </S.SideBarFont>
@@ -272,7 +286,7 @@ export default function SideBar() {
                     <S.NotiItem key={noti.notificationId} $isRead={noti.isRead} onClick={handleNotiClick(noti)}>
                       <S.NotiMessage>
                         <S.NotiIcon>
-                          {noti.type === 'FEATURE' ? <PLAN /> : noti.type === 'SCREEN' ? <SCREEN /> : <INFRA />}
+                          {/* {noti.type === 'FEATURE' ? <PLAN /> : noti.type === 'SCREEN' ? <SCREEN /> : <INFRA />} */}
                           {!noti.isRead && <S.UnReadMark />}
                         </S.NotiIcon>
                         <S.NotiMessageContent>

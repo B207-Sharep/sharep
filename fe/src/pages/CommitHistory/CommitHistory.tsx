@@ -119,7 +119,7 @@ export default function CommitHistory() {
   }, [searchParams]);
 
   return (
-    <L.SideBarLayout>
+    <>
       <S.CommitHistoryWrapper>
         <S.Header>
           <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
@@ -224,7 +224,7 @@ export default function CommitHistory() {
           </div>
         ))}
       </S.CommitHistoryWrapper>
-    </L.SideBarLayout>
+    </>
   );
 }
 

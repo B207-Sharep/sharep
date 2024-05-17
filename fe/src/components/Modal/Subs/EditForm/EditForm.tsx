@@ -88,7 +88,9 @@ export default function EditForm({ modalId }: Pick<T.ModalProps, 'modalId'>) {
           </>
         ) : (
           <S.DefaultContainer>
-            <Icon.DefaultUploadImage />
+            <S.ContentsImg>
+              <img src={'/default-upload-icon.png'} height="100%" width="100%" alt=""></img>
+            </S.ContentsImg>
             <S.UploadText color={PALETTE.LIGHT_BLACK}>
               이미지를 여기에 드래그하거나, 클릭하여 업로드하세요.
             </S.UploadText>
