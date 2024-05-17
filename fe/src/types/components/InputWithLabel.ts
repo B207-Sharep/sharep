@@ -1,4 +1,4 @@
-import { ChangeEvent, HTMLInputTypeAttribute } from 'react';
+import React, { ChangeEvent, HTMLInputAutoCompleteAttribute, HTMLInputTypeAttribute } from 'react';
 
 export interface BaseInputProps {
   id: string;
@@ -9,6 +9,7 @@ export interface BaseInputProps {
   placeholder?: string;
   accept?: string;
   hidden?: boolean;
+  autoautoComplete?: HTMLInputAutoCompleteAttribute;
 }
 
 export interface BaseLabelProps {

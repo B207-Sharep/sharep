@@ -4,7 +4,7 @@ import * as T from '@types';
 import * as Comp from '@components';
 
 export default function SelectCel({ initialState, fixedWidth, usingFor, readonly, onUpdate }: T.FeatureSelectCelProps) {
-  const celRef = useRef<HTMLDivElement>(null);
+  const celRef = useRef<HTMLButtonElement>(null);
   const [value, setValue] = useState(initialState || '');
 
   const handleCelClick = (toggledValue: boolean) => {
@@ -33,6 +33,7 @@ export default function SelectCel({ initialState, fixedWidth, usingFor, readonly
       onBlur={() => handleCelClick(false)}
       $fixedWidth={fixedWidth}
       disabled={readonly || usingFor === 'STATE'}
+      ref={celRef}
     >
       <S.Palceholder role="button">{OPTIONS[usingFor][value]}</S.Palceholder>
       <S.OptionUlWrapper>
