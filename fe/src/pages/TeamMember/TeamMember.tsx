@@ -54,7 +54,7 @@ export default function TeamMember() {
   }, [membersResponse?.data, accountId]);
 
   return (
-    <L.SideBarLayout>
+    <>
       <S.RowWrapper>
         <S.WhiteBoxWrapper $flex="2" $direction="row">
           {findMember && (
@@ -106,7 +106,7 @@ export default function TeamMember() {
           />
         ))}
       </S.KanbansWrapper>
-    </L.SideBarLayout>
+    </>
   );
 }
 

@@ -54,7 +54,7 @@ export default function TeamDashboard() {
   }, [screenIssuesResponse?.data]);
 
   return (
-    <L.SideBarLayout>
+    <>
       <S.Container>
         <div className="row-wrapper">
           <S.WhiteBoxWrapper $flex="1.5" $height="302px">
@@ -100,6 +100,6 @@ export default function TeamDashboard() {
           <Comp.GalleryGridWrapper issueList={sortedScreenIssueList} type="SCREEN" />
         </S.WhiteBoxWrapper>
       </S.Container>
-    </L.SideBarLayout>
+    </>
   );
 }

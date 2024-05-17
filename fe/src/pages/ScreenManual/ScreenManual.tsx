@@ -35,15 +35,15 @@ export default function ScreenManual() {
   }, [screenIssueListResponse]);
 
   return (
-    <L.SideBarLayout>
-      <S.Wrapper>
-        <S.Header>
-          <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
-            화면 정의서
-          </S.StyledText>
-        </S.Header>
-        {screenIssueListSuccess && <Comp.GalleryGridWrapper issueList={sortedScreenIssueList} type="SCREEN" />}
-      </S.Wrapper>
-    </L.SideBarLayout>
+    // <L.SideBarLayout>
+    <S.Wrapper>
+      <S.Header>
+        <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
+          화면 정의서
+        </S.StyledText>
+      </S.Header>
+      {screenIssueListSuccess && <Comp.GalleryGridWrapper issueList={sortedScreenIssueList} type="SCREEN" />}
+    </S.Wrapper>
+    // </L.SideBarLayout>
   );
 }

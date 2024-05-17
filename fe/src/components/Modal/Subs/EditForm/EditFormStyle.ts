@@ -17,6 +17,15 @@ export const IssueTitle = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+export const ContentsImg = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 64px;
+  margin-bottom: 10px;
+  column-gap: 10px;
+  align-items: center;
+  border-radius: 12px;
+`;
 
 export const UserInfo = styled.div`
   display: flex;
