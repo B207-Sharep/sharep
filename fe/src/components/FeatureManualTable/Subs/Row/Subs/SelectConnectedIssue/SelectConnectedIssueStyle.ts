@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import { PALETTE } from '@/styles';
+import BaseLabelWithInput from '@/components/InputWithLabel/InputWithLabel';
 
 export const OptionUlWrapper = styled.ul`
   display: flex;
-  justify-content: center;
   flex-direction: column;
   width: 100%;
-  overflow: hidden;
+  height: 128px;
+  overflow-x: hidden;
+  overflow-y: auto;
   z-index: 1;
   background-color: white;
   position: absolute;
@@ -23,6 +25,7 @@ export const OptionLi = styled.li`
   justify-content: center;
   gap: 12px;
   width: calc(100%);
+  height: 48px;
   padding: 6px 0px;
 `;
 
@@ -101,3 +104,10 @@ export const ScreenIssueWrapper = styled.div`
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.36);
   }
 `;
+
+export const InputWrapper = styled.form`
+  height: 48px;
+  padding: 6px 0px;
+`;
+
+export const CreateNewIssueInput = styled(BaseLabelWithInput.Input)``;
