@@ -5,6 +5,7 @@ import * as API from '@apis';
 import * as L from '@layouts';
 import { useQueries } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import { PALETTE } from '@/styles';
 
 export default function ApiManual() {
   const { projectId } = useParams();
@@ -19,9 +20,16 @@ export default function ApiManual() {
 
   return (
     <>
-      <S.ManualWrapper>
-        <Comp.ApiManual readonly={false} dataList={apiListResponse?.data || []} usingFor="API" />
-      </S.ManualWrapper>
+      <S.Wrapper>
+        <S.Header>
+          <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
+            API 명세서
+          </S.StyledText>
+        </S.Header>
+        <S.ManualWrapper>
+          <Comp.ApiManual readonly={false} dataList={apiListResponse?.data || []} usingFor="API" />
+        </S.ManualWrapper>
+      </S.Wrapper>
     </>
   );
 }
