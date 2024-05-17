@@ -1,7 +1,3 @@
-import SeoJeong from './SeoJeong/SeoJeong';
-import SungGu from './SungGu/SungGu';
-import SungJe from './SungJe/SungJe';
-
 import Main from './Main/Main';
 import CommitHistory from './CommitHistory/CommitHistory';
 import Login from './Login/Login';
@@ -20,9 +16,6 @@ import TeamMember from './TeamMember/TeamMember';
 import TeamDashboard from './TeamDashboard/TeamDashboard';
 
 export {
-  SeoJeong,
-  SungGu,
-  SungJe,
   Main,
   CommitHistory,
   Login,
