@@ -58,18 +58,19 @@ public class IssueServiceImpl implements IssueService {
                 .orElseThrow(ProjectNotFoundException::new);
 
         Issue issue = issueRepository.save(issueCreate.toEntityWith(project));
-        apiRepository.save(Api.builder().issue(issue).build());
-
         IssueType type = issueCreate.type();
-        if (type.equals(IssueType.PRIVATE)) {
-            Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
-                    .orElseThrow(MemberNotFoundException::new);
 
-            assigneeRepository.save(Assignee.builder()
-                    .issue(issue)
-                    .member(member)
-                    .state(State.YET)
-                    .build());
+        switch (type) {
+            case FEATURE -> apiRepository.save(Api.builder().issue(issue).build());
+            case PRIVATE -> {
+                Member member = memberRepository.findByAccountIdAndProjectId(accountId, projectId)
+                        .orElseThrow(MemberNotFoundException::new);
+                assigneeRepository.save(Assignee.builder()
+                        .issue(issue)
+                        .member(member)
+                        .state(State.YET)
+                        .build());
+            }
         }
 
         return issue;
