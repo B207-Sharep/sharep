@@ -62,6 +62,15 @@ export const SideBarContents = styled.button`
   border-radius: 12px;
 `;
 
+export const ContentsImg = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 32px;
+  column-gap: 10px;
+  align-items: center;
+  border-radius: 12px;
+`;
+
 export const SideBarBtnGroup = styled.div`
   display: flex;
   flex-direction: row;

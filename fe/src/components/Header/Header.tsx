@@ -19,6 +19,7 @@ export default function Header() {
         <S.LogoWrapper>
           <p>로고</p>
         </S.LogoWrapper>
+        <p>셰프!</p>
         <S.BtnWrapper>
           <Comp.MainColorBtn bgc={false} disabled={false} onClick={handleRegisterClick}>
             가입하기
