@@ -2,20 +2,18 @@ import React from 'react';
 import * as T from '@types';
 
 export interface ApiManualTableProps {
-  usingFor: 'API';
-  dataList: Array<T.API.DetailApi>;
+  dataList: Array<T.API.DetailApi | T.API.SimpleApi>;
   readonly?: boolean;
 }
 
 export interface ApiRowProps {
-  usingFor: 'API';
-  data: T.API.DetailApi;
+  data: T.API.DetailApi | T.API.SimpleApi;
   idx: number;
   readonly?: boolean;
 }
 
 export interface ApiTextCelProps {
-  usingFor: keyof T.API.DetailApi;
+  usingFor: keyof T.API.DetailApi | T.API.SimpleApi;
   initialState: string;
   fixedWidth: string;
   onUpdate: (...args: any) => void;

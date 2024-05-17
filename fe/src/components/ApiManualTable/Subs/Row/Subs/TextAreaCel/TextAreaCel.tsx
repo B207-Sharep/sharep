@@ -14,7 +14,7 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, readon
 
     setValue(initialState);
     const { scrollHeight, style } = textareaRef.current;
-    style.height = `${scrollHeight}px`;
+    style.height = `${Math.max(scrollHeight, 48)}px`;
 
     return () => {
       setValue('');
