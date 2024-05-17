@@ -10,6 +10,7 @@ import static com.sharep.be.modules.notification.domain.QNotification.notificati
 import static com.sharep.be.modules.project.QProject.project;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.notification.domain.Notification;
 import com.sharep.be.modules.notification.service.NotificationRepository;
 import java.util.List;
@@ -49,5 +50,10 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     @Override
     public Notification save(Notification notification) {
         return notificationJpaRepository.save(notification);
+    }
+
+    @Override
+    public void deleteAllByAssignee(Assignee assignee) {
+        notificationJpaRepository.deleteAllByAssignee(assignee);
     }
 }

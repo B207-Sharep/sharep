@@ -1,5 +1,6 @@
 package com.sharep.be.modules.notification.service;
 
+import com.sharep.be.modules.assignee.domain.Assignee;
 import com.sharep.be.modules.notification.domain.Notification;
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +12,6 @@ public interface NotificationRepository {
     List<Notification> findAllByProjectIdAndAccountId(Long projectId, Long accountId);
 
     Notification save(Notification notification);
+
+    void deleteAllByAssignee(Assignee assignee);
 }
