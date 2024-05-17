@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as S from './TextAreaCelStyle';
 import * as T from '@types';
+import dayjs from 'dayjs';
 
 export default function TextAreaCel({
   initialState,
@@ -16,12 +17,22 @@ export default function TextAreaCel({
   const [isPressingShiftKey, setIsPressingShiftKey] = useState(false);
 
   useEffect(() => {
+    setValue(initialState => {
+      if (initialState === null || initialState === '') return '';
+      if (usingFor === 'startedAt' || usingFor === 'finishedAt') {
+        const formatedDate = dayjs(initialState).format('YY년 MM월 DD일');
+        return formatedDate.toString();
+      }
+      return initialState;
+    });
+  }, []);
+
+  useEffect(() => {
     if (textareaRef.current === null) return;
 
-    console.log(`TEXT-CEL INITIALSTATE CHANGED :`, initialState);
-    setValue(initialState);
     const { scrollHeight, style } = textareaRef.current;
-    style.height = `${scrollHeight}px`;
+
+    style.height = `${Math.max(scrollHeight, 48)}px`;
   }, [initialState]);
 
   useEffect(() => {
@@ -54,7 +65,7 @@ export default function TextAreaCel({
     const curHeight = Number(style.height.replace('px', ''));
 
     if (e.key === 'Shift') setIsPressingShiftKey(() => toggledValue);
-    if (e.key === 'Backspace' && toggledValue && curHeight > 36) style.height = `${scrollHeight - 16}px`;
+    if (e.key === 'Backspace' && toggledValue) style.height = `${Math.max(scrollHeight - 16, 48)}px`;
     if ((!isPressingShiftKey && e.key === 'Enter') || e.key === 'Escape') {
       onUpdate({ key: usingFor, value: value });
       handleCelClick(false);
@@ -64,7 +75,7 @@ export default function TextAreaCel({
   return (
     <S.TextAreaCel
       ref={textareaRef}
-      value={value}
+      value={value || ''}
       onChange={handleOnChange}
       onKeyDown={e => handleKeyboardEventOnEditor(e, true)}
       onKeyUp={e => handleKeyboardEventOnEditor(e, false)}

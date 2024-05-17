@@ -19,7 +19,7 @@ export const MANUAL_CONSTANTS: {
   }[];
 } = {
   API: [
-    { name: '분류', key: 'epic', fixedWidth: '200px', celType: 'TEXT', iconName: 'main-title-icon' },
+    { name: '기능명', key: 'issueName', fixedWidth: '200px', celType: 'TEXT', iconName: 'main-title-icon' },
     { name: '진행 상태', key: 'state', fixedWidth: '120px', celType: 'SELECT', iconName: 'current-state-title' },
     { name: '메소드', key: 'method', fixedWidth: '120px', celType: 'SELECT', iconName: 'main-title-icon' },
     { name: 'API Path', key: 'url', fixedWidth: '200px', celType: 'TEXT', iconName: 'text-content-title' },

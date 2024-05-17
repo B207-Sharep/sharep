@@ -27,7 +27,7 @@ export default function ApiManual() {
           </S.StyledText>
         </S.Header>
         <S.ManualWrapper>
-          <Comp.ApiManual readonly={false} dataList={apiListResponse?.data || []} usingFor="API" />
+          <Comp.ApiManualTable readonly={false} dataList={apiListResponse?.data || []} />
         </S.ManualWrapper>
       </S.Wrapper>
     </>

@@ -9,7 +9,7 @@ import UserImg from './UserImg/UserImg';
 import TableBtn from './TableBtn/TableBtn';
 import QuillEditor from './QuillEditor/QuillEditor';
 import FeatureManualTable from './FeatureManualTable/FeatureManualTable.tsx';
-import ApiManual from './ApiManualTable/ApiManualTable.tsx';
+import ApiManualTable from './ApiManualTable/ApiManualTable.tsx';
 import Modal from './Modal/Modal';
 import {
   ProjectCreationForm,
@@ -43,7 +43,7 @@ export {
   UserImg,
   TableBtn,
   FeatureManualTable,
-  ApiManual,
+  ApiManualTable,
   QuillEditor,
   Modal,
   ProjectCreationForm,

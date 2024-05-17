@@ -16,7 +16,7 @@ interface ReqBody {
   method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
 }
 
-export default function Row({ usingFor, data, idx, readonly }: T.ApiRowProps) {
+export default function Row({ data, idx, readonly }: T.ApiRowProps) {
   const queryClient = useQueryClient();
   const { projectId } = useParams();
 
@@ -30,6 +30,7 @@ export default function Row({ usingFor, data, idx, readonly }: T.ApiRowProps) {
     },
   });
   const handleApiUpdate = ({ key, value }: { key: string; value: any }) => {
+    if (!('description' in data)) return;
     if (!readonly) {
       const body: ReqBody = { ...data, [key]: value };
       updateApi({ reqBody: body });
@@ -66,8 +67,10 @@ export default function Row({ usingFor, data, idx, readonly }: T.ApiRowProps) {
     <S.RowWrapper>
       {MANUAL_CONSTANTS.API.map(({ key, fixedWidth, celType }) => {
         const using = key as keyof T.API.DetailApi;
-        const state = data[using];
-        const mapKey = `${usingFor}-table-cell-${key}-${idx}`;
+        const state = isDetailApiIssue(data)
+          ? data[using as keyof T.API.DetailApi]
+          : data[using as keyof T.API.SimpleApi];
+        const mapKey = `api-table-cell-${key}-${idx}`;
 
         if (celType === 'TEXT') {
           return (
@@ -108,6 +111,9 @@ export default function Row({ usingFor, data, idx, readonly }: T.ApiRowProps) {
   );
 }
 
+function isDetailApiIssue(data: T.API.DetailApi | T.API.SimpleApi): data is T.API.DetailApi {
+  return (data as T.API.DetailApi).assignees !== undefined;
+}
 interface CreateCelTypeParam {
   key: keyof T.API.DetailApi;
   fixedWidth: string;
