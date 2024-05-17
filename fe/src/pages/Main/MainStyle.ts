@@ -28,6 +28,14 @@ export const MainWrapper = styled.div`
   /* background-color: blue; */
   margin-left: -200px;
   margin-right: -200px;
+  position: relative;
+`;
+
+export const BgImg = styled.div`
+  /* margin-left: -200px; */
+  /* margin-right: -200px; */
+  width: 100%;
+  position: absolute;
 `;
 
 export const SloganWrapper = styled.div`
@@ -46,7 +54,7 @@ export const Slogan = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 10%;
+  margin-top: 8%;
   justify-content: center;
   align-items: center;
 `;
@@ -94,7 +102,18 @@ export const Monitor = styled.div`
   position: relative;
 `;
 
-export const MonitorScreen = styled.div`
+export const MonitorScreen1 = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-bottom: 0;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  padding: 0px 20px;
+  margin: 10px 0px;
+  background: no-repeat top/100% url('/dashboard.png');
+`;
+export const MonitorScreen2 = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
@@ -105,7 +124,7 @@ export const MonitorScreen = styled.div`
   margin: 10px 0px;
   background: no-repeat top/100% url('/landing.png');
 `;
-export const MonitorScreen2 = styled.div`
+export const MonitorScreen3 = styled.div`
   display: flex;
   width: 100%;
   height: 100%;

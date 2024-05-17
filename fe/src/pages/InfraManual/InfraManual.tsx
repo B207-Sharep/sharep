@@ -21,8 +21,8 @@ export default function InfraManual() {
   console.log(infraIssueListResponse);
 
   return (
-    <L.SideBarLayout>
-      {infraIssueListSuccess && <Comp.GalleryGridWrapper issueList={infraIssueListResponse} type="INFRA" />}
-    </L.SideBarLayout>
+    // <L.SideBarLayout>
+    <>{infraIssueListSuccess && <Comp.GalleryGridWrapper issueList={infraIssueListResponse} type="INFRA" />}</>
+    // </L.SideBarLayout>
   );
 }

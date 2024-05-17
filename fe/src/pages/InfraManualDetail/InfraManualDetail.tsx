@@ -63,7 +63,7 @@ export default function InfraManualDetail() {
   };
 
   return (
-    <L.SideBarLayout>
+    <>
       <S.CommitHistoryWrapper>
         <S.Header>
           <S.HeaderTitle>
@@ -105,7 +105,7 @@ export default function InfraManualDetail() {
           </div>
         ))}
       </S.CommitHistoryWrapper>
-    </L.SideBarLayout>
+    </>
   );
 }
 

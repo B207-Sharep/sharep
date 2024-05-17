@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './JobCreationFormStyle';
 import * as T from '@/types';
 import * as Comp from '@/components';
-import * as Icon from '@/assets';
 import * as API from '@/apis';
 import { PALETTE } from '@/styles';
 import { ChevronDown, CircleDotDashed, Image as UploadImageIcon } from 'lucide-react';
@@ -167,7 +166,10 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
           </>
         ) : (
           <S.DefaultContainer>
-            <Icon.DefaultUploadImage />
+            {/* <Icon.DefaultUploadImage /> */}
+            <S.ContentsImg>
+              <img src={'/default-upload-icon.png'} height="100%" width="100%" alt=""></img>
+            </S.ContentsImg>
             <S.UploadText color={PALETTE.LIGHT_BLACK}>
               이미지를 여기에 드래그하거나, 클릭하여 업로드하세요.
             </S.UploadText>
