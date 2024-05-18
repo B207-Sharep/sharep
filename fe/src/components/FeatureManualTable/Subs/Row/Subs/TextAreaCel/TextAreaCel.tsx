@@ -17,21 +17,17 @@ export default function TextAreaCel({
   const [isPressingShiftKey, setIsPressingShiftKey] = useState(false);
 
   useEffect(() => {
-    setValue(initialState => {
-      if (initialState === null || initialState === '') return '';
+    if (textareaRef.current === null) return;
+
+    const { scrollHeight, style } = textareaRef.current;
+    setValue(prev => {
+      if (initialState === null || prev === '') return '';
       if (usingFor === 'startedAt' || usingFor === 'finishedAt') {
         const formatedDate = dayjs(initialState).format('YY년 MM월 DD일');
         return formatedDate.toString();
       }
       return initialState;
     });
-  }, []);
-
-  useEffect(() => {
-    if (textareaRef.current === null) return;
-
-    const { scrollHeight, style } = textareaRef.current;
-
     style.height = `${Math.max(scrollHeight, 48)}px`;
   }, [initialState]);
 

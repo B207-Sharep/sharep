@@ -78,7 +78,13 @@ export default function TeamDashboard() {
                 <S.CurrentWork key={`current-work-${i}`}>
                   <Sub.TeamMember {...res.member} />
                   {res.issues !== null && (
-                    <Comp.Issue {...res.issues[0]} assignees={null} jobs={null} dragAble={false} deleteAble={false} />
+                    <Comp.Issue
+                      {...res.issues.sort((x1, x2) => x1.id - x2.id)[0]}
+                      assignees={null}
+                      jobs={null}
+                      dragAble={false}
+                      deleteAble={false}
+                    />
                   )}
                 </S.CurrentWork>
               ))}

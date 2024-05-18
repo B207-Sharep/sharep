@@ -48,46 +48,51 @@ export default function TeamMember() {
   });
 
   const findMember = useMemo((): T.API.GetProjectMemberListResponse => {
-    return membersResponse?.data
-      .map((member: T.API.GetProjectMemberListResponse) => member.account.id === Number(accountId) && member)
-      .filter((el: T.API.GetProjectMemberListResponse | false) => el)[0] as T.API.GetProjectMemberListResponse;
+    return membersResponse?.data.reduce((target, member) => {
+      if (member.account.id === Number(accountId)) target = { ...member };
+      return target;
+    }, {}) as T.API.GetProjectMemberListResponse;
   }, [membersResponse?.data, accountId]);
+
+  console.log(`summary :`, membersResponse?.data);
 
   return (
     <>
       <S.RowWrapper>
         <S.WhiteBoxWrapper $flex="2" $direction="row">
-          {findMember && (
-            <S.MemberWrapper>
-              <Comp.UserImg size="lg" path={findMember.account.imageUrl} />
-              <p>
-                <span>{findMember.account.nickname}</span>
-                <span>@{findMember.account.email}</span>
-              </p>
-            </S.MemberWrapper>
-          )}
+          <S.MemberWrapper>
+            <Comp.UserImg size="lg" path={findMember?.account.imageUrl} />
+            <p>
+              <span>{findMember?.account.nickname}</span>
+              <span>{findMember?.account.email}</span>
+            </p>
+          </S.MemberWrapper>
           <S.WorksWrapper>
             <S.YesterdayWork>
               <S.Title>
-                <span>어제 한 작업</span>
+                <span>어제 한 작업 요약</span>
               </S.Title>
-              <p aria-label={DUMMY_YESTERDAY_WORK}>{DUMMY_YESTERDAY_WORK}</p>
+              <p aria-label={findMember?.summary || ''}>{findMember?.summary}</p>
             </S.YesterdayWork>
             <S.RecentlyCommitsWrapper>
               <S.Title>
                 <span>최근 작업들</span>
               </S.Title>
               <S.RecentlyCommitsScrollContainer>
-                {jobsResponse?.data.map((job: T.API.GetJobListResponse) => (
-                  <Comp.Commit {...job} key={`job-in-team-member-page-${job.id}`} disabled={true} />
-                ))}
+                {jobsResponse?.data
+                  .sort((x1, x2) => new Date(x2.createdAt).getTime() - new Date(x1.createdAt).getTime())
+                  .map((job: T.API.GetJobListResponse, idx) => {
+                    return (
+                      idx < 5 && <Comp.Commit {...job} key={`job-in-team-member-page-${job.id}`} disabled={true} />
+                    );
+                  })}
               </S.RecentlyCommitsScrollContainer>
             </S.RecentlyCommitsWrapper>
           </S.WorksWrapper>
         </S.WhiteBoxWrapper>
         <S.WhiteBoxWrapper $flex="1" $direction="column">
           <S.Title>
-            <span>{findMember && findMember.account.nickname}님의 기여도</span>
+            <span>{findMember?.account.nickname}님의 기여도</span>
           </S.Title>
           <Sub.ContributionsChart dataList={contributionsResponse?.data || null} />
         </S.WhiteBoxWrapper>

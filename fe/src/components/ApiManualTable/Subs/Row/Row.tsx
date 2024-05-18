@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback } from 'react';
+import React from 'react';
 import * as S from './RowStyle';
 import * as T from '@types';
 import * as API from '@apis';
