@@ -115,7 +115,9 @@ export default function GalleryCard({ issue, type }: T.GalleryCardProps) {
                 <Comp.QuillEditor
                   width="100%"
                   height="100%"
-                  value={issue.jobs[issue.jobs.length - 1].description}
+                  value={
+                    issue.jobs.sort((a, b) => b.id - a.id)[0].description // 내림차순 정렬 // 가장 큰 id를 갖는 요소의 description 사용
+                  }
                   readonly={true}
                   hiddenTooltip={true}
                   // placeholder="내용을 입력하세요."

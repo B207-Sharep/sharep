@@ -19,17 +19,11 @@ export default function ApiManual() {
   });
 
   return (
-    <>
-      <S.Wrapper>
-        <S.Header>
-          <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
-            API 명세서
-          </S.StyledText>
-        </S.Header>
-        <S.ManualWrapper>
-          <Comp.ApiManualTable readonly={false} dataList={apiListResponse?.data || []} />
-        </S.ManualWrapper>
-      </S.Wrapper>
-    </>
+    <S.ManualWrapper>
+      <S.StyledText color={PALETTE.MAIN_BLACK} fontSize={40} fontWeight={700}>
+        API 명세서
+      </S.StyledText>
+      <Comp.ApiManualTable readonly={false} dataList={apiListResponse?.data || []} />
+    </S.ManualWrapper>
   );
 }

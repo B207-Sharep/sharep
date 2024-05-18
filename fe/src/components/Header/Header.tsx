@@ -17,9 +17,10 @@ export default function Header() {
     <header>
       <S.MainWrapper>
         <S.LogoWrapper>
-          <p>로고</p>
+          <img src={'/logo.png'} height="100%" alt="위원회들" style={{ borderRadius: '10px' }}></img>
         </S.LogoWrapper>
-        <p>셰프!</p>
+        {/* <img src={'/logo-text.png'} height="40%" alt="위원회들"></img> */}
+
         <S.BtnWrapper>
           <Comp.MainColorBtn bgc={false} disabled={false} onClick={handleRegisterClick}>
             가입하기

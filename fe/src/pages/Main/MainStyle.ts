@@ -54,7 +54,7 @@ export const Slogan = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 8%;
+  margin-top: 4%;
   justify-content: center;
   align-items: center;
 `;
@@ -160,6 +160,13 @@ export const ContentsGap = styled.div`
   display: flex;
   flex-direction: row;
   height: 40vh;
+`;
+
+export const SymbolImg = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  /* background-color: greenyellow; */
 `;
 
 export const ContentsImg = styled.div`
