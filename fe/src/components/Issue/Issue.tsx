@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import * as S from './IssueStyle';
 import * as T from '@types';
 import * as API from '@apis';
@@ -29,6 +29,11 @@ export default function Issue({ id, issueName, jobs, assignees, priority, dragAb
     deleteIssue({ issueId: id });
   };
 
+  const sortedJobList = useMemo(() => {
+    if (jobs === null || jobs.length === 0) return;
+    return jobs.sort((x1, x2) => new Date(x2.createdAt).getTime() - new Date(x1.createdAt).getTime());
+  }, [jobs]);
+
   return (
     <S.RelativeWrapper
       onDragStart={() => (dragAble !== false ? dragAble.setter(() => id) : undefined)}
@@ -50,13 +55,13 @@ export default function Issue({ id, issueName, jobs, assignees, priority, dragAb
           )}
         </S.TitleWrapper>
         <S.RecentlyCommit>
-          {jobs !== null && jobs.length > 0 && (
+          {sortedJobList && (
             <>
               <p>
                 <GitCommit size={16} color={PALETTE.LIGHT_BLACK} />
-                <span aria-label={jobs[0].name}>{jobs[0].name}</span>
+                <span aria-label={sortedJobList[0].name}>{sortedJobList[0].name}</span>
               </p>
-              <span>{dayjs(jobs[0].createdAt).locale('ko').fromNow()}</span>
+              <span>{dayjs(sortedJobList[0].createdAt).locale('ko').fromNow()}</span>
             </>
           )}
         </S.RecentlyCommit>
