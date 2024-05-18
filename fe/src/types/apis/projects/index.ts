@@ -9,6 +9,7 @@ export interface DetailApi {
   method: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | null;
   request: string | null;
   response: string | null;
+  issueName: string | null;
   url: string | null;
 }
 
@@ -49,7 +50,7 @@ export interface DetailIssue {
   priority: 'HIGH' | 'MEDIUM' | 'LOW' | null;
   startedAt: string | null;
   finishedAt: string | null;
-  api: SimpleApi | null;
+  api: SimpleApi[] | null;
   assignees: Assignee[];
   jobs: Job[];
   connectedIssues: SimpleIssue[];
@@ -67,7 +68,7 @@ export interface SimpleIssue {
   priority: 'HIGH' | 'MEDIUM' | 'LOW' | null;
   startedAt: string | null;
   finishedAt: string | null;
-  api: SimpleApi | null;
+  api: SimpleApi[] | null;
   assignees: Assignee[];
   jobs: Job[];
 }
@@ -193,5 +194,3 @@ export interface GetNotificationListResponse {
   isRead: boolean;
 }
 /** GetNotificationList - 알림  */
-
-

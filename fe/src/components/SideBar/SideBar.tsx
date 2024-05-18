@@ -48,44 +48,29 @@ export default function SideBar() {
 
     if (!token) return;
 
-    const eventSourceInit = () =>
-      new EventSourcePolyfill(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const eventSourceInit = new EventSourcePolyfill(url, { headers: { Authorization: `Bearer ${token}` } });
 
-    let eventSource = eventSourceInit();
-
-    const onMessage = (event: any) => {
+    eventSourceInit.addEventListener('sse', (event: any) => {
       const { data } = event;
-      const notificationList = JSON.parse(data);
+      const response = JSON.parse(data);
 
-      const count = notificationList.filter((noti: T.API.GetNotificationListResponse) => noti.isRead === false).length;
-
-      setNotifications(notificationList);
-      setUnreadNoti(count);
-    };
-
-    const onError = () => {
-      eventSource.close();
-      setTimeout(() => {
-        eventSource = eventSourceInit();
-        setupEventSource(eventSource);
-      }, 1000);
-    };
-
-    const setupEventSource = (es: EventSourcePolyfill) => {
-      es.addEventListener('sse', onMessage);
-      es.onerror = onError;
-    };
-
-    setupEventSource(eventSource);
+      setNotifications(prev => {
+        if (Array.isArray(response)) return [...response];
+        return [...prev, response];
+      });
+    });
 
     return () => {
-      eventSource.close();
+      eventSourceInit.close();
     };
   }, [projectId]);
+
+  useEffect(() => {
+    const { length: unReadCount } = notifications.filter(
+      (noti: T.API.GetNotificationListResponse) => noti.isRead === false,
+    );
+    setUnreadNoti(unReadCount);
+  }, [notifications]);
 
   const readNotiMutation = useMutation({
     mutationKey: [{ func: `read-noti` }],
@@ -119,11 +104,7 @@ export default function SideBar() {
   };
 
   const handleModalOpen = () => {
-    jobModal.openModal({
-      name: '',
-      imageFile: null,
-      description: '',
-    });
+    jobModal.openModal({ name: '', imageFile: null, description: '' });
   };
 
   const handleNotiClick = (noti: T.API.GetNotificationListResponse) => (event: React.MouseEvent) => {
@@ -283,7 +264,11 @@ export default function SideBar() {
                 </S.NotiDropdownHeader>
                 {notifications &&
                   notifications.map(noti => (
-                    <S.NotiItem key={noti.notificationId} $isRead={noti.isRead} onClick={handleNotiClick(noti)}>
+                    <S.NotiItem
+                      key={`notification-list-${noti.notificationId}`}
+                      $isRead={noti.isRead}
+                      onClick={handleNotiClick(noti)}
+                    >
                       <S.NotiMessage>
                         <S.NotiIcon>
                           {/* {noti.type === 'FEATURE' ? <PLAN /> : noti.type === 'SCREEN' ? <SCREEN /> : <INFRA />} */}

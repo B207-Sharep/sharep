@@ -107,7 +107,11 @@ export const ScreenIssueWrapper = styled.div`
 
 export const InputWrapper = styled.form`
   height: 48px;
-  padding: 6px 0px;
+  padding: 6px;
 `;
 
-export const CreateNewIssueInput = styled(BaseLabelWithInput.Input)``;
+export const CreateNewIssueInput = styled(BaseLabelWithInput.Input)`
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+`;
