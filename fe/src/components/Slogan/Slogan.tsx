@@ -15,7 +15,7 @@ export default function Slogan() {
             duration: 0.25,
             delay: i / 10,
           }}
-          style={{ fontSize: 45, fontWeight: 700, textAlign: 'center' }}
+          style={{ fontSize: 25, fontWeight: 700, textAlign: 'center' }}
         >
           {el}
           {'\u00A0'}

@@ -26,8 +26,13 @@ export default function Main() {
           </S.BgImg>
           <S.SloganWrapper>
             <S.Slogan>
+              <S.SymbolImg style={{ height: '16vh' }}>
+                <img src={'/symbol.png'} height="100%" alt="위원회들"></img>
+              </S.SymbolImg>
+
               <Comp.Slogan></Comp.Slogan>
-              <p>여기에 어떤 글을 쓸까요 ?</p>
+
+              {/* <p>여기에 어떤 글을 쓸까요 ?</p> */}
             </S.Slogan>
             {/* <motion.div
               initial={{ opacity: 0, y: -90 }}
@@ -122,11 +127,11 @@ export default function Main() {
           </S.ContentsWrapper>
           <S.MainWrapper>
             <S.BottomContentsWrapper>
-              <S.StyledText fontSize={40} fontWeight={700} color="#D1478D">
-                ShareP
-              </S.StyledText>
+              <S.SymbolImg style={{ height: '16vh' }}>
+                <img src={'/symbol.png'} height="100%" alt="위원회들"></img>
+              </S.SymbolImg>
               <S.StyledText fontSize={28} fontWeight={700} color="whilte">
-                뭐라고 쓸까요 ?
+                지금 바로 시작 해보세요
               </S.StyledText>
               <S.ContentsGap></S.ContentsGap>
               <S.BottomButton onClick={loginClick}>시작하기</S.BottomButton>
