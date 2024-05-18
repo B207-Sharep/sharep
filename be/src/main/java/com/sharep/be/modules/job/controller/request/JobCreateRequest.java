@@ -14,7 +14,6 @@ public record JobCreateRequest(
         String name,
 
         @NotNull
-        @Size(max = 255)
         String description
 ) {
 
