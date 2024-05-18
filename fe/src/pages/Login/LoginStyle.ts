@@ -37,10 +37,11 @@ export const LogoWrapper = styled.div`
   align-items: center;
 `;
 export const Logo = styled.div`
-  width: 64px;
+  width: 80%;
   height: 64px;
-  background-color: blue;
+  /* background-color: blue; */
   border-radius: 90px;
+  background: no-repeat top/100% url('/symbol-color.png');
 `;
 export const SloganWrapper = styled.div`
   display: flex;
