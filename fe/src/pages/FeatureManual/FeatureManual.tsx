@@ -55,13 +55,19 @@ export default function FeatureManual() {
     const accessToken = localStorage.getItem('token');
     const eventSource = new EventSourcePolyfill(CONNECTION_URL, {
       headers: { Authorization: `Bearer ${accessToken}` },
+      heartbeatTimeout: 10 * 60 * 1000 * 6, // 60분
     });
+
     eventSource.addEventListener('sse', (e: any) => {
       const response = JSON.parse(e.data);
       if (response.message === 'refetch') {
         queryClient.invalidateQueries({ queryKey: [{ func: `get-detail-feature-issues`, projectId }] });
       }
     });
+
+    // eventSource.onerror = () => {
+    //   eventSource.close();
+    // };
 
     return () => {
       eventSource.close();
