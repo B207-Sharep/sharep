@@ -90,8 +90,8 @@ public class NotificationServiceImpl implements NotificationService {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         projectIdEmitterRepository.save(memberId, emitter);
 
-        emitter.onCompletion(() -> accountIdEmitterRepository.deleteById(memberId));
-        emitter.onTimeout(() -> accountIdEmitterRepository.deleteById(memberId));
+        emitter.onCompletion(() -> projectIdEmitterRepository.deleteById(memberId));
+        emitter.onTimeout(() -> projectIdEmitterRepository.deleteById(memberId));
 
         return emitter;
     }

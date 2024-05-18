@@ -25,6 +25,7 @@ public class MemberService {
     private final NotificationManager notificationManager;
 
     @Scheduled(cron = "${schedule.crone}") // application.yml crone tab
+    @Transactional
     public void summaryDailyJob(){
         log.info("==== daily scheduler on ====");
         // 모든 member 조회
