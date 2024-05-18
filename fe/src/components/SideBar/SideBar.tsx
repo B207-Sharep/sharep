@@ -48,9 +48,12 @@ export default function SideBar() {
 
     if (!token) return;
 
-    const eventSourceInit = new EventSourcePolyfill(url, { headers: { Authorization: `Bearer ${token}` } });
+    const eventSource = new EventSourcePolyfill(url, {
+      headers: { Authorization: `Bearer ${token}` },
+      heartbeatTimeout: 10 * 60 * 1000 * 6, // 60분
+    });
 
-    eventSourceInit.addEventListener('sse', (event: any) => {
+    eventSource.addEventListener('sse', (event: any) => {
       const { data } = event;
       const response = JSON.parse(data);
 
@@ -60,8 +63,12 @@ export default function SideBar() {
       });
     });
 
+    // eventSource.onerror = () => {
+    //   eventSource.close();
+    // };
+
     return () => {
-      eventSourceInit.close();
+      eventSource.close();
     };
   }, [projectId]);
 

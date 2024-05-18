@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './TextAreaCelStyle';
 import * as T from '@types';
 import dayjs from 'dayjs';
@@ -17,19 +17,23 @@ export default function TextAreaCel({
   const [isPressingShiftKey, setIsPressingShiftKey] = useState(false);
 
   useEffect(() => {
+    if (initialState === null) return;
+
+    setValue(() => initialState || '');
+  }, [initialState, usingFor]);
+
+  useEffect(() => {
     if (textareaRef.current === null) return;
 
     const { scrollHeight, style } = textareaRef.current;
-    setValue(prev => {
-      if (initialState === null || prev === '') return '';
-      if (usingFor === 'startedAt' || usingFor === 'finishedAt') {
-        const formatedDate = dayjs(initialState).format('YY년 MM월 DD일');
-        return formatedDate.toString();
-      }
-      return initialState;
-    });
     style.height = `${Math.max(scrollHeight, 48)}px`;
-  }, [initialState]);
+  }, [value]);
+
+  // if (initialState === null || prev === '') return '';
+  // if (usingFor === 'startedAt' || usingFor === 'finishedAt') {
+  //   const formatedDate = dayjs(initialState).format('YY년 MM월 DD일');
+  //   return formatedDate.toString();
+  // }
 
   useEffect(() => {
     if (isEditingMode && textareaRef.current) textareaRef.current.focus();
@@ -68,10 +72,16 @@ export default function TextAreaCel({
     }
   };
 
+  const validateValue = useMemo(() => {
+    if (value === '') return '';
+    if (usingFor === 'startedAt' || usingFor === 'finishedAt') return dayjs(value).format('YY년 MM월 DD일');
+    return value;
+  }, [usingFor, value]);
+
   return (
     <S.TextAreaCel
       ref={textareaRef}
-      value={value || ''}
+      value={validateValue}
       onChange={handleOnChange}
       onKeyDown={e => handleKeyboardEventOnEditor(e, true)}
       onKeyUp={e => handleKeyboardEventOnEditor(e, false)}
