@@ -59,7 +59,7 @@ export default function SideBar() {
 
       setNotifications(prev => {
         if (Array.isArray(response)) return [...response];
-        return [...prev, response];
+        return [response, ...prev];
       });
     });
 

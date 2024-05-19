@@ -91,7 +91,7 @@ export default function TeamDashboard() {
             </S.CurrentWorksScrollContainer>
           </S.WhiteBoxWrapper>
         </div>
-        <S.WhiteBoxWrapper $flex="1" $height="420px">
+        <S.WhiteBoxWrapper $flex="1" $height="fit-content">
           <S.Title>
             <Icon.GantChart />
             <span>간트 차트</span>

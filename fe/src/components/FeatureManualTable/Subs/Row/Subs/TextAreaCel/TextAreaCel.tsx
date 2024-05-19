@@ -29,12 +29,6 @@ export default function TextAreaCel({
     style.height = `${Math.max(scrollHeight, 48)}px`;
   }, [value]);
 
-  // if (initialState === null || prev === '') return '';
-  // if (usingFor === 'startedAt' || usingFor === 'finishedAt') {
-  //   const formatedDate = dayjs(initialState).format('YY년 MM월 DD일');
-  //   return formatedDate.toString();
-  // }
-
   useEffect(() => {
     if (isEditingMode && textareaRef.current) textareaRef.current.focus();
   }, [isEditingMode]);
