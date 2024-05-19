@@ -26,7 +26,7 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, readon
   }, [isEditingMode]);
 
   const handleCelClick = (toggledValue: boolean) => {
-    if (textareaRef.current === null || readonly || usingFor === 'epic' || usingFor === 'description') return;
+    if (textareaRef.current === null || readonly || usingFor === 'issueName' || usingFor === 'description') return;
 
     if (toggledValue) textareaRef.current.focus();
     else textareaRef.current.blur();
@@ -35,7 +35,7 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, readon
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (textareaRef.current === null || readonly || usingFor === 'epic' || usingFor === 'description') return;
+    if (textareaRef.current === null || readonly || usingFor === 'issueName' || usingFor === 'description') return;
 
     setValue(e.target.value || '');
     if (textareaRef.current) {
@@ -45,7 +45,7 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, readon
   };
 
   const handleKeyboardEventOnEditor = (e: React.KeyboardEvent<HTMLTextAreaElement>, toggledValue: boolean) => {
-    if (textareaRef.current === null || readonly || usingFor === 'epic' || usingFor === 'description') return;
+    if (textareaRef.current === null || readonly || usingFor === 'issueName' || usingFor === 'description') return;
 
     const { scrollHeight, style } = textareaRef.current;
     const curHeight = Number(style.height.replace('px', ''));
@@ -67,7 +67,7 @@ export default function TextAreaCel({ initialState, fixedWidth, usingFor, readon
       onKeyUp={e => handleKeyboardEventOnEditor(e, false)}
       onFocus={() => handleCelClick(true)}
       onBlur={() => handleCelClick(false)}
-      readOnly={readonly || usingFor === 'epic' || usingFor === 'description'}
+      readOnly={readonly || usingFor === 'issueName' || usingFor === 'description'}
       $fixedWidth={fixedWidth}
       $isEditingMode={isEditingMode}
     />

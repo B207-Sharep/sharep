@@ -54,8 +54,6 @@ export default function TeamMember() {
     }, {}) as T.API.GetProjectMemberListResponse;
   }, [membersResponse?.data, accountId]);
 
-  console.log(`summary :`, membersResponse?.data);
-
   return (
     <>
       <S.RowWrapper>

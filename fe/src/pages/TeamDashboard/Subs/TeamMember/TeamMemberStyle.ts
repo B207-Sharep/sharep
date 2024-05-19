@@ -23,7 +23,7 @@ export const UserWrapper = styled(Link)`
     font-size: 12px;
     position: absolute;
     top: -20px;
-    right: -32px;
+    left: 0px;
     white-space: nowrap;
     color: white;
     border-radius: 6px;
