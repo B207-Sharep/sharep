@@ -18,7 +18,7 @@ export default function GanttChart({ projectIssueList }: T.GanttChartProps) {
   const sortedStartedAt = filterIssues.sort(
     (x1, x2) => new Date(x1.startedAt).getTime() - new Date(x2.startedAt).getTime(),
   );
-  const firstStartedAt = sortedStartedAt[0] && sortedStartedAt[0].startedAt;
+  const firstStartedAt = sortedStartedAt[0] ? sortedStartedAt[0].startedAt : '';
 
   return (
     <S.GantChartScrollContainer style={{ height: filterIssues.length * 44 + 20 }}>
