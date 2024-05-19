@@ -3,55 +3,64 @@ import * as T from '@types';
 import * as S from './GanttChartStyle';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko';
-import { PALETTE } from '@/styles';
-
-interface FilterIssues extends T.API.SimpleIssue {
-  startedAt: string;
-}
 
 export default function GanttChart({ projectIssueList }: T.GanttChartProps) {
-  const scrollBoxRef = useRef<HTMLDivElement>(null);
-  const formatNow = (date: string) => {
-    return dayjs(date).locale('ko').fromNow();
+  const issuesWrapperRef = useRef<HTMLDivElement>(null);
+
+  const dateDiff = (bigger: string, smaller: string) => {
+    return dayjs(bigger.slice(0, 10)).diff(smaller.slice(0, 10), 'day') + 1;
   };
 
-  const dateDiff = (a: Dayjs | string, b: Dayjs | string) => {
-    return dayjs(a).diff(b, 'day');
-  };
   const filterIssues: FilterIssues[] = projectIssueList.reduce((basket: FilterIssues[], issue: T.API.SimpleIssue) => {
     if (issue.startedAt !== null) basket.push(issue as FilterIssues);
     return basket;
   }, []);
-  const sortedStartedAt = filterIssues.sort((x1, x2) => (x1 > x2 ? -1 : 1));
+  const sortedStartedAt = filterIssues.sort(
+    (x1, x2) => new Date(x1.startedAt).getTime() - new Date(x2.startedAt).getTime(),
+  );
   const firstStartedAt = sortedStartedAt[0] && sortedStartedAt[0].startedAt;
 
-  sortedStartedAt.forEach((el, i) => {
-    if (i === 0 || i === sortedStartedAt.length) console.log(`test :`, el.startedAt);
-  });
-  console.log(scrollBoxRef.current?.scrollHeight);
-
   return (
-    <S.GantChartScrollContainer ref={scrollBoxRef}>
-      <S.Wrapper style={{ height: `${scrollBoxRef.current?.scrollHeight}px` }}>
-        {Array.from({ length: dateDiff(firstStartedAt, '2024-01-10') }).map((_, idx) => (
-          <S.OneDaySection
-            style={{ height: `${scrollBoxRef.current?.scrollHeight}px` }}
-            key={`gantt-chart-date-section-${idx}`}
-          />
+    <S.GantChartScrollContainer style={{ height: filterIssues.length * 44 + 20 }}>
+      <S.DateRowWrapper $width={issuesWrapperRef.current?.scrollWidth || 0}>
+        <S.StickyTitleWrapper $idx={0}>
+          <div>기능명</div>
+        </S.StickyTitleWrapper>
+        {Array.from({ length: dateDiff(dayjs().format(), firstStartedAt) }).map((_, dateIdx) => (
+          <S.DateSection key={`date-section-${dateIdx}`}>
+            {`${dayjs(firstStartedAt).get('month') + 1}월 `}
+            {`${dayjs(firstStartedAt).get('date') + dateIdx}일`}
+          </S.DateSection>
         ))}
-        {sortedStartedAt.map((issue, idx) => {
-          let costToDo = null;
-          if (issue.state === 'DONE') costToDo = dateDiff(issue.finishedAt as string, issue.startedAt) + 1;
+      </S.DateRowWrapper>
+      <S.Wrapper ref={issuesWrapperRef}>
+        {filterIssues.map((issue, issueIdx) => {
+          const diffWithFirstStarted =
+            issue.state === 'DONE'
+              ? dateDiff(issue.startedAt, firstStartedAt) - 1
+              : dateDiff(issue.startedAt, firstStartedAt) - 1;
+          const costTime =
+            issue.state === 'DONE'
+              ? dateDiff(issue.finishedAt as string, issue.startedAt)
+              : dateDiff(dayjs().format(), issue.startedAt);
+
           return (
-            <S.IssueBar
-              $width={costToDo !== null ? `${costToDo * 64}px` : `calc(100% - ${idx * 64}px)`}
-              $bgColor={PALETTE[`ROLE_COLOR_${idx % 7}`]}
-              key={`gantt-chart-bar-${issue.id}`}
-              $idx={idx + 1}
-            >
-              <span>{issue.issueName}</span>
-              <div aria-label={`${issue.issueName} \n시작일 : ${issue.startedAt}`} />
-            </S.IssueBar>
+            <S.RowWrapper $idx={issueIdx} key={`gantt-chart-${issue.id}-${issueIdx}`}>
+              <S.StickyTitleWrapper $idx={issueIdx}>
+                <S.IssueName $state={issue.state as 'DONE' | 'NOW'}>{issue.issueName}</S.IssueName>
+                <S.AriaLabel aria-label={issue.issueName} />
+              </S.StickyTitleWrapper>
+
+              {Array.from({ length: dateDiff(dayjs().format(), firstStartedAt) }).map((_, dateIdx) => (
+                <S.DateSection key={`date-section-${dateIdx}`} />
+              ))}
+
+              <S.IssueBar
+                $diffFirstStarted={diffWithFirstStarted}
+                $state={issue.state as 'DONE' | 'NOW'}
+                $costTime={costTime}
+              />
+            </S.RowWrapper>
           );
         })}
       </S.Wrapper>
@@ -59,39 +68,6 @@ export default function GanttChart({ projectIssueList }: T.GanttChartProps) {
   );
 }
 
-// assignees들의 state 표출시켜주기.
-// A: ~~, B: ~~, C: ~~
-// [
-// {
-// api: {id: 4, request: null, response: null, url: null, method: 'POST'}
-// assignees: [{…}, {…}, {…}, {…}]
-// connectionId: null
-// createdAt: "2024-05-09T10:31:24.100456"
-// description: "사용자 경험 추가해야 합니다."
-// epic: "사용자 개선"
-// finishedAt: "2024-05-12T15:38:37.344446"
-// id: 4
-// issueName: "화면 설계서 1"
-// jobs: [{…}]
-// priority: "HIGH"
-// startedAt: "2024-05-10T12:45:50.492597"
-// state: "NOW"
-// type: "SCREEN"
-// },
-// {
-// api: {id: 5, request: null, response: null, url: null, method: 'GET'}
-// assignees: [{…}, {…}, {…}]
-// connectionId: null
-// createdAt: "2024-05-09T10:31:29.629897"
-// description: "사용자 경험 추가해야 합니다."
-// epic: "사용자 개선"
-// finishedAt: "2024-05-11T20:39:18.325076"
-// id: 5
-// issueName: "화면 설계서 2"
-// jobs: []
-// priority: "HIGH"
-// startedAt: "2024-05-11T20:39:18.325076"
-// state: "NOW"
-// type: "SCREEN"
-// }
-// ]
+interface FilterIssues extends T.API.SimpleIssue {
+  startedAt: string;
+}
