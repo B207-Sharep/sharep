@@ -1,6 +1,6 @@
 # Share-P
 ### 하나의 레시피에서  출발하는 프로젝트의 완성
-![main.png](image%2Fmain.png)
+![main.png](../image%2Fmain.png)
 
 ### 기간
 
@@ -36,12 +36,12 @@
 ### 시스템 아키텍처
 
 ---
-![system-architecture.png](image%2Fsystem-architecture.png)
+![system-architecture.png](../image%2Fsystem-architecture.png)
 
 ### ERD
 
 ---
-![erd.png](image%2Ferd.png)
+![erd.png](../image%2Ferd.png)
 
 ### 서비스 소개
 
@@ -51,7 +51,7 @@
 ---
 자신이 속한 프로젝트 및 최근 작업수를 볼 수 있습니다.
 
-![마이페이지.PNG](image%2F%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80.PNG)
+![마이페이지.PNG](../image%2F%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80.PNG)
 
 ### 팀 대시보드
 
@@ -59,7 +59,7 @@
 
 해당 프로젝트에 속한 팀원들이 어제 한 일을 GPT가 요약해서 보여주고, 팀원들의 현재 진행 이슈, 간트차트를 볼 수 있습니다.
 
-![팀대시보드.PNG](image%2F%ED%8C%80%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C.PNG)
+![팀대시보드.PNG](../image%2F%ED%8C%80%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C.PNG)
 
 ### 나의 대시보드
 
@@ -67,7 +67,7 @@
 
 자신이 최근에 한 작업들, 자신의 프로젝트 기여도, 자신의 할 일들의 상태를 관리 할 수 있는 칸반보드를 볼 수 있습니다.
 
-![나의대시보드.PNG](image%2F%EB%82%98%EC%9D%98%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C.PNG)
+![나의대시보드.PNG](../image%2F%EB%82%98%EC%9D%98%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C.PNG)
 
 ### 기능 명세서
 
@@ -75,7 +75,7 @@
 
 공동작업 기능을 이용해서 팀원들과 함께 동시에 기능 명세서를 작성할 수 있습니다.
 
-![기능명세서.PNG](image%2F%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.PNG)
+![기능명세서.PNG](../image%2F%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.PNG)
 
 ### API 명세서
 
@@ -83,7 +83,7 @@
 기능 명세서에서 작성했던 정보를 바탕으로 중복되는 데이터를 채워줍니다.  
 API 명세서에서 추가적으로 적어야 할 정보들을 추가로 적어줍니다.
 
-![API명세서.PNG](image%2FAPI%EB%AA%85%EC%84%B8%EC%84%9C.PNG)
+![API명세서.PNG](../image%2FAPI%EB%AA%85%EC%84%B8%EC%84%9C.PNG)
 
 ### 화면 정의서
 
@@ -92,7 +92,7 @@ API 명세서에서 추가적으로 적어야 할 정보들을 추가로 적어�
 디자이너들이 작업한 화면들을 기록할 수 있습니다.  
 기능 명세서의 기능과 해당 화면들을 연결할 수 있습니다.
 
-![화면정의서PNG.PNG](image%2F%ED%99%94%EB%A9%B4%EC%A0%95%EC%9D%98%EC%84%9CPNG.PNG)
+![화면정의서PNG.PNG](../image%2F%ED%99%94%EB%A9%B4%EC%A0%95%EC%9D%98%EC%84%9CPNG.PNG)
 
 ### 인프라 명세서
 
@@ -100,4 +100,4 @@ API 명세서에서 추가적으로 적어야 할 정보들을 추가로 적어�
 
 인프라 명세서를 작성할 수 있습니다.
 
-![인프라명세서.PNG](image%2F%EC%9D%B8%ED%94%84%EB%9D%BC%EB%AA%85%EC%84%B8%EC%84%9C.PNG)
+![인프라명세서.PNG](../image%2F%EC%9D%B8%ED%94%84%EB%9D%BC%EB%AA%85%EC%84%B8%EC%84%9C.PNG)
