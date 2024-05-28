@@ -36,10 +36,8 @@ export default function JobCreationForm({ modalId }: Pick<T.ModalProps, 'modalId
   });
 
   const groupedIssueList = useMemo(() => {
-    if (!myNowIssueResponse) return [];
-    console.log(myNowIssueResponse);
+    if (!myNowIssueResponse || !myNowIssueResponse[0].issues) return [];
     const sortedIssues = myNowIssueResponse[0].issues.sort((a, b) => a.id - b.id);
-    console.log(sortedIssues);
     return groupIssuesByType(sortedIssues);
   }, [myNowIssueResponse]);
 
